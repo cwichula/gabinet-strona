@@ -1,0 +1,538 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms@0.227.3/schema/sveltia-cms.json
+#
+# Konfiguracja panelu /admin/ - Sveltia CMS 0.227.3 (kopia w static/admin/sveltia-cms.js).
+#
+# Nazwy pol (name) MUSZA zgadzac sie z szablonami Hugo i z docs/KONTRAKT-BLOKOW.md.
+# Typy blokow (types w polu "sekcje") sprawdza tools/sprawdz-kontrakt.py: kazdy
+# typ musi miec partial blocks/<typ>.html w kazdym szablonie w themes/.
+#
+# Uzyte opcje - dokumentacja Sveltia CMS (sprawdzone 2026-10-03):
+#   backend github, repo, branch, base_url ...... https://sveltiacms.app/en/docs/backends/github
+#   commit_messages, branch ..................... https://sveltiacms.app/en/docs/backends
+#   site_url, display_url ....................... https://sveltiacms.app/en/docs/customization
+#   jezyk panelu (brak opcji locale, wg przegladarki) https://sveltiacms.app/en/docs/ui
+#   slug: encoding, clean_accents ............... https://sveltiacms.app/en/docs/collections/entries/slugs
+#   media_folder, public_folder (tez '' = obok wpisu, paczki stron Hugo)
+#                                                 https://sveltiacms.app/en/docs/media/internal
+#   media_libraries.all: transformations, max_file_size, slugify_filename
+#                                                 https://sveltiacms.app/en/docs/media
+#   path '{{slug}}/index' (page bundle) ......... https://sveltiacms.app/en/docs/collections/entries/slugs
+#   create, delete, reorder {key: weight} ....... https://sveltiacms.app/en/docs/collections/entries/operations
+#   preview_path (+ automatyczne "aliases" przy zmianie sluga)
+#                                                 https://sveltiacms.app/en/docs/collections/entries/previews
+#   summary, ternary ............................ https://sveltiacms.app/en/docs/collections/entries/listings
+#                                                 https://sveltiacms.app/en/docs/string-transformations
+#   icon, description ........................... https://sveltiacms.app/en/docs/collections
+#   files, file, preview_path (pliki) ........... https://sveltiacms.app/en/docs/collections/files
+#   list: types, typeKey, summary, collapsed, label_singular, allow_add/remove/reorder/duplicate,
+#         thumbnail, min ........................ https://sveltiacms.app/en/docs/fields/list
+#   object (required: false = mozna dodac/usunac) https://sveltiacms.app/en/docs/fields/object
+#   relation: collection, file, value_field ('{{slug}}', 'kategorie.*.id'), display_fields,
+#             search_fields, multiple ........... https://sveltiacms.app/en/docs/fields/relation
+#   markdown: buttons, editor_components, modes . https://sveltiacms.app/en/docs/fields/richtext
+#   image: choose_url ........................... https://sveltiacms.app/en/docs/fields/file
+#   string: type, pattern, readonly, hint, required (wspolne opcje pol)
+#                                                 https://sveltiacms.app/en/docs/fields
+#   number: value_type, min, after_input ........ https://sveltiacms.app/en/docs/fields/number
+#   select: options {label, value}, default ..... https://sveltiacms.app/en/docs/fields/select
+#   text: maxlength ............................. https://sveltiacms.app/en/docs/fields/text
+#
+# Zgodnosc z Decap CMS 3.x (plan awaryjny): media_libraries, reorder, preview_path,
+# slug.clean_accents, icon, typeKey-owe types sa albo wspierane, albo ignorowane;
+# przy podmianie skryptu sprawdzic panel (README, "Plan awaryjny").
+
+backend:
+  name: github
+  repo: cwichula/gabinet-strona
+  branch: main
+  # Logowanie przez GitHub ("Zaloguj przez GitHub") wymaga wlasnego klienta OAuth:
+  # wdroz Cloudflare Worker sveltia/sveltia-cms-auth (README, "Logowanie do panelu")
+  # i wpisz tu jego adres, np.:
+  # base_url: https://sveltia-cms-auth.<twoje-konto>.workers.dev
+  # Bez base_url dziala logowanie tokenem ("Sign in with token" / "Zaloguj tokenem").
+  commit_messages:
+    create: 'CMS: nowy wpis w „{{collection}}”: {{slug}} ({{author-login}})'
+    update: 'CMS: zmiana w „{{collection}}”: {{slug}} ({{author-login}})'
+    delete: 'CMS: usunięcie z „{{collection}}”: {{slug}} ({{author-login}})'
+    uploadMedia: 'CMS: nowy plik {{path}} ({{author-login}})'
+    deleteMedia: 'CMS: usunięty plik {{path}} ({{author-login}})'
+
+site_url: https://cwichula.github.io/gabinet-strona
+display_url: https://cwichula.github.io/gabinet-strona/
+
+# Jezyk panelu: Sveltia NIE ma opcji "locale" (jest poza schematem konfiguracji) -
+# interfejs jest po polsku, gdy przegladarka ma jezyk polski; mozna go tez wybrac
+# w ustawieniach panelu (zapamietywany). Polskie tlumaczenie Sveltia pobiera z
+# unpkg.com. Przy awaryjnej podmianie na Decap CMS dopisac tu: locale: pl
+
+# Adresy (slugi) nowych stron: tylko a-z, 0-9 i "-", polskie litery bez ogonkow
+# ("Leczenie kanałowe" -> "leczenie-kanalowe").
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: '-'
+
+# Zdjecia wspolne (strona glowna, dane wspolne): assets/images, a nie static/,
+# bo Hugo przetwarza tylko pliki z assets/ i z paczek stron (zmniejszanie, WebP,
+# width/height). Wartosc pola "/images/x.webp" szablon zamienia na assets/images/x.webp.
+# Podstrony trzymaja swoje zdjecia obok index.md (media_folder: '' w kolekcji Strony).
+media_folder: assets/images
+public_folder: /images
+
+# Optymalizacja zdjec w przegladarce PRZED zapisem do repozytorium: WebP, maks.
+# 2048 px, jakosc 80. Limit rozmiaru sprawdzany jest po konwersji (zdjecie
+# 6-12 MB z telefonu przechodzi, jesli po konwersji ma < 1 MB).
+media_libraries:
+  all:
+    max_file_size: 1048576
+    slugify_filename: true
+    transformations:
+      raster_image:
+        format: webp
+        quality: 80
+        width: 2048
+        height: 2048
+      svg:
+        optimize: true
+
+collections:
+  # ---------------------------------------------------------------- Strony
+  - name: strony
+    label: Strony
+    label_singular: Strona
+    icon: article
+    description: >-
+      Podstrony serwisu. Kolejność ustawisz przeciągając wpisy (przycisk sortowania).
+      Strona ukryta (szkic) znika ze strony i z menu. Menu układasz w kolekcji „Menu”.
+    folder: content/strony
+    path: '{{slug}}/index'
+    media_folder: ''
+    public_folder: ''
+    create: true
+    delete: true
+    reorder:
+      key: weight
+    preview_path: '/{{slug}}/'
+    summary: "{{title}}{{draft | ternary(' — ukryta', '')}}"
+    slug:
+      hint: >-
+        Adres podstrony, np. „leczenie-kanalowe” → /leczenie-kanalowe/. Zmiana adresu
+        zapisanej strony dodaje przekierowanie ze starego adresu i poprawia menu.
+    fields:
+      - name: title
+        label: Tytuł strony
+        widget: string
+        hint: Nagłówek strony i jej nazwa w karcie przeglądarki.
+      - name: description
+        label: Opis dla wyszukiwarek
+        widget: text
+        required: false
+        maxlength: 170
+        hint: 1–2 zdania widoczne w wynikach Google. Puste = opis domyślny z „Ustawień”.
+      - name: draft
+        label: Ukryta (szkic)
+        widget: boolean
+        default: false
+        hint: Włączone = strony nie ma w sieci ani w menu.
+      - &sekcje
+        name: sekcje
+        label: Sekcje strony
+        label_singular: sekcję
+        widget: list
+        collapsed: true
+        required: false
+        hint: Bloki treści w kolejności wyświetlania. Kolejność zmienisz przeciągając.
+        types:
+          - name: hero
+            label: Baner (hero)
+            summary: 'Baner: {{naglowek}}'
+            fields:
+              - { name: naglowek, label: Nagłówek, widget: string }
+              - &tresc_opcjonalna
+                name: tresc
+                label: Treść
+                widget: markdown
+                required: false
+                modes: [rich_text, raw]
+                buttons: [bold, italic, link, bulleted-list, numbered-list, heading-three]
+                editor_components: []
+                hint: Link do innej podstrony wpisz jako /adres-strony/, np. /cennik/.
+              - &zdjecie
+                name: zdjecie
+                label: Zdjęcie
+                widget: object
+                required: false
+                summary: '{{alt}}'
+                fields:
+                  - { name: plik, label: Plik zdjęcia, widget: image, choose_url: false }
+                  - name: alt
+                    label: Opis zdjęcia (tekst alternatywny)
+                    widget: string
+                    hint: Co widać na zdjęciu — dla osób niewidomych i dla wyszukiwarek.
+                  - { name: podpis, label: Podpis pod zdjęciem, widget: string, required: false }
+              - name: przycisk
+                label: Przycisk
+                widget: object
+                required: false
+                fields:
+                  - { name: etykieta, label: Napis na przycisku, widget: string }
+                  - name: strona
+                    label: Prowadzi do strony
+                    widget: relation
+                    collection: strony
+                    value_field: '{{slug}}'
+                    display_fields: [title]
+                    search_fields: [title]
+              - &wariant
+                name: wariant
+                label: Wariant wyglądu
+                widget: select
+                required: false
+                default: domyslny
+                options:
+                  - { label: Domyślny, value: domyslny }
+                  - { label: Wyróżniony (tło), value: wyrozniony }
+                hint: Szablon może wyglądać inaczej dla każdego wariantu.
+
+          - name: tekst
+            label: Tekst
+            summary: 'Tekst: {{naglowek}}'
+            fields:
+              - &naglowek_opcjonalny { name: naglowek, label: Nagłówek, widget: string, required: false }
+              - name: tresc
+                label: Treść
+                widget: markdown
+                modes: [rich_text, raw]
+                buttons: [bold, italic, link, bulleted-list, numbered-list, heading-three]
+                editor_components: []
+                hint: Link do innej podstrony wpisz jako /adres-strony/, np. /cennik/.
+              - *zdjecie
+              - *wariant
+
+          - name: karty
+            label: Karty (np. usługi, kroki)
+            summary: 'Karty: {{naglowek}}'
+            fields:
+              - *naglowek_opcjonalny
+              - &wstep { name: wstep, label: Wstęp, widget: markdown, required: false, modes: [rich_text, raw], buttons: [bold, italic, link], editor_components: [] }
+              - name: elementy
+                label: Karty
+                label_singular: kartę
+                widget: list
+                min: 1
+                collapsed: true
+                summary: '{{tytul}}'
+                fields:
+                  - { name: tytul, label: Tytuł karty, widget: string }
+                  - { name: tresc, label: Treść, widget: markdown, required: false, modes: [rich_text, raw], buttons: [bold, italic, link, bulleted-list], editor_components: [] }
+                  - name: strona
+                    label: Link do strony
+                    widget: relation
+                    collection: strony
+                    value_field: '{{slug}}'
+                    display_fields: [title]
+                    search_fields: [title]
+                    required: false
+                    hint: Opcjonalnie — tytuł karty stanie się odnośnikiem.
+              - *wariant
+
+          - name: faq
+            label: Pytania i odpowiedzi (FAQ)
+            summary: 'FAQ: {{naglowek}}'
+            fields:
+              - *naglowek_opcjonalny
+              - name: elementy
+                label: Pytania
+                label_singular: pytanie
+                widget: list
+                min: 1
+                collapsed: true
+                summary: '{{pytanie}}'
+                fields:
+                  - { name: pytanie, label: Pytanie, widget: string }
+                  - { name: odpowiedz, label: Odpowiedź, widget: markdown, modes: [rich_text, raw], buttons: [bold, italic, link, bulleted-list], editor_components: [] }
+              - *wariant
+
+          - name: cennik
+            label: Cennik
+            summary: 'Cennik: {{naglowek}}'
+            fields:
+              - *naglowek_opcjonalny
+              - *wstep
+              - name: kategorie
+                label: Kategorie cennika
+                widget: relation
+                collection: cennik
+                file: cennik
+                value_field: 'kategorie.*.id'
+                display_fields: ['kategorie.*.nazwa']
+                search_fields: ['kategorie.*.nazwa']
+                multiple: true
+                required: false
+                hint: Puste = cały cennik. Ceny zmieniasz w kolekcji „Cennik” — zmiana pojawi się na wszystkich stronach.
+              - *wariant
+
+          - name: galeria
+            label: Galeria zdjęć
+            summary: 'Galeria: {{naglowek}}'
+            fields:
+              - *naglowek_opcjonalny
+              - name: elementy
+                label: Zdjęcia
+                label_singular: zdjęcie
+                widget: list
+                min: 1
+                collapsed: true
+                summary: '{{alt}}'
+                thumbnail: plik
+                fields:
+                  - { name: plik, label: Plik zdjęcia, widget: image, choose_url: false }
+                  - name: alt
+                    label: Opis zdjęcia (tekst alternatywny)
+                    widget: string
+                    hint: Co widać na zdjęciu — dla osób niewidomych i dla wyszukiwarek.
+                  - { name: podpis, label: Podpis pod zdjęciem, widget: string, required: false }
+              - *wariant
+
+          - name: godziny
+            label: Godziny przyjęć
+            summary: 'Godziny przyjęć'
+            fields:
+              - *naglowek_opcjonalny
+              - *tresc_opcjonalna
+              - *wariant
+
+          - name: mapa
+            label: Mapa i dojazd
+            summary: 'Mapa i dojazd'
+            fields:
+              - *naglowek_opcjonalny
+              - *tresc_opcjonalna
+              - *wariant
+
+          - name: cta
+            label: Zaproszenie do kontaktu (telefon, rezerwacja)
+            summary: 'Zaproszenie: {{naglowek}}'
+            fields:
+              - *naglowek_opcjonalny
+              - *tresc_opcjonalna
+              - *wariant
+
+          - name: kontakt
+            label: Dane kontaktowe
+            summary: 'Dane kontaktowe'
+            fields:
+              - *naglowek_opcjonalny
+              - *tresc_opcjonalna
+              - *wariant
+
+  # --------------------------------------------------------- Strona główna
+  - name: strona_glowna
+    label: Strona główna
+    icon: home
+    files:
+      - name: strona_glowna
+        label: Strona główna
+        icon: home
+        file: content/_index.md
+        preview_path: /
+        media_folder: /assets/images
+        public_folder: /images
+        fields:
+          - { name: title, label: Tytuł strony, widget: string, hint: 'Używany, gdy pierwsza sekcja nie jest banerem.' }
+          - name: description
+            label: Opis dla wyszukiwarek
+            widget: text
+            required: false
+            maxlength: 170
+          - *sekcje
+
+  # ------------------------------------------------------------------ Menu
+  - name: menu
+    label: Menu
+    icon: menu
+    files:
+      - name: menu
+        label: Menu strony
+        icon: menu
+        file: data/menu.yaml
+        fields:
+          - name: pozycje
+            label: Pozycje menu
+            label_singular: pozycję
+            widget: list
+            collapsed: true
+            summary: '{{etykieta}}'
+            hint: >-
+              Kolejność zmienisz przeciągając. Pozycja wskazuje stronę albo link
+              zewnętrzny; pozycja z podmenu może nie mieć własnej strony.
+            fields:
+              - &etykieta { name: etykieta, label: Napis w menu, widget: string }
+              - &strona_menu
+                name: strona
+                label: Strona
+                widget: relation
+                collection: strony
+                value_field: '{{slug}}'
+                display_fields: [title]
+                search_fields: [title]
+                required: false
+              - &link_zewnetrzny
+                name: link_zewnetrzny
+                label: Link zewnętrzny
+                widget: string
+                type: url
+                required: false
+                hint: Tylko gdy pozycja nie prowadzi do naszej strony (pełny adres https://…).
+              - name: podmenu
+                label: Podmenu
+                label_singular: pozycję podmenu
+                widget: list
+                required: false
+                collapsed: true
+                summary: '{{etykieta}}'
+                fields:
+                  - *etykieta
+                  - *strona_menu
+                  - *link_zewnetrzny
+
+  # ---------------------------------------------------------------- Cennik
+  - name: cennik
+    label: Cennik
+    icon: payments
+    files:
+      - name: cennik
+        label: Cennik
+        icon: payments
+        file: data/cennik.yaml
+        fields:
+          - name: informacja
+            label: Informacja pod cennikiem
+            widget: text
+            required: false
+          - name: kategorie
+            label: Kategorie
+            label_singular: kategorię
+            widget: list
+            collapsed: true
+            summary: '{{nazwa}}'
+            fields:
+              - name: id
+                label: Identyfikator kategorii
+                widget: string
+                pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Tylko małe litery bez ogonków, cyfry i myślniki, np. protetyka']
+                hint: Nie zmieniaj w istniejącej kategorii — wskazują ją bloki cennika na stronach.
+              - { name: nazwa, label: Nazwa kategorii, widget: string }
+              - name: pozycje
+                label: Pozycje
+                label_singular: pozycję
+                widget: list
+                collapsed: true
+                summary: '{{nazwa}} — {{cena_od}} zł'
+                fields:
+                  - { name: nazwa, label: Nazwa usługi, widget: string }
+                  - { name: cena_od, label: Cena (lub cena od), widget: number, value_type: int, min: 0, after_input: zł }
+                  - name: cena_do
+                    label: Cena do
+                    widget: number
+                    value_type: int
+                    min: 0
+                    after_input: zł
+                    required: false
+                    hint: Tylko dla widełek, np. 250–400 zł. Puste = jedna cena.
+                  - { name: uwagi, label: Uwagi, widget: string, required: false }
+                  - name: id
+                    label: Identyfikator pozycji
+                    widget: string
+                    required: false
+                    pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Tylko małe litery bez ogonków, cyfry i myślniki']
+                    hint: Opcjonalny, techniczny. Nie zmieniaj w istniejących pozycjach.
+
+  # --------------------------------------------------------- Dane gabinetu
+  - name: dane_gabinetu
+    label: Dane gabinetu
+    icon: local_hospital
+    files:
+      - name: gabinet
+        label: Dane gabinetu
+        icon: local_hospital
+        file: data/gabinet.yaml
+        fields:
+          - { name: nazwa, label: Pełna nazwa, widget: string }
+          - { name: nazwa_krotka, label: Nazwa krótka (nagłówek strony), widget: string }
+          - { name: lekarz, label: Lekarz, widget: string }
+          - name: adres
+            label: Adres
+            widget: object
+            fields:
+              - { name: ulica, label: Ulica i numer, widget: string }
+              - { name: kod, label: Kod pocztowy, widget: string, pattern: ['^\d{2}-\d{3}$', 'Format: 00-000'] }
+              - { name: miasto, label: Miasto, widget: string }
+              - { name: dojazd, label: Jak dojechać, widget: text, required: false }
+          - name: telefony
+            label: Telefony
+            label_singular: telefon
+            widget: list
+            summary: '{{etykieta}}: {{numer}}'
+            hint: Pierwszy numer trafia na przyciski „Zadzwoń”.
+            fields:
+              - { name: etykieta, label: Opis, widget: string }
+              - name: numer
+                label: Numer
+                widget: string
+                pattern: ['^[+0-9 ()-]{9,20}$', 'Same cyfry, spacje i myślniki, np. 699 904 989']
+          - { name: email, label: E-mail, widget: string, type: email, required: false }
+          - name: godziny
+            label: Godziny przyjęć
+            widget: list
+            allow_add: false
+            allow_remove: false
+            allow_reorder: false
+            allow_duplicate: false
+            summary: "{{dzien}}: {{od}}–{{do}}"
+            hint: Puste godziny = gabinet nieczynny w tym dniu.
+            fields:
+              - { name: dzien, label: Dzień, widget: string, readonly: true }
+              - name: od
+                label: Od
+                widget: string
+                required: false
+                pattern: ['^([01]?\d|2[0-3]):[0-5]\d$', 'Format: 9:00 albo 14:30']
+              - { name: do, label: Do, widget: string, required: false, pattern: ['^([01]?\d|2[0-3]):[0-5]\d$', 'Format: 9:00 albo 14:30'] }
+          - name: rezerwacja
+            label: Rezerwacja online
+            widget: object
+            fields:
+              - { name: wlaczona, label: Pokazuj przycisk rezerwacji online, widget: boolean, default: false }
+              - { name: url, label: Adres strony rezerwacji, widget: string, type: url, required: false }
+              - { name: etykieta, label: Napis na przycisku, widget: string, default: Umów wizytę online }
+          - name: rejestrowe
+            label: Dane rejestrowe
+            widget: object
+            fields:
+              - { name: nip, label: NIP, widget: string, required: false }
+              - { name: regon, label: REGON, widget: string, required: false }
+              - { name: pwz, label: Numer prawa wykonywania zawodu, widget: string, required: false }
+              - { name: rpwdl, label: Numer księgi rejestrowej RPWDL, widget: string, required: false }
+          - name: platnosci
+            label: Formy płatności
+            widget: list
+            required: false
+            hint: Np. gotówka, karta płatnicza, BLIK.
+
+  # ------------------------------------------------------------- Ustawienia
+  - name: ustawienia
+    label: Ustawienia
+    icon: settings
+    files:
+      - name: ustawienia
+        label: Ustawienia ogólne
+        icon: settings
+        file: data/ustawienia.yaml
+        fields:
+          - name: seo_opis
+            label: Domyślny opis dla wyszukiwarek
+            widget: text
+            maxlength: 170
+            hint: Używany na stronach, które nie mają własnego opisu.
+          - { name: stopka_tekst, label: Tekst w stopce, widget: text, required: false }

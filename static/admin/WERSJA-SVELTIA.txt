@@ -1,0 +1,14 @@
+Sveltia CMS - przypieta kopia w tym katalogu
+
+Pakiet:   @sveltia/cms 0.227.3 (npm)
+Plik:     dist/sveltia-cms.js -> sveltia-cms.js
+Zrodlo:   https://cdn.jsdelivr.net/npm/@sveltia/cms@0.227.3/dist/sveltia-cms.js
+SHA-256:  915ca82078dca32a59685ea0dfd0bf65b50f90c20e464a59156f3e95aa387429
+          (base64: kVyoIHjcoypZaF6g39C/ZbUPkMIORkpZFW8+lao4dCk= - zgodne z listingiem jsDelivr)
+Licencja: MIT, Copyright (c) 2026 Kohei Yoshino - LICENSE-sveltia-cms.txt
+          (https://cdn.jsdelivr.net/npm/@sveltia/cms@0.227.3/LICENSE.txt)
+Pobrano:  2026-10-03
+
+Uwaga: panel w czasie dzialania pobiera z unpkg.com tlumaczenie interfejsu
+(locales/pl.json tej samej wersji), a przy zdjeciach HEIC z iPhone'a takze
+dekoder HEIC. Sam skrypt CMS jest lokalny.

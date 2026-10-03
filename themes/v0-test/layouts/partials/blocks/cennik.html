@@ -1,0 +1,42 @@
+{{- /* Blok "cennik": naglowek, wstep, kategorie (lista id z data/cennik.yaml;
+       pusta lista = caly cennik). Ceny zawsze z data/cennik.yaml. */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := "" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $wszystkie := hugo.Data.cennik.kategorie | default slice -}}
+{{- $wybrane := slice -}}
+{{- with $b.kategorie -}}
+  {{- range . -}}
+    {{- $id := . -}}
+    {{- $znalezione := where $wszystkie "id" $id -}}
+    {{- if $znalezione -}}
+      {{- $wybrane = $wybrane | append (index $znalezione 0) -}}
+    {{- else -}}
+      {{- errorf "%s: blok cennika wskazuje kategorię %q, której nie ma w data/cennik.yaml. Wybierz kategorię ponownie w panelu /admin/." $gdzie $id -}}
+    {{- end -}}
+  {{- end -}}
+{{- else -}}
+  {{- $wybrane = $wszystkie -}}
+{{- end }}
+<section class="{{ partial "blok-klasy.html" $b }}">
+  <h2>{{ $b.naglowek | default "Cennik" }}</h2>
+  {{- with $b.wstep }}{{ $.strona.RenderString (dict "display" "block") . }}{{ end }}
+  {{- range $wybrane }}
+  <table class="cennik">
+    <caption>{{ .nazwa }}</caption>
+    <thead>
+      <tr><th scope="col">Usługa</th><th scope="col">Cena</th></tr>
+    </thead>
+    <tbody>
+      {{- range .pozycje }}
+      <tr>
+        <th scope="row">{{ .nazwa }}{{ with .uwagi }}<br><small>{{ . }}</small>{{ end }}</th>
+        <td>{{ partial "cena.html" . }}</td>
+      </tr>
+      {{- end }}
+    </tbody>
+  </table>
+  {{- end }}
+  {{- with hugo.Data.cennik.informacja }}
+  <p class="uwaga">{{ . }}</p>
+  {{- end }}
+</section>

@@ -1,0 +1,13 @@
+{{- /* Odnosniki w polach Markdown (tresc, odpowiedz...).
+       "/cennik/" -> adres z uwzglednieniem sciezki bazowej (np. /gabinet-strona/cennik/),
+       wiec w tresci wystarczy pisac "/slug/". tel: przepuszczamy wprost; reszta
+       przechodzi przez filtr adresow Go (zly schemat -> #ZgotmplZ). */ -}}
+{{- $cel := .Destination -}}
+{{- $zewnetrzny := or (hasPrefix $cel "http://") (hasPrefix $cel "https://") -}}
+{{- if and (hasPrefix $cel "/") (not (hasPrefix $cel "//")) -}}
+<a href="{{ relURL (strings.TrimPrefix "/" $cel) }}"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text }}</a>
+{{- else if hasPrefix $cel "tel:" -}}
+<a href="{{ $cel | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text }}</a>
+{{- else -}}
+<a href="{{ $cel }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if $zewnetrzny }} rel="noopener external"{{ end }}>{{ .Text }}</a>
+{{- end -}}

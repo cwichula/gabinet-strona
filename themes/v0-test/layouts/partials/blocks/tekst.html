@@ -1,0 +1,16 @@
+{{- /* Blok "tekst": naglowek (opcjonalny), tresc (Markdown), zdjecie (opcjonalne). */ -}}
+{{- $b := .blok -}}
+<section class="{{ partial "blok-klasy.html" $b }}">
+  {{- with $b.naglowek }}
+  <h2>{{ . }}</h2>
+  {{- end }}
+  {{- with $b.zdjecie }}
+  <figure class="blok-zdjecie">
+    {{ partial "image.html" (dict "strona" $.strona "zdjecie" . "szerokosc" 800) }}
+    {{- with .podpis }}
+    <figcaption>{{ . }}</figcaption>
+    {{- end }}
+  </figure>
+  {{- end }}
+  {{ $.strona.RenderString (dict "display" "block") $b.tresc }}
+</section>

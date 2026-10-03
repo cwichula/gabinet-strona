@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="{{ site.Language.Locale | default "pl" }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {{- $nazwa := hugo.Data.gabinet.nazwa_krotka | default site.Title }}
+  <title>{{ if .IsHome }}{{ $nazwa }}{{ else if eq .Kind "404" }}Nie znaleziono strony | {{ $nazwa }}{{ else }}{{ .Title }} | {{ $nazwa }}{{ end }}</title>
+  <meta name="description" content="{{ .Description | default hugo.Data.ustawienia.seo_opis }}">
+  <link rel="canonical" href="{{ .Permalink }}">
+  {{- with resources.Get "css/v0.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}">
+  {{- end }}
+</head>
+<body>
+  <a class="pomin" href="#tresc">Przejdź do treści</a>
+  <header class="naglowek-strony">
+    <p class="logo"><a href="{{ site.Home.RelPermalink }}">{{ $nazwa }}</a></p>
+    {{ partial "nav.html" . }}
+  </header>
+  <main id="tresc" tabindex="-1">
+    {{- block "main" . }}{{ end }}
+  </main>
+  {{ partial "footer.html" . }}
+</body>
+</html>

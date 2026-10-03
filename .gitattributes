@@ -1,0 +1,7 @@
+# Konce linii LF wszedzie (tak zapisuje tez panel CMS); przypiety skrypt CMS bajt w bajt.
+* text=auto eol=lf
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.webp binary
+static/admin/sveltia-cms.js -text

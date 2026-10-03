@@ -1,0 +1,16 @@
+{{- /* Adres, telefony i e-mail z data/gabinet.yaml. */ -}}
+{{- $g := hugo.Data.gabinet -}}
+<dl class="dane-kontaktowe">
+  {{- with $g.adres }}
+  <dt>Adres</dt>
+  <dd>{{ .ulica }}<br>{{ .kod }} {{ .miasto }}</dd>
+  {{- end }}
+  {{- range $g.telefony }}
+  <dt>{{ .etykieta | default "Telefon" }}</dt>
+  <dd><a href="{{ printf "tel:%s" (partial "tel.html" .numer) | safeURL }}">{{ .numer }}</a></dd>
+  {{- end }}
+  {{- with $g.email }}
+  <dt>E-mail</dt>
+  <dd><a href="mailto:{{ . }}">{{ . }}</a></dd>
+  {{- end }}
+</dl>

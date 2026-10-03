@@ -1,0 +1,20 @@
+{{- /* Blok "karty": naglowek, wstep, elementy [{tytul, tresc, strona}]. */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := "" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+<section class="{{ partial "blok-klasy.html" $b }}">
+  {{- with $b.naglowek }}
+  <h2>{{ . }}</h2>
+  {{- end }}
+  {{- with $b.wstep }}{{ $.strona.RenderString (dict "display" "block") . }}{{ end }}
+  {{- with $b.elementy }}
+  <ul class="karty">
+    {{- range $i, $k := . }}
+    {{- $cel := partial "cel-linku.html" (dict "strona" $k.strona "gdzie" (printf "%s: karta „%s” (blok karty)" $gdzie $k.tytul)) }}
+    <li class="karta">
+      <h3>{{ with $cel.href }}<a href="{{ . }}">{{ $k.tytul }}</a>{{ else }}{{ $k.tytul }}{{ end }}</h3>
+      {{- with $k.tresc }}{{ $.strona.RenderString (dict "display" "block") . }}{{ end }}
+    </li>
+    {{- end }}
+  </ul>
+  {{- end }}
+</section>

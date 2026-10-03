@@ -1,0 +1,37 @@
+{{- /* Zdjecie z tekstem alternatywnym.
+       Wejscie: dict
+         "strona"     Page, do ktorej nalezy blok (zdjecia obok index.md),
+         "zdjecie"    dict "plik" + "alt" (alt wymagany),
+         "szerokosc"  maks. szerokosc w px (domyslnie 1600),
+         "ladowanie"  "lazy" (domyslnie) albo "eager" (zdjecie na gorze strony).
+       Plik szukany najpierw w paczce strony (np. "gabinet.webp"), potem w assets/
+       (wartosc z CMS "/images/x.webp" -> assets/images/x.webp). Wynik: WebP,
+       zmniejszony do "szerokosc", z atrybutami width/height. */ -}}
+{{- $strona := .strona -}}
+{{- $z := .zdjecie | default dict -}}
+{{- $plik := $z.plik | default "" -}}
+{{- $alt := $z.alt | default "" | strings.TrimSpace -}}
+{{- $gdzie := "" }}{{ with $strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $max := .szerokosc | default 1600 -}}
+{{- $ladowanie := .ladowanie | default "lazy" -}}
+{{- if not $plik -}}
+  {{- errorf "%s: zdjęcie bez pliku (pole „plik”)." $gdzie -}}
+{{- else if not $alt -}}
+  {{- errorf "%s: zdjęcie %q nie ma tekstu alternatywnego (pole „alt” jest wymagane)." $gdzie $plik -}}
+{{- else -}}
+  {{- $img := $strona.Resources.Get $plik -}}
+  {{- if not $img }}{{ $img = resources.Get (strings.TrimPrefix "/" $plik) }}{{ end -}}
+  {{- if not $img -}}
+    {{- errorf "%s: nie znaleziono zdjęcia %q (ani obok strony, ani w assets/)." $gdzie $plik -}}
+  {{- else if eq $img.MediaType.SubType "svg" -}}
+    <img src="{{ $img.RelPermalink }}" alt="{{ $alt }}" loading="{{ $ladowanie }}" decoding="async">
+  {{- else -}}
+    {{- $wynik := "" -}}
+    {{- if gt $img.Width $max -}}
+      {{- $wynik = $img.Resize (printf "%dx webp" $max) -}}
+    {{- else -}}
+      {{- $wynik = $img.Process "webp" -}}
+    {{- end -}}
+    <img src="{{ $wynik.RelPermalink }}" width="{{ $wynik.Width }}" height="{{ $wynik.Height }}" alt="{{ $alt }}" loading="{{ $ladowanie }}" decoding="async">
+  {{- end -}}
+{{- end -}}

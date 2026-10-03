@@ -1,0 +1,6 @@
+{{- /* Numer telefonu do odnosnika tel: - same cyfry, +48 dla numeru 9-cyfrowego.
+       "76 72-26-880" -> "+48767226880". Ta sama regula jest w
+       tools/importuj-z-gamstom.py. */ -}}
+{{- $cyfry := replaceRE `\D` "" (string .) -}}
+{{- if eq (len $cyfry) 9 }}{{ $cyfry = printf "+48%s" $cyfry }}{{ else }}{{ $cyfry = printf "+%s" $cyfry }}{{ end -}}
+{{- return $cyfry -}}

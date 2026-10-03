@@ -1,0 +1,17 @@
+{{- /* Godziny przyjec z data/gabinet.yaml. Pusty dzien = nieczynne.
+       Wejscie: dict "podpis" (opcjonalny podpis tabeli). */ -}}
+{{- with hugo.Data.gabinet.godziny }}
+<table class="godziny">
+  {{- with $.podpis }}
+  <caption>{{ . }}</caption>
+  {{- end }}
+  <tbody>
+    {{- range . }}
+    <tr>
+      <th scope="row">{{ .dzien }}</th>
+      <td>{{ if and .od .do }}{{ .od }}–{{ .do }}{{ else }}nieczynne{{ end }}</td>
+    </tr>
+    {{- end }}
+  </tbody>
+</table>
+{{- end }}

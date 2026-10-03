@@ -1,0 +1,136 @@
+# Budowanie, kontrola i publikacja strony na GitHub Pages (Hugo).
+#
+# Kazdy commit na main - takze zapis w panelu /admin/ (Sveltia CMS commituje
+# przez API GitHuba jako zalogowana osoba, co uruchamia "on: push") - przechodzi:
+#   1. kontrole kontraktu blokow (tools/sprawdz-kontrakt.py: pusty layouts/,
+#      partial dla kazdego typu bloku w kazdym szablonie, pola zgodne z kontraktem),
+#   2. budowanie Hugo (wersja przypieta ponizej) - BLAD albo OSTRZEZENIE
+#      (np. nieznany typ bloku, menu wskazujace nieistniejaca strone, zdjecie
+#      bez alt) przerywa przebieg,
+#   3. kontrole kompletnosci wyniku (strona glowna, panel /admin/).
+# Dopiero wtedy publikacja. Blad = w sieci zostaje poprzednia wersja, a w
+# repozytorium powstaje zgloszenie (job "powiadomienie").
+#
+# Wymaga w ustawieniach repozytorium: Settings -> Pages -> Source: GitHub Actions
+# (gh api -X POST repos/<wlasciciel>/<repo>/pages -f build_type=workflow).
+
+name: Strona (budowanie, kontrola, GitHub Pages)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# jedna publikacja naraz; kolejne commity czekaja (nie przerywamy trwajacej)
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  HUGO_VERSION: "0.167.0"
+  TZ: Europe/Warsaw
+  PYTHONUTF8: "1"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HUGO_ENVIRONMENT: production
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Kontrola kontraktu bloków
+        run: |
+          python -m pip install --quiet "PyYAML==6.0.3"
+          python tools/sprawdz-kontrakt.py
+
+      - name: Instalacja Hugo Extended ${{ env.HUGO_VERSION }}
+        run: |
+          plik="hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz"
+          adres="https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}"
+          cd "$RUNNER_TEMP"
+          curl -fsSLO "$adres/$plik"
+          curl -fsSLO "$adres/hugo_${HUGO_VERSION}_checksums.txt"
+          grep " $plik\$" "hugo_${HUGO_VERSION}_checksums.txt" | sha256sum -c -
+          mkdir -p hugo-bin
+          tar -xzf "$plik" -C hugo-bin
+          echo "$RUNNER_TEMP/hugo-bin" >> "$GITHUB_PATH"
+
+      - id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Budowanie strony (Hugo)
+        run: |
+          hugo version
+          # Ostrzezenia Hugo (warnf w szablonach, przestarzale opcje) traktujemy
+          # jak bledy - ale wypisujemy wszystkie, a nie tylko pierwszy
+          # (--panicOnWarning konczy na pierwszym, ze sladem stosu).
+          hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/" 2>&1 | tee hugo.log
+          if grep -q '^WARN' hugo.log; then
+            echo "::error::Hugo zgłosił ostrzeżenia (lista wyżej, wiersze WARN). Strona nie zostanie opublikowana."
+            exit 1
+          fi
+
+      - name: Kontrola wyniku
+        run: |
+          for plik in index.html 404.html sitemap.xml admin/index.html admin/config.yml admin/sveltia-cms.js; do
+            test -s "public/$plik" || { echo "::error::Brak public/$plik"; exit 1; }
+          done
+          echo "Plików w public/: $(find public -type f | wc -l)"
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        name: Publikacja na GitHub Pages
+        uses: actions/deploy-pages@v5
+
+  # Nieudany przebieg po zapisie w panelu nie trafia do niczyjej skrzynki
+  # (GitHub powiadamia tylko autora przebiegu, a ten moze nie czytac maili
+  # z Actions). Zgloszenie (issue) dostaje e-mailem kazdy obserwujacy repozytorium.
+  # Jedno otwarte zgloszenie naraz: kolejne bledy dopisuja sie jako komentarze.
+  powiadomienie:
+    needs: [build, deploy]
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Zgłoszenie o nieopublikowanej zmianie
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TYTUL: "Strona nie została opublikowana (błąd budowania lub kontroli)"
+          PRZEBIEG: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          COMMIT: ${{ github.sha }}
+          # tresc commita tylko przez zmienna srodowiskowa - nigdy wprost w skrypcie
+          WIADOMOSC: ${{ github.event.head_commit.message }}
+          AUTOR: ${{ github.event.head_commit.author.name }}
+        run: |
+          tresc="$(printf '%s\n\n%s\n\n%s' \
+            "Zmiana ${COMMIT:0:7} (${AUTOR:-uruchomienie ręczne}): ${WIADOMOSC:-}" \
+            "Log z opisem błędu (szukaj wierszy ERROR, WARN albo BŁĄD): $PRZEBIEG" \
+            "W sieci została poprzednia wersja strony. Po poprawce (w panelu /admin/ albo w kodzie) kolejny udany przebieg opublikuje stronę. Zamknij to zgłoszenie po naprawie.")"
+          nr="$(gh issue list --state open --limit 100 --json number,title --jq 'map(select(.title == env.TYTUL))[0].number // empty')"
+          if [ -n "$nr" ]; then
+            gh issue comment "$nr" --body "$tresc"
+          else
+            gh issue create --title "$TYTUL" --body "$tresc"
+          fi

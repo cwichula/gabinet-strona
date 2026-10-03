@@ -1,0 +1,67 @@
+# Konfiguracja Hugo (Hugo Extended, wersja przypieta w .github/workflows/pages.yml).
+#
+# Zmiana szablonu = zmiana jednej linii "theme". Tresc (content/, data/) jest
+# wspolna dla wszystkich szablonow - patrz docs/KONTRAKT-BLOKOW.md.
+# Katalog layouts/ w korzeniu repozytorium MUSI zostac pusty (nadpisalby
+# kazdy szablon) - pilnuje tego CI.
+
+baseURL: https://cwichula.github.io/gabinet-strona/
+title: Gabinet stomatologiczny Dorota Rożdżestwieńska
+theme: v0-test
+
+# Jezyk strony. "locale" zastapilo "languageCode" (Hugo 0.158+; stary klucz
+# daje ostrzezenie, a CI traktuje ostrzezenia jak bledy).
+locale: pl
+defaultContentLanguage: pl
+
+# Adresy bez polskich znakow, takze gdy ktos nazwie plik z ogonkami.
+removePathAccents: true
+
+# Tylko to, czego uzywamy: bez tagow/kategorii i bez RSS.
+disableKinds: [taxonomy, term, rss]
+enableRobotsTXT: true
+
+# content/strony/<slug>/index.md -> /<slug>/
+# :contentbasename dla paczki strony (leaf bundle) to nazwa jej katalogu,
+# czyli ten sam slug, ktory Sveltia CMS nadaje wpisowi (panel "Slug").
+# Jedno zrodlo prawdy: zmiana nazwy w CMS przenosi katalog, zmienia adres
+# i dopisuje stary adres do "aliases" (przekierowanie).
+permalinks:
+  page:
+    strony: /:contentbasename/
+
+markup:
+  goldmark:
+    renderer:
+      # Zadnego surowego HTML z tresci (pola Markdown z CMS).
+      unsafe: false
+
+imaging:
+  # Zdjecia z CMS przychodza juz jako WebP <= 2048 px; Hugo zmniejsza je
+  # do <= 1600 px i zapisuje jako WebP (partial image.html).
+  resampleFilter: lanczos
+  anchor: smart
+  webp:
+    quality: 80
+    hint: photo
+  jpeg:
+    quality: 80
+
+# Ograniczenia bezpieczenstwa: zadnych zewnetrznych programow ani pobierania
+# danych z sieci podczas budowania.
+security:
+  enableInlineShortcodes: false
+  exec:
+    allow: ['^git$']
+  funcs:
+    getenv: ['^HUGO_', '^CI$']
+  http:
+    methods: ['(?i)GET']
+    urls: ['none']
+
+sitemap:
+  changeFreq: monthly
+
+params:
+  # Wersja kontraktu blokow (docs/KONTRAKT-BLOKOW.md).
+  kontraktBlokow: 1

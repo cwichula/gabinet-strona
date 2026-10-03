@@ -1,0 +1,4 @@
+{{- /* Klasy CSS sekcji: "blok blok--<typ>" + "blok--<wariant>" (gdy inny niz domyslny). */ -}}
+{{- $klasy := slice "blok" (printf "blok--%s" .type) -}}
+{{- with .wariant }}{{ if ne . "domyslny" }}{{ $klasy = $klasy | append (printf "blok--%s" (. | urlize)) }}{{ end }}{{ end -}}
+{{- return (delimit $klasy " ") -}}

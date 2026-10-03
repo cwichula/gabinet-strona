@@ -1,0 +1,14 @@
+{{- /* Renderuje bloki z front matter "sekcje" (docs/KONTRAKT-BLOKOW.md).
+       Kazdy typ bloku = partial blocks/<typ>.html. Nieznany typ: ostrzezenie
+       (w CI ostrzezenie = blad budowania, wiec nic nie trafia do sieci). */ -}}
+{{- $strona := . -}}
+{{- $plik := "" }}{{ with .File }}{{ $plik = .Path }}{{ end -}}
+{{- range $nr, $blok := .Params.sekcje -}}
+  {{- $typ := $blok.type | default "" -}}
+  {{- $szablon := printf "blocks/%s.html" $typ -}}
+  {{- if and $typ (templates.Exists (printf "partials/%s" $szablon)) -}}
+    {{- partial $szablon (dict "blok" $blok "strona" $strona "nr" $nr) -}}
+  {{- else -}}
+    {{- warnf "%s: sekcja nr %d ma nieznany typ bloku %q i została pominięta. Dozwolone typy opisuje docs/KONTRAKT-BLOKOW.md." $plik (add $nr 1) $typ -}}
+  {{- end -}}
+{{- end -}}

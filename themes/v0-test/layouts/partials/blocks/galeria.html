@@ -1,0 +1,19 @@
+{{- /* Blok "galeria": naglowek, elementy [{plik, alt, podpis}]. */ -}}
+{{- $b := .blok -}}
+<section class="{{ partial "blok-klasy.html" $b }}">
+  {{- with $b.naglowek }}
+  <h2>{{ . }}</h2>
+  {{- end }}
+  <ul class="galeria">
+    {{- range $b.elementy }}
+    <li>
+      <figure>
+        {{ partial "image.html" (dict "strona" $.strona "zdjecie" . "szerokosc" 800) }}
+        {{- with .podpis }}
+        <figcaption>{{ . }}</figcaption>
+        {{- end }}
+      </figure>
+    </li>
+    {{- end }}
+  </ul>
+</section>

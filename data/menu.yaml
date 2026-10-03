@@ -1,0 +1,35 @@
+# Menu strony - edytowane w panelu /admin/ (kolekcja "Menu").
+# "strona" to slug podstrony z content/strony/<slug>/index.md.
+# Pozycja wskazujaca nieistniejaca strone = blad budowania (strona w sieci sie
+# nie zmienia, w repozytorium powstaje zgloszenie). Strona ukryta (draft)
+# znika z menu sama.
+pozycje:
+  - etykieta: "Usługi"
+    strona: "uslugi"
+    link_zewnetrzny: ""
+    podmenu:
+      - etykieta: "Higienizacja"
+        strona: "higienizacja"
+        link_zewnetrzny: ""
+      - etykieta: "Leczenie próchnicy"
+        strona: "stomatologia-zachowawcza"
+        link_zewnetrzny: ""
+      - etykieta: "Licówki"
+        strona: "licowki"
+        link_zewnetrzny: ""
+  - etykieta: "Cennik"
+    strona: "cennik"
+    link_zewnetrzny: ""
+    podmenu: []
+  - etykieta: "Pierwsza wizyta"
+    strona: "pierwsza-wizyta"
+    link_zewnetrzny: ""
+    podmenu: []
+  - etykieta: "O mnie"
+    strona: "o-mnie"
+    link_zewnetrzny: ""
+    podmenu: []
+  - etykieta: "Kontakt"
+    strona: "kontakt"
+    link_zewnetrzny: ""
+    podmenu: []

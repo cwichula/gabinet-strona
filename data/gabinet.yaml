@@ -1,0 +1,52 @@
+# Plik edytowany w panelu /admin/ (Sveltia CMS). Pierwotnie wygenerowany przez
+# tools/importuj-z-gamstom.py z repozytorium gamstom - komentarze w tym pliku
+# znikna przy pierwszym zapisie z CMS.
+nazwa: "Prywatny Gabinet Stomatologiczny lek. stom. Dorota Rożdżestwieńska"
+nazwa_krotka: "Gabinet stomatologiczny Dorota Rożdżestwieńska"
+lekarz: "lek. stom. Dorota Rożdżestwieńska"
+adres:
+  ulica: "ul. Złotoryjska 16/18 m. 10"
+  kod: "59-220"
+  miasto: "Legnica"
+  dojazd: "Wejście od ul. Złotoryjskiej, od strony Optyka i Katedry. Parking w Galerii Gwarnej tuż obok."
+telefony:
+  - etykieta: "Rejestracja (telefon stacjonarny)"
+    numer: "76 72-26-880"
+  - etykieta: "Telefon komórkowy"
+    numer: "699 904 989"
+email: "gabstom13@wp.pl"
+godziny:
+  - dzien: "Poniedziałek"
+    od: "9:00"
+    do: "19:00"
+  - dzien: "Wtorek"
+    od: "9:00"
+    do: "19:00"
+  - dzien: "Środa"
+    od: "9:00"
+    do: "19:00"
+  - dzien: "Czwartek"
+    od: "9:00"
+    do: "19:00"
+  - dzien: "Piątek"
+    od: ""
+    do: ""
+  - dzien: "Sobota"
+    od: ""
+    do: ""
+  - dzien: "Niedziela"
+    od: ""
+    do: ""
+rezerwacja:
+  wlaczona: true
+  url: "https://booksy.com/pl-pl/s/stomatolog#ba_s=seo"
+  etykieta: "Umów wizytę online"
+rejestrowe:
+  nip: "DO_UZUPEŁNIENIA"
+  regon: "DO_UZUPEŁNIENIA"
+  pwz: "DO_UZUPEŁNIENIA"
+  rpwdl: "DO_UZUPEŁNIENIA"
+platnosci:
+  - "gotówka"
+  - "karta płatnicza"
+  - "BLIK"

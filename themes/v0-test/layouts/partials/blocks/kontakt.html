@@ -1,0 +1,7 @@
+{{- /* Blok "kontakt": naglowek, tresc; adres, telefony, e-mail z data/gabinet.yaml. */ -}}
+{{- $b := .blok -}}
+<section class="{{ partial "blok-klasy.html" $b }}">
+  <h2>{{ $b.naglowek | default "Kontakt" }}</h2>
+  {{- with $b.tresc }}{{ $.strona.RenderString (dict "display" "block") . }}{{ end }}
+  {{ partial "dane-kontaktowe.html" }}
+</section>

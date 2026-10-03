@@ -1,0 +1,16 @@
+{{- /* Blok "mapa": naglowek, tresc; adres z data/gabinet.yaml.
+       Bez osadzonej mapy i bez skryptow: odnosnik do wyszukiwania w Google Maps. */ -}}
+{{- $b := .blok -}}
+{{- $a := hugo.Data.gabinet.adres -}}
+{{- /* numer lokalu ("m. 10") myli wyszukiwarke map - pomijamy go w zapytaniu */ -}}
+{{- $budynek := replaceRE `\s+m\.\s*\d+\s*$` "" $a.ulica -}}
+{{- $zapytanie := printf "%s, %s %s" $budynek $a.kod $a.miasto -}}
+<section class="{{ partial "blok-klasy.html" $b }}">
+  <h2>{{ $b.naglowek | default "Jak do nas trafić" }}</h2>
+  <p class="adres">{{ $a.ulica }}, {{ $a.kod }} {{ $a.miasto }}</p>
+  {{- with $a.dojazd }}
+  <p>{{ . }}</p>
+  {{- end }}
+  {{- with $b.tresc }}{{ $.strona.RenderString (dict "display" "block") . }}{{ end }}
+  <p><a href="https://www.google.com/maps/search/?api=1&amp;query={{ $zapytanie | urlquery }}" rel="noopener external">Otwórz mapę w Google Maps</a> <small>(serwis zewnętrzny)</small></p>
+</section>
