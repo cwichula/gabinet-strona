@@ -426,10 +426,10 @@ Pojedynczy przycisk, zwykle dołączony do sekcji powyżej (`polacz: true`), np.
 
 | Plik | Zawartość |
 |---|---|
-| `menu.yaml` | `pozycje[]`: `etykieta`, `strona` (slug), `link_zewnetrzny`, `podmenu[]` (te same pola, bez dalszego zagnieżdżania). Pozycja bez strony, linku i podmenu = błąd budowania. Hierarchia stron (okruszki) jest tylko tutaj: strona pozycji z podmenu jest „rodzicem” stron z podmenu. |
+| `menu.yaml` | `pozycje[]`: `etykieta`, `strona` (slug), `link_zewnetrzny`, `podmenu[]` (te same pola, bez dalszego zagnieżdżania). Pozycja bez strony, linku i podmenu = błąd budowania. Hierarchia stron (okruszki) jest tylko tutaj: strona pozycji z podmenu jest „rodzicem” stron z podmenu. Listy płaskie (`etykieta`, `strona`, `link_zewnetrzny`, bez podmenu): `dodatkowe` (mniej ważne strony dopisywane za menu głównym tam, gdzie motyw ma miejsce), `stopka` (strony w stopce; pusta = pozycje menu bez podmenu), `stopka_dolna` (odnośniki w ostatniej linii stopki; pusta = polityka prywatności). Odnośnik „Start” do strony głównej dodaje szablon. |
 | `cennik.yaml` | `informacja`, `kategorie[]`: `id`, `nazwa`; `pozycje[]`: `id` (wymagany, niepowtarzalny), `kategoria` (id kategorii), `nazwa`, `cena_od`, `cena_do` (opcjonalnie), `uwagi` (opcjonalnie). Kolejność pozycji = kolejność w tabeli w obrębie kategorii. |
 | `gabinet.yaml` | `nazwa`, `nazwa_krotka`, `lekarz`, `rok_zalozenia`, `adres` {`ulica`, `kod`, `miasto`, `dojazd`}, `telefony[]` {`etykieta`, `numer`}, `email`, `godziny[]` {`dzien`, `od`, `do`}, `rezerwacja` {`wlaczona`, `url`, `etykieta`, `dostawca`, `potwierdzona`, `nota`}, `rejestrowe` {`nip`, `regon`, `pwz`, `rpwdl`}, `platnosci[]`. |
-| `ustawienia.yaml` | `seo_opis` (domyślny opis SEO), `stopka_tekst`, `logo_nazwa` i `logo_podpis` (napisy przy logo; puste = nazwa krótka, lekarz i miasto), `pasek_informacyjny` (krótki komunikat nad stroną; pusty = brak paska). |
+| `ustawienia.yaml` | `seo_opis` (domyślny opis SEO), `stopka_tekst`, `logo_nazwa` i `logo_podpis` (napisy przy logo; puste = nazwa krótka, lekarz i miasto), `pasek_informacyjny` (krótki komunikat nad stroną; pusty = brak paska), `strona_404` {`tytul`, `opis`, `nadtytul`, `naglowek`, `tresc`, `przycisk`, `notka`, `linki_naglowek`, `linki_wstep`, `opis_glownej`, `linki[]` {`strona`, `opis`}, `ramka_telefon`, `ramka_adres`} (napisy strony 404; puste pole = napis domyślny szablonu, pusta lista `linki` = pozycje menu, telefony i adres z `gabinet.yaml`). |
 
 Odnośnik `tel:` szablon wylicza z `numer`: same cyfry, `+48` dla numeru 9-cyfrowego.
 

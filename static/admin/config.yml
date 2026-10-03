@@ -883,6 +883,42 @@ collections:
                   - *etykieta
                   - *strona_menu
                   - *link_zewnetrzny
+          - name: dodatkowe
+            label: Pozycje dodatkowe (menu na telefonie)
+            label_singular: link
+            widget: list
+            required: false
+            collapsed: true
+            summary: '{{etykieta}}'
+            hint: >-
+              Mniej ważne strony dopisywane za menu głównym tam, gdzie jest miejsce
+              (w obecnym wyglądzie: w menu otwieranym na telefonie).
+            fields: &pola_linku
+              - *etykieta
+              - *strona_menu
+              - *link_zewnetrzny
+          - name: stopka
+            label: Strony w stopce
+            label_singular: link
+            widget: list
+            required: false
+            collapsed: true
+            summary: '{{etykieta}}'
+            hint: >-
+              Lista stron w stopce (obok listy usług). Pusta = pozycje menu głównego
+              bez podmenu.
+            fields: *pola_linku
+          - name: stopka_dolna
+            label: Odnośniki na dole stopki
+            label_singular: link
+            widget: list
+            required: false
+            collapsed: true
+            summary: '{{etykieta}}'
+            hint: >-
+              Odnośniki w ostatniej linii stopki, np. polityka prywatności.
+              Pusta = sama polityka prywatności (gdy taka strona jest).
+            fields: *pola_linku
 
   # ---------------------------------------------------------------- Cennik
   # Pozycje sa jedna plaska lista (pole "kategoria" wskazuje grupe), a nie lista
@@ -1056,3 +1092,41 @@ collections:
             widget: string
             required: false
             hint: Krótki komunikat na górze każdej strony (np. o urlopie). Puste = brak paska.
+          - name: strona_404
+            label: Strona „Nie znaleziono” (błąd 404)
+            widget: object
+            collapsed: true
+            required: false
+            hint: >-
+              Napisy na stronie pokazywanej pod adresem, którego nie ma (np. stary link).
+              Puste pole = napis domyślny szablonu. Telefony i adres szablon dopisuje
+              sam z „Danych gabinetu”.
+            fields:
+              - { name: tytul, label: Tytuł w karcie przeglądarki, widget: string, required: false, hint: 'Szablon dopisuje nazwę gabinetu.' }
+              - { name: opis, label: Opis dla wyszukiwarek, widget: text, required: false, maxlength: 170 }
+              - { name: nadtytul, label: Mały napis nad nagłówkiem, widget: string, required: false }
+              - { name: naglowek, label: Nagłówek, widget: string, required: false }
+              - { name: tresc, label: Tekst pod nagłówkiem, widget: text, required: false }
+              - { name: przycisk, label: Napis na przycisku do strony głównej, widget: string, required: false, hint: 'Obok szablon pokazuje przycisk z numerem telefonu.' }
+              - { name: notka, label: Drobny tekst pod przyciskami, widget: text, required: false }
+              - { name: linki_naglowek, label: Nagłówek listy odnośników, widget: string, required: false }
+              - { name: linki_wstep, label: Wstęp do listy odnośników, widget: text, required: false }
+              - { name: opis_glownej, label: Opis odnośnika „Strona główna”, widget: string, required: false, hint: 'Strona główna jest zawsze pierwsza na liście.' }
+              - name: linki
+                label: Odnośniki do stron
+                label_singular: Odnośnik
+                widget: list
+                required: false
+                summary: '{{strona}}'
+                hint: Pusta lista = pozycje menu. Strona ukryta albo usunięta jest pomijana.
+                fields:
+                  - name: strona
+                    label: Strona
+                    widget: relation
+                    collection: strony
+                    value_field: '{{slug}}'
+                    display_fields: [title]
+                    search_fields: [title]
+                  - { name: opis, label: Krótki opis, widget: string, required: false, hint: 'Puste = skrót usługi ze strony (jeśli jest).' }
+              - { name: ramka_telefon, label: Ramka — tekst przed numerami telefonów, widget: text, required: false }
+              - { name: ramka_adres, label: Ramka — tekst przed adresem gabinetu, widget: text, required: false }

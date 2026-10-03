@@ -1,0 +1,21 @@
+{{- /* Plaska lista odnosnikow z data/menu.yaml ("dodatkowe", "stopka",
+       "stopka_dolna"). Wejscie: nazwa listy (string). Wynik: lista dict
+       "etykieta", "href", "strona" (Page albo false), "zewnetrzny" (bool),
+       "dzieci" (pusta) - tak samo jak pozycje z menu-model.html.
+       Strony ukryte (draft) sa pomijane; strona, ktorej nie ma, to blad
+       budowania (partial cel-linku.html). */ -}}
+{{- $nazwa := . -}}
+{{- $opisy := dict "dodatkowe" "pozycje dodatkowe" "stopka" "stopka" "stopka_dolna" "dolna linia stopki" -}}
+{{- $wynik := slice -}}
+{{- range $i, $poz := index (hugo.Data.menu | default dict) $nazwa -}}
+  {{- $gdzie := printf "Menu (data/menu.yaml, %s): pozycja „%s”" (index $opisy $nazwa | default $nazwa) ($poz.etykieta | default (printf "nr %d" (add $i 1))) -}}
+  {{- $cel := partial "cel-linku.html" (dict "strona" $poz.strona "link_zewnetrzny" $poz.link_zewnetrzny "gdzie" $gdzie) -}}
+  {{- if $cel.href -}}
+    {{- $etykieta := $poz.etykieta -}}
+    {{- if and (not $etykieta) $cel.strona }}{{ $etykieta = $cel.strona.LinkTitle }}{{ end -}}
+    {{- $wynik = $wynik | append (dict "etykieta" ($etykieta | default $cel.href) "href" $cel.href "strona" $cel.strona "zewnetrzny" (not $cel.strona) "dzieci" slice) -}}
+  {{- else if not $cel.ukryta -}}
+    {{- errorf "%s nie ma ani strony, ani linku zewnętrznego. Uzupełnij albo usuń ją w panelu /admin/ (Menu)." $gdzie -}}
+  {{- end -}}
+{{- end -}}
+{{- return $wynik -}}

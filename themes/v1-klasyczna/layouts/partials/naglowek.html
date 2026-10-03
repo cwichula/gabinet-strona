@@ -115,6 +115,10 @@
         <li class="sub"><a href="{{ .href }}"{{ if and .strona ($biezaca.Eq .strona) }} aria-current="page"{{ end }}{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}</a></li>
         {{- end }}
         {{- end }}
+        {{- /* pozycje dodatkowe (data/menu.yaml "dodatkowe") - tylko w szufladzie, jak w v1 */}}
+        {{- range partialCached "menu-lista.html" "dodatkowe" "dodatkowe" }}
+        <li><a href="{{ .href }}"{{ if and .strona ($biezaca.Eq .strona) }} aria-current="page"{{ end }}{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}</a></li>
+        {{- end }}
       </ul>
     </nav>
     {{- with $m.telefon }}

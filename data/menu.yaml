@@ -2,34 +2,93 @@
 # "strona" to slug podstrony z content/strony/<slug>/index.md.
 # Pozycja wskazujaca nieistniejaca strone = blad budowania (strona w sieci sie
 # nie zmienia, w repozytorium powstaje zgloszenie). Strona ukryta (draft)
-# znika z menu sama.
+# znika z menu sama. Odnosnik do strony glownej ("Start") dodaje szablon.
+#   pozycje       - menu glowne (dwa poziomy: pozycje i podmenu)
+#   dodatkowe     - pozycje dopisywane za menu glownym tam, gdzie jest miejsce
+#                   (w v1-klasyczna: menu na telefonie)
+#   stopka        - lista stron w stopce (pusta = pozycje menu bez podmenu)
+#   stopka_dolna  - odnosniki w dolnej linii stopki (pusta = polityka prywatnosci)
 pozycje:
   - etykieta: "Usługi"
     strona: "uslugi"
     link_zewnetrzny: ""
     podmenu:
+      - etykieta: "Bruksizm i szyna Michigan"
+        strona: "bruksizm-szyna-michigan"
+        link_zewnetrzny: ""
+      - etykieta: "Stawy skroniowo-żuchwowe"
+        strona: "stawy-skroniowo-zuchwowe"
+        link_zewnetrzny: ""
+      - etykieta: "Protezy zębowe"
+        strona: "protezy-zebowe"
+        link_zewnetrzny: ""
+      - etykieta: "Korony i mosty"
+        strona: "korony-i-mosty"
+        link_zewnetrzny: ""
+      - etykieta: "Licówki kompozytowe"
+        strona: "licowki"
+        link_zewnetrzny: ""
       - etykieta: "Higienizacja"
         strona: "higienizacja"
         link_zewnetrzny: ""
       - etykieta: "Leczenie próchnicy"
         strona: "stomatologia-zachowawcza"
         link_zewnetrzny: ""
-      - etykieta: "Licówki"
-        strona: "licowki"
+      - etykieta: "RTG i pantomogram"
+        strona: "rtg-pantomogram"
+        link_zewnetrzny: ""
+      - etykieta: "Dentysta dla dzieci"
+        strona: "dentysta-dla-dzieci"
         link_zewnetrzny: ""
   - etykieta: "Cennik"
     strona: "cennik"
     link_zewnetrzny: ""
     podmenu: []
-  - etykieta: "Pierwsza wizyta"
-    strona: "pierwsza-wizyta"
+  - etykieta: "O gabinecie"
+    strona: "o-mnie"
     link_zewnetrzny: ""
     podmenu: []
-  - etykieta: "O mnie"
-    strona: "o-mnie"
+  - etykieta: "Galeria"
+    strona: "galeria"
     link_zewnetrzny: ""
     podmenu: []
   - etykieta: "Kontakt"
     strona: "kontakt"
     link_zewnetrzny: ""
     podmenu: []
+dodatkowe:
+  - etykieta: "Pierwsza wizyta"
+    strona: "pierwsza-wizyta"
+    link_zewnetrzny: ""
+  - etykieta: "Wyposażenie gabinetu"
+    strona: "wyposazenie"
+    link_zewnetrzny: ""
+  - etykieta: "Opinie pacjentów"
+    strona: "opinie"
+    link_zewnetrzny: ""
+stopka:
+  - etykieta: "Pierwsza wizyta"
+    strona: "pierwsza-wizyta"
+    link_zewnetrzny: ""
+  - etykieta: "Wyposażenie gabinetu"
+    strona: "wyposazenie"
+    link_zewnetrzny: ""
+  - etykieta: "Opinie pacjentów"
+    strona: "opinie"
+    link_zewnetrzny: ""
+  - etykieta: "Cennik"
+    strona: "cennik"
+    link_zewnetrzny: ""
+  - etykieta: "O gabinecie"
+    strona: "o-mnie"
+    link_zewnetrzny: ""
+  - etykieta: "Kontakt i dojazd"
+    strona: "kontakt"
+    link_zewnetrzny: ""
+stopka_dolna:
+  - etykieta: "Polityka prywatności i cookies"
+    strona: "polityka-prywatnosci"
+    link_zewnetrzny: ""
+  - etykieta: "Mapa serwisu"
+    strona: "uslugi"
+    link_zewnetrzny: ""

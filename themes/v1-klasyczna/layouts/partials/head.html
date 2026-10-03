@@ -4,12 +4,13 @@
        zasobow z obcych serwerow. Wejscie: Page. */ -}}
 {{- $g := hugo.Data.gabinet -}}
 {{- $u := hugo.Data.ustawienia | default dict -}}
+{{- $s404 := $u.strona_404 | default dict -}}
 {{- $nazwa := $g.nazwa_krotka | default site.Title -}}
 {{- $tytul := "" -}}
 {{- if .IsHome }}{{ $tytul = printf "%s — %s" .Title $nazwa }}
-{{- else if eq .Kind "404" }}{{ $tytul = printf "Nie znaleziono strony | %s" $nazwa }}
+{{- else if eq .Kind "404" }}{{ $tytul = printf "%s | %s" ($s404.tytul | default "Nie znaleziono strony") $nazwa }}
 {{- else }}{{ $tytul = printf "%s | %s" .Title $nazwa }}{{ end -}}
-{{- $opis := .Description | default $u.seo_opis | default "" -}}
+{{- $opis := .Description | default (cond (eq .Kind "404") ($s404.opis | default "") "") | default $u.seo_opis | default "" -}}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
@@ -32,7 +33,7 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pl_PL">
 <meta property="og:site_name" content="{{ $nazwa }}">
-<meta property="og:title" content="{{ cond .IsHome $tytul .Title }}">
+<meta property="og:title" content="{{ cond (or .IsHome (eq .Kind "404")) $tytul .Title }}">
 <meta property="og:description" content="{{ $opis }}">
 {{- if ne .Kind "404" }}
 <meta property="og:url" content="{{ .Permalink }}">

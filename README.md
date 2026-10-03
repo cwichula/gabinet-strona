@@ -26,7 +26,7 @@ hugo.yaml                        konfiguracja (baseURL, theme, adresy /<slug>/)
 content/_index.md                strona główna (bloki w front matter: sekcje)
 content/strony/_index.md         kontener podstron (sam nie ma strony w sieci)
 content/strony/<slug>/index.md   podstrona + jej zdjęcia obok (page bundle)
-data/menu.yaml                   menu (dwa poziomy)
+data/menu.yaml                   menu (dwa poziomy) i listy odnośników stopki
 data/cennik.yaml                 cennik: kategorie + pozycje (pozycja wskazuje kategorię)
 data/gabinet.yaml                dane gabinetu, godziny, rezerwacja, dane rejestrowe
 data/ustawienia.yaml             domyślny opis SEO, tekst stopki
@@ -112,7 +112,7 @@ panelu). Sveltia nie ma opcji `locale` w konfiguracji; tłumaczenie pobiera z un
 |---|---|---|
 | Strony | `content/strony/<slug>/index.md` | dodawanie, usuwanie, ukrywanie (szkic), kolejność (przeciąganie), bloki treści, zdjęcia |
 | Strona główna | `content/_index.md` | bloki treści strony głównej |
-| Menu | `data/menu.yaml` | pozycje, podmenu, kolejność; strona wybierana z listy |
+| Menu | `data/menu.yaml` | pozycje, podmenu, kolejność; pozycje dodatkowe (menu na telefonie), strony w stopce, odnośniki na dole stopki; strona wybierana z listy |
 | Cennik | `data/cennik.yaml` | kategorie i pozycje (każda z identyfikatorem i kategorią); zmiana ceny widoczna wszędzie, gdzie strona wskazuje tę pozycję (cennik, karty, tabela, karta usługi) |
 | Dane gabinetu | `data/gabinet.yaml` | adres, telefony, e-mail, godziny, rezerwacja online, dane rejestrowe |
 | Ustawienia | `data/ustawienia.yaml` | domyślny opis SEO, tekst stopki, napisy przy logo, pasek informacyjny nad stroną |

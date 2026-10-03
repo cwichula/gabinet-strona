@@ -21,6 +21,7 @@
     {{- errorf "%s nie ma ani strony, ani linku zewnętrznego, ani podmenu. Uzupełnij albo usuń ją w panelu /admin/ (Menu)." $gdzie -}}
   {{- end -}}
 {{- end -}}
+{{- $pozycje = $pozycje | append (partialCached "menu-lista.html" "dodatkowe" "dodatkowe") -}}
 {{- with $pozycje }}
 <nav class="menu" aria-label="Menu główne">
   <ul>

@@ -10,6 +10,17 @@
       {{ partial "godziny-tabela.html" (dict "podpis" "") }}
     </section>
   </div>
+  {{- range $lista := slice "stopka" "stopka_dolna" }}
+  {{- with partialCached "menu-lista.html" $lista $lista }}
+  <nav aria-label="{{ if eq $lista "stopka" }}Strony{{ else }}Informacje{{ end }}">
+    <ul>
+      {{- range . }}
+      <li><a href="{{ .href }}">{{ .etykieta }}</a></li>
+      {{- end }}
+    </ul>
+  </nav>
+  {{- end }}
+  {{- end }}
   {{- with $g.platnosci }}
   <p>Płatność: {{ delimit . ", " }}.</p>
   {{- end }}

@@ -6,10 +6,21 @@
 {{- $u := hugo.Data.ustawienia | default dict -}}
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
 {{- $menu := partialCached "menu-model.html" site "menu" -}}
+{{- /* napis uslugi: etykieta z podmenu, gdy strona tam jest (np. "Licówki kompozytowe"), inaczej tytul strony */ -}}
 {{- $uslugi := slice -}}
-{{- range partial "uslugi-strony.html" (dict) }}{{ $uslugi = $uslugi | append (dict "etykieta" .LinkTitle "href" .RelPermalink "zewnetrzny" false) }}{{ end -}}
+{{- range $p := partial "uslugi-strony.html" (dict) -}}
+  {{- $etykieta := $p.LinkTitle -}}
+  {{- $znaleziona := false -}}
+  {{- range $menu }}{{ range .dzieci }}{{ if and .strona (not $znaleziona) ($p.Eq .strona) }}{{ $etykieta = .etykieta }}{{ $znaleziona = true }}{{ end }}{{ end }}{{ end -}}
+  {{- $uslugi = $uslugi | append (dict "etykieta" $etykieta "href" $p.RelPermalink "zewnetrzny" false) -}}
+{{- end -}}
 {{- if not $uslugi }}{{ range $menu }}{{ if and .dzieci (not $uslugi) }}{{ $uslugi = .dzieci }}{{ end }}{{ end }}{{ end -}}
-{{- $strony := slice }}{{ range $menu }}{{ if and .href (not .dzieci) }}{{ $strony = $strony | append . }}{{ end }}{{ end -}}
+{{- /* kolumna "Gabinet": lista "stopka" z data/menu.yaml, pusta = pozycje menu bez podmenu */ -}}
+{{- $strony := partialCached "menu-lista.html" "stopka" "stopka" -}}
+{{- if not $strony }}{{ range $menu }}{{ if and .href (not .dzieci) }}{{ $strony = $strony | append . }}{{ end }}{{ end }}{{ end -}}
+{{- /* dolna linia: lista "stopka_dolna", pusta = polityka prywatnosci (gdy jest) */ -}}
+{{- $dolna := partialCached "menu-lista.html" "stopka_dolna" "stopka_dolna" -}}
+{{- if not $dolna }}{{ with site.GetPage "/strony/polityka-prywatnosci" }}{{ $dolna = slice (dict "etykieta" .LinkTitle "href" .RelPermalink "zewnetrzny" false) }}{{ end }}{{ end -}}
 <footer class="site-footer">
   <div class="container">
     <div class="footer__grid">
@@ -93,9 +104,11 @@
 
     <div class="footer__legal">
       <span>&copy; {{ with $g.rok_zalozenia }}{{ if lt (int .) now.Year }}{{ . }}&ndash;{{ end }}{{ end }}<span data-rok>{{ now.Year }}</span> {{ $g.nazwa | default site.Title }}</span>
-      {{- with site.GetPage "/strony/polityka-prywatnosci" }}
+      {{- with $dolna }}
       <span class="cluster" style="gap:1rem">
-        <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+        {{- range . }}
+        <a href="{{ .href }}"{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}</a>
+        {{- end }}
       </span>
       {{- end }}
     </div>

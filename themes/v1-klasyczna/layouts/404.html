@@ -1,47 +1,87 @@
+{{- /* Strona 404 jak v1/_src/strony/404.html. Napisy z data/ustawienia.yaml
+       (strona_404, panel: Ustawienia), puste pole = napis domyslny ponizej.
+       Telefony i adres z data/gabinet.yaml. Odnosniki: strona glowna + lista
+       strona_404.linki (pusta = pozycje menu); strona ukryta albo usunieta jest
+       pomijana bez bledu - 404 nie moze przerwac budowania. */ -}}
 {{ define "main" }}
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
-{{- $menu := partialCached "menu-model.html" site "menu" -}}
+{{- $g := hugo.Data.gabinet -}}
+{{- $s := (hugo.Data.ustawienia | default dict).strona_404 | default dict -}}
+{{- $linki := slice -}}
+{{- range $el := $s.linki -}}
+  {{- with $el.strona }}{{ with site.GetPage (printf "/strony/%s" .) -}}
+    {{- if not .Draft -}}
+      {{- $u := .Params.usluga | default dict -}}
+      {{- $linki = $linki | append (dict "href" .RelPermalink "tytul" .LinkTitle "opis" ($el.opis | default $u.skrot | default "")) -}}
+    {{- end -}}
+  {{- end }}{{ end -}}
+{{- end -}}
 <section class="section">
   <div class="container container--narrow" style="text-align:center">
     <p class="eyebrow">
       <svg class="ico" aria-hidden="true" style="width:1em;height:1em"><use href="#ico-info"></use></svg>
-      Błąd 404
+      {{ $s.nadtytul | default "Błąd 404" }}
     </p>
 
-    <h1>Tej strony nie ma pod tym adresem</h1>
+    <h1>{{ $s.naglowek | default "Tej strony nie ma pod tym adresem" }}</h1>
 
     <p class="lede" style="margin-left:auto;margin-right:auto;max-width:48ch">
-      Nic się nie stało. Strona, której szukasz, zmieniła adres albo już jej nie ma. Gabinet działa normalnie — poniżej znajdziesz drogę do pozostałych stron.
+      {{ $s.tresc | default "Strona, której szukasz, zmieniła adres albo już jej nie ma." }}
     </p>
 
     <div class="cluster" style="justify-content:center;margin-top:2rem">
       {{ partial "telefon-btn.html" (dict "klasa" "btn btn--primary btn--lg") }}
       <a class="btn btn--ghost btn--lg" href="{{ site.Home.RelPermalink }}">
-        Wróć na stronę główną
+        {{ $s.przycisk | default "Wróć na stronę główną" }}
       </a>
     </div>
+    {{- with $s.notka }}
+
+    <p style="margin-top:2rem;color:var(--muted);font-size:var(--step--1)">
+      {{ . }}
+    </p>
+    {{- end }}
   </div>
 </section>
 
 <section class="section section--surface">
   <div class="container container--narrow">
-    <h2 style="margin-top:0">Dokąd dalej</h2>
+    <h2 style="margin-top:0">{{ $s.linki_naglowek | default "Dokąd dalej" }}</h2>
+    {{- with $s.linki_wstep }}
+    <p>
+      {{ . }}
+    </p>
+    {{- end }}
+
     <div class="related">
-      <a href="{{ site.Home.RelPermalink }}">Strona główna</a>
-      {{- range $menu }}
+      <a href="{{ site.Home.RelPermalink }}">Strona główna{{ with $s.opis_glownej }}<span>{{ . }}</span>{{ end }}</a>
+      {{- if $s.linki }}
+      {{- range $linki }}
+      <a href="{{ .href }}">{{ .tytul }}{{ with .opis }}<span>{{ . }}</span>{{ end }}</a>
+      {{- end }}
+      {{- else }}
+      {{- range partialCached "menu-model.html" site "menu" }}
       {{- if .href }}
       <a href="{{ .href }}"{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}{{ with .strona }}{{ with .Params.usluga }}{{ with .skrot }}<span>{{ . }}</span>{{ end }}{{ end }}{{ end }}</a>
       {{- end }}
       {{- end }}
+      {{- end }}
     </div>
 
-    {{- with $m.telefon }}
+    {{- with $m.telefony }}
+    {{- $ost := sub (len .) 1 }}
     <div class="callout" style="margin-top:2.5rem">
       <svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg>
       <div>
         <p>
-          Jeśli nie możesz czegoś znaleźć albo chcesz umówić wizytę, najszybciej pomoże telefon do rejestracji: <a href="{{ printf "tel:%s" .tel | safeURL }}"><strong>{{ .numer }}</strong></a>.
+          {{ $s.ramka_telefon | default "Jeśli nie możesz czegoś znaleźć albo chcesz umówić wizytę, zadzwoń do rejestracji:" }}
+          {{ range $i, $t := . }}{{ if $i }}{{ if eq $i $ost }} lub {{ else }}, {{ end }}{{ end }}<a href="{{ printf "tel:%s" $t.tel | safeURL }}">{{ if eq $i 0 }}<strong>{{ $t.numer }}</strong>{{ else }}{{ $t.numer }}{{ end }}</a>{{ end }}.
         </p>
+        {{- with $g.adres }}{{ if .ulica }}
+        <p>
+          {{ $s.ramka_adres | default "Adres gabinetu:" }} {{ .ulica }}, {{ with .kod }}{{ . }} {{ end }}{{ .miasto }}.
+        </p>
+        {{- end }}{{ end }}
       </div>
     </div>
     {{- end }}
