@@ -7,7 +7,9 @@
 {{- $s404 := $u.strona_404 | default dict -}}
 {{- $nazwa := $g.nazwa_krotka | default site.Title -}}
 {{- $tytul := "" -}}
-{{- if .IsHome }}{{ $tytul = printf "%s — %s" .Title $nazwa }}
+{{- /* tytul do wyszukiwarki (pole strony seo_tytul) - wtedy bez dopisku */ -}}
+{{- if .Params.seo_tytul }}{{ $tytul = .Params.seo_tytul }}
+{{- else if .IsHome }}{{ $tytul = printf "%s — %s" .Title $nazwa }}
 {{- else if eq .Kind "404" }}{{ $tytul = printf "%s | %s" ($s404.tytul | default "Nie znaleziono strony") $nazwa }}
 {{- else }}{{ $tytul = printf "%s | %s" .Title $nazwa }}{{ end -}}
 {{- $opis := .Description | default (cond (eq .Kind "404") ($s404.opis | default "") "") | default $u.seo_opis | default "" -}}
@@ -18,7 +20,11 @@
 <meta name="description" content="{{ $opis }}">
 {{- if ne .Kind "404" }}
 <link rel="canonical" href="{{ .Permalink }}">
-{{- else }}
+{{- end }}
+{{- /* ustawienia: "ukryj przed wyszukiwarkami" (np. przed uzupelnieniem danych) */}}
+{{- if $u.ukryj_przed_wyszukiwarkami }}
+<meta name="robots" content="noindex, nofollow">
+{{- else if eq .Kind "404" }}
 <meta name="robots" content="noindex">
 {{- end }}
 {{- with $g.lekarz }}
@@ -33,7 +39,7 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pl_PL">
 <meta property="og:site_name" content="{{ $nazwa }}">
-<meta property="og:title" content="{{ cond (or .IsHome (eq .Kind "404")) $tytul .Title }}">
+<meta property="og:title" content="{{ cond (or .IsHome (eq .Kind "404") (isset .Params "seo_tytul")) $tytul .Title }}">
 <meta property="og:description" content="{{ $opis }}">
 {{- if ne .Kind "404" }}
 <meta property="og:url" content="{{ .Permalink }}">

@@ -1,8 +1,10 @@
 ---
 title: "Dentysta Legnica"
+seo_tytul: "Dentysta Legnica — Gabinet Stomatologiczny Dorota Rożdżestwieńska"
 description: "Gabinet stomatologiczny w centrum Legnicy, ul. Złotoryjska 16/18. 30 lat praktyki, RTG z pantomografem na miejscu, szyna Michigan. Tel. 76 72-26-880."
 sekcje:
   - type: hero
+    ikona: "tarcza"
     naglowek: "Dentysta w Legnicy, u którego nie czuć pośpiechu"
     nadtytul: "30 lat praktyki w centrum Legnicy"
     tresc: |-
@@ -51,6 +53,7 @@ sekcje:
   - type: tekst
     naglowek: "Zgrzytasz zębami w nocy? To nie jest nawyk, który przejdzie sam"
     nadtytul: "Nasza specjalizacja"
+    ikona: "ksiezyc"
     tresc: |-
       Bruksizm to mimowolne, bardzo silne napięcie mięśni żwaczy. Ściera powierzchnie zębów, uszkadza wypełnienia i korony, potrafi doprowadzić do pęknięcia zęba. Budzisz się zmęczony, boli Cię głowa, kark albo okolica ucha.
 
@@ -72,13 +75,6 @@ sekcje:
   - type: tresc_z_bokiem
     naglowek: "Pierwsza wizyta krok po kroku"
     wstep: "Nic Cię nie zaskoczy. Tak wygląda każda pierwsza wizyta w gabinecie."
-    tresc: |-
-      1. **Rozmowa** Pytamy, co Cię sprowadza, co boli i od kiedy, jakie leki przyjmujesz i czy coś Cię w gabinecie stresuje. Bez pośpiechu.
-      2. **Badanie** Przegląd wszystkich zębów i dziąseł. Jeśli trzeba — zdjęcie RTG od razu, na miejscu, i obraz z kamery wewnątrzustnej na monitorze.
-      3. **Plan leczenia i koszt** Mówimy, co wymaga leczenia natychmiast, co może poczekać i ile to kosztuje. Decyzję podejmujesz, znając kwotę.
-      4. **Termin** Umawiamy kolejne wizyty. Przypomnienie przyjdzie SMS-em.
-
-      Wizytę umawiasz telefonicznie — dzwonisz, mówisz, co Cię sprowadza, i termin ustalamy w rozmowie. Telefon jest drogą najpewniejszą i nic jej nie zastępuje.
     bok:
       naglowek: "Godziny przyjęć"
       godziny: true
@@ -86,8 +82,21 @@ sekcje:
       adres: false
       notka: "Termin wizyty potwierdza gabinet telefonicznie."
     wariant: domyslny
+  - type: kroki
+    elementy:
+      - tytul: "Rozmowa"
+        tresc: "Pytamy, co Cię sprowadza, co boli i od kiedy, jakie leki przyjmujesz i czy coś Cię w gabinecie stresuje. Bez pośpiechu."
+      - tytul: "Badanie"
+        tresc: "Przegląd wszystkich zębów i dziąseł. Jeśli trzeba — zdjęcie RTG od razu, na miejscu, i obraz z kamery wewnątrzustnej na monitorze."
+      - tytul: "Plan leczenia i koszt"
+        tresc: "Mówimy, co wymaga leczenia natychmiast, co może poczekać i ile to kosztuje. Decyzję podejmujesz, znając kwotę."
+      - tytul: "Termin"
+        tresc: "Umawiamy kolejne wizyty. Przypomnienie przyjdzie SMS-em."
+    polacz: true
+  - type: tekst
+    tresc: "Wizytę umawiasz telefonicznie — dzwonisz, mówisz, co Cię sprowadza, i termin ustalamy w rozmowie. Telefon jest drogą najpewniejszą i nic jej nie zastępuje."
+    polacz: true
   - type: rezerwacja
-    naglowek: "Rezerwacja online"
     wariant: domyslny
     polacz: true
   - type: przycisk

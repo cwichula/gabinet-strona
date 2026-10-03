@@ -1,53 +1,75 @@
-{{- /* Blok "tekst": naglowek, nadtytul, tresc (Markdown), wypunktowanie
-       (zwykle | ptaszki -> ul.checklist), ramka {rodzaj, tresc}, zdjecie,
-       strona_zdjecia (prawa | lewa), przycisk {etykieta, strona}.
-       Ze zdjeciem: div.split (tekst + figure.figure) jak w makiecie v1;
+{{- /* Blok "tekst": naglowek, nadtytul, ikona (przy nadtytule), wstep (wyrozniony
+       akapit), tresc (Markdown), wypunktowanie (zwykle | ptaszki -> ul.checklist,
+       takze w ramce), ramka {rodzaj, tresc}, zdjecie, strona_zdjecia (prawa | lewa),
+       przycisk {etykieta, strona, styl, kotwica_celu}, pokaz_telefony.
+       Ze zdjeciem: div.split (tekst + figure.figure) jak w makiecie v1 - bloki
+       dolaczone ("polacz") trafiaja do kolumny tekstu (znacznik dla sekcje.html);
        bez zdjecia: div.prose. */ -}}
 {{- $b := .blok -}}
 {{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
-{{- $tresc := partial "markdown.html" (dict "strona" $.strona "tekst" $b.tresc) | string -}}
-{{- if eq $b.wypunktowanie "ptaszki" }}{{ $tresc = replace $tresc "<ul>" `<ul class="checklist">` }}{{ end -}}
+{{- $ptaszki := eq $b.wypunktowanie "ptaszki" -}}
+{{- $tresc := "" }}{{ with $b.tresc }}{{ $tresc = partial "markdown.html" (dict "strona" $.strona "tekst" .) | string }}{{ end -}}
+{{- if $ptaszki }}{{ $tresc = replace $tresc "<ul>" `<ul class="checklist">` }}{{ end -}}
 {{- $ramka := "" -}}
-{{- with $b.ramka }}{{ with .tresc }}{{ $ramka = partial "ramka-html.html" (dict "strona" $.strona "rodzaj" $b.ramka.rodzaj "tresc" . "gdzie" $gdzie "styl" "margin-top:1.5rem") }}{{ end }}{{ end -}}
+{{- with $b.ramka }}{{ with .tresc }}{{ $ramka = partial "ramka-html.html" (dict "strona" $.strona "rodzaj" $b.ramka.rodzaj "tresc" . "gdzie" $gdzie "styl" "margin-top:1.5rem" "ptaszki" $ptaszki) }}{{ end }}{{ end -}}
 {{- $przycisk := partial "przycisk.html" (dict "przycisk" $b.przycisk "gdzie" (printf "%s: przycisk w bloku tekst" $gdzie) "strzalka" true) -}}
+{{- $telefony := "" -}}
+{{- if $b.pokaz_telefony }}{{ $telefony = partial "telefony-btn.html" (dict "styl" "margin-top:1.5rem") }}{{ end -}}
+{{- $eyebrow := "" -}}
+{{- with $b.nadtytul }}{{ $eyebrow = printf `<p class="eyebrow">%s %s</p>` (partial "ikona.html" (dict "nazwa" ($b.ikona | default "") "styl" "width:1em;height:1em" "gdzie" $gdzie) | string) (. | htmlEscape) }}{{ end -}}
 {{- if $b.zdjecie }}
     <div class="split">
       {{- if eq $b.strona_zdjecia "lewa" }}
       {{ partial "figura.html" (dict "strona" $.strona "zdjecie" $b.zdjecie "priorytet" $.priorytet "gdzie" $gdzie) }}
       {{- end }}
       <div>
-        {{- with $b.nadtytul }}
-        <p class="eyebrow">{{ . }}</p>
+        {{- with $eyebrow }}
+        {{ . | safeHTML }}
         {{- end }}
         {{- with $b.naglowek }}
         <h2 style="margin-top:0">{{ . }}</h2>
         {{- end }}
+        {{- with $b.wstep }}
+        {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede") }}
+        {{- end }}
         {{ $tresc | safeHTML }}
         {{- with $ramka }}
         {{ . }}
+        {{- end }}
+        {{- with strings.TrimSpace $telefony }}
+        {{ . | safeHTML }}
         {{- end }}
         {{- with strings.TrimSpace $przycisk }}
         <p style="margin-top:1.5rem">
           {{ $przycisk }}
         </p>
         {{- end }}
+        {{ "<!--kolumna-->" | safeHTML }}
       </div>
       {{- if ne $b.strona_zdjecia "lewa" }}
       {{ partial "figura.html" (dict "strona" $.strona "zdjecie" $b.zdjecie "priorytet" $.priorytet "gdzie" $gdzie) }}
       {{- end }}
     </div>
 {{- else }}
-    {{- with $b.nadtytul }}
-    <p class="eyebrow">{{ . }}</p>
+    {{- with $eyebrow }}
+    {{ . | safeHTML }}
     {{- end }}
     {{- with $b.naglowek }}
     <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ . }}</h2>
     {{- end }}
-    <div class="prose">
-      {{ $tresc | safeHTML }}
+    {{- with $b.wstep }}
+    {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede" "styl" "max-width:62ch") }}
+    {{- end }}
+    {{- with $tresc }}
+    <div class="prose"{{ if or $b.wstep (hasPrefix (strings.TrimSpace ($b.tresc | default "")) "#") }} style="margin-top:2rem"{{ end }}>
+      {{ . | safeHTML }}
     </div>
+    {{- end }}
     {{- with $ramka }}
     {{ . }}
+    {{- end }}
+    {{- with strings.TrimSpace $telefony }}
+    {{ . | safeHTML }}
     {{- end }}
     {{- with strings.TrimSpace $przycisk }}
     <p style="margin-top:1.75rem">

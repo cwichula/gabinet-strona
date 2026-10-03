@@ -1,27 +1,66 @@
 {{- /* Ramka z boku (aside.sidebar-card) jak w makiecie v1 - pole "bok" blokow
-       kontakt i tresc_z_bokiem: naglowek, godziny, telefony, adres (bool),
-       notka. Brak pola = godziny i telefony tak, adres nie. Wejscie: obiekt "bok". */ -}}
+       kontakt i tresc_z_bokiem: naglowek, godziny (bool), pozycje (id pozycji
+       cennika - lista z cenami), notka, telefony (bool), przycisk {etykieta,
+       strona, styl, kotwica_celu}, adres (bool), notka_dol.
+       Brak pola godziny/telefony = tak, adres = nie.
+       Przyciski: z lista cen - najpierw przycisk do strony (wypelniony), potem
+       pierwszy telefon; bez cen - telefony (pierwszy wypelniony), potem przycisk
+       (obrysowany). Przy przycisku do strony - tylko pierwszy numer.
+       Wejscie: dict "bok", "strona" (Page - do odnosnikow i bledow),
+       "duze" (bool - duzy pierwszy przycisk telefonu, jak na stronie kontaktu v1). */ -}}
+{{- $b := .bok | default dict -}}
 {{- $g := hugo.Data.gabinet -}}
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
-{{- $godziny := ne .godziny false -}}
-{{- $telefony := ne .telefony false -}}
+{{- $gdzie := "Strona" }}{{ with .strona }}{{ with .File }}{{ $gdzie = .Path }}{{ end }}{{ end -}}
+{{- $godziny := ne $b.godziny false -}}
+{{- $telefony := ne $b.telefony false -}}
+{{- $pozycje := slice -}}
+{{- range $b.pozycje }}{{ with partial "cennik-pozycja.html" (dict "id" . "gdzie" (printf "%s: ramka z boku" $gdzie)) }}{{ $pozycje = $pozycje | append . }}{{ end }}{{ end -}}
+{{- $muted := "margin:0;font-size:var(--step--1);color:var(--muted)" -}}
+{{- $przycisk := partial "przycisk.html" (dict "przycisk" $b.przycisk "gdzie" (printf "%s: przycisk w ramce z boku" $gdzie) "domyslny" (cond (gt (len $pozycje) 0) "glowny" "obrysowy") "glowny" "btn btn--primary btn--block" "obrysowy" "btn btn--ghost btn--block") | strings.TrimSpace -}}
+{{- $tel := cond $telefony $m.telefony slice -}}
+{{- if $przycisk }}{{ $tel = first 1 $tel }}{{ end -}}
     <aside class="sidebar-card">
-      <h2>{{ .naglowek | default (cond $godziny "Godziny przyjęć" "Kontakt") }}</h2>
+      <h2>{{ $b.naglowek | default (cond $godziny "Godziny przyjęć" (cond (gt (len $pozycje) 0) "Ceny z cennika" "Kontakt")) }}</h2>
       {{- if $godziny }}
       {{ partial "godziny-tabela.html" . }}
       {{- end }}
-      {{- with .notka }}
-      <p style="margin:0;font-size:var(--step--1);color:var(--muted)">
-        {{ . }}
+      {{- with $pozycje }}
+      <ul class="checklist" style="margin:0">
+        {{- range . }}
+        <li>{{ .nazwa }} — <strong>{{ partial "cena.html" . }}</strong></li>
+        {{- end }}
+      </ul>
+      {{- with hugo.Data.cennik.informacja }}
+      <p style="{{ $muted | safeCSS }}">
+        {{ partial "tekst-wiersze.html" . }}
       </p>
       {{- end }}
-      {{- if $telefony }}{{ range $i, $t := $m.telefony }}
-      {{ partial "telefon-btn.html" (dict "telefon" $t "klasa" (cond (eq $i 0) "btn btn--primary btn--block" "btn btn--ghost btn--block") "ikona" (eq $i 0)) }}
-      {{- end }}{{ end }}
-      {{- if .adres }}{{ with $g.adres }}
-      <p style="margin:0">
-        <svg class="ico" aria-hidden="true" style="width:1em;height:1em;display:inline;vertical-align:-.15em"><use href="#ico-pin"></use></svg>
+      {{- end }}
+      {{- with $b.notka }}
+      <p style="{{ $muted | safeCSS }}">
+        {{ partial "tekst-wiersze.html" . }}
+      </p>
+      {{- end }}
+      {{- if $pozycje }}
+      {{ $przycisk | safeHTML }}
+      {{- range $tel }}
+      {{ partial "telefon-btn.html" (dict "telefon" . "klasa" "btn btn--ghost btn--block" "ikona" false) }}
+      {{- end }}
+      {{- else }}
+      {{- range $i, $t := $tel }}
+      {{ partial "telefon-btn.html" (dict "telefon" $t "klasa" (cond (eq $i 0) (printf "btn btn--primary btn--block%s" (cond ($.duze | default false) " btn--lg" "")) "btn btn--ghost btn--block") "ikona" (eq $i 0)) }}
+      {{- end }}
+      {{ $przycisk | safeHTML }}
+      {{- end }}
+      {{- if $b.adres }}{{ with $g.adres }}
+      <p style="{{ $muted | safeCSS }}">
         {{ .ulica }}, {{ .kod }} {{ .miasto }}
       </p>
       {{- end }}{{ end }}
+      {{- with $b.notka_dol }}
+      <p style="{{ $muted | safeCSS }}">
+        {{ partial "tekst-wiersze.html" . }}
+      </p>
+      {{- end }}
     </aside>

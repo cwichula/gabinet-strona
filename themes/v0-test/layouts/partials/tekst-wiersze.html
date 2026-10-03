@@ -1,0 +1,4 @@
+{{- /* Zwykly tekst z pola wielowierszowego: znaki HTML zabezpieczone,
+       zlamania wiersza z panelu zachowane jako <br>. Wejscie: napis. */ -}}
+{{- $t := . | default "" | string | strings.TrimSpace | htmlEscape -}}
+{{- replaceRE `\r?\n` "<br>" $t | safeHTML -}}

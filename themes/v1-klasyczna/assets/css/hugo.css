@@ -4,7 +4,8 @@
    style.css jest kopia makiety v1 bez zmian. Tu tylko to, czego makieta nie
    miala, a czego wymaga kontrakt blokow (docs/KONTRAKT-BLOKOW.md): lista
    z minusami, odstep bloku dolaczonego do sekcji ("polacz"), naglowek
-   banera, gdy baner nie jest pierwszym blokiem strony. Kolory wylacznie
+   banera, gdy baner nie jest pierwszym blokiem strony, plakietki
+   w tresci (==tekst==). Kolory wylacznie
    z tokenow style.css, wiec motyw ciemny dziala bez dodatkowych regul.
    ========================================================================== */
 
@@ -17,6 +18,9 @@
 /* Blok dolaczony do sekcji powyzej (pole "polacz"). */
 .blok-dalej { margin-top: var(--sp-6); }
 .blok-dalej > :first-child { margin-top: 0; }
+/* ...a w kolumnie tekstu obok zdjecia albo ramki z boku (kroki, karta
+   rezerwacji, cytat, przycisk pod tekstem - jak w makiecie v1) ciasniej. */
+.split .blok-dalej { margin-top: var(--sp-5); }
 
 /* Baner w srodku strony ma h2 zamiast h1 - ten sam wyglad. */
 .hero h2 { font-size: var(--step-5); margin-bottom: var(--sp-4); }
@@ -27,3 +31,21 @@
 
 /* Pogrubienie z Markdown (**...**) w faktach banera wyglada jak <b> z makiety. */
 .hero__meta strong { color: var(--ink); font-weight: 680; }
+
+/* Wyrozniony napis w tresci (Markdown ==tekst==, np. „DO UZUPEŁNIENIA”) -
+   plakietka jak .badge.badge--accent w makiecie v1 (polityka prywatnosci). */
+mark {
+  display: inline-flex;
+  align-items: center;
+  padding: .25em .7em;
+  border-radius: var(--radius-pill);
+  background: var(--accent-100);
+  color: var(--accent-700);
+  border: 1px solid transparent;
+  font-size: .78rem;
+  font-weight: 680;
+  letter-spacing: .01em;
+}
+
+/* Spis tresci (pigulki) dolaczony pod tekstem - bez dodatkowego odstepu, jak w v1. */
+.blok-dalej:has(> .anchor-nav:first-child) { margin-top: var(--sp-2); }

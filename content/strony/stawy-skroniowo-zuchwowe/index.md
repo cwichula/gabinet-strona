@@ -1,5 +1,6 @@
 ---
 title: "Stawy skroniowo-żuchwowe"
+seo_tytul: "Stawy skroniowo-żuchwowe Legnica | Gabinet Rożdżestwieńska"
 description: "Trzeszczenie w żuchwie, ból przy gryzieniu, ograniczone otwieranie ust. Diagnostyka czynnościowa i szynoterapia — Legnica, ul. Złotoryjska. Tel. 76 72-26-880."
 draft: false
 weight: 3
@@ -13,6 +14,7 @@ sekcje:
     naglowek: "Stawy skroniowo-żuchwowe — diagnostyka i leczenie w Legnicy"
     tresc: "Żuchwa przeskakuje przy otwieraniu ust, coś trzeszczy przy jedzeniu, boli ucho albo kark — a laryngolog nie znajduje przyczyny. Tak zwykle wygląda dysfunkcja stawów skroniowo-żuchwowych. Diagnostykę czynnościową wykonujemy na miejscu, przy ul. Złotoryjska 16/18 m. 10."
   - type: tekst
+    ikona: "puls"
     naglowek: "Po czym poznać, że problem jest w stawie"
     nadtytul: "Objawy"
     tresc: |-
@@ -52,9 +54,10 @@ sekcje:
     wariant: wyrozniony
   - type: tekst
     naglowek: "Jak wygląda diagnostyka"
+    wstep: "Każde z poniższych badań odpowiada na inne pytanie, a dopiero razem pokazują, czy źródłem bólu jest staw, mięśnie, czy zwarcie. Wszystkie wykonujemy na miejscu."
+    wariant: domyslny
+  - type: tekst
     tresc: |-
-      Każde z poniższych badań odpowiada na inne pytanie, a dopiero razem pokazują, czy źródłem bólu jest staw, mięśnie, czy zwarcie. Wszystkie wykonujemy na miejscu.
-
       ### Badanie czynnościowe stawów (MFA)
 
       Manualna analiza funkcjonalna. Mierzymy, jak szeroko otwierasz usta i jakim torem — czy żuchwa zbacza w jedną stronę, w którym momencie pojawia się dźwięk. Stawy badamy palpacyjnie, w spoczynku i pod lekkim obciążeniem. To ono rozdziela przyczyny stawowe od mięśniowych.
@@ -71,7 +74,7 @@ sekcje:
       alt: "Pacjent przy aparacie rentgenowskim z radiowizjografią do zdjęć punktowych"
       podpis: "Zdjęcia wykonujemy w gabinecie, bez odsyłania do innej pracowni."
     strona_zdjecia: prawa
-    wariant: domyslny
+    polacz: true
   - type: tekst
     tresc: |-
       ### Zdjęcie RTG czynnościowe stawów
@@ -85,29 +88,41 @@ sekcje:
       rodzaj: ok
       tresc: "Nie każdy pacjent potrzebuje wszystkich badań. Zakres ustalamy po wywiadzie i mówimy, ile to kosztuje, zanim cokolwiek wykonamy — tak jak na każdej [pierwszej wizycie](/pierwsza-wizyta/)."
     polacz: true
-  - type: tresc_z_bokiem
+  - type: tekst
     naglowek: "Leczenie: szynoterapia"
+    wariant: wyrozniony
+  - type: tresc_z_bokiem
     wstep: "Celem nie jest wyciszenie bólu na kilka dni, a zdjęcie przeciążenia ze stawu i mięśni na tyle długo, żeby tkanki miały czas się uspokoić."
-    tresc: |-
-      1. **Rozpoznanie.** Wywiad, badanie czynnościowe i — jeśli trzeba — zdjęcie RTG czynnościowe.
-      2. **Szyna tymczasowa.** Przy ostrych dolegliwościach zakładamy ją najpierw, żeby odciążyć staw szybciej i sprawdzić, jak zareagują mięśnie.
-      3. **Szyna relaksacyjna Michigan.** Wyciski, rejestracja łukiem twarzowym, ustawienie modeli w artykulatorze. Szyna powstaje indywidualnie, dla Twojego zgryzu — to nie gotowa nakładka z apteki.
-      4. **Oddanie i dopasowanie.** Szyna musi stykać się z zębami przeciwstawnymi równomiernie. Korygujemy ją na kolejnych wizytach, w miarę jak mięśnie się rozluźniają.
-      5. **Kontrole.** Oceniamy zakres otwierania ust, dolegliwości i stan szyny. Jeśli przyczyną były braki lub starte zęby, planujemy odbudowę.
-
-      ### Ile to trwa
-
-      Diagnostyka to zwykle jedna, czasem dwie wizyty. Od wycisków do oddania szyny mija kilkanaście dni, bo wykonuje ją pracownia techniczna. Potem szynę nosi się przede wszystkim w nocy.
-
-      Z wieloletniego doświadczenia gabinetu wynika, że pierwsze zmiany bywają odczuwalne po około miesiącu noszenia — choć tempo poprawy jest indywidualne i zależy od tego, jak długo trwał problem.
     bok:
       naglowek: "Umów badanie"
       godziny: false
       telefony: true
       adres: true
       notka: "Rejestracja wyłącznie telefoniczna, od poniedziałku do czwartku."
-    wariant: wyrozniony
+    polacz: true
+  - type: kroki
+    elementy:
+      - tytul: "Rozpoznanie"
+        tresc: "Wywiad, badanie czynnościowe i — jeśli trzeba — zdjęcie RTG czynnościowe."
+      - tytul: "Szyna tymczasowa"
+        tresc: "Przy ostrych dolegliwościach zakładamy ją najpierw, żeby odciążyć staw szybciej i sprawdzić, jak zareagują mięśnie."
+      - tytul: "Szyna relaksacyjna Michigan"
+        tresc: "Wyciski, rejestracja łukiem twarzowym, ustawienie modeli w artykulatorze. Szyna powstaje indywidualnie, dla Twojego zgryzu — to nie gotowa nakładka z apteki."
+      - tytul: "Oddanie i dopasowanie"
+        tresc: "Szyna musi stykać się z zębami przeciwstawnymi równomiernie. Korygujemy ją na kolejnych wizytach, w miarę jak mięśnie się rozluźniają."
+      - tytul: "Kontrole"
+        tresc: "Oceniamy zakres otwierania ust, dolegliwości i stan szyny. Jeśli przyczyną były braki lub starte zęby, planujemy odbudowę."
+    polacz: true
+  - type: tekst
+    tresc: |-
+      ### Ile to trwa
+
+      Diagnostyka to zwykle jedna, czasem dwie wizyty. Od wycisków do oddania szyny mija kilkanaście dni, bo wykonuje ją pracownia techniczna. Potem szynę nosi się przede wszystkim w nocy.
+
+      Z wieloletniego doświadczenia gabinetu wynika, że pierwsze zmiany bywają odczuwalne po około miesiącu noszenia — choć tempo poprawy jest indywidualne i zależy od tego, jak długo trwał problem.
+    polacz: true
   - type: cennik
+    kolumna: "Badanie lub zabieg"
     naglowek: "Ile kosztuje diagnostyka i leczenie"
     wstep: "Pozycje cennika dotyczące leczenia dysfunkcji stawów skroniowo-żuchwowych."
     pozycje:
@@ -126,6 +141,7 @@ sekcje:
   - type: przycisk
     etykieta: "Zobacz pełny cennik"
     strona: "cennik"
+    kotwica_celu: "grupa-stawy"
     styl: glowny
     polacz: true
   - type: faq

@@ -26,14 +26,19 @@
     {{- $kategorie = $wybrane -}}
   {{- end -}}
   {{- range $kategorie -}}
-    {{- $tabele = $tabele | append (dict "nazwa" .nazwa "pozycje" (where $wszystkiePozycje "kategoria" .id)) -}}
+    {{- $tabele = $tabele | append (dict "id" .id "nazwa" .nazwa "pozycje" (where $wszystkiePozycje "kategoria" .id)) -}}
   {{- end -}}
 {{- end }}
 <section {{ partial "blok-atrybuty.html" $b }}>
-  <h2>{{ $b.naglowek | default "Cennik" }}</h2>
+  {{- with $b.naglowek | default (cond (and $b.polacz (gt $.nr 0)) "" "Cennik") }}
+  <h2>{{ . }}</h2>
+  {{- end }}
   {{- with $b.wstep }}{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
   {{- range $tabele }}
-  <table class="cennik">
+  {{- /* kotwica grupy "grupa-<id kategorii>" (kontrakt), raz na strone */}}
+  {{- $kot := "" }}{{ with .id }}{{ $kot = printf "grupa-%s" . }}{{ end }}
+  {{- $nowa := and $kot (not ($.strona.Store.Get $kot)) }}{{ with $kot }}{{ $.strona.Store.Set . true }}{{ end }}
+  <table class="cennik"{{ if $nowa }} id="{{ $kot }}"{{ end }}>
     {{- with .nazwa }}
     <caption>{{ . }}</caption>
     {{- end }}

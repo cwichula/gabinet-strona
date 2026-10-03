@@ -80,7 +80,7 @@
     {{- with $m.telefon }}
     <a class="btn btn--primary header__cta" href="{{ printf "tel:%s" .tel | safeURL }}">
       <svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg>
-      Umów wizytę
+      {{ ($u.napisy | default dict).przycisk_naglowka | default "Umów wizytę" }}
     </a>
     {{- end }}
 

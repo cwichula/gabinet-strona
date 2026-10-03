@@ -1,5 +1,6 @@
 ---
 title: "Protezy zębowe"
+seo_tytul: "Protezy zębowe Legnica | Gabinet Dorota Rożdżestwieńska"
 description: "Protezy zębowe w Legnicy: elastyczne, akronowe, szkieletowe i akrylowe. Dla kogo, czym się różnią, ile kosztują i jak przebiega wykonanie."
 draft: false
 weight: 4
@@ -99,9 +100,15 @@ sekcje:
           - "Zależnie od wybranego rodzaju"
         cena: "proteza-czesciowa"
     wariant: domyslny
-  - type: kroki
+  - type: tekst
     naglowek: "Wykonanie protezy krok po kroku"
     wstep: "Od pierwszego badania do gotowej pracy mija zwykle kilka tygodni."
+    zdjecie:
+      plik: "rejestracja.jpg"
+      alt: "Stanowisko rejestracji: biurko z komputerem, przy którym umawiane są wizyty"
+      podpis: "Rejestracja gabinetu — tu umawiamy kolejne wizyty."
+    wariant: wyrozniony
+  - type: kroki
     elementy:
       - tytul: "Badanie i plan"
         tresc: "Oceniamy stan zębów, dziąseł i wyrostka kostnego, a jeśli trzeba — wykonujemy [zdjęcie RTG na miejscu](/rtg-pantomogram/)."
@@ -113,15 +120,12 @@ sekcje:
         tresc: "Zakładamy gotową pracę, korygujemy miejsca, które uciskają, i pokazujemy, jak protezę zdejmować, zakładać i czyścić."
       - tytul: "Korekty"
         tresc: "Pierwsze dni to przyzwyczajanie. Jeśli coś obciera, zgłoś się — korekta zajmuje kilka minut. Nie znoś bólu i nie podcinaj protezy samodzielnie."
-    wariant: wyrozniony
+    polacz: true
   - type: tekst
     tresc: "Kolejne terminy umawiamy telefonicznie. Przypomnienie przyjdzie SMS-em."
-    zdjecie:
-      plik: "rejestracja.jpg"
-      alt: "Stanowisko rejestracji: biurko z komputerem, przy którym umawiane są wizyty"
-      podpis: "Rejestracja gabinetu — tu umawiamy kolejne wizyty."
     polacz: true
   - type: lista
+    waska: true
     naglowek: "Jak dbać o protezę"
     styl: ptaszki
     elementy:
@@ -136,6 +140,7 @@ sekcje:
     tresc: "Pod płytą łatwiej dochodzi do zapalenia dziąseł i próchnicy zębów oporowych. Dlatego warto utrzymać rytm [higienizacji](/higienizacja/), a ubytki [leczyć bez zwlekania](/stomatologia-zachowawcza/)."
     polacz: true
   - type: tekst
+    waska: true
     naglowek: "Dlaczego nie warto zwlekać z uzupełnieniem braku"
     tresc: "Po usunięciu zęba luka nie zostaje pusta. Pozostałe zęby zaczynają się przemieszczać, a kość w miejscu braku powoli się zmniejsza."
     ramka:

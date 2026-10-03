@@ -34,6 +34,16 @@ permalinks:
 
 markup:
   goldmark:
+    # Bez automatycznych id przy naglowkach z tresci (### ...): nie sa nigdzie
+    # uzywane, a te same naglowki w dwoch blokach dawalyby powtorzone id.
+    parser:
+      autoHeadingID: false
+    # ==tekst== -> <mark> (wyrozniony napis, np. "DO UZUPELNIENIA"; szablon
+    # rysuje go jako plakietke).
+    extensions:
+      extras:
+        mark:
+          enable: true
     renderer:
       # Zadnego surowego HTML z tresci (pola Markdown z CMS). Pominiety HTML
       # nie blokuje publikacji (ignoreLogs nizej); <br> zamienia sie wczesniej
@@ -71,4 +81,4 @@ sitemap:
 
 params:
   # Wersja kontraktu blokow (docs/KONTRAKT-BLOKOW.md).
-  kontraktBlokow: 2
+  kontraktBlokow: 3

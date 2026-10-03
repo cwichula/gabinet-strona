@@ -1,12 +1,13 @@
 ---
 title: "Higienizacja"
+seo_tytul: "Higienizacja zębów Legnica | Gabinet Dorota Rożdżestwieńska"
 description: "Usuwanie kamienia nazębnego (skaling), piaskowanie, lakierowanie fluorem i lakowanie bruzd. Gabinet stomatologiczny Legnica. Tel. 76 72-26-880."
 draft: false
 weight: 7
 usluga:
   wyrozniona: false
   ikona: "iskry"
-  skrot: "Usunięcie kamienia, piaskowanie, lakierowanie fluorem i lakowanie bruzd."
+  skrot: "Usunięcie kamienia i osadu, fluoryzacja i lakowanie bruzd. Zalecane co 6 miesięcy, u dzieci częściej."
   cena_od: "lakierowanie"
 sekcje:
   - type: hero
@@ -14,23 +15,26 @@ sekcje:
     tresc: "Usunięcie kamienia i osadu, wypolerowanie zębów, lakierowanie fluorem i lakowanie bruzd. To nie zabiegi kosmetyczne — od nich zależy, czy zapalenie dziąseł zatrzyma się na dziąsłach, czy sięgnie kości."
     wariant: domyslny
   - type: tekst
+    ikona: "uwaga"
     naglowek: "Krwawią Ci dziąsła przy szczotkowaniu? To nie przejdzie samo"
     nadtytul: "Objaw, którego nie warto przeczekać"
     tresc: |-
       Na szczoteczce pojawia się krew, dziąsła są zaczerwienione, obrzmiałe i tkliwe. Łatwo to zignorować, bo zwykle nie boli — i właśnie dlatego wiele osób zgłasza się dopiero wtedy, gdy ząb zaczyna się ruszać.
 
       Takie objawy świadczą o stanie zapalnym. Nieleczone zapalenie dziąseł najczęściej przechodzi w zapalenie przyzębia, czyli paradontozę. Dochodzi wtedy do zaniku kości wyrostka zębodołowego, odsłonięcia szyjek zębowych, przemieszczania się zębów, rozchwiania, a nawet do ich utraty.
-
-      Najczęstszą przyczyną takiego stanu są złogi i naloty na zębach oraz kamień nazębny — a tego szczoteczka już nie usunie. Usunięcie ich jest punktem wyjścia do leczenia dziąseł, nie dodatkiem do wizyty.
-    ramka:
-      rodzaj: uwaga
-      tresc: "**Zmiany zachodzące w paradontozie są nieodwracalne.** Toczący się proces chorobowy można zahamować, ale kości, która już zniknęła, nie da się przywrócić. Dlatego liczy się moment, w którym zaczyna się leczenie."
     zdjecie:
       plik: "instruktaz.jpg"
       alt: "Model szczęki ze szczoteczką używany do instruktażu prawidłowego szczotkowania zębów"
       podpis: "Technikę szczotkowania pokazujemy na modelu — to część wizyty, nie dodatek."
     strona_zdjecia: prawa
     wariant: domyslny
+  - type: ramka
+    rodzaj: uwaga
+    tresc: "**Zmiany zachodzące w paradontozie są nieodwracalne.** Toczący się proces chorobowy można zahamować, ale kości, która już zniknęła, nie da się przywrócić. Dlatego liczy się moment, w którym zaczyna się leczenie."
+    polacz: true
+  - type: tekst
+    tresc: "Najczęstszą przyczyną takiego stanu są złogi i naloty na zębach oraz kamień nazębny — a tego szczoteczka już nie usunie. Usunięcie ich jest punktem wyjścia do leczenia dziąseł, nie dodatkiem do wizyty."
+    polacz: true
   - type: karty
     naglowek: "Co się dzieje podczas wizyty higienizacyjnej"
     wstep: "Zakres dobieramy po obejrzeniu zębów i dziąseł — rzadko potrzebne jest wszystko naraz. Poniżej opis każdego zabiegu osobno, razem z ceną."

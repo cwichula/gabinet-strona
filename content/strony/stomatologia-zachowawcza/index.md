@@ -1,12 +1,13 @@
 ---
 title: "Leczenie próchnicy"
+seo_tytul: "Leczenie próchnicy Legnica | Gabinet Dorota Rożdżestwieńska"
 description: "Leczenie próchnicy, wypełnienia światłoutwardzalne, ubytki przyszyjkowe i nadwrażliwość zębów. Gabinet stomatologiczny w Legnicy."
 draft: false
 weight: 8
 usluga:
   wyrozniona: false
   ikona: "zab"
-  skrot: "Wypełnienia światłoutwardzalne, odbudowa zęba, ubytki przyszyjkowe."
+  skrot: "Wypełnienia światłoutwardzalne, odbudowa zęba, ubytki przyszyjkowe i nadwrażliwość."
   cena_od: "wypelnienie"
 sekcje:
   - type: hero
@@ -15,6 +16,7 @@ sekcje:
       Stomatologia zachowawcza to leczenie ubytków próchnicowych i zachowanie zębów w ich naturalnym kształcie i kolorze. Im wcześniej zajmiemy się ubytkiem, tym mniej zdrowej tkanki trzeba usunąć.
     wariant: domyslny
   - type: tekst
+    ikona: "zab"
     naglowek: "Nitka zahacza, a przy słodkim coś kłuje"
     nadtytul: "Zanim zacznie boleć"
     tresc: |-
@@ -37,9 +39,8 @@ sekcje:
     polacz: true
   - type: tekst
     naglowek: "Ubytki przy szyjkach zębów i nadwrażliwość"
+    wstep: "Jeden z najczęstszych powodów wizyty — i jeden z najrzadziej rozpoznawanych w domu."
     tresc: |-
-      Jeden z najczęstszych powodów wizyty — i jeden z najrzadziej rozpoznawanych w domu.
-
       Wciągasz zimne powietrze przez zęby i przeszywa Cię ból. Kiszony ogórek, sok z cytryny albo łyk wody z lodem dają to samo: krótkie, ostre ukłucie, które ustępuje po kilku sekundach. Zęby wyglądają przy tym zdrowo.
 
       Dużym problemem dla pacjentów są ubytki klinowe, przydziąsłowe oraz te odsłaniające szyjki zębów — czyli utrata tkanki przy samym dziąśle, która nie bierze się z próchnicy. Powodują one nadwrażliwość zębów, zwłaszcza na zimne powietrze i słodko-kwaśne pokarmy.
@@ -58,9 +59,25 @@ sekcje:
       Duże ubytki wypełniamy materiałem światłoutwardzalnym, odtwarzając brakujący fragment szyjki. Niewielkie lakierujemy preparatem fluorowym, który zmniejsza nadwrażliwość i uszczelnia powierzchnię zęba. Przy zapaleniu dziąseł zaczynamy od [higienizacji](/higienizacja/), bo bez niej dziąsło będzie się cofać dalej.
     wypunktowanie: ptaszki
     wariant: wyrozniony
-  - type: kroki
+  - type: tresc_z_bokiem
     naglowek: "Jak przebiega leczenie ubytku"
     wstep: "Jedna wizyta, pięć etapów. Przy głębokim ubytku dochodzi etap szósty."
+    bok:
+      naglowek: "Ceny z cennika"
+      godziny: false
+      pozycje:
+        - badanie-konsultacja
+        - wypelnienie
+        - wypelnienie-mleczny
+        - odbudowa
+        - opatrunek
+        - zatrucie
+      telefony: true
+      przycisk:
+        etykieta: "Pełny cennik"
+        strona: "cennik"
+    wariant: domyslny
+  - type: kroki
     elementy:
       - tytul: "Badanie i rozpoznanie"
         tresc: "Lekarz ocenia ząb, a kamerą wewnątrzustną pokazuje Ci na monitorze to, co sam widzi. Ubytek ukryty między zębami potwierdza punktowe [zdjęcie RTG z radiowizjografią](/rtg-pantomogram/) wykonywane na miejscu."
@@ -74,23 +91,6 @@ sekcje:
         tresc: "Sprawdzamy, czy wypełnienie nie jest za wysokie i czy nitka przechodzi swobodnie, a potem je polerujemy."
       - tytul: "Gdy ubytek sięga głęboko"
         tresc: "Czasem potrzebny jest opatrunek w zębie (170 zł) albo zatrucie zęba (200 zł) jako etap pośredni. Dalszy zakres lekarz omawia z Tobą po badaniu i po zdjęciu RTG — nie w trakcie zabiegu."
-    wariant: domyslny
-  - type: cennik
-    naglowek: "Ceny z cennika"
-    pozycje:
-      - badanie-konsultacja
-      - wypelnienie
-      - wypelnienie-mleczny
-      - odbudowa
-      - opatrunek
-      - zatrucie
-    wariant: domyslny
-    polacz: true
-  - type: przycisk
-    etykieta: "Pełny cennik"
-    strona: "cennik"
-    styl: glowny
-    wariant: domyslny
     polacz: true
   - type: tekst
     naglowek: "Dlaczego raz 250, a raz 400 zł"

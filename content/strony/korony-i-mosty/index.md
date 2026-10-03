@@ -1,5 +1,6 @@
 ---
 title: "Korony i mosty"
+seo_tytul: "Korony i mosty Legnica | Gabinet Dorota Rożdżestwieńska"
 description: "Korony porcelanowe i pełnoceramiczne E-MAX, most z włókna szklanego bez mocnego szlifowania zębów obok. Legnica, ul. Złotoryjska. Zadzwoń: 76 72-26-880."
 draft: false
 weight: 5
@@ -70,6 +71,8 @@ sekcje:
     strona_zdjecia: lewa
     wariant: domyslny
   - type: tekst
+    wypunktowanie: ptaszki
+    waska: true
     naglowek: "Dlaczego nie warto zwlekać z uzupełnieniem braku"
     tresc: "Luka po zębie nie zostaje pustym miejscem. Pozostałe zęby zaczynają się do niej przemieszczać, a zmiana rozkłada się na cały układ."
     ramka:
@@ -104,6 +107,8 @@ sekcje:
     tresc: "Liczba wizyt zależy od rodzaju pracy i stanu zęba, dlatego ustalamy ją na konsultacji. Jeśli to Twoja pierwsza wizyta w gabinecie, zobacz [jak ona wygląda krok po kroku](/pierwsza-wizyta/)."
     polacz: true
   - type: cennik
+    kolumna: "Zabieg"
+    waska: true
     naglowek: "Ceny"
     wstep: "Protetyka — korony i mosty. Ceny dotyczą jednego zęba."
     pozycje:
@@ -113,10 +118,8 @@ sekcje:
       - most-wlokno
     wariant: wyrozniony
     kotwica: "ceny"
-  - type: przycisk
-    etykieta: "Pełny cennik gabinetu"
-    strona: "cennik"
-    styl: obrysowy
+  - type: tekst
+    tresc: "[Pełny cennik gabinetu →](/cennik/)"
     polacz: true
   - type: faq
     naglowek: "Najczęstsze pytania"

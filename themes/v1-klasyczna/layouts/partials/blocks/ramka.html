@@ -1,5 +1,6 @@
 {{- /* Blok "ramka": rodzaj (info -> div.callout, uwaga -> callout--warn,
-       ok -> callout--ok), tresc (Markdown), ikona (domyslnie wg rodzaju). */ -}}
+       ok -> callout--ok), tresc (Markdown), ikona (domyslnie wg rodzaju),
+       wypunktowanie (ptaszki -> listy jako ul.checklist). */ -}}
 {{- $b := .blok -}}
 {{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
-{{ partial "ramka-html.html" (dict "strona" $.strona "rodzaj" $b.rodzaj "tresc" $b.tresc "ikona" $b.ikona "gdzie" $gdzie) }}
+{{ partial "ramka-html.html" (dict "strona" $.strona "rodzaj" $b.rodzaj "tresc" $b.tresc "ikona" $b.ikona "gdzie" $gdzie "ptaszki" (eq $b.wypunktowanie "ptaszki")) }}

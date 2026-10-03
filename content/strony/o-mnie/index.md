@@ -1,5 +1,6 @@
 ---
 title: "O gabinecie"
+seo_tytul: "Stomatolog Legnica — o gabinecie | Dorota Rożdżestwieńska"
 description: "Gabinet stomatologiczny Dorota Rożdżestwieńska, Legnica, ul. Złotoryjska. Działa od 30 lat. Poznaj lekarkę, sposób pracy i wyposażenie. Tel. 76 72-26-880."
 draft: false
 weight: 12
@@ -8,6 +9,7 @@ sekcje:
     naglowek: "O gabinecie: trzydzieści lat w jednym miejscu w Legnicy"
     tresc: "Prywatny gabinet stomatologiczny w centrum Legnicy, przy ul. Złotoryjskiej 16/18 m. 10. Prowadzi go lek. stom. Dorota Rożdżestwieńska — ten sam adres i ta sama lekarka od 1995 roku."
   - type: tekst
+    ikona: "tarcza"
     naglowek: "Gabinet istnieje już od trzydziestu lat"
     nadtytul: "Kim jesteśmy i od kiedy"
     tresc: |-
@@ -24,7 +26,7 @@ sekcje:
     zdjecie:
       plik: "dorota-rozdzestwienska.jpg"
       alt: "Lek. stom. Dorota Rożdżestwieńska, prowadząca gabinet przy ul. Złotoryjskiej w Legnicy"
-      podpis: "Lek. stom. Dorota Rożdżestwieńska — prowadzi gabinet przy ul. Złotoryjskiej 16/18 m. 10 od 1995 roku."
+      podpis: "lek. stom. Dorota Rożdżestwieńska — prowadzi gabinet przy ul. Złotoryjskiej 16/18 m. 10 od 1995 roku."
     strona_zdjecia: prawa
     wariant: domyslny
   - type: tekst
@@ -49,6 +51,7 @@ sekcje:
     przycisk:
       etykieta: "Jak wygląda pierwsza wizyta"
       strona: "pierwsza-wizyta"
+      styl: obrysowy
     wariant: wyrozniony
   - type: karty
     naglowek: "Na czym skupiamy się szczególnie"
@@ -79,11 +82,12 @@ sekcje:
     zdjecie:
       plik: "gabinet-09.jpg"
       alt: "Pacjent przy aparacie rentgenowskim z radiowizjografią do zdjęć punktowych"
-      podpis: "Zdjęcia punktowe i pantomogram wykonujemy na miejscu."
+      podpis: "Zdjęcia punktowe i pantomogram wykonujemy [na miejscu](/rtg-pantomogram/)."
     strona_zdjecia: prawa
     przycisk:
       etykieta: "Pełna lista wyposażenia"
       strona: "wyposazenie"
+      styl: obrysowy
     wariant: wyrozniony
   - type: tresc_z_bokiem
     naglowek: "Gdzie nas znajdziesz"
@@ -106,6 +110,7 @@ sekcje:
     tresc: "Godziny obok potwierdź przy zapisie telefonicznym — konkretną porę ustalamy w rozmowie. Dane rejestrowe praktyki (NIP, REGON, numer prawa wykonywania zawodu, numer wpisu do RPWDL) znajdziesz w stopce każdej strony."
     polacz: true
   - type: cytat
+    waska: true
     tekst: "Zdrowy i ładny uśmiech pacjenta — to nasza dewiza i satysfakcja."
     autor: "lek. stom. Dorota Rożdżestwieńska"
     wariant: wyrozniony

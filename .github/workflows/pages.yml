@@ -7,7 +7,12 @@
 #   2. budowanie Hugo (wersja przypieta ponizej) - BLAD albo OSTRZEZENIE
 #      (np. nieznany typ bloku, menu wskazujace nieistniejaca strone, zdjecie
 #      bez alt) przerywa przebieg,
-#   3. kontrole kompletnosci wyniku (strona glowna, panel /admin/).
+#   3. kontrole kompletnosci wyniku (strona glowna, panel /admin/),
+#   4. kontrole jakosci i zgodnosci zbudowanego HTML (tools/kontrola-strony.py:
+#      jeden h1, alt/width/height zdjec, linki wewnetrzne z prefiksem adresu,
+#      zadnych zasobow z obcych serwerow ani ramek bez zgody, JSON-LD i FAQ,
+#      zwroty niedozwolone w materialach gabinetu - art. 14 ustawy
+#      o dzialalnosci leczniczej, rezerwacja online).
 # Dopiero wtedy publikacja. Blad = w sieci zostaje poprzednia wersja, a w
 # repozytorium powstaje zgloszenie (job "powiadomienie").
 #
@@ -94,6 +99,12 @@ jobs:
             test -s "public/$plik" || { echo "::error::Brak public/$plik"; exit 1; }
           done
           echo "Plików w public/: $(find public -type f | wc -l)"
+
+      - name: Kontrola jakości i zgodności (zwroty niedozwolone, linki, zasoby)
+        run: |
+          # BLAD (x) przerywa publikacje; UWAGI (-) i zestawienie wagi stron
+          # sa w logu do przeczytania przez czlowieka.
+          python tools/kontrola-strony.py public --baseurl "${{ steps.pages.outputs.base_url }}/"
 
       - uses: actions/upload-pages-artifact@v5
         with:

@@ -4,7 +4,7 @@
 {{- $b := .blok -}}
 {{- $lg := cond (.duze | default false) " btn--lg" "" -}}
 {{- $tel := "" }}{{ if $b.pokaz_telefon }}{{ $tel = partial "telefon-btn.html" (dict "klasa" (printf "btn btn--primary%s" $lg)) }}{{ end -}}
-{{- $link := partial "przycisk.html" (dict "przycisk" $b.przycisk "gdzie" (printf "%s: przycisk w bloku hero" .gdzie) "klasa" (printf "btn btn--ghost%s" $lg)) -}}
+{{- $link := partial "przycisk.html" (dict "przycisk" $b.przycisk "gdzie" (printf "%s: przycisk w bloku hero" .gdzie) "domyslny" "obrysowy" "glowny" (printf "btn btn--primary%s" $lg) "obrysowy" (printf "btn btn--ghost%s" $lg)) -}}
 {{- if or (strings.TrimSpace $tel) (strings.TrimSpace $link) }}
       <div class="{{ .klasa | default "cluster" }}"{{ with .styl }} style="{{ . | safeCSS }}"{{ end }}>
         {{ $tel }}

@@ -1,6 +1,6 @@
 {{- /* Blok "lista_uslug": naglowek, wstep, tylko_wyroznione, kolumny (2 | 3 | 4).
        Karty usług makiety v1 (article.card.card--link) powstaja same ze stron
-       z polem "usluga": ikona, tytul strony, usluga.skrot, "od" + cena pozycji
+       z polem "usluga": ikona, usluga.nazwa (pusta = tytul strony), usluga.skrot, "od" + cena pozycji
        usluga.cena_od z cennika, "Zobacz szczegóły". */ -}}
 {{- $b := .blok -}}
 {{- $kol := printf "%v" ($b.kolumny | default 3) -}}
@@ -18,7 +18,7 @@
         {{- with $u.ikona }}
         <span class="card__ico">{{ partial "ikona.html" (dict "nazwa" . "gdzie" $miejsce) }}</span>
         {{- end }}
-        <h3><a class="stretched" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h3>
+        <h3><a class="stretched" href="{{ .RelPermalink }}">{{ $u.nazwa | default .LinkTitle }}</a></h3>
         {{- with $u.skrot }}
         <p>{{ . }}</p>
         {{- end }}

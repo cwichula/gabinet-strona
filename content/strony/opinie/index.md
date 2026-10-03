@@ -1,5 +1,6 @@
 ---
 title: "Opinie pacjentów"
+seo_tytul: "Opinie o gabinecie Legnica | lek. stom. D. Rożdżestwieńska"
 description: "Gabinet stomatologiczny Legnica: gdzie zostawić opinię, dlaczego nie publikujemy wymyślonych ocen i jak odpowiadamy na opinie pacjentów. Tel. 76 72-26-880."
 draft: false
 weight: 17
@@ -9,6 +10,7 @@ sekcje:
     tresc: "Nie mamy jeszcze zebranych opinii i nie zamierzamy ich kupować ani wymyślać. Zamiast ocen w gwiazdkach piszemy, gdzie opinię zostawić, o co nigdy nie prosimy i jak odpowiadamy na to, co pacjenci napiszą."
     wariant: domyslny
   - type: tekst
+    waska: true
     naglowek: "Dlaczego nie widzisz tu ani jednej opinii"
     tresc: |-
       Szukasz opinii o dentyście w Legnicy, więc powiemy wprost: na tej stronie ich nie ma. Gabinet nie zbierał dotąd opinii w żadnym serwisie, a opinii, których nie ma, nie da się uczciwie pokazać.
@@ -22,6 +24,7 @@ sekcje:
     wariant: domyslny
     polacz: true
   - type: tekst
+    waska: true
     naglowek: "Gdzie możesz zostawić opinię"
     tresc: "Jeśli byłeś u nas i chcesz opisać, jak to wyglądało, służy do tego Profil Firmy w Google. Opinia zostaje przy wizytówce gabinetu, widzą ją osoby szukające dentysty w Legnicy, a my nie możemy jej usunąć ani zmienić."
     wariant: wyrozniony
@@ -32,6 +35,7 @@ sekcje:
     wariant: wyrozniony
     polacz: true
   - type: lista
+    waska: true
     naglowek: "O opinię prosimy po leczeniu i nigdy nic nie dajemy w zamian"
     wstep: "Nie prosimy o opinię w fotelu ani między zabiegami. W trakcie leczenia nikt nie jest w sytuacji, w której łatwo powiedzieć „nie” osobie, która za chwilę będzie go leczyć."
     styl: ptaszki
@@ -42,6 +46,7 @@ sekcje:
       - "Nie podpowiadamy treści i nie prosimy o konkretną ocenę."
     wariant: domyslny
   - type: tekst
+    waska: true
     naglowek: "Jak odpowiadamy na opinie"
     tresc: |-
       Lekarza wiąże tajemnica lekarska i obowiązuje ona również w internecie. W publicznej odpowiedzi nigdy nie potwierdzamy, że autor opinii był naszym pacjentem, i nie odnosimy się do jego leczenia, rozpoznania ani kosztów — także wtedy, gdy sam je opisał.
@@ -49,6 +54,7 @@ sekcje:
       Odpowiadamy więc ogólnie: dziękujemy, a jeśli opinia dotyczy konkretnej sprawy medycznej, prosimy o telefon do gabinetu. O Twoim leczeniu możemy rozmawiać tylko tam.
     wariant: wyrozniony
   - type: tekst
+    waska: true
     naglowek: "Jeśli coś poszło nie tak"
     tresc: |-
       Ból, który nie ustępuje, wypadające wypełnienie, uwierająca proteza — to sprawy do rozwiązania, nie do oceniania. Zadzwoń, opisz, co się dzieje, i umów wizytę kontrolną. Obejrzymy to na miejscu i powiemy, co da się poprawić.
@@ -78,6 +84,7 @@ sekcje:
     przycisk:
       etykieta: "Zobacz zdjęcia gabinetu"
       strona: "galeria"
+      styl: obrysowy
     wariant: wyrozniony
   - type: cta
     naglowek: "Wolisz zapytać, zamiast czytać opinie?"

@@ -1,19 +1,39 @@
 {{- /* Ramka z boku (pole "bok" w blokach kontakt i tresc_z_bokiem):
-       dict naglowek, godziny, telefony, adres (bool; brak = godziny i telefony tak,
-       adres nie), notka. Wejscie: obiekt "bok". */ -}}
+       naglowek, godziny (bool), pozycje (id pozycji cennika), notka,
+       telefony (bool), przycisk, adres (bool), notka_dol. Brak = godziny
+       i telefony tak, adres nie; przy przycisku - tylko pierwszy telefon.
+       Wejscie: dict "bok", "strona". */ -}}
+{{- $b := .bok | default dict -}}
 {{- $g := hugo.Data.gabinet -}}
-{{- $godziny := ne .godziny false -}}
-{{- $telefony := ne .telefony false -}}
+{{- $gdzie := "Strona" }}{{ with .strona }}{{ with .File }}{{ $gdzie = .Path }}{{ end }}{{ end -}}
+{{- $godziny := ne $b.godziny false -}}
+{{- $telefony := ne $b.telefony false -}}
+{{- $tel := cond $telefony ($g.telefony | default slice) slice -}}
+{{- if and $b.przycisk $b.przycisk.etykieta $b.przycisk.strona }}{{ $tel = first 1 $tel }}{{ end -}}
 <aside class="bok">
-  <h3>{{ .naglowek | default (cond $godziny "Godziny przyjęć" "Kontakt") }}</h3>
+  <h3>{{ $b.naglowek | default (cond $godziny "Godziny przyjęć" (cond (gt (len ($b.pozycje | default slice)) 0) "Ceny z cennika" "Kontakt")) }}</h3>
   {{- if $godziny }}{{ partial "godziny-tabela.html" (dict "podpis" "") }}{{ end }}
-  {{- with .notka }}
-  <p>{{ . }}</p>
+  {{- with $b.pozycje }}
+  <ul>
+    {{- range . }}{{ with partial "cennik-pozycja.html" (dict "id" . "gdzie" (printf "%s: ramka z boku" $gdzie)) }}
+    <li>{{ .nazwa }} — {{ partial "cena.html" . }}</li>
+    {{- end }}{{ end }}
+  </ul>
+  {{- with hugo.Data.cennik.informacja }}
+  <p><small>{{ partial "tekst-wiersze.html" . }}</small></p>
   {{- end }}
-  {{- if $telefony }}{{ range $g.telefony }}
+  {{- end }}
+  {{- with $b.notka }}
+  <p>{{ partial "tekst-wiersze.html" . }}</p>
+  {{- end }}
+  {{- range $tel }}
   <p><a href="{{ printf "tel:%s" (partial "tel.html" .numer) | safeURL }}">{{ .numer }}</a></p>
-  {{- end }}{{ end }}
-  {{- if .adres }}{{ with $g.adres }}
+  {{- end }}
+  {{- partial "przycisk.html" (dict "przycisk" $b.przycisk "gdzie" (printf "%s: przycisk w ramce z boku" $gdzie)) }}
+  {{- if $b.adres }}{{ with $g.adres }}
   <p>{{ .ulica }}<br>{{ .kod }} {{ .miasto }}</p>
   {{- end }}{{ end }}
+  {{- with $b.notka_dol }}
+  <p>{{ partial "tekst-wiersze.html" . }}</p>
+  {{- end }}
 </aside>

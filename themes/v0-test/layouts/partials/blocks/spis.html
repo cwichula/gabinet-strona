@@ -1,0 +1,16 @@
+{{- /* Blok "spis": naglowek (nazwa spisu), elementy [{etykieta, kotwica}] -
+       lista odnosnikow do blokow tej strony. Kotwica, ktorej nie ma zaden
+       blok tej strony, przerywa budowanie. */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $kotwice := slice }}{{ range $.strona.Params.sekcje }}{{ with .kotwica }}{{ $kotwice = $kotwice | append . }}{{ end }}{{ end -}}
+<section {{ partial "blok-atrybuty.html" $b }}>
+  <nav aria-label="{{ $b.naglowek | default "Spis treści" }}">
+    <ul>
+      {{- range $b.elementy }}
+      {{- if not (in $kotwice .kotwica) }}{{ errorf "%s: spis treści wskazuje kotwicę %q, której nie ma żaden blok tej strony. Wpisz kotwicę w bloku (pole „Kotwica”) albo popraw spis w panelu /admin/." $gdzie .kotwica }}{{ end }}
+      <li><a href="#{{ .kotwica }}">{{ .etykieta }}</a></li>
+      {{- end }}
+    </ul>
+  </nav>
+</section>

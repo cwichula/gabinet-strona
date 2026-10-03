@@ -1,9 +1,25 @@
 # Ustawienia ogolne - edytowane w panelu /admin/ (kolekcja "Ustawienia").
 seo_opis: "Gabinet stomatologiczny w centrum Legnicy, ul. Złotoryjska 16/18. 30 lat praktyki, RTG z pantomografem na miejscu, leczenie bruksizmu szyną Michigan."
-stopka_tekst: "Zdrowy i ładny uśmiech pacjenta — to nasza dewiza i satysfakcja. Wizyty umawiamy telefonicznie."
+stopka_tekst: ""
+# Do czasu uzupelnienia danych rejestrowych, godzin i adresu rezerwacji online
+# strona jest ukryta przed wyszukiwarkami (jak makieta v1). Po uruchomieniu: false.
+ukryj_przed_wyszukiwarkami: true
 logo_nazwa: "Gabinet stomatologiczny"
 logo_podpis: "lek. stom. Dorota Rożdżestwieńska · Legnica"
 pasek_informacyjny: ""
+napisy:
+  przycisk_naglowka: ""
+  stopka_uslugi: ""
+  stopka_gabinet: ""
+  stopka_godziny: ""
+  cennik_podpowiedz: "Szukaj zabiegu, np. korona, szyna, piaskowanie"
+  formularz_zgoda: ""
+  formularz_uwaga: |-
+    **Formularz nie służy do przesyłania informacji o stanie zdrowia ani do konsultacji medycznych.** Nie wpisuj w nim objawów, rozpoznań, przyjmowanych leków ani wyników badań — to zwykła wiadomość elektroniczna, a nie dokumentacja medyczna.
+
+    Tego, co dzieje się w jamie ustnej, nie da się ocenić zdalnie: potrzebne jest badanie, a często także zdjęcie [RTG](/rtg-pantomogram/).
+  formularz_notka: ""
+  mapa_zgoda: ""
 strona_404:
   tytul: "Nie znaleziono strony"
   opis: "Tej strony nie ma pod tym adresem. Wróć na stronę główną gabinetu stomatologicznego w Legnicy lub zadzwoń do rejestracji."

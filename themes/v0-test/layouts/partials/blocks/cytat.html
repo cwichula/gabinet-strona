@@ -2,7 +2,7 @@
 {{- $b := .blok -}}
 <section {{ partial "blok-atrybuty.html" $b }}>
   <figure class="cytat">
-    <blockquote><p>{{ $b.tekst }}</p></blockquote>
+    <blockquote><p>{{ partial "tekst-wiersze.html" $b.tekst }}</p></blockquote>
     {{- with $b.autor }}
     <figcaption>— {{ . }}</figcaption>
     {{- end }}

@@ -1,0 +1,25 @@
+{{- /* Dane strukturalne (schema.org) w wersji minimalnej: gabinet (Dentist)
+       z data/gabinet.yaml, strona i - gdy strona ma bloki FAQ - FAQPage z ich
+       pytan (te same pytania co na stronie). Wejscie: Page. */ -}}
+{{- $g := hugo.Data.gabinet -}}
+{{- $dom := site.Home.Permalink -}}
+{{- $gab := dict "@type" "Dentist" "@id" (printf "%s#gabinet" $dom) "name" ($g.nazwa | default site.Title) "url" $dom -}}
+{{- with index ($g.telefony | default slice) 0 }}{{ $gab = merge $gab (dict "telephone" (partial "tel.html" .numer)) }}{{ end -}}
+{{- with $g.adres }}{{ $gab = merge $gab (dict "address" (dict "@type" "PostalAddress" "streetAddress" .ulica "postalCode" .kod "addressLocality" .miasto "addressCountry" "PL")) }}{{ end -}}
+{{- $graf := slice $gab -}}
+{{- if ne .Kind "404" -}}
+  {{- $graf = $graf | append (dict "@type" "WebPage" "@id" (printf "%s#strona" .Permalink) "url" .Permalink "name" (.Params.seo_tytul | default .Title) "inLanguage" "pl-PL") -}}
+  {{- $pytania := slice -}}
+  {{- range .Params.sekcje -}}
+    {{- if eq .type "faq" -}}
+      {{- range .elementy -}}
+        {{- if and .pytanie .odpowiedz -}}
+          {{- $odp := partial "markdown.html" (dict "strona" $ "tekst" .odpowiedz) | plainify | htmlUnescape | strings.TrimSpace -}}
+          {{- $pytania = $pytania | append (dict "@type" "Question" "name" .pytanie "acceptedAnswer" (dict "@type" "Answer" "text" $odp)) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $pytania }}{{ $graf = $graf | append (dict "@type" "FAQPage" "mainEntity" .) }}{{ end -}}
+{{- end }}
+<script type="application/ld+json">{{ dict "@context" "https://schema.org" "@graph" $graf | jsonify | safeJS }}</script>

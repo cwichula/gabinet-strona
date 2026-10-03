@@ -1,13 +1,20 @@
 {{- /* Bloki z front matter "sekcje" (docs/KONTRAKT-BLOKOW.md) w sekcjach makiety v1:
-         <section class="section [section--surface]"><div class="container">...</div></section>
+         <section class="section [section--surface] [section--tight]">
+           <div class="container [container--narrow]">...</div></section>
        Kazdy blok zaczyna nowa sekcje; blok z "polacz: true" dolacza do sekcji
-       powyzej (div.blok-dalej). Tlo (wariant) i kotwica sekcji - z jej pierwszego
-       bloku; kotwica bloku dolaczonego trafia na jego div. Baner (hero) to zawsze
-       osobna sekcja (partial sam ja buduje). Sekcja, ktorej bloki nic nie
-       wypisaly (np. wylaczona rezerwacja), znika.
+       powyzej (div.blok-dalej). Tlo (wariant), szerokosc (waska) i kotwica
+       sekcji - z jej pierwszego bloku; kotwica bloku dolaczonego trafia na jego div.
+       Gdy sekcja zaczyna sie blokiem z kolumna obok (tekst ze zdjeciem, tekst
+       z ramka z boku, kontakt z ramka z boku) albo ma dolaczony blok z ramka
+       z boku, kolejne bloki dolaczone trafiaja do jego kolumny tekstu
+       (znacznik <!--kolumna--> w partialu bloku) - jak w makiecie v1, gdzie
+       kroki, karta rezerwacji czy cytat stoja obok zdjecia albo ramki.
+       Baner (hero) to zawsze osobna sekcja (partial sam ja buduje). Sekcja,
+       ktorej bloki nic nie wypisaly (np. wylaczona rezerwacja), znika.
        Pierwsze zdjecie strony (w bloku nr 0 albo 1) laduje sie od razu
        (fetchpriority=high), pozostale leniwie.
-       Nieznany typ: ostrzezenie (w CI = blad). Ta sama kotwica dwa razy = blad. */ -}}
+       Nieznany typ: ostrzezenie (w CI = blad). Ta sama kotwica dwa razy albo
+       kotwica zarezerwowana przez szablon (np. "tresc") = blad. */ -}}
 {{- $strona := . -}}
 {{- $plik := "Strona" }}{{ with .File }}{{ $plik = .Path }}{{ end -}}
 {{- $sekcje := .Params.sekcje | default slice -}}
@@ -18,12 +25,18 @@
   {{- if and (lt $nrZdjecia 0) (le $nr 1) (or $b.zdjecie (and (eq $b.type "galeria") $b.elementy)) }}{{ $nrZdjecia = $nr }}{{ end -}}
 {{- end -}}
 
+{{- /* kotwice zarezerwowane (id uzywane przez szablony) - docs/KONTRAKT-BLOKOW.md */ -}}
+{{- $zarezerwowane := slice "tresc" "menu-mobilne" "lightbox" "cennik-tabela" "szukaj-ceny" -}}
+
 {{- /* grupowanie w sekcje */ -}}
 {{- $grupy := slice }}{{ $biezaca := slice }}{{ $kotwice := dict -}}
 {{- range $nr, $b := $sekcje -}}
   {{- $typ := $b.type | default "" -}}
   {{- with $b.kotwica -}}
     {{- if index $kotwice . }}{{ errorf "%s: kotwica %q występuje na stronie więcej niż raz (sekcja nr %d). Zmień ją w panelu /admin/." $plik . (add $nr 1) }}{{ end -}}
+    {{- if or (in $zarezerwowane .) (findRE `^(grupa|podmenu)-|^f[0-9]+-` .) -}}
+      {{- errorf "%s: kotwica %q (sekcja nr %d) jest zajęta przez szablon strony. Wybierz inną nazwę w panelu /admin/." $plik . (add $nr 1) -}}
+    {{- end -}}
     {{- $kotwice = merge $kotwice (dict . true) -}}
   {{- end -}}
   {{- if not (and $typ (templates.Exists (printf "partials/blocks/%s.html" $typ))) -}}
@@ -43,29 +56,52 @@
 
 {{- /* sekcje */ -}}
 {{- $waskie := slice "faq" "formularz" "rezerwacja" -}}
+{{- $znacznik := "<!--kolumna-->" -}}
+{{- $doKolumny := slice "tekst" "ramka" "kroki" "lista" "cytat" "przycisk" "rezerwacja" "godziny" -}}
 {{- range $g := $grupy -}}
   {{- $grupa := $g.bloki -}}
   {{- $pierwszy := (index $grupa 0).blok -}}
-  {{- $html := "" -}}
+  {{- $html := "" }}{{ $zwarta := eq $pierwszy.type "pasek_zaufania" -}}
   {{- range $i, $el := $grupa -}}
+    {{- if eq $el.blok.type "spis" }}{{ $zwarta = true }}{{ end -}}
     {{- $out := partial (printf "blocks/%s.html" $el.blok.type) (dict "blok" $el.blok "strona" $strona "nr" $el.nr "gora" (eq $i 0) "priorytet" (eq $el.nr $nrZdjecia)) | string | strings.TrimSpace -}}
     {{- if $out -}}
       {{- if not $html }}{{ $html = $out }}{{ else -}}
         {{- $id := "" }}{{ with $el.blok.kotwica }}{{ $id = printf ` id="%s"` (. | urlize) }}{{ end -}}
-        {{- $html = printf "%s\n<div class=\"blok-dalej\"%s>\n%s\n</div>" $html $id $out -}}
+        {{- $dalej := printf "\n<div class=\"blok-dalej\"%s>\n%s\n</div>" $id $out -}}
+        {{- /* blok dolaczony: do otwartej kolumny tekstu albo pod spodem.
+               Kolumne otwiera pierwszy blok sekcji (tekst ze zdjeciem, tekst
+               z ramka z boku, kontakt z ramka) albo dolaczony blok z ramka
+               z boku (tresc_z_bokiem, kontakt) - wtedy zamyka poprzednia.
+               Do kolumny trafiaja tylko bloki "waskie" ($doKolumny); blok
+               szeroki (karty, tabela, powiazane strony, cta, tekst ze zdjeciem...)
+               staje pod spodem i zamyka kolumne. */ -}}
+        {{- if strings.Contains $out $znacznik -}}
+          {{- if in (slice "tresc_z_bokiem" "kontakt") $el.blok.type -}}
+            {{- $html = printf "%s%s" (replace $html $znacznik "") $dalej -}}
+          {{- else -}}
+            {{- $html = printf "%s%s" (replace $html $znacznik "") (replace $dalej $znacznik "") -}}
+          {{- end -}}
+        {{- else if and (strings.Contains $html $znacznik) (in $doKolumny $el.blok.type) -}}
+          {{- $html = replace $html $znacznik (printf "%s%s" $dalej $znacznik) -}}
+        {{- else -}}
+          {{- $html = printf "%s%s" (replace $html $znacznik "") $dalej -}}
+        {{- end -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}
+  {{- $html = replace $html $znacznik "" -}}
   {{- if $html -}}
     {{- if eq $pierwszy.type "hero" }}
 {{ $html | safeHTML }}
     {{- else }}
     {{- $klasy := slice "section" }}
     {{- if eq $pierwszy.wariant "wyrozniony" }}{{ $klasy = $klasy | append "section--surface" }}{{ end }}
-    {{- if eq $pierwszy.type "pasek_zaufania" }}{{ $klasy = $klasy | append "section--tight" }}{{ end }}
+    {{- if $zwarta }}{{ $klasy = $klasy | append "section--tight" }}{{ end }}
+    {{- $waska := or $pierwszy.waska (in $waskie $pierwszy.type) }}
 
 <section class="{{ delimit $klasy " " }}"{{ with $pierwszy.kotwica }} id="{{ . | urlize }}"{{ end }}>
-  <div class="container{{ if in $waskie $pierwszy.type }} container--narrow{{ end }}">
+  <div class="container{{ if $waska }} container--narrow{{ end }}">
 {{ $html | safeHTML }}
   </div>
 </section>

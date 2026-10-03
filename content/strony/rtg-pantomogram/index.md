@@ -1,5 +1,6 @@
 ---
 title: "RTG i pantomogram"
+seo_tytul: "Pantomogram Legnica | Gabinet Dorota Rożdżestwieńska"
 description: "Pantomogram cyfrowy 120 zł, zdjęcie RTG punktowe z radiowizjografią 50 zł. Aparat rentgenowski z pantomografem stoi w gabinecie w Legnicy. Tel. 76 72-26-880."
 draft: false
 weight: 9
@@ -15,6 +16,7 @@ sekcje:
       Aparat rentgenowski z pantomografem oraz aparat do zdjęć punktowych z radiowizjografią stoją w gabinecie w centrum Legnicy (ul. Złotoryjska 16/18 m. 10). Zdjęcie wykonujemy w trakcie wizyty — nie odsyłamy Cię po nie do innej pracowni.
     wariant: domyslny
   - type: tekst
+    ikona: "rtg"
     naglowek: "Boli, a na pierwszy rzut oka wszystko wygląda dobrze"
     nadtytul: "Diagnostyka na miejscu"
     tresc: |-
@@ -28,8 +30,7 @@ sekcje:
     wariant: domyslny
   - type: tekst
     naglowek: "Pantomogram: wszystkie zęby na jednym zdjęciu"
-    tresc: |-
-      Zdjęcie panoramiczne obejmuje całą twarzoczaszkę w jednym ujęciu. To podstawa, od której zaczyna się każde większe leczenie: protetyczne, chirurgiczne oraz leczenie stawów skroniowo-żuchwowych.
+    wstep: "Zdjęcie panoramiczne obejmuje całą twarzoczaszkę w jednym ujęciu. To podstawa, od której zaczyna się każde większe leczenie: protetyczne, chirurgiczne oraz leczenie stawów skroniowo-żuchwowych."
     wariant: wyrozniony
   - type: tekst
     tresc: |-
@@ -69,6 +70,7 @@ sekcje:
     strona_zdjecia: lewa
     wariant: domyslny
   - type: kroki
+    waska: true
     naglowek: "Jak przebiega badanie"
     elementy:
       - tytul: "Rozmowa i uzasadnienie"
@@ -87,6 +89,7 @@ sekcje:
     wariant: wyrozniony
     polacz: true
   - type: tekst
+    waska: true
     naglowek: "Bezpieczeństwo i dawka promieniowania"
     tresc: |-
       Pytanie o dawkę jest zasadne i słyszymy je często. Dawka przy zdjęciu zębowym jest bardzo mała, a technika cyfrowa dodatkowo ją obniża: radiowizjografia potrzebuje krótszej ekspozycji niż zdjęcie na kliszy. Napromieniany jest wąski obszar twarzoczaszki, a pacjent dostaje osłonę.
@@ -98,6 +101,7 @@ sekcje:
         **Jeśli jesteś w ciąży lub ją podejrzewasz — powiedz o tym przed badaniem.** Decyzję o zdjęciu podejmuje wtedy lekarz indywidualnie: wykonuje się je tylko wtedy, gdy jest konieczne, zawsze w osłonie, a jeśli badanie może poczekać — przesuwamy je na później. Ta sama zasada dotyczy karmienia piersią i zdjęć u dzieci.
     wariant: domyslny
   - type: cennik
+    kolumna: "Badanie"
     naglowek: "Ile kosztuje zdjęcie"
     wstep: "Wyciąg z cennika gabinetu — pozycje dotyczące rentgenodiagnostyki."
     pozycje:

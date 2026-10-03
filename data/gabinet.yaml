@@ -9,13 +9,18 @@ adres:
   ulica: "ul. Złotoryjska 16/18 m. 10"
   kod: "59-220"
   miasto: "Legnica"
+  region: "dolnośląskie"
   dojazd: "Wejście od ul. Złotoryjskiej, od strony Optyka i Katedry. Parking w Galerii Gwarnej tuż obok."
+  parking: "Galeria Gwarna tuż obok"
+  wspolrzedne: "51.207798, 16.158593"
 telefony:
-  - etykieta: "Rejestracja (telefon stacjonarny)"
+  - etykieta: "Telefon do rejestracji"
     numer: "76 72-26-880"
   - etykieta: "Telefon komórkowy"
     numer: "699 904 989"
 email: "gabstom13@wp.pl"
+obszar:
+  - "powiat legnicki"
 godziny:
   - dzien: "Poniedziałek"
     od: "9:00"
@@ -45,11 +50,13 @@ rezerwacja:
   dostawca: "Booksy"
   potwierdzona: false
   nota: "Rezerwacja online odbywa się w serwisie Booksy — to osobny administrator Twoich danych. Termin potwierdza gabinet telefonicznie."
+# Dane rejestrowe: do uzupelnienia przez gabinet (NIP, REGON, nr prawa
+# wykonywania zawodu, nr ksiegi RPWDL). Puste = wiersz w stopce sie nie pokazuje.
 rejestrowe:
-  nip: "DO_UZUPEŁNIENIA"
-  regon: "DO_UZUPEŁNIENIA"
-  pwz: "DO_UZUPEŁNIENIA"
-  rpwdl: "DO_UZUPEŁNIENIA"
+  nip: ""
+  regon: ""
+  pwz: ""
+  rpwdl: ""
 platnosci:
   - "gotówka"
   - "karta płatnicza"

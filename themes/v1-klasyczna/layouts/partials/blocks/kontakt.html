@@ -1,6 +1,7 @@
 {{- /* Blok "kontakt": naglowek, tresc, bok (ramka z boku); telefony, e-mail,
-       adres i dojazd z data/gabinet.yaml jako lista dl > div.contact-item makiety v1.
-       Z polem "bok": uklad split--sidebar (dane + aside.sidebar-card). */ -}}
+       adres i parking (albo dojazd) z data/gabinet.yaml jako lista dl > div.contact-item
+       makiety v1. Z polem "bok": uklad split--sidebar (dane + aside.sidebar-card),
+       bloki dolaczone ("polacz") trafiaja do kolumny z danymi. */ -}}
 {{- $b := .blok -}}
 {{- $g := hugo.Data.gabinet -}}
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
@@ -9,7 +10,9 @@
     <div class="split split--sidebar">
     <div>
 {{- end }}
-      <h2 style="margin-top:0">{{ $b.naglowek | default "Kontakt" }}</h2>
+      {{- with $b.naglowek | default (cond $.gora "Kontakt" "") }}
+      <h2 style="margin-top:0">{{ . }}</h2>
+      {{- end }}
       {{- with $b.tresc }}
       {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede" "styl" "max-width:56ch") }}
       {{- end }}
@@ -41,19 +44,29 @@
           </dt>
           <dd>{{ .ulica }}, {{ .kod }} {{ .miasto }}</dd>
         </div>
-        {{- with .dojazd }}
+        {{- /* parking (krotko, jak w v1), a gdy go nie ma - opis dojazdu */}}
+        {{- if .parking }}
+        <div class="contact-item">
+          <dt>
+            <svg class="ico" aria-hidden="true" style="{{ $ikona | safeCSS }}"><use href="#ico-parking"></use></svg>
+            Parking
+          </dt>
+          <dd>{{ .parking }}</dd>
+        </div>
+        {{- else }}{{ with .dojazd }}
         <div class="contact-item">
           <dt>
             <svg class="ico" aria-hidden="true" style="{{ $ikona | safeCSS }}"><use href="#ico-parking"></use></svg>
             Dojazd
           </dt>
-          <dd>{{ . }}</dd>
+          <dd>{{ partial "tekst-wiersze.html" . }}</dd>
         </div>
-        {{- end }}
+        {{- end }}{{ end }}
         {{- end }}
       </dl>
 {{- with $b.bok }}
+      {{ "<!--kolumna-->" | safeHTML }}
     </div>
-{{ partial "bok.html" . }}
+{{ partial "bok.html" (dict "bok" . "strona" $.strona "duze" true) }}
     </div>
 {{- end }}

@@ -4,6 +4,14 @@
   {{- with $g.adres }}
   <dt>Adres</dt>
   <dd>{{ .ulica }}<br>{{ .kod }} {{ .miasto }}</dd>
+  {{- with .parking }}
+  <dt>Parking</dt>
+  <dd>{{ . }}</dd>
+  {{- end }}
+  {{- with .dojazd }}
+  <dt>Dojazd</dt>
+  <dd>{{ partial "tekst-wiersze.html" . }}</dd>
+  {{- end }}
   {{- end }}
   {{- range $g.telefony }}
   <dt>{{ .etykieta | default "Telefon" }}</dt>

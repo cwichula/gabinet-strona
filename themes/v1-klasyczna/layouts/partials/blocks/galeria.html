@@ -7,7 +7,7 @@
     {{- if $b.naglowek }}
     <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ $b.naglowek }}</h2>
     {{- else }}
-    <h2 class="visually-hidden">Zdjęcia</h2>
+    <h2 class="visually-hidden">Zdjęcia gabinetu</h2>
     {{- end }}
     {{- with $b.wstep }}
     {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede" "styl" "max-width:60ch") }}
@@ -16,7 +16,7 @@
       {{- range $i, $z := $b.elementy }}
       {{- with partial "zdjecie-zasob.html" (dict "strona" $.strona "zdjecie" $z "gdzie" (printf "%s: galeria, zdjęcie nr %d" $gdzie (add $i 1))) }}
       {{- $alt := $z.alt | strings.TrimSpace }}
-      {{- $opis := $z.podpis | default $alt }}
+      {{- $opis := $alt }}{{ with $z.podpis }}{{ $opis = partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .) | plainify | htmlUnescape | strings.TrimSpace }}{{ end }}
       {{- if eq .MediaType.SubType "svg" }}
       <button type="button" data-lightbox data-full="{{ .RelPermalink }}" data-alt="{{ $opis }}">
         <img src="{{ .RelPermalink }}" alt="{{ $alt }}"{{ if ge $i 4 }} loading="lazy"{{ end }} decoding="async">

@@ -1,5 +1,6 @@
 ---
 title: "Pierwsza wizyta"
+seo_tytul: "Pierwsza wizyta Legnica | Gabinet Dorota Rożdżestwieńska"
 description: "Pierwsza wizyta u dentysty, Legnica: jak się umówić, co przygotować, ile trwa i ile kosztuje — badanie z konsultacją 100 zł. Rejestracja: 76 72-26-880."
 draft: false
 weight: 15
@@ -9,6 +10,7 @@ sekcje:
     tresc: "Rozmowa, badanie, plan leczenia z ceną, termin. Opisujemy tu każdy z tych czterech kroków — razem z tym, co przygotować i ile to kosztuje."
     wariant: domyslny
   - type: tekst
+    pokaz_telefony: true
     naglowek: "Jak się umówić"
     tresc: |-
       Wizytę umawiasz telefonicznie: dzwonisz, mówisz, co Cię sprowadza, i ustalamy termin w rozmowie. Telefon jest drogą najpewniejszą i nic jej nie zastępuje.
@@ -23,7 +25,6 @@ sekcje:
     strona_zdjecia: lewa
     wariant: domyslny
   - type: rezerwacja
-    naglowek: "Rezerwacja online"
     wariant: domyslny
     polacz: true
   - type: tekst
@@ -34,6 +35,7 @@ sekcje:
     wariant: domyslny
     polacz: true
   - type: lista
+    waska: true
     naglowek: "Co przygotować"
     wstep: "Każda z tych informacji wpływa na to, jakie leczenie i znieczulenie są dla Ciebie bezpieczne."
     styl: ptaszki
@@ -50,9 +52,19 @@ sekcje:
     tresc: "Nie masz tego pod ręką? To nie powód, żeby odkładać wizytę. O leki, choroby i alergie pytamy na początku rozmowy."
     wariant: wyrozniony
     polacz: true
-  - type: kroki
+  - type: tresc_z_bokiem
     naglowek: "Jak przebiega wizyta"
     wstep: "Cztery kroki, zawsze w tej samej kolejności."
+    bok:
+      naglowek: "Godziny przyjęć"
+      godziny: true
+      notka: "Termin wizyty potwierdza gabinet telefonicznie."
+      telefony: true
+      przycisk:
+        etykieta: "Dojazd i mapa"
+        strona: "kontakt"
+    wariant: domyslny
+  - type: kroki
     elementy:
       - tytul: "Rozmowa"
         tresc: "Zaczynamy od pytań, nie od fotela. Co boli, od kiedy i czy ból jest stały. Pytamy o leki, choroby i alergie. Jeśli ostatni raz byłeś u dentysty wiele lat temu, powiedz to wprost — zmienia to sposób, w jaki prowadzimy wizytę."
@@ -62,19 +74,9 @@ sekcje:
         tresc: "Mówimy, co wymaga leczenia od razu, co może poczekać i co da się rozłożyć na kilka wizyt. Przy każdej pozycji podajemy cenę z [cennika](/cennik/), więc decyzję podejmujesz, znając kwotę."
       - tytul: "Termin"
         tresc: "Kolejne wizyty umawiamy od razu, jeszcze w gabinecie. Przed terminem przyjdzie przypomnienie SMS-em."
-    wariant: domyslny
-  - type: godziny
-    naglowek: "Godziny przyjęć"
-    tresc: "Termin wizyty potwierdza gabinet telefonicznie."
-    wariant: domyslny
-    polacz: true
-  - type: przycisk
-    etykieta: "Dojazd i mapa"
-    strona: "kontakt"
-    styl: obrysowy
-    wariant: domyslny
     polacz: true
   - type: tekst
+    waska: true
     naglowek: "Ile to trwa i ile kosztuje"
     tresc: "Zaplanuj na pierwszą wizytę mniej więcej pół godziny. Zdjęcie RTG dodaje kilka minut — robimy je na miejscu, bez odsyłania do innej pracowni."
     wariant: wyrozniony
@@ -110,6 +112,7 @@ sekcje:
         tresc: "Przed wizytą dostaniesz SMS z terminem. Numer wykorzystujemy tylko w tym celu; opisuje to [polityka prywatności](/polityka-prywatnosci/)."
     wariant: domyslny
   - type: tekst
+    ikona: "serce"
     naglowek: "Lęk przed dentystą to informacja, nie wstyd"
     nadtytul: "Jeśli boisz się dentysty"
     tresc: |-
@@ -148,12 +151,14 @@ sekcje:
       - strona: "cennik"
         opis: "Ceny badania, wypełnień, protez i zdjęć RTG"
       - strona: "kontakt"
+        etykieta: "Dojazd i kontakt"
         opis: "Wejście od ul. Złotoryjskiej, parking w Galerii Gwarnej"
       - strona: "dentysta-dla-dzieci"
         opis: "Pierwsza wizyta dziecka ma charakter adaptacyjny"
     wariant: domyslny
     polacz: true
   - type: cta
+    wszystkie_telefony: true
     naglowek: "Umów pierwszą wizytę"
     tresc: "Rejestracja telefoniczna od poniedziałku do czwartku. Powiedz, co Cię sprowadza."
     wariant: domyslny

@@ -1,7 +1,9 @@
 {{- /* Blok "faq": naglowek, elementy [{pytanie, odpowiedz}]. Bez JS (details/summary). */ -}}
 {{- $b := .blok -}}
 <section {{ partial "blok-atrybuty.html" $b }}>
-  <h2>{{ $b.naglowek | default "Najczęstsze pytania" }}</h2>
+  {{- with $b.naglowek | default (cond (and $b.polacz (gt $.nr 0)) "" "Najczęstsze pytania") }}
+  <h2>{{ . }}</h2>
+  {{- end }}
   {{- range $b.elementy }}
   <details>
     <summary>{{ .pytanie }}</summary>

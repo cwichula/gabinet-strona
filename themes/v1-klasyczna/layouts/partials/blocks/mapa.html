@@ -1,30 +1,38 @@
-{{- /* Blok "mapa": naglowek, tresc; adres i dojazd z data/gabinet.yaml.
+{{- /* Blok "mapa": naglowek, tresc; adres i dojazd z data/gabinet.yaml, tekst
+       zgody z data/ustawienia.yaml (napisy.mapa_zgoda; pusty = tekst domyslny).
        Mapa Google jak w makiecie v1: ramka (iframe) powstaje dopiero po
        kliknieciu "Pokaz mape Google" (skrypt v1) - wczesniej Google nie dostaje
        adresu IP odwiedzajacego. Obok zawsze odnosnik do nawigacji w nowej karcie. */ -}}
 {{- $b := .blok -}}
 {{- $a := hugo.Data.gabinet.adres | default dict -}}
+{{- $n := (hugo.Data.ustawienia | default dict).napisy | default dict -}}
 {{- /* zapytanie do map: bez "ul." i bez numeru lokalu ("m. 10"), ktore myla wyszukiwarke */ -}}
 {{- $ulica := replaceRE `\s+m\.\s*\d+\s*$` "" ($a.ulica | default "") | replaceRE `^(?i)ul\.\s*` "" -}}
 {{- $zapytanie := printf "%s, %s %s" $ulica ($a.kod | default "") ($a.miasto | default "") | urlquery -}}
-    <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ $b.naglowek | default "Jak do nas trafić" }}</h2>
+    {{- with $b.naglowek | default (cond $.gora "Jak do nas trafić" "") }}
+    <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ . }}</h2>
+    {{- end }}
     {{- with $b.tresc }}
     {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede" "styl" "max-width:62ch") }}
     {{- end }}
-    {{- with $a.ulica }}
+    {{- /* adres i dojazd w punktach - tylko gdy strona nie ma bloku "kontakt"
+           (tam juz sa; makieta v1 nie powtarza ich nad mapa) */}}
+    {{- $zKontaktem := false }}{{ range $.strona.Params.sekcje }}{{ if eq .type "kontakt" }}{{ $zKontaktem = true }}{{ end }}{{ end }}
+    {{- $lista := and $a.ulica (not $zKontaktem) }}
+    {{- if $lista }}
     <ul class="checklist">
       <li>Adres: <strong>{{ $a.ulica }}</strong>, {{ $a.kod }} {{ $a.miasto }}</li>
       {{- with $a.dojazd }}
-      <li>{{ . }}</li>
+      <li>{{ partial "tekst-wiersze.html" . }}</li>
       {{- end }}
     </ul>
     {{- end }}
-      <div class="map-embed" data-map style="margin-top:1.5rem"
+      <div class="map-embed" data-map{{ if $lista }} style="margin-top:1.5rem"{{ end }}
            data-map-src="https://www.google.com/maps?q={{ $zapytanie | safeURL }}&output=embed&hl=pl&z=17">
         <div class="map-consent">
           <svg class="ico" aria-hidden="true" style="width:2rem;height:2rem;color:var(--brand-600)"><use href="#ico-map"></use></svg>
           <strong>Mapa dojazdu</strong>
-          <p>Mapa pochodzi z serwisu Google. Jej wczytanie przekaże Google Twój adres IP, dlatego ładujemy ją dopiero po Twoim kliknięciu.</p>
+          <p>{{ with $n.mapa_zgoda }}{{ partial "tekst-wiersze.html" . }}{{ else }}Mapa pochodzi z serwisu Google. Jej wczytanie przekaże Google Twój adres IP, dlatego ładujemy ją dopiero po Twoim kliknięciu.{{ end }}</p>
           <button class="btn btn--primary" type="button" data-map-load>Pokaż mapę Google</button>
           <p><a href="https://www.google.com/maps/dir/?api=1&amp;destination={{ $zapytanie | safeURL }}"
                 target="_blank" rel="noopener">Albo otwórz nawigację w nowej karcie →</a></p>

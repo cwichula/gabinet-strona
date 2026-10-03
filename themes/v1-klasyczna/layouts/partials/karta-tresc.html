@@ -1,0 +1,5 @@
+{{- /* Tresc karty (Markdown); "ptaszki" = listy jako ul.checklist (lista zalet).
+       Wejscie: dict "strona", "tekst", "ptaszki" (bool). */ -}}
+{{- $html := partial "markdown.html" (dict "strona" .strona "tekst" .tekst) | string -}}
+{{- if .ptaszki }}{{ $html = replace $html "<ul>" `<ul class="checklist">` }}{{ end -}}
+{{- $html | safeHTML -}}

@@ -1,5 +1,6 @@
 ---
 title: "Wyposażenie gabinetu"
+seo_tytul: "Wyposażenie gabinetu Legnica | Dorota Rożdżestwieńska"
 description: "Pantomograf i radiowizjografia na miejscu, kamera wewnątrzustna, przypomnienia SMS, płatność kartą i BLIKIEM, klimatyzacja. Gabinet w Legnicy: 76 72-26-880."
 draft: false
 weight: 16
@@ -9,10 +10,12 @@ sekcje:
     tresc: "Sprzęt sam nikogo nie wyleczy. Decyduje jednak o tym, czy po zdjęcie RTG jedziesz na drugi koniec Legnicy, czy robimy je w trakcie tej samej wizyty — i czy wiesz, co lekarz widzi w Twoich zębach."
     wariant: domyslny
   - type: tekst
+    waska: true
     naglowek: "Co jest w gabinecie i po co"
     tresc: "Poniżej opisujemy wyposażenie gabinetu przy ul. Złotoryjskiej 16/18 m. 10. Bez nazw producentów i katalogowych parametrów — tylko to, co z tego wynika dla Ciebie, kiedy siedzisz w fotelu."
     wariant: domyslny
   - type: tekst
+    ikona: "rtg"
     naglowek: "Aparat RTG z pantomografem"
     nadtytul: "Diagnostyka obrazowa"
     tresc: |-
@@ -51,6 +54,7 @@ sekcje:
     strona_zdjecia: lewa
     wariant: domyslny
   - type: tekst
+    ikona: "aparat"
     naglowek: "Kamera wewnątrzustna"
     nadtytul: "Rozmowa o leczeniu"
     tresc: |-
@@ -67,6 +71,7 @@ sekcje:
     przycisk:
       etykieta: "Jak wygląda pierwsza wizyta"
       strona: "pierwsza-wizyta"
+      styl: obrysowy
     wariant: wyrozniony
   - type: karty
     naglowek: "Udogodnienia podczas wizyty"
@@ -97,11 +102,14 @@ sekcje:
     wariant: domyslny
   - type: tekst
     naglowek: "Dostępność gabinetu"
-    tresc: "Gabinet mieści się w centrum Legnicy, pod adresem ul. Złotoryjska 16/18 m. 10. Nie opisujemy tu udogodnień, których nie moglibyśmy potwierdzić."
     wariant: wyrozniony
+    waska: true
   - type: ramka
     rodzaj: info
-    tresc: "Jeśli poruszasz się z trudnością, korzystasz z wózka albo kul, przychodzisz z małym dzieckiem w wózku lub masz inne szczególne potrzeby — zadzwoń przed wizytą pod 76 72-26-880. Powiemy dokładnie, jak wygląda dojście do gabinetu, i umówimy Cię na godzinę, w której będziemy mogli pomóc."
+    tresc: |-
+      Gabinet mieści się w centrum Legnicy, pod adresem ul. Złotoryjska 16/18 m. 10. Nie opisujemy tu udogodnień, których nie moglibyśmy potwierdzić.
+
+      Jeśli poruszasz się z trudnością, korzystasz z wózka albo kul, przychodzisz z małym dzieckiem w wózku lub masz inne szczególne potrzeby — zadzwoń przed wizytą pod 76 72-26-880. Powiemy dokładnie, jak wygląda dojście do gabinetu, i umówimy Cię na godzinę, w której będziemy mogli pomóc.
     ikona: dostepnosc
     wariant: wyrozniony
     polacz: true
@@ -138,6 +146,7 @@ sekcje:
       - strona: "rtg-pantomogram"
         opis: "Kiedy zdjęcie jest potrzebne i jak przebiega"
       - strona: "galeria"
+        etykieta: "Galeria zdjęć"
         opis: "Poczekalnia, stanowisko zabiegowe i pracownia RTG"
       - strona: "pierwsza-wizyta"
         opis: "Co się dzieje krok po kroku i ile to kosztuje"

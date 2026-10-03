@@ -1,4 +1,6 @@
 {{- /* Blok "formularz": naglowek, wstep, tematy (napisy; puste = domyslne).
+       Tekst zgody, ostrzezenie o danych o zdrowiu i notka pod formularzem -
+       z data/ustawienia.yaml (napisy.formularz_*; puste = tekst domyslny ponizej).
        Formularz kontaktowy makiety v1 (form.form[data-demo-form]): przegladarka
        sprawdza pola, skrypt v1 pokazuje potwierdzenie, ale NIC nie jest
        wysylane - strona na GitHub Pages nie ma serwera pocztowego. Mowia o tym
@@ -10,7 +12,14 @@
 {{- $tematy := $b.tematy | default (slice "Umówienie wizyty" "Pytanie o cenę" "Pytanie o leczenie" "Inne") -}}
 {{- $p := printf "f%d-" .nr -}}
 {{- $polityka := site.GetPage "/strony/polityka-prywatnosci" -}}
-    <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ $b.naglowek | default "Napisz do nas" }}</h2>
+{{- $n := (hugo.Data.ustawienia | default dict).napisy | default dict -}}
+{{- /* telefony do zdania "W sprawach pilnych ... zadzwon" */ -}}
+{{- $nr := slice -}}
+{{- range $i, $t := $m.telefony }}{{ $nr = $nr | append (printf `<a href="tel:%s">%s</a>` $t.tel (cond (eq $i 0) (printf "<strong>%s</strong>" $t.numer) $t.numer)) }}{{ end -}}
+{{- $pilne := "" }}{{ with $nr }}{{ $pilne = printf "W sprawach pilnych i przy bólu zadzwoń: %s." (delimit . ", " " lub ") }}{{ end -}}
+    {{- with $b.naglowek | default (cond $.gora "Napisz do nas" "") }}
+    <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ . }}</h2>
+    {{- end }}
     {{- with $b.wstep }}
     {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede") }}
     {{- end }}
@@ -56,7 +65,11 @@
       <div class="consent">
         <input type="checkbox" id="{{ $p }}zgoda" name="zgoda" required>
         <label for="{{ $p }}zgoda">
+          {{- with $n.formularz_zgoda }}
+          {{ partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .) }} <span class="req">*</span>
+          {{- else }}
           Wyrażam zgodę na przetwarzanie podanych danych w celu udzielenia odpowiedzi na moje zapytanie i ustalenia terminu wizyty. Administratorem danych jest {{ $g.nazwa_krotka | default $g.nazwa }}{{ with $g.adres }}, {{ .ulica }}, {{ .kod }} {{ .miasto }}{{ end }}. Podstawą przetwarzania jest art. 6 ust. 1 lit. a i b RODO — moja zgoda oraz działania podejmowane na moje żądanie przed zawarciem umowy. Zgodę mogę wycofać w każdej chwili, a wycofanie nie wpływa na zgodność z prawem przetwarzania, którego dokonano przed jej cofnięciem.{{ with $polityka }} Szczegóły opisuje <a href="{{ .RelPermalink }}">polityka prywatności</a>.{{ end }} <span class="req">*</span>
+          {{- end }}
         </label>
       </div>
 
@@ -68,7 +81,7 @@
       </div>
 
       <p class="form__note">
-        Pola oznaczone gwiazdką są obowiązkowe. Na tej stronie formularz sprawdza poprawność pól, ale jeszcze niczego nie wysyła — w sprawie wizyty zadzwoń.
+        {{ with $n.formularz_notka }}{{ partial "tekst-wiersze.html" . }}{{ else }}Pola oznaczone gwiazdką są obowiązkowe. Na tej stronie formularz sprawdza poprawność pól, ale jeszcze niczego nie wysyła — w sprawie wizyty zadzwoń.{{ end }}
       </p>
     </form>
 
@@ -85,13 +98,20 @@
     <div class="callout callout--warn" style="margin-top:2rem">
       <svg class="ico" aria-hidden="true"><use href="#ico-warn"></use></svg>
       <div>
+        {{- with $n.formularz_uwaga }}
+        {{- /* tekst z panelu; zdanie z telefonami doklejone do ostatniego akapitu */}}
+        {{- $html := partial "markdown.html" (dict "strona" $.strona "tekst" .) | string | strings.TrimSpace }}
+        {{- if and $pilne (strings.HasSuffix $html "</p>") }}{{ $html = printf "%s %s</p>" (strings.TrimSuffix "</p>" $html) $pilne }}{{ else if $pilne }}{{ $html = printf "%s<p>%s</p>" $html $pilne }}{{ end }}
+        {{ $html | safeHTML }}
+        {{- else }}
         <p>
           <strong>Formularz nie służy do przesyłania informacji o stanie zdrowia ani do konsultacji medycznych.</strong> Nie wpisuj w nim objawów, rozpoznań, przyjmowanych leków ani wyników badań — to zwykła wiadomość elektroniczna, a nie dokumentacja medyczna.
         </p>
-        {{- with $m.telefon }}
+        {{- with $pilne }}
         <p>
-          W sprawach pilnych i przy bólu zadzwoń: <a href="{{ printf "tel:%s" .tel | safeURL }}"><strong>{{ .numer }}</strong></a>.
+          {{ . | safeHTML }}
         </p>
+        {{- end }}
         {{- end }}
       </div>
     </div>

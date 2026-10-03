@@ -1,0 +1,15 @@
+{{- /* Przyciski z numerami telefonow gabinetu (div.cluster jak w makiecie v1):
+       pierwszy numer wypelniony z ikona, kolejne obrysowane.
+       Wejscie: dict "styl" (atrybut style), "lg" (bool - duze przyciski),
+       "ile" (ile numerow; domyslnie wszystkie). */ -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- $lg := cond (.lg | default false) " btn--lg" "" -}}
+{{- $tel := $m.telefony -}}
+{{- with .ile }}{{ $tel = first . $tel }}{{ end -}}
+{{- with $tel }}
+        <div class="cluster"{{ with $.styl }} style="{{ . | safeCSS }}"{{ end }}>
+          {{- range $i, $t := . }}
+          {{ partial "telefon-btn.html" (dict "telefon" $t "klasa" (printf "btn %s%s" (cond (eq $i 0) "btn--primary" "btn--ghost") $lg) "ikona" (eq $i 0)) }}
+          {{- end }}
+        </div>
+{{- end -}}

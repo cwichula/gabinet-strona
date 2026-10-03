@@ -139,7 +139,19 @@ collections:
       - name: title
         label: Tytuł strony
         widget: string
-        hint: Nagłówek strony i jej nazwa w karcie przeglądarki.
+        hint: >-
+          Nazwa strony: w karcie przeglądarki i w Google (z nazwą gabinetu), w ścieżce
+          nawigacji, na kartach usług, w stopce i w „Powiązanych stronach”. Nagłówek
+          na samej stronie bierze się z banera (blok „Baner”), a bez banera — z tytułu.
+      - &seo_tytul
+        name: seo_tytul
+        label: Tytuł w wyszukiwarce (opcjonalnie)
+        widget: string
+        required: false
+        hint: >-
+          Pełny tytuł w Google i w karcie przeglądarki, np. „Cennik stomatologiczny
+          Legnica | Gabinet Rożdżestwieńska” (najlepiej do 60 znaków). Puste = tytuł
+          strony z nazwą gabinetu.
       - name: description
         label: Opis dla wyszukiwarek
         widget: text
@@ -150,9 +162,10 @@ collections:
         label: Ukryta (szkic)
         widget: boolean
         default: false
+        required: false
         hint: Włączone = strony nie ma w sieci ani w menu.
       - name: usluga
-        label: Strona usługi
+        label: Opis usługi (gdy strona opisuje usługę)
         widget: object
         required: false
         collapsed: true
@@ -164,14 +177,20 @@ collections:
             label: Usługa wyróżniona
             widget: boolean
             default: false
+            required: false
             hint: Blok „Lista usług” może pokazywać tylko usługi wyróżnione.
+          - name: nazwa
+            label: Nazwa na karcie usługi
+            widget: string
+            required: false
+            hint: Np. „Licówki kompozytowe”. Puste = tytuł strony.
           - &ikona
             name: ikona
             label: Ikona
             widget: select
             required: false
             hint: Mały rysunek przy tytule. Szablon dobiera do niego własną grafikę.
-            options:
+            options: &ikony
               - { label: Ząb, value: zab }
               - { label: Iskra (estetyka), value: iskra }
               - { label: Iskry (higiena), value: iskry }
@@ -243,6 +262,13 @@ collections:
                 widget: string
                 required: false
                 hint: Krótki napis nad nagłówkiem, np. „30 lat praktyki w centrum Legnicy”.
+              - &ikona_nadtytulu
+                name: ikona
+                label: Ikona przy nadtytule
+                widget: select
+                required: false
+                options: *ikony
+                hint: Mały rysunek przed nadtytułem (bez nadtytułu się nie pokazuje). Szablon może go pominąć.
               - &tresc_opcjonalna
                 name: tresc
                 label: Treść
@@ -264,7 +290,7 @@ collections:
                     label: Opis zdjęcia (tekst alternatywny)
                     widget: string
                     hint: Co widać na zdjęciu — dla osób niewidomych i dla wyszukiwarek.
-                  - { name: podpis, label: Podpis pod zdjęciem, widget: string, required: false }
+                  - { name: podpis, label: Podpis pod zdjęciem, widget: string, required: false, hint: 'Pogrubienie — **tak**, link — [tekst](/adres-strony/). W banerze szablon może podpis pominąć.' }
               - &przycisk
                 name: przycisk
                 label: Przycisk
@@ -280,6 +306,23 @@ collections:
                     value_field: '{{slug}}'
                     display_fields: [title]
                     search_fields: [title]
+                  - name: styl
+                    label: Wygląd
+                    widget: select
+                    required: false
+                    hint: Puste = wygląd zwykły dla tego miejsca.
+                    options:
+                      - { label: Wypełniony (najważniejszy), value: glowny }
+                      - { label: Obrysowany (drugorzędny), value: obrysowy }
+                  - &kotwica_celu
+                    name: kotwica_celu
+                    label: Miejsce na stronie docelowej (kotwica)
+                    widget: string
+                    required: false
+                    pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Tylko małe litery bez ogonków, cyfry i myślniki, np. ceny']
+                    hint: >-
+                      Opcjonalnie. Kotwica bloku na tamtej stronie, np. „ceny”; grupa
+                      w pełnym cenniku to „grupa-<identyfikator kategorii>”, np. grupa-stawy.
               - name: pokaz_telefon
                 label: Przycisk „Zadzwoń”
                 widget: boolean
@@ -302,7 +345,7 @@ collections:
                     widget: string
                     hint: Pogrubienie — **tak**.
               - name: plakietka
-                label: Plakietka na zdjęciu
+                label: Napis na zdjęciu (plakietka)
                 widget: object
                 required: false
                 fields:
@@ -317,7 +360,19 @@ collections:
                 options:
                   - { label: Zwykłe, value: domyslny }
                   - { label: Wyróżnione (kolorowe tło), value: wyrozniony }
-                hint: Szablon może wyglądać inaczej dla każdego wariantu.
+                hint: >-
+                  Szablon może wyglądać inaczej dla każdego wariantu (w banerze może
+                  je pominąć). W bloku połączonym z blokiem powyżej tło bierze się z tamtego bloku.
+              - &waska
+                name: waska
+                label: Wąska kolumna (tekst do czytania)
+                widget: boolean
+                default: false
+                required: false
+                hint: >-
+                  Włączone: sekcja ma węższą, wyśrodkowaną kolumnę — wygodniej czyta się
+                  dłuższy tekst. Bloki FAQ, formularz i rezerwacja są wąskie zawsze.
+                  W bloku połączonym z blokiem powyżej decyduje tamten blok.
               - &polacz
                 name: polacz
                 label: Połącz z blokiem powyżej
@@ -326,13 +381,15 @@ collections:
                 required: false
                 hint: >-
                   Włączone: blok dołącza do sekcji nad nim (to samo tło, bez dużego odstępu),
-                  np. ramka albo przycisk pod cennikiem. Tło i kotwica są wtedy brane z bloku powyżej.
+                  np. ramka albo przycisk pod cennikiem. Gdy sekcja zaczyna się tekstem
+                  ze zdjęciem albo z ramką z boku, połączone bloki stają w kolumnie tekstu.
+                  Pusty nagłówek połączonego bloku = bez nagłówka. Ignorowane w banerze.
               - &kotwica
                 name: kotwica
                 label: Kotwica (adres #)
                 widget: string
                 required: false
-                pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Tylko małe litery bez ogonków, cyfry i myślniki, np. ceny']
+                pattern: ['^(?!(tresc|menu-mobilne|lightbox|cennik-tabela|szukaj-ceny)$)(?!(grupa|podmenu)-)(?!f[0-9]+-)[a-z0-9]+(-[a-z0-9]+)*$', 'Tylko małe litery bez ogonków, cyfry i myślniki, np. ceny. Zajęte przez szablon: tresc, menu-mobilne, lightbox, cennik-tabela, szukaj-ceny, grupa-…, podmenu-…']
                 hint: >-
                   Opcjonalnie. Np. „ceny” — wtedy odnośnik /adres-strony/#ceny przewinie
                   stronę do tego bloku.
@@ -341,11 +398,28 @@ collections:
             label: Tekst (ze zdjęciem lub bez)
             summary: 'Tekst: {{naglowek}}'
             fields:
-              - &naglowek_opcjonalny { name: naglowek, label: Nagłówek, widget: string, required: false }
+              - &naglowek_opcjonalny
+                name: naglowek
+                label: Nagłówek
+                widget: string
+                required: false
+                hint: >-
+                  Niektóre bloki mają nagłówek domyślny (np. „Najczęstsze pytania”). W bloku
+                  połączonym z blokiem powyżej pusty nagłówek = brak nagłówka.
               - *nadtytul
+              - *ikona_nadtytulu
+              - name: wstep
+                label: Wstęp (wyróżniony akapit)
+                widget: markdown
+                required: false
+                modes: [rich_text, raw]
+                buttons: [bold, italic, link]
+                editor_components: []
+                hint: Krótki akapit pod nagłówkiem, większą czcionką. Opcjonalnie.
               - name: tresc
                 label: Treść
                 widget: markdown
+                required: false
                 modes: [rich_text, raw]
                 buttons: [bold, italic, link, bulleted-list, numbered-list, heading-three]
                 editor_components: []
@@ -358,8 +432,9 @@ collections:
                 options:
                   - { label: Zwykłe kropki, value: zwykle }
                   - { label: 'Ptaszki (zalety, korzyści)', value: ptaszki }
+                hint: Dotyczy też listy w ramce pod treścią.
               - name: ramka
-                label: Ramka pod treścią
+                label: Tekst w ramce (pod treścią)
                 widget: object
                 required: false
                 fields:
@@ -389,7 +464,14 @@ collections:
                   - { label: Prawej, value: prawa }
                   - { label: Lewej, value: lewa }
               - *przycisk
+              - name: pokaz_telefony
+                label: Przyciski z telefonami
+                widget: boolean
+                default: false
+                required: false
+                hint: Pod treścią przyciski ze wszystkimi numerami z „Danych gabinetu”.
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
@@ -409,6 +491,14 @@ collections:
                   - { label: '2', value: 2 }
                   - { label: '3', value: 3 }
                   - { label: '4', value: 4 }
+              - name: wypunktowanie
+                label: Wygląd wypunktowań w kartach
+                widget: select
+                required: false
+                default: zwykle
+                options:
+                  - { label: Zwykłe kropki, value: zwykle }
+                  - { label: 'Ptaszki (zalety, korzyści)', value: ptaszki }
               - name: elementy
                 label: Karty
                 label_singular: kartę
@@ -442,6 +532,7 @@ collections:
                     required: false
                     hint: Opcjonalnie — cała karta stanie się odnośnikiem.
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
@@ -461,6 +552,7 @@ collections:
                   - { name: pytanie, label: Pytanie, widget: string }
                   - { name: odpowiedz, label: Odpowiedź, widget: markdown, modes: [rich_text, raw], buttons: [bold, italic, link, bulleted-list], editor_components: [] }
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
@@ -497,8 +589,16 @@ collections:
                 widget: boolean
                 default: false
                 required: false
-                hint: Pole „Szukaj zabiegu” nad tabelą i odnośniki do kategorii. Najlepiej tylko na stronie z pełnym cennikiem.
+                hint: >-
+                  Pole „Szukaj zabiegu” nad tabelą i odnośniki do kategorii (krótkie nazwy
+                  kategorii z „Cennika”). Najlepiej tylko na stronie z pełnym cennikiem.
+              - name: kolumna
+                label: Nagłówek kolumny z nazwami
+                widget: string
+                required: false
+                hint: Np. „Zabieg” albo „Badanie lub zabieg”. Puste = „Usługa”.
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
@@ -524,59 +624,87 @@ collections:
                     hint: Co widać na zdjęciu — dla osób niewidomych i dla wyszukiwarek.
                   - { name: podpis, label: Podpis pod zdjęciem, widget: string, required: false }
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
           - name: godziny
-            label: Godziny przyjęć
+            label: Godziny przyjęć (z „Danych gabinetu”)
             summary: 'Godziny przyjęć'
             fields:
               - *naglowek_opcjonalny
               - *tresc_opcjonalna
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
           - name: mapa
-            label: Mapa i dojazd
+            label: Mapa i dojazd (adres z „Danych gabinetu”)
             summary: 'Mapa i dojazd'
             fields:
               - *naglowek_opcjonalny
               - *tresc_opcjonalna
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
           - name: cta
-            label: Zaproszenie do kontaktu (telefon)
+            label: Zaproszenie do kontaktu (telefon z „Danych gabinetu”)
             summary: 'Zaproszenie: {{naglowek}}'
             fields:
               - *naglowek_opcjonalny
               - *tresc_opcjonalna
+              - name: wszystkie_telefony
+                label: Wszystkie numery telefonów
+                widget: boolean
+                default: false
+                required: false
+                hint: Włączone = obok pierwszego numeru przyciski z pozostałymi numerami.
               - *przycisk
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
           - name: kontakt
-            label: Dane kontaktowe
+            label: Dane kontaktowe (z „Danych gabinetu”)
             summary: 'Dane kontaktowe'
             fields:
               - *naglowek_opcjonalny
               - *tresc_opcjonalna
               - &bok
                 name: bok
-                label: Ramka z boku
+                label: Panel z boku (godziny, ceny, telefony)
                 widget: object
                 required: false
-                hint: Wąska kolumna obok treści (na telefonie pod treścią).
+                hint: >-
+                  Wąska kolumna obok treści (na telefonie pod treścią). Godziny, telefony
+                  i adres bierze z „Danych gabinetu”, ceny z „Cennika”. W bloku „Tekst
+                  z ramką z boku” brak panelu = godziny i telefony; w bloku „Dane
+                  kontaktowe” brak panelu = bez kolumny z boku.
                 fields:
-                  - { name: naglowek, label: Nagłówek ramki, widget: string, required: false, hint: 'Puste = „Godziny przyjęć” albo „Kontakt”.' }
+                  - { name: naglowek, label: Nagłówek panelu, widget: string, required: false, hint: 'Puste = „Godziny przyjęć”, „Ceny z cennika” albo „Kontakt”.' }
                   - { name: godziny, label: Godziny przyjęć, widget: boolean, default: true, required: false }
-                  - { name: telefony, label: Przyciski z telefonami, widget: boolean, default: true, required: false }
+                  - name: pozycje
+                    label: Ceny z cennika
+                    widget: relation
+                    collection: cennik
+                    file: cennik
+                    value_field: 'pozycje.*.id'
+                    display_fields: ['pozycje.*.nazwa']
+                    search_fields: ['pozycje.*.nazwa']
+                    multiple: true
+                    required: false
+                    hint: Lista pozycji z aktualnymi cenami (i informacją z cennika pod nią).
+                  - { name: notka, label: Krótka notka, widget: text, required: false }
+                  - { name: telefony, label: Przyciski z telefonami, widget: boolean, default: true, required: false, hint: 'Przy przycisku do strony — tylko pierwszy numer.' }
+                  - *przycisk
                   - { name: adres, label: Adres, widget: boolean, default: false, required: false }
-                  - { name: notka, label: Krótka notka, widget: string, required: false }
+                  - { name: notka_dol, label: Notka na dole panelu, widget: text, required: false, hint: 'Np. formy płatności.' }
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
@@ -601,6 +729,7 @@ collections:
                 min: 1
                 field: *tekst_wiersz
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
@@ -609,9 +738,23 @@ collections:
             summary: 'Ramka: {{rodzaj}}'
             fields:
               - *rodzaj_ramki
-              - *tresc_ramki
+              - name: tresc
+                label: Treść ramki
+                widget: markdown
+                modes: [rich_text, raw]
+                buttons: [bold, italic, link, bulleted-list]
+                editor_components: []
               - *ikona
+              - name: wypunktowanie
+                label: Wygląd wypunktowań w ramce
+                widget: select
+                required: false
+                default: zwykle
+                options:
+                  - { label: Zwykłe kropki, value: zwykle }
+                  - { label: 'Ptaszki (zalety, korzyści)', value: ptaszki }
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
@@ -633,6 +776,7 @@ collections:
                   - { name: tytul, label: Nazwa kroku, widget: string }
                   - { name: tresc, label: Opis, widget: markdown, required: false, modes: [rich_text, raw], buttons: [bold, italic, link], editor_components: [] }
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
@@ -665,6 +809,7 @@ collections:
                     field: { name: tekst, label: Tekst komórki, widget: string }
                   - *cena
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
@@ -682,6 +827,7 @@ collections:
                 hint: Karty powstają same ze stron oznaczonych jako „Strona usługi”, w kolejności stron.
               - *kolumny
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
@@ -706,6 +852,7 @@ collections:
                   - { name: tytul, label: Tytuł, widget: string }
                   - { name: tekst, label: Krótki opis, widget: string, required: false }
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
@@ -713,9 +860,10 @@ collections:
             label: Cytat
             summary: 'Cytat: {{autor}}'
             fields:
-              - { name: tekst, label: Cytat, widget: text }
+              - { name: tekst, label: Cytat, widget: text, hint: 'Zwykły tekst; złamania wiersza zostają.' }
               - { name: autor, label: Autor, widget: string, required: false }
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
@@ -723,7 +871,11 @@ collections:
             label: Powiązane strony
             summary: 'Powiązane strony'
             fields:
-              - *naglowek_opcjonalny
+              - name: naglowek
+                label: Nagłówek
+                widget: string
+                required: false
+                hint: Np. „Zobacz też”. Puste = same odnośniki, bez nagłówka.
               - name: elementy
                 label: Strony
                 label_singular: stronę
@@ -733,12 +885,18 @@ collections:
                 summary: '{{strona}}'
                 fields:
                   - *strona_wymagana
+                  - name: etykieta
+                    label: Napis odnośnika
+                    widget: string
+                    required: false
+                    hint: Np. „Ceny leczenia stawów”. Puste = tytuł strony.
                   - name: opis
                     label: Krótki opis
                     widget: string
                     required: false
                     hint: Puste = krótki opis usługi z tej strony (jeśli jest stroną usługi).
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
@@ -756,6 +914,7 @@ collections:
                 editor_components: []
                 hint: Adres i nazwę serwisu ustawiasz w „Dane gabinetu → Rezerwacja online”. Wyłączona rezerwacja = blok znika.
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
@@ -775,11 +934,12 @@ collections:
                   Puste = tematy domyślne. Uwaga: formularz jest pokazowy — sprawdza pola,
                   ale niczego nie wysyła (strona nie ma serwera pocztowego).
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
           - name: tresc_z_bokiem
-            label: Tekst z ramką z boku (godziny, telefony)
+            label: Tekst z ramką z boku (godziny, ceny, telefony)
             summary: 'Tekst z boku: {{naglowek}}'
             fields:
               - *naglowek_opcjonalny
@@ -787,12 +947,16 @@ collections:
               - name: tresc
                 label: Treść
                 widget: markdown
+                required: false
                 modes: [rich_text, raw]
                 buttons: [bold, italic, link, bulleted-list, numbered-list, heading-three]
                 editor_components: []
-                hint: Link do innej podstrony wpisz jako /adres-strony/, np. /cennik/.
+                hint: >-
+                  Link do innej podstrony wpisz jako /adres-strony/. Bloki połączone z tym
+                  blokiem (kroki, tekst, rezerwacja, przycisk) stają w tej kolumnie, obok ramki.
               - *bok
               - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
@@ -802,6 +966,7 @@ collections:
             fields:
               - { name: etykieta, label: Napis na przycisku, widget: string }
               - *strona_wymagana
+              - *kotwica_celu
               - name: styl
                 label: Wygląd
                 widget: select
@@ -811,6 +976,37 @@ collections:
                   - { label: Wypełniony (najważniejszy), value: glowny }
                   - { label: Obrysowany (drugorzędny), value: obrysowy }
               - *wariant
+              - *waska
+              - *polacz
+              - *kotwica
+
+          - name: spis
+            label: Spis treści (skróty do sekcji strony)
+            summary: 'Spis treści: {{naglowek}}'
+            fields:
+              - name: naglowek
+                label: Nazwa spisu
+                widget: string
+                required: false
+                hint: Dla czytników ekranu, np. „Spis treści”. Szablon może jej nie pokazywać.
+              - name: elementy
+                label: Odnośniki
+                label_singular: odnośnik
+                widget: list
+                min: 1
+                collapsed: true
+                summary: '{{etykieta}} → #{{kotwica}}'
+                hint: >-
+                  Odnośniki do bloków tej strony, które mają kotwicę (pole „Kotwica”). Kotwica,
+                  której nie ma na stronie, zatrzymuje publikację z komunikatem.
+                fields:
+                  - { name: etykieta, label: Napis, widget: string, hint: 'Krótko, np. „Protetyka”.' }
+                  - name: kotwica
+                    label: Kotwica bloku na tej stronie
+                    widget: string
+                    pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Tylko małe litery bez ogonków, cyfry i myślniki, np. protetyka']
+              - *wariant
+              - *waska
               - *polacz
               - *kotwica
 
@@ -827,7 +1023,13 @@ collections:
         media_folder: /assets/images
         public_folder: /images
         fields:
-          - { name: title, label: Tytuł strony, widget: string, hint: 'Używany, gdy pierwsza sekcja nie jest banerem.' }
+          - name: title
+            label: Tytuł strony
+            widget: string
+            hint: >-
+              Tytuł w karcie przeglądarki, w Google i w podglądzie linku (z nazwą gabinetu),
+              np. „Dentysta Legnica”. Nagłówek na stronie bierze się z banera.
+          - *seo_tytul
           - name: description
             label: Opis dla wyszukiwarek
             widget: text
@@ -938,6 +1140,7 @@ collections:
             label: Informacja pod cennikiem
             widget: text
             required: false
+            hint: Pod tabelami cennika i pod cenami w panelach z boku stron.
           - name: kategorie
             label: Kategorie (grupy w tabeli cennika)
             label_singular: kategorię
@@ -952,6 +1155,7 @@ collections:
                 pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Tylko małe litery bez ogonków, cyfry i myślniki, np. protetyka']
                 hint: Nie zmieniaj w istniejącej kategorii — wskazują ją pozycje i bloki cennika na stronach.
               - { name: nazwa, label: Nazwa kategorii, widget: string }
+              - { name: skrot, label: Krótka nazwa, widget: string, required: false, hint: 'W spisie kategorii nad cennikiem, np. „Stawy skroniowo-żuchwowe”. Puste = nazwa kategorii.' }
           - name: pozycje
             label: Pozycje cennika
             label_singular: pozycję
@@ -1010,7 +1214,15 @@ collections:
               - { name: ulica, label: Ulica i numer, widget: string }
               - { name: kod, label: Kod pocztowy, widget: string, pattern: ['^\d{2}-\d{3}$', 'Format: 00-000'] }
               - { name: miasto, label: Miasto, widget: string }
-              - { name: dojazd, label: Jak dojechać, widget: text, required: false }
+              - { name: region, label: Województwo, widget: string, required: false, hint: 'Np. dolnośląskie — w danych dla wyszukiwarek.' }
+              - { name: dojazd, label: Jak dojechać, widget: text, required: false, hint: 'Pod mapą (gdy strona nie ma danych kontaktowych). Złamania wiersza zostają.' }
+              - { name: parking, label: Parking, widget: string, required: false, hint: 'Krótko, np. „Galeria Gwarna tuż obok” — w danych kontaktowych.' }
+              - name: wspolrzedne
+                label: Współrzędne (szerokość, długość)
+                widget: string
+                required: false
+                pattern: ['^\s*-?\d{1,2}\.\d+\s*,\s*-?\d{1,3}\.\d+\s*$', 'Np. 51.207798, 16.158593 (prawy klik na mapie Google → skopiuj współrzędne)']
+                hint: Dla wyszukiwarek (pinezka gabinetu). Np. 51.207798, 16.158593.
           - name: telefony
             label: Telefony
             label_singular: telefon
@@ -1018,12 +1230,19 @@ collections:
             summary: '{{etykieta}}: {{numer}}'
             hint: Pierwszy numer trafia na przyciski „Zadzwoń”.
             fields:
-              - { name: etykieta, label: Opis, widget: string }
+              - { name: etykieta, label: Opis, widget: string, hint: 'W danych kontaktowych, np. „Telefon do rejestracji”.' }
               - name: numer
                 label: Numer
                 widget: string
                 pattern: ['^[+0-9 ()-]{9,20}$', 'Same cyfry, spacje i myślniki, np. 699 904 989']
           - { name: email, label: E-mail, widget: string, type: email, required: false }
+          - name: obszar
+            label: Obszar, z którego przyjmujemy pacjentów
+            label_singular: obszar
+            widget: list
+            required: false
+            field: { name: nazwa, label: Nazwa obszaru, widget: string }
+            hint: Dla wyszukiwarek, np. „powiat legnicki” (miasto z adresu jest dodawane samo).
           - name: godziny
             label: Godziny przyjęć
             widget: list
@@ -1045,7 +1264,7 @@ collections:
             label: Rezerwacja online
             widget: object
             fields:
-              - { name: wlaczona, label: Pokazuj przycisk rezerwacji online, widget: boolean, default: false }
+              - { name: wlaczona, label: Pokazuj przycisk rezerwacji online, widget: boolean, default: false, required: false }
               - { name: url, label: Adres strony rezerwacji, widget: string, type: url, required: false }
               - { name: etykieta, label: Napis na przycisku, widget: string, default: Umów wizytę online }
               - { name: dostawca, label: Nazwa serwisu rezerwacji, widget: string, required: false, hint: 'Np. Booksy — pojawia się na przyciskach („… w Booksy”).' }
@@ -1053,11 +1272,15 @@ collections:
                 label: Adres to profil naszego gabinetu
                 widget: boolean
                 default: false
+                required: false
                 hint: Wyłączone = przy przycisku rezerwacji pojawia się uwaga, że rezerwacja online jest w przygotowaniu.
               - { name: nota, label: Nota o danych osobowych, widget: text, required: false, hint: 'Krótko: kto przetwarza dane przy rezerwacji online.' }
           - name: rejestrowe
             label: Dane rejestrowe
             widget: object
+            hint: >-
+              Wiersz „Dane rejestrowe” w stopce pojawia się, gdy wpiszesz choć jeden numer.
+              Nie wpisuj tu tekstu zastępczego — byłby widoczny na każdej stronie.
             fields:
               - { name: nip, label: NIP, widget: string, required: false }
               - { name: regon, label: REGON, widget: string, required: false }
@@ -1067,7 +1290,7 @@ collections:
             label: Formy płatności
             widget: list
             required: false
-            hint: Np. gotówka, karta płatnicza, BLIK.
+            hint: Np. gotówka, karta płatnicza, BLIK — w danych dla wyszukiwarek (szablon może je też pokazać na stronie).
 
   # ------------------------------------------------------------- Ustawienia
   - name: ustawienia
@@ -1084,7 +1307,15 @@ collections:
             widget: text
             maxlength: 170
             hint: Używany na stronach, które nie mają własnego opisu.
-          - { name: stopka_tekst, label: Tekst w stopce, widget: text, required: false }
+          - { name: stopka_tekst, label: Tekst w stopce, widget: text, required: false, hint: 'Krótki tekst pod danymi gabinetu w stopce. Puste = brak. Złamania wiersza zostają.' }
+          - name: ukryj_przed_wyszukiwarkami
+            label: Ukryj stronę przed wyszukiwarkami
+            widget: boolean
+            default: false
+            required: false
+            hint: >-
+              Włączone = Google i inne wyszukiwarki nie pokazują strony (noindex). Na czas
+              uzupełniania danych; po uruchomieniu strony wyłącz.
           - { name: logo_nazwa, label: Nazwa w nagłówku strony, widget: string, required: false, hint: 'Duży napis obok logo. Puste = nazwa krótka z „Danych gabinetu”.' }
           - { name: logo_podpis, label: Podpis pod nazwą w nagłówku, widget: string, required: false, hint: 'Np. lekarz i miasto.' }
           - name: pasek_informacyjny
@@ -1092,8 +1323,40 @@ collections:
             widget: string
             required: false
             hint: Krótki komunikat na górze każdej strony (np. o urlopie). Puste = brak paska.
+          - name: napisy
+            label: Napisy na stronie
+            widget: object
+            collapsed: true
+            required: false
+            hint: >-
+              Stałe napisy szablonu, które można zmienić. Puste pole = napis domyślny
+              szablonu. Teksty prawne i medyczne zmieniaj w porozumieniu z gabinetem.
+            fields:
+              - { name: przycisk_naglowka, label: Przycisk w nagłówku strony, widget: string, required: false, hint: 'Domyślnie „Umów wizytę” (dzwoni pod pierwszy numer).' }
+              - { name: stopka_uslugi, label: Stopka — nagłówek listy usług, widget: string, required: false, hint: 'Domyślnie „Usługi”.' }
+              - { name: stopka_gabinet, label: Stopka — nagłówek listy stron, widget: string, required: false, hint: 'Domyślnie „Gabinet”.' }
+              - { name: stopka_godziny, label: Stopka — nagłówek godzin, widget: string, required: false, hint: 'Domyślnie „Godziny przyjęć”.' }
+              - { name: cennik_podpowiedz, label: Podpowiedź w polu „Szukaj zabiegu”, widget: string, required: false, hint: 'Np. „Szukaj zabiegu, np. korona, szyna, piaskowanie” — przykłady powinny być w cenniku.' }
+              - name: formularz_zgoda
+                label: Formularz — tekst zgody na przetwarzanie danych
+                widget: text
+                required: false
+                hint: >-
+                  Cały tekst przy polu zgody (administrator, podstawa prawna, wycofanie zgody).
+                  Link: [polityka prywatności](/polityka-prywatnosci/). Puste = tekst domyślny
+                  z nazwą i adresem gabinetu.
+              - name: formularz_uwaga
+                label: Formularz — ostrzeżenie o danych o zdrowiu
+                widget: markdown
+                required: false
+                modes: [rich_text, raw]
+                buttons: [bold, italic, link]
+                editor_components: []
+                hint: Ramka pod formularzem. Szablon dopisuje zdanie z numerami telefonów na pilne sprawy.
+              - { name: formularz_notka, label: Formularz — notka pod przyciskiem, widget: text, required: false }
+              - { name: mapa_zgoda, label: Mapa — tekst przed wczytaniem mapy Google, widget: text, required: false }
           - name: strona_404
-            label: Strona „Nie znaleziono” (błąd 404)
+            label: Napisy strony „Nie znaleziono” (błąd 404)
             widget: object
             collapsed: true
             required: false
@@ -1114,7 +1377,7 @@ collections:
               - { name: opis_glownej, label: Opis odnośnika „Strona główna”, widget: string, required: false, hint: 'Strona główna jest zawsze pierwsza na liście.' }
               - name: linki
                 label: Odnośniki do stron
-                label_singular: Odnośnik
+                label_singular: odnośnik
                 widget: list
                 required: false
                 summary: '{{strona}}'

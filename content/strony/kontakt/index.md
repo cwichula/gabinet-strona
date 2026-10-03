@@ -1,5 +1,6 @@
 ---
 title: "Kontakt"
+seo_tytul: "Kontakt — dentysta Legnica | Gabinet Dorota Rożdżestwieńska"
 description: "Gabinet stomatologiczny w centrum Legnicy, ul. Złotoryjska 16/18 m. 10. Zdjęcie wejścia, parking w Galerii Gwarnej, mapa i godziny. Rejestracja: 76 72-26-880."
 draft: false
 weight: 14
@@ -17,7 +18,8 @@ sekcje:
       godziny: true
       telefony: true
       adres: false
-      notka: "Gabinet przyjmuje od poniedziałku do czwartku. Termin wizyty potwierdza gabinet telefonicznie. Płatność gotówką, kartą i BLIKIEM — terminal jest w gabinecie."
+      notka: "Gabinet przyjmuje od poniedziałku do czwartku. Termin wizyty potwierdza gabinet telefonicznie."
+      notka_dol: "Płatność gotówką, kartą i BLIKIEM — terminal jest w gabinecie."
     wariant: domyslny
   - type: tekst
     tresc: |-
@@ -52,7 +54,6 @@ sekcje:
     wariant: domyslny
     polacz: true
   - type: faq
-    naglowek: "Rezerwacja online — pytania"
     elementy:
       - pytanie: "Czy wizytę można umówić online?"
         odpowiedz: "Oprócz rejestracji telefonicznej strona udostępnia odnośnik do zewnętrznego serwisu rezerwacji Booksy. Odnośnik otwiera się w nowej karcie, a serwis ten jest osobnym administratorem podanych w nim danych. Termin potwierdza gabinet telefonicznie. Rejestracja pod numerem [76 72-26-880](tel:+48767226880) pozostaje drogą najpewniejszą i nic jej nie zastępuje."

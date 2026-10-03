@@ -1,5 +1,6 @@
 ---
 title: "Usługi"
+seo_tytul: "Usługi stomatologiczne Legnica | Gabinet Rożdżestwieńska"
 description: "Zakres usług gabinetu stomatologicznego w Legnicy: leczenie próchnicy, higienizacja, protezy, korony, licówki, RTG i szyna Michigan. Tel. 76 72-26-880."
 draft: false
 weight: 1
@@ -13,16 +14,23 @@ sekcje:
 
       Poniżej znajdziesz wszystkie dziewięć obszarów leczenia, pogrupowanych tematycznie. Jeśli nie wiesz, do której grupy należy Twój problem — zadzwoń pod [76 72-26-880](tel:+48767226880) albo po prostu przyjdź na [pierwszą wizytę](/pierwsza-wizyta/): badanie z konsultacją kosztuje 100 zł i kończy się planem leczenia razem z kosztem.
     wariant: domyslny
-  - type: lista
-    styl: zwykla
+  - type: spis
+    naglowek: "Grupy usług"
     elementy:
-      - "[Wszystkie usługi](/uslugi/#wszystkie-uslugi)"
-      - "[Bruksizm i stawy](/uslugi/#leczenie-stawow)"
-      - "[Protetyka](/uslugi/#protetyka)"
-      - "[Estetyka](/uslugi/#estetyka)"
-      - "[Profilaktyka](/uslugi/#profilaktyka)"
-      - "[Diagnostyka RTG](/uslugi/#diagnostyka)"
-      - "[Czego nie robimy](/uslugi/#czego-nie-robimy)"
+      - etykieta: "Wszystkie usługi"
+        kotwica: "wszystkie-uslugi"
+      - etykieta: "Bruksizm i stawy"
+        kotwica: "leczenie-stawow"
+      - etykieta: "Protetyka"
+        kotwica: "protetyka"
+      - etykieta: "Estetyka"
+        kotwica: "estetyka"
+      - etykieta: "Profilaktyka"
+        kotwica: "profilaktyka"
+      - etykieta: "Diagnostyka RTG"
+        kotwica: "diagnostyka"
+      - etykieta: "Czego nie robimy"
+        kotwica: "czego-nie-robimy"
     polacz: true
   - type: lista_uslug
     naglowek: "Wszystkie usługi"
@@ -46,6 +54,7 @@ sekcje:
       - strona: "stawy-skroniowo-zuchwowe"
         opis: "Diagnostyka czynnościowa, trzeszczenie i blokowanie żuchwy"
       - strona: "cennik"
+        etykieta: "Ceny leczenia stawów"
         opis: "Ceny leczenia stawów: szyna, rejestracja łukiem twarzowym, badania czynnościowe"
     polacz: true
   - type: tekst
@@ -63,6 +72,7 @@ sekcje:
       - strona: "korony-i-mosty"
         opis: "Odbudowa zniszczonego zęba, most bez szlifowania sąsiadów"
       - strona: "cennik"
+        etykieta: "Ceny protetyki"
         opis: "Ceny protetyki: korony, mosty i protezy — zestawienie kosztów"
     polacz: true
   - type: tekst
@@ -76,10 +86,12 @@ sekcje:
   - type: powiazane
     elementy:
       - strona: "licowki"
+        etykieta: "Licówki kompozytowe"
         opis: "Zamknięcie przerw, korekta kształtu i koloru zęba"
       - strona: "higienizacja"
         opis: "Zdrowe dziąsła i czyste zęby przed zabiegiem estetycznym"
       - strona: "galeria"
+        etykieta: "Galeria gabinetu"
         opis: "Zdjęcia wnętrza, stanowiska zabiegowego i pracowni RTG"
     polacz: true
   - type: tekst
@@ -119,9 +131,11 @@ sekcje:
       - strona: "wyposazenie"
         opis: "Pantomograf, radiowizjografia, kamera wewnątrzustna"
       - strona: "cennik"
+        etykieta: "Ceny zdjęć RTG"
         opis: "Ceny zdjęć RTG: pantomogram cyfrowy i zdjęcie punktowe"
     polacz: true
   - type: tekst
+    waska: true
     naglowek: "Czego w tym gabinecie nie robimy"
     tresc: |-
       Wolimy powiedzieć to wprost na stronie niż dopiero w gabinecie. W naszym zakresie usług nie ma:

@@ -1,12 +1,15 @@
 {{- /* Ramka (div.callout) jak w makiecie v1.
        Wejscie: dict "strona", "rodzaj" (info | uwaga | ok), "tresc" (Markdown),
-       "ikona" (klucz ikony; domyslnie wg rodzaju), "styl", "gdzie". */ -}}
+       "ikona" (klucz ikony; domyslnie wg rodzaju), "styl", "gdzie",
+       "ptaszki" (bool - listy w ramce jako ul.checklist). */ -}}
 {{- $rodzaj := .rodzaj | default "info" -}}
 {{- $klasa := index (dict "info" "callout" "uwaga" "callout callout--warn" "ok" "callout callout--ok") $rodzaj | default "callout" -}}
 {{- $ikona := .ikona | default (index (dict "info" "info" "uwaga" "uwaga" "ok" "ptaszek") $rodzaj) | default "info" -}}
+{{- $html := partial "markdown.html" (dict "strona" .strona "tekst" .tresc) | string -}}
+{{- if .ptaszki }}{{ $html = replace $html "<ul>" `<ul class="checklist">` }}{{ end -}}
 <div class="{{ $klasa }}"{{ with .styl }} style="{{ . | safeCSS }}"{{ end }}>
   {{ partial "ikona.html" (dict "nazwa" $ikona "gdzie" .gdzie) }}
   <div>
-    {{ partial "markdown.html" (dict "strona" .strona "tekst" .tresc) }}
+    {{ $html | safeHTML }}
   </div>
 </div>

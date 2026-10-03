@@ -1,5 +1,6 @@
 ---
 title: "Bruksizm i szyna Michigan"
+seo_tytul: "Bruksizm i szyna Michigan Legnica | Gabinet Rożdżestwieńska"
 description: "Zgrzytasz zębami w nocy? Diagnostyka bruksizmu i szyna relaksacyjna Michigan w Legnicy. Szyna 800 zł, konsultacja 100 zł. Umów wizytę: 76 72-26-880."
 draft: false
 weight: 2
@@ -39,6 +40,7 @@ sekcje:
     strona_zdjecia: prawa
     wariant: domyslny
   - type: tekst
+    waska: true
     naglowek: "Co się dzieje z zębami, jeśli to zignorować"
     tresc: |-
       Siła, z jaką mięśnie zaciskają zęby w czasie epizodu bruksizmu, jest znacznie większa niż przy żuciu. Powtarzana przez lata zostawia trwałe ślady — a szkliwo nie odrasta.
@@ -77,8 +79,10 @@ sekcje:
     przycisk:
       etykieta: "Jak wygląda pierwsza wizyta"
       strona: "pierwsza-wizyta"
+      styl: obrysowy
     wariant: domyslny
   - type: karty
+    wypunktowanie: ptaszki
     naglowek: "Czym jest szyna Michigan i czym różni się od nakładki z apteki"
     wstep: "Szyna relaksacyjna typu MICHIGAN to twarda, przezroczysta płyta akrylowa na łuk górny, wykonana indywidualnie na modelach Twoich zębów."
     kolumny: 2
@@ -101,6 +105,7 @@ sekcje:
     wariant: wyrozniony
     polacz: true
   - type: kroki
+    waska: true
     naglowek: "Leczenie krok po kroku"
     wstep: "Od pierwszej rozmowy do kontroli z gotową szyną."
     elementy:
@@ -118,9 +123,10 @@ sekcje:
         tresc: "Po kilku tygodniach sprawdzamy szynę i objawy. Dopiero wtedy planujemy odbudowę startych zębów — [koronami](/korony-i-mosty/) albo [licówkami](/licowki/)."
     wariant: domyslny
   - type: lista
+    waska: true
     naglowek: "Czego szyna Michigan nie leczy"
     wstep: "Szyna chroni zęby i rozluźnia mięśnie, ale nie zrobi wszystkiego."
-    styl: minusy
+    styl: ptaszki
     elementy:
       - "**Nie cofnie startego szkliwa** — odbudowa jest osobnym, zaplanowanym etapem"
       - "**Nie usunie przyczyny napięcia** — jeśli źródłem jest stres, szyna go nie wyleczy"

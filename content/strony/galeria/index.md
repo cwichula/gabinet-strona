@@ -1,5 +1,6 @@
 ---
 title: "Galeria"
+seo_tytul: "Galeria zdjęć gabinetu Legnica | Dorota Rożdżestwieńska"
 description: "Zdjęcia gabinetu stomatologicznego w Legnicy: stanowisko zabiegowe, poczekalnia i pracownia RTG z pantomografem. Zobacz wnętrze przed wizytą: 76 72-26-880."
 draft: false
 weight: 13
@@ -39,6 +40,7 @@ sekcje:
         alt: "Aparat rentgenowski z pantomografem stojący w pracowni gabinetu"
     wariant: domyslny
   - type: tekst
+    waska: true
     naglowek: "Co widać na zdjęciach"
     tresc: |-
       Na zdjęciach zobaczysz poczekalnię z miejscami do siedzenia, stanowisko rejestracji i dwa ujęcia stanowiska zabiegowego: unit stomatologiczny z fotelem, lampę bezcieniową i monitor ustawiony tak, żebyś widział na nim to samo, co lekarz.
@@ -50,6 +52,7 @@ sekcje:
       Jest też model szczęki ze szczoteczką — służy do instruktażu prawidłowego szczotkowania zębów. Jak wygląda sama [higienizacja](/higienizacja/), opisujemy osobno.
     przycisk:
       etykieta: "Opis wyposażenia gabinetu"
+      styl: obrysowy
       strona: "wyposazenie"
     wariant: wyrozniony
   - type: cta

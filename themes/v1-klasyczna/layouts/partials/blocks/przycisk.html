@@ -1,9 +1,10 @@
-{{- /* Blok "przycisk": etykieta, strona, styl (glowny -> btn--primary ze strzalka,
-       obrysowy -> btn--ghost). Zwykle dolaczony do sekcji powyzej ("polacz"). */ -}}
+{{- /* Blok "przycisk": etykieta, strona, kotwica_celu (#kotwica na stronie docelowej),
+       styl (glowny -> btn--primary ze strzalka, obrysowy -> btn--ghost).
+       Zwykle dolaczony do sekcji powyzej ("polacz"). */ -}}
 {{- $b := .blok -}}
 {{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
-{{- $glowny := ne $b.styl "obrysowy" -}}
-{{- with strings.TrimSpace (partial "przycisk.html" (dict "przycisk" (dict "etykieta" $b.etykieta "strona" $b.strona) "gdzie" (printf "%s: blok „Przycisk”" $gdzie) "klasa" (cond $glowny "btn btn--primary" "btn btn--ghost") "strzalka" $glowny)) }}
+{{- $p := dict "etykieta" ($b.etykieta | default "") "strona" ($b.strona | default "") "styl" ($b.styl | default "") "kotwica_celu" ($b.kotwica_celu | default "") -}}
+{{- with strings.TrimSpace (partial "przycisk.html" (dict "przycisk" $p "gdzie" (printf "%s: blok „Przycisk”" $gdzie) "strzalka" true)) }}
     <p>
       {{ . | safeHTML }}
     </p>

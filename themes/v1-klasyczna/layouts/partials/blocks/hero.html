@@ -1,4 +1,4 @@
-{{- /* Blok "hero": naglowek, nadtytul, tresc, zdjecie, przycisk {etykieta, strona},
+{{- /* Blok "hero": naglowek, nadtytul, ikona (przy nadtytule), tresc, zdjecie, przycisk,
        pokaz_telefon, fakty [{ikona, tekst}], plakietka {wyroznienie, tekst}.
        - pierwszy blok podstrony: naglowek strony (div.page-head) z okruszkami,
          h1 i wstepem - jak podstrony makiety v1;
@@ -21,7 +21,7 @@
     {{- end }}
     {{ partial "okruszki.html" $.strona }}
     {{- with $b.nadtytul }}
-    <p class="eyebrow">{{ . }}</p>
+    <p class="eyebrow">{{ partial "ikona.html" (dict "nazwa" ($b.ikona | default "") "styl" "width:1em;height:1em" "gdzie" $gdzie) }} {{ . }}</p>
     {{- end }}
     <h1>{{ $naglowek }}</h1>
     {{- with $b.tresc }}
@@ -40,7 +40,7 @@
   <div class="container hero__grid">
     <div>
       {{- with $b.nadtytul }}
-      <p class="eyebrow">{{ . }}</p>
+      <p class="eyebrow">{{ partial "ikona.html" (dict "nazwa" ($b.ikona | default "") "styl" "width:1em;height:1em" "gdzie" $gdzie) }} {{ . }}</p>
       {{- end }}
       {{ if $naGorze }}<h1>{{ $naglowek }}</h1>{{ else }}<h2>{{ $naglowek }}</h2>{{ end }}
       {{- with $b.tresc }}

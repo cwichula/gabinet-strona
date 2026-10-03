@@ -1,7 +1,9 @@
 {{- /* Blok "godziny": naglowek, tresc; godziny z data/gabinet.yaml - tabela
        table.hours makiety v1 w ramce (jak ramka boczna v1, ale w tresci). */ -}}
 {{- $b := .blok -}}
-    <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ $b.naglowek | default "Godziny przyjęć" }}</h2>
+    {{- with $b.naglowek | default (cond $.gora "Godziny przyjęć" "") }}
+    <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ . }}</h2>
+    {{- end }}
     <div class="sidebar-card" style="position:static;max-width:30rem;margin-top:1.5rem">
       {{ partial "godziny-tabela.html" . }}
       {{- with $b.tresc }}

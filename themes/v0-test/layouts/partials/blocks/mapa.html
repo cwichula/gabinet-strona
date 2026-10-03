@@ -6,10 +6,12 @@
 {{- $budynek := replaceRE `\s+m\.\s*\d+\s*$` "" $a.ulica -}}
 {{- $zapytanie := printf "%s, %s %s" $budynek $a.kod $a.miasto -}}
 <section {{ partial "blok-atrybuty.html" $b }}>
-  <h2>{{ $b.naglowek | default "Jak do nas trafić" }}</h2>
+  {{- with $b.naglowek | default (cond (and $b.polacz (gt $.nr 0)) "" "Jak do nas trafić") }}
+  <h2>{{ . }}</h2>
+  {{- end }}
   <p class="adres">{{ $a.ulica }}, {{ $a.kod }} {{ $a.miasto }}</p>
   {{- with $a.dojazd }}
-  <p>{{ . }}</p>
+  <p>{{ partial "tekst-wiersze.html" . }}</p>
   {{- end }}
   {{- with $b.tresc }}{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
   <p><a href="https://www.google.com/maps/search/?api=1&amp;query={{ $zapytanie | urlquery }}" rel="noopener external">Otwórz mapę w Google Maps</a> <small>(serwis zewnętrzny)</small></p>

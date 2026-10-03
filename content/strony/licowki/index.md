@@ -1,12 +1,14 @@
 ---
 title: "Licówki"
+seo_tytul: "Licówki na zęby Legnica | Gabinet Dorota Rożdżestwieńska"
 description: "Licówki kompozytowe i pełnoceramiczne E-MAX w Legnicy. Zamknięcie przerwy między zębami, korekta kształtu i koloru zęba."
 draft: false
 weight: 6
 usluga:
   wyrozniona: false
   ikona: "iskra"
-  skrot: "Zmiana kształtu i koloru zęba, zamknięcie przerwy między zębami."
+  nazwa: "Licówki kompozytowe"
+  skrot: "Zamknięcie przerw między zębami, korekta kształtu i koloru. Szlifowanie minimalne, efekt w jednej wizycie."
   cena_od: "licowka-kompozyt"
 sekcje:
   - type: hero
@@ -34,6 +36,7 @@ sekcje:
     strona_zdjecia: prawa
     wariant: domyslny
   - type: tekst
+    waska: true
     naglowek: "Licówka a korona: ile zęba zostaje"
     tresc: |-
       To najważniejsza różnica i warto ją znać, zanim podejmiesz decyzję.
@@ -90,6 +93,7 @@ sekcje:
         tresc: "Na wizycie kontrolnej oglądamy brzegi licówki i stan dziąsła. Dalej liczy się [regularna higienizacja](/higienizacja/) — polerowanie przywraca połysk, który kompozyt z czasem traci."
     wariant: domyslny
   - type: ramka
+    wypunktowanie: ptaszki
     rodzaj: uwaga
     tresc: |-
       Kiedy licówka nie jest dobrym rozwiązaniem:
@@ -100,6 +104,8 @@ sekcje:
     wariant: domyslny
     polacz: true
   - type: cennik
+    kolumna: "Zabieg"
+    waska: true
     naglowek: "Ceny"
     wstep: "Stomatologia estetyczna. Ceny dotyczą jednego zęba."
     pozycje:
@@ -147,6 +153,7 @@ sekcje:
       - strona: "higienizacja"
         opis: "Skaling, piaskowanie i polerowanie — podstawa po pracy estetycznej"
       - strona: "bruksizm-szyna-michigan"
+        etykieta: "Bruksizm"
         opis: "Szyna Michigan chroni zęby i wykonane uzupełnienia"
     wariant: domyslny
     polacz: true

@@ -1,6 +1,10 @@
-{{- /* Dane strukturalne (schema.org, JSON-LD): gabinet (Dentist) z data/gabinet.yaml,
-       serwis, strona, sciezka nawigacji (BreadcrumbList) i - gdy strona ma
-       bloki FAQ - FAQPage z ich pytan. Wejscie: Page. */ -}}
+{{- /* Dane strukturalne (schema.org, JSON-LD): gabinet (Dentist) z data/gabinet.yaml
+       (z adresem, wspolrzednymi, obszarem, lekarzem - Person), serwis, strona
+       (MedicalWebPage dla strony uslugi, ContactPage dla strony z blokiem
+       kontaktu, CollectionPage dla galerii, inaczej WebPage), sciezka nawigacji
+       (BreadcrumbList), cennik (OfferCatalog z cenami - na stronie z pelnym
+       cennikiem, tj. blokiem cennika z wyszukiwarka) i - gdy strona ma bloki
+       FAQ - FAQPage z ich pytan. Wejscie: Page. */ -}}
 {{- $g := hugo.Data.gabinet -}}
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
 {{- $dom := site.Home.Permalink -}}
@@ -15,8 +19,31 @@
 {{- with $m.telefon }}{{ $gab = merge $gab (dict "telephone" .tel) }}{{ end -}}
 {{- with $g.email }}{{ $gab = merge $gab (dict "email" .) }}{{ end -}}
 {{- with $g.rok_zalozenia }}{{ $gab = merge $gab (dict "foundingDate" (string .)) }}{{ end -}}
+{{- $adres := false -}}
 {{- with $g.adres -}}
-  {{- $gab = merge $gab (dict "address" (dict "@type" "PostalAddress" "streetAddress" .ulica "postalCode" .kod "addressLocality" .miasto "addressCountry" "PL")) -}}
+  {{- $adres = dict "@type" "PostalAddress" "streetAddress" .ulica "postalCode" .kod "addressLocality" .miasto "addressCountry" "PL" -}}
+  {{- with .region }}{{ $adres = merge $adres (dict "addressRegion" .) }}{{ end -}}
+  {{- $gab = merge $gab (dict "address" $adres) -}}
+  {{- with .wspolrzedne -}}
+    {{- with findRESubmatch `^\s*(-?[0-9]+(?:\.[0-9]+)?)\s*,\s*(-?[0-9]+(?:\.[0-9]+)?)\s*$` . 1 -}}
+      {{- $gab = merge $gab (dict "geo" (dict "@type" "GeoCoordinates" "latitude" (index . 0 1) "longitude" (index . 0 2))) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- /* obszar: miasto z adresu + data/gabinet.yaml "obszar" */ -}}
+{{- $obszar := slice }}{{ with $g.adres.miasto }}{{ $obszar = $obszar | append (dict "@type" "City" "name" .) }}{{ end -}}
+{{- range $g.obszar }}{{ $obszar = $obszar | append (dict "@type" "AdministrativeArea" "name" .) }}{{ end -}}
+{{- with $obszar }}{{ $gab = merge $gab (dict "areaServed" .) }}{{ end -}}
+{{- /* lekarz (Person): "lek. stom. Imie Nazwisko" -> tytul + imie i nazwisko */ -}}
+{{- $idLekarz := printf "%s#lekarz" $dom -}}
+{{- $lekarz := false -}}
+{{- with $g.lekarz -}}
+  {{- $tytulL := "" }}{{ $imie := . -}}
+  {{- with findRESubmatch `^((?:lek\.|dr|prof\.|n\.|med\.|stom\.|dent\.|hab\.|\s)+)\s*(.+)$` . 1 }}{{ $tytulL = strings.TrimSpace (index . 0 1) }}{{ $imie = index . 0 2 }}{{ end -}}
+  {{- $lekarz = dict "@type" "Person" "@id" $idLekarz "name" $imie "worksFor" (dict "@id" $idGabinet) -}}
+  {{- with $tytulL }}{{ $lekarz = merge $lekarz (dict "honorificPrefix" .) }}{{ end -}}
+  {{- with index (dict "lek. stom." "lekarz stomatolog" "lek. dent." "lekarz dentysta") $tytulL }}{{ $lekarz = merge $lekarz (dict "jobTitle" .) }}{{ end -}}
+  {{- $gab = merge $gab (dict "founder" (dict "@id" $idLekarz)) -}}
 {{- end -}}
 {{- $dni := dict "poniedziałek" "Monday" "wtorek" "Tuesday" "środa" "Wednesday" "czwartek" "Thursday" "piątek" "Friday" "sobota" "Saturday" "niedziela" "Sunday" -}}
 {{- $godziny := slice -}}
@@ -35,12 +62,22 @@
 {{- with $g.platnosci }}{{ $gab = merge $gab (dict "paymentAccepted" (delimit . ", ")) }}{{ end -}}
 {{- $uslugi := slice }}{{ range partial "uslugi-strony.html" (dict) }}{{ $uslugi = $uslugi | append (dict "@type" "MedicalProcedure" "name" .Title "url" .Permalink) }}{{ end -}}
 {{- with $uslugi }}{{ $gab = merge $gab (dict "availableService" .) }}{{ end -}}
+{{- /* strona z pelnym cennikiem: pierwsza strona z blokiem cennika z wyszukiwarka */ -}}
+{{- $stronaCennika := false -}}
+{{- range $p := slice site.Home | append (where site.RegularPages "Section" "strony").ByWeight -}}
+  {{- if not $stronaCennika }}{{ range $p.Params.sekcje }}{{ if and (eq .type "cennik") .wyszukiwarka }}{{ $stronaCennika = $p }}{{ end }}{{ end }}{{ end -}}
+{{- end -}}
+{{- with $stronaCennika }}{{ $gab = merge $gab (dict "hasOfferCatalog" (dict "@id" (printf "%s#cennik" .Permalink))) }}{{ end -}}
 {{- $graf = $graf | append $gab -}}
+{{- with $lekarz }}{{ $graf = $graf | append . }}{{ end -}}
 
 {{- /* serwis i strona */ -}}
 {{- $graf = $graf | append (dict "@type" "WebSite" "@id" (printf "%s#serwis" $dom) "url" $dom "name" ($g.nazwa_krotka | default site.Title) "inLanguage" "pl-PL" "publisher" (dict "@id" $idGabinet)) -}}
 {{- if ne .Kind "404" -}}
-  {{- $strona := dict "@type" "WebPage" "@id" (printf "%s#strona" .Permalink) "url" .Permalink "name" .Title "inLanguage" "pl-PL" "isPartOf" (dict "@id" (printf "%s#serwis" $dom)) -}}
+  {{- $typy := slice }}{{ range .Params.sekcje }}{{ $typy = $typy | append .type }}{{ end -}}
+  {{- $typStrony := "WebPage" -}}
+  {{- if .Params.usluga }}{{ $typStrony = "MedicalWebPage" }}{{ else if in $typy "kontakt" }}{{ $typStrony = "ContactPage" }}{{ else if in $typy "galeria" }}{{ $typStrony = "CollectionPage" }}{{ end -}}
+  {{- $strona := dict "@type" $typStrony "@id" (printf "%s#strona" .Permalink) "url" .Permalink "name" (.Params.seo_tytul | default .Title) "inLanguage" "pl-PL" "isPartOf" (dict "@id" (printf "%s#serwis" $dom)) "about" (dict "@id" $idGabinet) -}}
   {{- with .Description | default hugo.Data.ustawienia.seo_opis }}{{ $strona = merge $strona (dict "description" .) }}{{ end -}}
   {{- $graf = $graf | append $strona -}}
 
@@ -66,5 +103,25 @@
     {{- end -}}
   {{- end -}}
   {{- with $pytania }}{{ $graf = $graf | append (dict "@type" "FAQPage" "mainEntity" .) }}{{ end -}}
+
+  {{- /* cennik z cenami (OfferCatalog) - na stronie z pelnym cennikiem */ -}}
+  {{- if and $stronaCennika (.Eq $stronaCennika) -}}
+    {{- $c := hugo.Data.cennik -}}
+    {{- $grupy := slice -}}
+    {{- range $k := $c.kategorie | default slice -}}
+      {{- $oferty := slice -}}
+      {{- range where ($c.pozycje | default slice) "kategoria" $k.id -}}
+        {{- $o := dict "@type" "Offer" "name" .nazwa "priceCurrency" "PLN" -}}
+        {{- if and .cena_do (gt (int .cena_do) (int .cena_od)) -}}
+          {{- $o = merge $o (dict "priceSpecification" (dict "@type" "PriceSpecification" "minPrice" (string .cena_od) "maxPrice" (string .cena_do) "priceCurrency" "PLN")) -}}
+        {{- else -}}
+          {{- $o = merge $o (dict "price" (string .cena_od)) -}}
+        {{- end -}}
+        {{- $oferty = $oferty | append $o -}}
+      {{- end -}}
+      {{- with $oferty }}{{ $grupy = $grupy | append (dict "@type" "OfferCatalog" "name" $k.nazwa "itemListElement" .) }}{{ end -}}
+    {{- end -}}
+    {{- with $grupy }}{{ $graf = $graf | append (dict "@type" "OfferCatalog" "@id" (printf "%s#cennik" $.Permalink) "name" ($.Params.seo_tytul | default $.Title) "url" $.Permalink "inLanguage" "pl-PL" "itemListElement" .) }}{{ end -}}
+  {{- end -}}
 {{- end }}
 <script type="application/ld+json">{{ dict "@context" "https://schema.org" "@graph" $graf | jsonify | safeJS }}</script>

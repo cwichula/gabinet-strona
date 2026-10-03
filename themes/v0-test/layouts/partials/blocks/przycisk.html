@@ -1,9 +1,9 @@
-{{- /* Blok "przycisk": etykieta, strona, styl (glowny | obrysowy). */ -}}
+{{- /* Blok "przycisk": etykieta, strona, kotwica_celu, styl (glowny | obrysowy). */ -}}
 {{- $b := .blok -}}
 {{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
 {{- $cel := partial "cel-linku.html" (dict "strona" $b.strona "gdzie" (printf "%s: blok „Przycisk” (%s)" $gdzie ($b.etykieta | default ""))) -}}
 {{- with $cel.href }}
 <section {{ partial "blok-atrybuty.html" $b }}>
-  <p><a class="przycisk{{ if eq $b.styl "obrysowy" }} przycisk--drugi{{ end }}" href="{{ . }}">{{ $b.etykieta }}</a></p>
+  <p><a class="przycisk{{ if eq $b.styl "obrysowy" }} przycisk--drugi{{ end }}" href="{{ . }}{{ with $b.kotwica_celu }}#{{ . }}{{ end }}">{{ $b.etykieta }}</a></p>
 </section>
 {{- end -}}

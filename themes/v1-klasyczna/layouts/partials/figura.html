@@ -1,4 +1,5 @@
-{{- /* Zdjecie z podpisem jak w makiecie v1: figure.figure > picture + figcaption.
+{{- /* Zdjecie z podpisem jak w makiecie v1: figure.figure > picture + figcaption
+       (podpis = Markdown w wierszu, np. z odnosnikiem).
        Pionowe zdjecie dostaje sufit szerokosci --figure-w (jak w v1).
        Wejscie: dict "strona", "zdjecie", "priorytet", "gdzie". */ -}}
 {{- $img := partial "zdjecie-zasob.html" . -}}
@@ -7,7 +8,7 @@
 <figure class="figure" style="margin:0">
   {{ partial "image.html" (merge $ (dict "styl" $styl)) }}
   {{- with $.zdjecie.podpis }}
-  <figcaption>{{ . }}</figcaption>
+  <figcaption>{{ partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .) }}</figcaption>
   {{- end }}
 </figure>
 {{- end -}}

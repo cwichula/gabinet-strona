@@ -1,12 +1,13 @@
 ---
 title: "Dentysta dla dzieci"
+seo_tytul: "Dentysta dla dzieci Legnica | Gabinet Dorota Rożdżestwieńska"
 description: "Dentysta dla dzieci w Legnicy: pierwsza wizyta adaptacyjna, lakowanie i lakierowanie fluorem, leczenie zębów mlecznych, RTG na miejscu. Tel. 76 72-26-880."
 draft: false
 weight: 10
 usluga:
   wyrozniona: false
   ikona: "dziecko"
-  skrot: "Wizyta adaptacyjna, lakowanie i lakierowanie fluorem, leczenie zębów mlecznych."
+  skrot: "Lakowanie i lakierowanie zębów mlecznych, pierwsza wizyta adaptacyjna, oswajanie z gabinetem bez pośpiechu."
   cena_od: "lak"
 sekcje:
   - type: hero
@@ -14,6 +15,7 @@ sekcje:
     tresc: "Gabinet przyjmuje całe rodziny — dorosłych i dzieci. Pierwsza wizyta małego pacjenta służy poznaniu gabinetu, a nie wykonaniu zabiegu w pośpiechu."
     wariant: domyslny
   - type: tekst
+    ikona: "dziecko"
     naglowek: "Nie chcesz, żeby Twoje dziecko bało się dentysty"
     nadtytul: "Wizyta adaptacyjna"
     tresc: |-
@@ -30,9 +32,8 @@ sekcje:
     wariant: domyslny
   - type: tekst
     naglowek: "Kiedy przyjść pierwszy raz"
+    wstep: "Pierwszy przegląd wtedy, gdy pojawią się pierwsze zęby — zwykle w okolicach pierwszego roku życia. Nie wtedy, gdy zacznie boleć."
     tresc: |-
-      Pierwszy przegląd wtedy, gdy pojawią się pierwsze zęby — zwykle w okolicach pierwszego roku życia. Nie wtedy, gdy zacznie boleć.
-
       Jeśli ten moment już minął, nie ma sensu czekać dalej: każdy miesiąc zwłoki zwiększa szansę, że dziecko pozna gabinet przy okazji bólu. Potem potrzebne są przeglądy co trzy do sześciu miesięcy.
 
       Warto też zacząć w domu: czyszczenie zębów dwa razy dziennie od chwili, gdy wyrośnie pierwszy, i mniej słodkich napojów między posiłkami.
@@ -64,6 +65,7 @@ sekcje:
     strona_zdjecia: lewa
     wariant: domyslny
   - type: tekst
+    waska: true
     naglowek: "Lakowanie i fluor — dlaczego akurat u dzieci"
     tresc: |-
       Ząb stały, który właśnie wyrósł, ma na powierzchni żującej głębokie bruzdy. Szczoteczka nie dociera na ich dno, a resztki jedzenia owszem — i właśnie tam najczęściej zaczyna się próchnica.
@@ -78,6 +80,7 @@ sekcje:
       tresc: "Lakowanie i lakierowanie zabezpieczają ząb, ale nie zastępują szczotkowania ani przeglądów. Lak może się z czasem wykruszyć — sprawdzamy to na każdej kontroli."
     wariant: wyrozniony
   - type: tekst
+    waska: true
     naglowek: "Zęby mleczne leczymy, a nie usuwamy"
     tresc: |-
       „I tak wypadnie” to najczęstszy argument za usunięciem zęba mlecznego — i najkosztowniejszy w skutkach.

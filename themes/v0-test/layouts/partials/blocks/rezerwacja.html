@@ -4,7 +4,9 @@
 {{- with hugo.Data.gabinet.rezerwacja }}{{ if and .wlaczona .url }}
 {{- $r := . }}
 <section {{ partial "blok-atrybuty.html" $b }}>
-  <h2>{{ $b.naglowek | default "Rezerwacja online" }}</h2>
+  {{- with $b.naglowek | default (cond (and $b.polacz (gt $.nr 0)) "" "Rezerwacja online") }}
+  <h2>{{ . }}</h2>
+  {{- end }}
   {{- with $b.tresc }}{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
   {{- if not $r.potwierdzona }}
   <p class="ramka ramka--uwaga">Rezerwacja online jest w przygotowaniu — odnośnik prowadzi do serwisu {{ $r.dostawca | default "zewnętrznego" }}.</p>

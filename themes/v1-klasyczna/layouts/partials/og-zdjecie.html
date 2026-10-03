@@ -1,6 +1,7 @@
 {{- /* Zdjecie do podgladu linku (Open Graph) i danych strukturalnych:
-       pierwsze zdjecie z sekcji strony (baner, tekst, galeria), a gdy strona
-       nie ma zdjec - pierwsze zdjecie strony glownej. JPEG do 1200 px.
+       pierwsze zdjecie z sekcji strony (baner, tekst, galeria) o szerokosci
+       co najmniej 600 px, a gdy strona takiego nie ma - pierwsze takie zdjecie
+       strony glownej. JPEG do 1200 px.
        Wejscie: Page. Wynik: dict "url" (pelny adres), "width", "height", "alt" albo false. */ -}}
 {{- $wynik := false -}}
 {{- $strony := slice . -}}
@@ -12,7 +13,8 @@
         {{- $z := false -}}
         {{- if .zdjecie }}{{ $z = .zdjecie }}{{ else if and (eq .type "galeria") .elementy }}{{ $z = index .elementy 0 }}{{ end -}}
         {{- with $z -}}{{- with partial "zdjecie-zasob.html" (dict "strona" $p "zdjecie" .) -}}
-          {{- if ne .MediaType.SubType "svg" -}}
+          {{- /* zbyt male zdjecie (< 600 px) da nieczytelny podglad - szukamy dalej */ -}}
+          {{- if and (ne .MediaType.SubType "svg") (ge .Width 600) -}}
             {{- $j := false }}{{ if gt .Width 1200 }}{{ $j = .Resize "1200x jpg" }}{{ else }}{{ $j = .Process "jpg" }}{{ end -}}
             {{- $wynik = dict "url" $j.Permalink "width" $j.Width "height" $j.Height "alt" $z.alt -}}
           {{- end -}}

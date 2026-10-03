@@ -1,7 +1,7 @@
 {{- /* Blok "cytat": tekst, autor - blockquote.pullquote makiety v1. */ -}}
 {{- $b := .blok -}}
         <blockquote class="pullquote" style="margin:0">
-          {{ $b.tekst }}
+          {{ partial "tekst-wiersze.html" $b.tekst }}
           {{- with $b.autor }}
           <footer>{{ . }}</footer>
           {{- end }}

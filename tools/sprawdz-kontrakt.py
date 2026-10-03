@@ -37,7 +37,7 @@ REPO = Path(__file__).resolve().parent.parent
 CONFIG = REPO / "static/admin/config.yml"
 CENNIK = REPO / "data/cennik.yaml"
 KONTRAKT = REPO / "docs/KONTRAKT-BLOKOW.md"
-POLA_WSPOLNE = {"wariant", "polacz", "kotwica"}  # pola kazdego typu bloku
+POLA_WSPOLNE = {"wariant", "waska", "polacz", "kotwica"}  # pola kazdego typu bloku
 WZOR_SLUGA = re.compile(r"[a-z0-9]+(-[a-z0-9]+)*")  # "type" to klucz typu (typeKey), nie pole
 
 bledy: list[str] = []

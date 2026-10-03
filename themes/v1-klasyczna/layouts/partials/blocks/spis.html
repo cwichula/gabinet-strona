@@ -1,0 +1,16 @@
+{{- /* Blok "spis": naglowek (w v1 tylko etykieta dla czytnikow ekranu),
+       elementy [{etykieta, kotwica}] - nav.anchor-nav makiety v1 (odnosniki
+       w ksztalcie pigulek do sekcji tej strony). Sekcja z tym blokiem jest
+       ciasniejsza (section--tight, partial sekcje.html). Kotwica, ktorej nie ma
+       na stronie (zaden blok jej nie ma), przerywa budowanie. */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $kotwice := slice }}{{ range $.strona.Params.sekcje }}{{ with .kotwica }}{{ $kotwice = $kotwice | append . }}{{ end }}{{ end -}}
+{{- with $b.elementy }}
+    <nav class="anchor-nav" aria-label="{{ $b.naglowek | default "Spis treści" }}">
+      {{- range . }}
+      {{- if not (in $kotwice .kotwica) }}{{ errorf "%s: spis treści wskazuje kotwicę %q, której nie ma żaden blok tej strony. Wpisz kotwicę w bloku (pole „Kotwica”) albo popraw spis w panelu /admin/." $gdzie .kotwica }}{{ end }}
+      <a href="#{{ .kotwica }}">{{ .etykieta }}</a>
+      {{- end }}
+    </nav>
+{{- end -}}

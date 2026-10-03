@@ -53,7 +53,7 @@
           {{ $r.etykieta }} {{ $w }}{{ $nowaKarta }}
         </a>
         {{- with $r.nota }}
-        <p class="booking__note">{{ . }}</p>
+        <p class="booking__note">{{ partial "tekst-wiersze.html" . }}</p>
         {{- end }}
         {{- with $tel }}
         <p class="booking__alt">Wolisz ustalić termin w rozmowie? Rejestracja telefoniczna działa jak dotąd:</p>

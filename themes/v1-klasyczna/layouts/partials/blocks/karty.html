@@ -1,4 +1,5 @@
-{{- /* Blok "karty": naglowek, wstep, kolumny (2 | 3 | 4), elementy [{tytul, tresc,
+{{- /* Blok "karty": naglowek, wstep, kolumny (2 | 3 | 4), wypunktowanie (ptaszki ->
+       listy w kartach jako ul.checklist), elementy [{tytul, tresc,
        ikona, cena (id pozycji cennika), strona}]. Markup kart makiety v1:
        karta ze strona = article.card.card--link (cala karta klikalna),
        karta z sama cena = mala karta ceny (strona glowna v1, "Ile to kosztuje"). */ -}}
@@ -22,7 +23,7 @@
         {{- end }}
         <h3>{{ with $cel.href }}<a class="stretched" href="{{ . }}">{{ $k.tytul }}</a>{{ else }}{{ $k.tytul }}{{ end }}</h3>
         {{- with $k.tresc }}
-        {{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}
+        {{ partial "karta-tresc.html" (dict "strona" $.strona "tekst" . "ptaszki" (eq $b.wypunktowanie "ptaszki")) }}
         {{- end }}
         {{- with $poz }}
         <p class="card__price"><b>{{ partial "cena.html" . }}</b></p>
@@ -36,7 +37,7 @@
         {{- end }}
         <h3>{{ with $cel.href }}<a class="stretched" href="{{ . }}">{{ $k.tytul }}</a>{{ else }}{{ $k.tytul }}{{ end }}</h3>
         {{- with $k.tresc }}
-        {{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}
+        {{ partial "karta-tresc.html" (dict "strona" $.strona "tekst" . "ptaszki" (eq $b.wypunktowanie "ptaszki")) }}
         {{- end }}
         {{- with $poz }}
         <p class="card__price"><b>{{ partial "cena.html" . }}</b></p>

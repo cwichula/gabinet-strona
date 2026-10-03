@@ -11,6 +11,9 @@
   {{- $typ := $blok.type | default "" -}}
   {{- with $blok.kotwica -}}
     {{- if index $kotwice . }}{{ errorf "%s: kotwica %q występuje na stronie więcej niż raz (sekcja nr %d). Zmień ją w panelu /admin/." $plik . (add $nr 1) }}{{ end -}}
+    {{- if or (in (slice "tresc" "menu-mobilne" "lightbox" "cennik-tabela" "szukaj-ceny") .) (findRE `^(grupa|podmenu)-|^f[0-9]+-` .) -}}
+      {{- errorf "%s: kotwica %q (sekcja nr %d) jest zarezerwowana dla szablonów (docs/KONTRAKT-BLOKOW.md). Wybierz inną nazwę w panelu /admin/." $plik . (add $nr 1) -}}
+    {{- end -}}
     {{- $kotwice = merge $kotwice (dict . true) -}}
   {{- end -}}
   {{- $szablon := printf "blocks/%s.html" $typ -}}

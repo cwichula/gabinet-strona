@@ -13,7 +13,7 @@
       </ul>
     </div>
     {{- else }}
-    <ul class="checklist{{ if eq $styl "minusy" }} checklist--minus{{ end }}">
+    <ul class="checklist{{ if eq $styl "minusy" }} checklist--minus{{ end }}"{{ if $b.wstep }} style="margin-top:1.5rem"{{ end }}>
       {{- range $b.elementy }}
       <li>{{ partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .) }}</li>
       {{- end }}

@@ -26,7 +26,7 @@
     <h1>{{ $s.naglowek | default "Tej strony nie ma pod tym adresem" }}</h1>
 
     <p class="lede" style="margin-left:auto;margin-right:auto;max-width:48ch">
-      {{ $s.tresc | default "Strona, której szukasz, zmieniła adres albo już jej nie ma." }}
+      {{ with $s.tresc }}{{ partial "tekst-wiersze.html" . }}{{ else }}Strona, której szukasz, zmieniła adres albo już jej nie ma.{{ end }}
     </p>
 
     <div class="cluster" style="justify-content:center;margin-top:2rem">
@@ -38,7 +38,7 @@
     {{- with $s.notka }}
 
     <p style="margin-top:2rem;color:var(--muted);font-size:var(--step--1)">
-      {{ . }}
+      {{ partial "tekst-wiersze.html" . }}
     </p>
     {{- end }}
   </div>
@@ -49,7 +49,7 @@
     <h2 style="margin-top:0">{{ $s.linki_naglowek | default "Dokąd dalej" }}</h2>
     {{- with $s.linki_wstep }}
     <p>
-      {{ . }}
+      {{ partial "tekst-wiersze.html" . }}
     </p>
     {{- end }}
 
@@ -74,12 +74,12 @@
       <svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg>
       <div>
         <p>
-          {{ $s.ramka_telefon | default "Jeśli nie możesz czegoś znaleźć albo chcesz umówić wizytę, zadzwoń do rejestracji:" }}
+          {{ with $s.ramka_telefon }}{{ partial "tekst-wiersze.html" . }}{{ else }}Jeśli nie możesz czegoś znaleźć albo chcesz umówić wizytę, zadzwoń do rejestracji:{{ end }}
           {{ range $i, $t := . }}{{ if $i }}{{ if eq $i $ost }} lub {{ else }}, {{ end }}{{ end }}<a href="{{ printf "tel:%s" $t.tel | safeURL }}">{{ if eq $i 0 }}<strong>{{ $t.numer }}</strong>{{ else }}{{ $t.numer }}{{ end }}</a>{{ end }}.
         </p>
         {{- with $g.adres }}{{ if .ulica }}
         <p>
-          {{ $s.ramka_adres | default "Adres gabinetu:" }} {{ .ulica }}, {{ with .kod }}{{ . }} {{ end }}{{ .miasto }}.
+          {{ with $s.ramka_adres }}{{ partial "tekst-wiersze.html" . }}{{ else }}Adres gabinetu:{{ end }} {{ .ulica }}, {{ with .kod }}{{ . }} {{ end }}{{ .miasto }}.
         </p>
         {{- end }}{{ end }}
       </div>

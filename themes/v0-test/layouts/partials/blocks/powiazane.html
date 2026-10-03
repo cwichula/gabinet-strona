@@ -1,16 +1,19 @@
-{{- /* Blok "powiazane": naglowek, elementy [{strona, opis}]. Pusty opis =
+{{- /* Blok "powiazane": naglowek (pusty = bez naglowka), elementy [{strona,
+       etykieta, opis}]. Pusta etykieta = tytul strony, pusty opis =
        usluga.skrot wskazanej strony. Strona ukryta = pozycja pominieta. */ -}}
 {{- $b := .blok -}}
 {{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
 <section {{ partial "blok-atrybuty.html" $b }}>
-  <h2>{{ $b.naglowek | default "Powiązane strony" }}</h2>
+  {{- with $b.naglowek }}
+  <h2>{{ . }}</h2>
+  {{- end }}
   <ul>
     {{- range $el := $b.elementy }}
     {{- $cel := partial "cel-linku.html" (dict "strona" $el.strona "gdzie" (printf "%s: blok „Powiązane strony”" $gdzie)) }}
     {{- with $cel.strona }}
     {{- $u := .Params.usluga | default dict }}
     {{- $opis := $el.opis | default $u.skrot | default "" }}
-    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ with $opis }} — {{ . }}{{ end }}</li>
+    <li><a href="{{ .RelPermalink }}">{{ $el.etykieta | default .Title }}</a>{{ with $opis }} — {{ . }}{{ end }}</li>
     {{- end }}
     {{- end }}
   </ul>

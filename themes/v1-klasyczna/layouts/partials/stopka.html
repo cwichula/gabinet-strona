@@ -1,9 +1,12 @@
 {{- /* Stopka i pasek dolny na telefonie - jak v1/_src/_layout.html i stopka()
-       z tools/build-v1.py. Kolumna "Usługi" = strony uslug (pole "usluga"),
+       z tools/build-v1.py. Naglowki kolumn - data/ustawienia.yaml (napisy.stopka_*).
+       Formy platnosci (data/gabinet.yaml) ten szablon pokazuje tylko w danych
+       dla wyszukiwarek - stopka v1 ich nie wymienia. Kolumna "Usługi" = strony uslug (pole "usluga"),
        a gdy zadnej nie ma - podmenu pierwszej pozycji menu z podmenu.
        Kolumna "Gabinet" = pozycje menu bez podmenu. */ -}}
 {{- $g := hugo.Data.gabinet -}}
 {{- $u := hugo.Data.ustawienia | default dict -}}
+{{- $n := $u.napisy | default dict -}}
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
 {{- $menu := partialCached "menu-model.html" site "menu" -}}
 {{- /* napis uslugi: etykieta z podmenu, gdy strona tam jest (np. "Licówki kompozytowe"), inaczej tytul strony */ -}}
@@ -43,17 +46,14 @@
         </p>
         {{- end }}
         {{- with $u.stopka_tekst }}
-        <p style="margin:0">{{ . }}</p>
-        {{- end }}
-        {{- with $g.platnosci }}
-        <p style="margin:0">Płatność: {{ delimit . ", " }}.</p>
+        <p style="margin:0">{{ partial "tekst-wiersze.html" . }}</p>
         {{- end }}
         {{ partial "rezerwacja.html" (dict "miejsce" "stopka") }}
       </div>
 
       {{- with $uslugi }}
       <div>
-        <h2>Usługi</h2>
+        <h2>{{ $n.stopka_uslugi | default "Usługi" }}</h2>
         <ul>
           {{- range . }}
           <li><a href="{{ .href }}"{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}</a></li>
@@ -64,7 +64,7 @@
 
       {{- with $strony }}
       <div>
-        <h2>Gabinet</h2>
+        <h2>{{ $n.stopka_gabinet | default "Gabinet" }}</h2>
         <ul>
           {{- range . }}
           <li><a href="{{ .href }}"{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}</a></li>
@@ -75,7 +75,7 @@
 
       {{- with $g.godziny }}
       <div>
-        <h2>Godziny przyjęć</h2>
+        <h2>{{ $n.stopka_godziny | default "Godziny przyjęć" }}</h2>
         <ul>
           {{- range . }}
           {{- if and .od .do }}

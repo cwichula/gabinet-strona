@@ -1,5 +1,6 @@
 ---
 title: "Cennik"
+seo_tytul: "Cennik stomatologiczny Legnica | Gabinet Rożdżestwieńska"
 description: "Cennik gabinetu stomatologicznego w Legnicy: badanie 100 zł, wypełnienie 250–400 zł, szyna Michigan 800 zł. 30 pozycji. Pytania i wizyty: 76 72-26-880."
 draft: false
 weight: 11
@@ -21,7 +22,6 @@ sekcje:
     wariant: domyslny
     polacz: false
   - type: cennik
-    naglowek: "Ceny zabiegów"
     wstep: "Ceny w złotych, za jeden ząb lub jeden zabieg, o ile nazwa pozycji nie mówi inaczej."
     kategorie: []
     pozycje: []
@@ -100,12 +100,15 @@ sekcje:
       - strona: "pierwsza-wizyta"
         opis: "Co się dzieje po kolei i kiedy poznasz koszt"
       - strona: "uslugi"
+        etykieta: "Wszystkie usługi"
         opis: "Dziewięć obszarów leczenia, każdy z osobnym opisem"
       - strona: "kontakt"
+        etykieta: "Kontakt i dojazd"
         opis: "Adres, godziny przyjęć i mapa centrum Legnicy"
     wariant: wyrozniony
     polacz: true
   - type: cta
+    wszystkie_telefony: true
     naglowek: "Nie wiesz, która pozycja dotyczy Twojego zęba?"
     tresc: "Zadzwoń i opisz, co Cię boli. Powiemy, czego się spodziewać i ile zwykle trwa takie leczenie, a dokładną kwotę poznasz po badaniu."
     wariant: domyslny

@@ -1,10 +1,13 @@
 {{- /* Blok "faq": naglowek, elementy [{pytanie, odpowiedz}] - div.faq > details
-       jak w makiecie v1 (bez JS). Pytania trafiaja tez do danych FAQPage
+       jak w makiecie v1 (bez JS). Pusty naglowek: "Najczestsze pytania", a w bloku
+       dolaczonym do sekcji ("polacz") - bez naglowka. Pytania trafiaja tez do danych FAQPage
        (partial jsonld.html). */ -}}
 {{- $b := .blok -}}
-    <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ $b.naglowek | default "Najczęstsze pytania" }}</h2>
+    {{- with $b.naglowek | default (cond $.gora "Najczęstsze pytania" "") }}
+    <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ . }}</h2>
+    {{- end }}
 
-    <div class="faq" style="margin-top:2rem">
+    <div class="faq"{{ if or $b.naglowek $.gora }} style="margin-top:2rem"{{ end }}>
       {{- range $b.elementy }}
       <details>
         <summary>{{ .pytanie }}</summary>

@@ -1,5 +1,6 @@
 ---
 title: "Polityka prywatności"
+seo_tytul: "Polityka prywatności Legnica | Gabinet Rożdżestwieńska"
 description: "Polityka prywatności gabinetu stomatologicznego Legnica: jakie dane zbieramy, podstawy z RODO, okresy przechowywania i Twoje prawa. Pytania: 76 72-26-880."
 draft: false
 weight: 18
@@ -9,33 +10,45 @@ sekcje:
     tresc: |-
       Kto przetwarza Twoje dane, w jakim celu, jak długo je przechowuje i co możesz z tym zrobić.
   - type: ramka
+    waska: true
     rodzaj: uwaga
     tresc: |-
       **Ten dokument jest projektem przygotowanym w ramach makiety nowej strony.** Przed publikacją wymaga sprawdzenia przez prawnika specjalizującego się w RODO w działalności leczniczej — w kosztorysie odpowiadają temu zadania **T-12** i **T-15**. Dotyczy to także [punktu 7](#rezerwacja) o rezerwacji online w serwisie zewnętrznym: trzeba w nim przesądzić, czy gabinet zawiera z operatorem tego serwisu umowę powierzenia przetwarzania.
 
-      Fragmenty oznaczone **DO UZUPEŁNIENIA** lub **DO POTWIERDZENIA** czekają na dane od gabinetu.
+      Fragmenty oznaczone ==DO UZUPEŁNIENIA== lub ==DO POTWIERDZENIA== czekają na dane od gabinetu.
     wariant: domyslny
-  - type: lista
+  - type: spis
     naglowek: "Spis treści"
-    styl: zwykla
     elementy:
-      - "[1. Administrator](#administrator)"
-      - "[2. Dane i cele](#dane)"
-      - "[3. Podstawy prawne](#podstawy)"
-      - "[4. Okresy przechowywania](#okresy)"
-      - "[5. Odbiorcy danych](#odbiorcy)"
-      - "[6. Mapa Google](#mapa)"
-      - "[7. Rezerwacja online](#rezerwacja)"
-      - "[8. Twoje prawa](#prawa)"
-      - "[9. Pliki cookie](#cookies)"
-      - "[10. Dobrowolność](#dobrowolnosc)"
-      - "[11. Zmiany](#zmiany)"
+      - etykieta: "1. Administrator"
+        kotwica: administrator
+      - etykieta: "2. Dane i cele"
+        kotwica: dane
+      - etykieta: "3. Podstawy prawne"
+        kotwica: podstawy
+      - etykieta: "4. Okresy przechowywania"
+        kotwica: okresy
+      - etykieta: "5. Odbiorcy danych"
+        kotwica: odbiorcy
+      - etykieta: "6. Mapa Google"
+        kotwica: mapa
+      - etykieta: "7. Rezerwacja online"
+        kotwica: rezerwacja
+      - etykieta: "8. Twoje prawa"
+        kotwica: prawa
+      - etykieta: "9. Pliki cookie"
+        kotwica: cookies
+      - etykieta: "10. Dobrowolność"
+        kotwica: dobrowolnosc
+      - etykieta: "11. Zmiany"
+        kotwica: zmiany
     polacz: true
   - type: tekst
     tresc: |-
       Ten dokument zastępuje wcześniejszą politykę w pliku PDF, która powoływała się na uchyloną ustawę z 1997 r. i nie wspominała o RODO. „RODO” to rozporządzenie (UE) 2016/679 z 27 kwietnia 2016 r.
     polacz: true
   - type: tekst
+    waska: true
     naglowek: "1. Administrator danych"
     tresc: |-
       Administratorem Twoich danych, czyli podmiotem decydującym o celu i sposobie ich wykorzystania, jest:
@@ -44,7 +57,7 @@ sekcje:
       ul. Złotoryjska 16/18 m. 10, 59-220 Legnica
 
       - telefon: [76 72-26-880](tel:+48767226880), [699 904 989](tel:+48699904989)
-      - e-mail: [gabstom13@wp.pl](mailto:gabstom13@wp.pl) **DO POTWIERDZENIA**
+      - e-mail: [gabstom13@wp.pl](mailto:gabstom13@wp.pl) ==DO POTWIERDZENIA==
 
       Dane rejestrowe praktyki — NIP **DO UZUPEŁNIENIA**, REGON **DO UZUPEŁNIENIA**, numer prawa wykonywania zawodu **DO UZUPEŁNIENIA**, wpis do rejestru podmiotów wykonujących działalność leczniczą (RPWDL) **DO UZUPEŁNIENIA** — gabinet uzupełni przed publikacją.
     ramka:
@@ -54,10 +67,10 @@ sekcje:
     wariant: wyrozniony
     kotwica: administrator
   - type: tekst
+    waska: true
     naglowek: "2. Jakie dane zbieramy i w jakim celu"
+    wstep: "Cztery sytuacje, w których gabinet dowiaduje się czegoś o Tobie."
     tresc: |-
-      Cztery sytuacje, w których gabinet dowiaduje się czegoś o Tobie.
-
       ### a) Rejestracja telefoniczna i przypomnienia SMS
 
       Przy umawianiu wizyty zapisujemy imię i nazwisko, numer telefonu i termin. Numer służy do kontaktu w sprawie wizyty i do przypomnienia SMS. Przypomnienie wysyłamy tylko za Twoją zgodą; zgodę możesz wycofać jednym telefonem do rejestracji.
@@ -82,6 +95,7 @@ sekcje:
     wariant: domyslny
     kotwica: dane
   - type: tekst
+    waska: true
     naglowek: "3. Podstawy prawne — dla każdego celu osobno"
     tresc: |-
       RODO wymaga, żeby każde przetwarzanie miało swoją podstawę prawną.
@@ -97,6 +111,7 @@ sekcje:
     wariant: wyrozniony
     kotwica: podstawy
   - type: lista
+    waska: true
     naglowek: "4. Jak długo przechowujemy dane"
     styl: ptaszki
     elementy:
@@ -105,23 +120,25 @@ sekcje:
       - "**Skierowania i zlecenia — 5 lat** od końca roku, w którym zrealizowano świadczenie."
       - "**Korespondencja — do zakończenia sprawy**, a potem przez czas potrzebny na obronę przed roszczeniami."
       - "**Numer do przypomnień SMS — do wycofania zgody** albo do zakończenia leczenia."
-      - "**Logi serwera — zgodnie z polityką firmy hostingowej** — **DO UZUPEŁNIENIA**."
+      - "**Logi serwera — zgodnie z polityką firmy hostingowej** — ==DO UZUPEŁNIENIA==."
     wariant: domyslny
     kotwica: okresy
   - type: tekst
+    waska: true
     naglowek: "5. Komu przekazujemy dane"
     tresc: |-
       Gabinet nie sprzedaje danych i nie udostępnia ich w celach marketingowych. Przekazujemy je tylko wtedy, gdy jest to potrzebne do leczenia albo wymaga tego prawo.
 
-      - **Firma hostingowa** — przechowuje pliki strony i logi serwera **DO UZUPEŁNIENIA**.
-      - **Dostawca bramki SMS** — otrzymuje numer telefonu i treść przypomnienia **DO UZUPEŁNIENIA**.
-      - **Laboratorium protetyczne** — gdy wykonujemy [protezę](/protezy-zebowe/) albo [koronę lub most](/korony-i-mosty/), technik dostaje wyciski i informacje potrzebne do pracy **DO UZUPEŁNIENIA**.
+      - **Firma hostingowa** — przechowuje pliki strony i logi serwera ==DO UZUPEŁNIENIA==.
+      - **Dostawca bramki SMS** — otrzymuje numer telefonu i treść przypomnienia ==DO UZUPEŁNIENIA==.
+      - **Laboratorium protetyczne** — gdy wykonujemy [protezę](/protezy-zebowe/) albo [koronę lub most](/korony-i-mosty/), technik dostaje wyciski i informacje potrzebne do pracy ==DO UZUPEŁNIENIA==.
       - **Podmioty uprawnione na podstawie przepisów** — sąd, prokuratura, Rzecznik Praw Pacjenta, lekarz kontynuujący leczenie, osoba przez Ciebie upoważniona w dokumentacji.
 
       Z hostingiem, dostawcą SMS i laboratorium gabinet zawiera umowy powierzenia przetwarzania (art. 28 RODO).
     wariant: wyrozniony
     kotwica: odbiorcy
   - type: tekst
+    waska: true
     naglowek: "6. Mapa Google na stronie kontaktu"
     tresc: |-
       Na [stronie kontaktowej](/kontakt/) jest mapa dojazdu osadzona z serwerów Google, nie z naszego. Jej wczytanie łączy Twoją przeglądarkę bezpośrednio z Google i przekazuje tej firmie **Twój adres IP** oraz informacje o urządzeniu i przeglądarce.
@@ -140,6 +157,7 @@ sekcje:
       Google może przetwarzać te dane także poza Europejskim Obszarem Gospodarczym, w tym w Stanach Zjednoczonych. Podstawą przekazania są standardowe klauzule umowne zatwierdzone przez Komisję Europejską oraz decyzja Komisji z 10 lipca 2023 r. stwierdzająca odpowiedni stopień ochrony w ramach **EU–US Data Privacy Framework**.
     polacz: true
   - type: tekst
+    waska: true
     naglowek: "7. Rezerwacja online w serwisie zewnętrznym"
     tresc: |-
       Serwis udostępnia **odnośnik** do zewnętrznego systemu rezerwacji wizyt Booksy. To zwykły odnośnik otwierany w nowej karcie, a nie kalendarz osadzony na naszej stronie.
@@ -166,6 +184,7 @@ sekcje:
       **Termin potwierdza gabinet.** Rejestracja telefoniczna pozostaje dostępna i **nie wymaga** korzystania z serwisu zewnętrznego — wizytę umówisz pod numerem [76 72-26-880](tel:+48767226880) albo [699 904 989](tel:+48699904989).
     polacz: true
   - type: tekst
+    waska: true
     naglowek: "8. Twoje prawa"
     tresc: |-
       W związku z przetwarzaniem danych masz prawo do:
@@ -194,6 +213,7 @@ sekcje:
       ul. Stawki 2, 00-193 Warszawa
     polacz: true
   - type: tekst
+    waska: true
     naglowek: "9. Pliki cookie i dane zapisywane w przeglądarce"
     tresc: |-
       Uczciwie i krótko: **ten serwis nie używa cookies śledzących**. Nie ma tu Google Analytics ani innego narzędzia analitycznego, nie ma pikseli reklamowych, zewnętrznych czcionek ani bibliotek z obcych serwerów. Jedynym wyjątkiem jest mapa Google z [punktu 6](#mapa), ładowana po Twoim kliknięciu.
@@ -214,6 +234,7 @@ sekcje:
     wariant: wyrozniony
     kotwica: cookies
   - type: tekst
+    waska: true
     naglowek: "10. Czy podanie danych jest obowiązkowe?"
     tresc: |-
       Podanie danych jest dobrowolne, ale od części z nich zależy, czy gabinet będzie mógł Ci pomóc.
@@ -227,9 +248,10 @@ sekcje:
     wariant: domyslny
     kotwica: dobrowolnosc
   - type: tekst
+    waska: true
     naglowek: "11. Data obowiązywania i zasady zmian"
     tresc: |-
-      Polityka obowiązuje od **DO POTWIERDZENIA** — data zostanie wpisana w dniu publikacji, po sprawdzeniu dokumentu przez prawnika.
+      Polityka obowiązuje od ==DO POTWIERDZENIA== — data zostanie wpisana w dniu publikacji, po sprawdzeniu dokumentu przez prawnika.
 
       Aktualizujemy ją, gdy zmieni się sposób działania gabinetu lub serwisu albo gdy zmienią się przepisy. Każdą nową wersję publikujemy pod tym samym adresem, z datą.
 
@@ -239,9 +261,9 @@ sekcje:
     wariant: wyrozniony
     kotwica: zmiany
   - type: powiazane
-    naglowek: "Zobacz też"
     elementy:
       - strona: kontakt
+        etykieta: "Kontakt i dojazd"
         opis: "Adres, godziny przyjęć i mapa wczytywana po kliknięciu"
       - strona: pierwsza-wizyta
         opis: "Czego potrzebujemy od Ciebie i o co zapyta lekarz"

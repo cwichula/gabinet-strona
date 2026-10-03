@@ -4,7 +4,9 @@
 {{- $tematy := $b.tematy | default (slice "Umówienie wizyty" "Pytanie o cenę" "Pytanie o leczenie" "Inne") -}}
 {{- $id := printf "formularz-%d" .nr -}}
 <section {{ partial "blok-atrybuty.html" $b }}>
-  <h2>{{ $b.naglowek | default "Napisz do nas" }}</h2>
+  {{- with $b.naglowek | default (cond (and $b.polacz (gt $.nr 0)) "" "Napisz do nas") }}
+  <h2>{{ . }}</h2>
+  {{- end }}
   {{- with $b.wstep }}{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
   <form class="formularz" onsubmit="return false">
     <p><label for="{{ $id }}-imie">Imię *</label><br><input type="text" id="{{ $id }}-imie" name="imie" autocomplete="given-name" required></p>
