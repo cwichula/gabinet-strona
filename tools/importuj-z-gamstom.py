@@ -173,8 +173,13 @@ def zbuduj_cennik(gamstom: Path) -> dict:
 
 
 def tel_link(numer: str) -> str:
-    """Ta sama regula co w szablonach (partial tel.html): same cyfry, +48 dla 9 cyfr."""
+    """Ta sama regula co w szablonach (partial tel.html): same cyfry, bez
+    wiodacego "00" (albo "0" przy 10 cyfrach), +48 dla 9 cyfr."""
     cyfry = re.sub(r"\D", "", numer)
+    if cyfry.startswith("00"):
+        cyfry = cyfry[2:]
+    elif cyfry.startswith("0") and len(cyfry) == 10:
+        cyfry = cyfry[1:]
     if len(cyfry) == 9:
         return "+48" + cyfry
     return "+" + cyfry

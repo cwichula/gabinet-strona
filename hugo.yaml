@@ -14,7 +14,9 @@ theme: v0-test
 locale: pl
 defaultContentLanguage: pl
 
-# Adresy bez polskich znakow, takze gdy ktos nazwie plik z ogonkami.
+# Usuwa akcenty z adresow ("ż" -> "z", "ó" -> "o"...), ale NIE zamienia "ł".
+# Nazwy katalogow w content/strony/ musza byc z [a-z0-9-] - pilnuje tego
+# tools/sprawdz-kontrakt.py (CMS sam zapisuje slugi bez ogonkow).
 removePathAccents: true
 
 # Tylko to, czego uzywamy: bez tagow/kategorii i bez RSS.
@@ -33,8 +35,13 @@ permalinks:
 markup:
   goldmark:
     renderer:
-      # Zadnego surowego HTML z tresci (pola Markdown z CMS).
+      # Zadnego surowego HTML z tresci (pola Markdown z CMS). Pominiety HTML
+      # nie blokuje publikacji (ignoreLogs nizej); <br> zamienia sie wczesniej
+      # na zwykle zlamanie wiersza (partial markdown.html).
       unsafe: false
+
+# Ostrzezenie "Raw HTML omitted" (np. <br> wklejone w tresc) nie przerywa CI.
+ignoreLogs: ['warning-goldmark-raw-html']
 
 imaging:
   # Zdjecia z CMS przychodza juz jako WebP <= 2048 px; Hugo zmniejsza je

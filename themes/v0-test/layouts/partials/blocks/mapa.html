@@ -11,6 +11,6 @@
   {{- with $a.dojazd }}
   <p>{{ . }}</p>
   {{- end }}
-  {{- with $b.tresc }}{{ $.strona.RenderString (dict "display" "block") . }}{{ end }}
+  {{- with $b.tresc }}{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
   <p><a href="https://www.google.com/maps/search/?api=1&amp;query={{ $zapytanie | urlquery }}" rel="noopener external">Otwórz mapę w Google Maps</a> <small>(serwis zewnętrzny)</small></p>
 </section>

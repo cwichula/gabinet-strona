@@ -5,7 +5,7 @@
   {{- range $b.elementy }}
   <details>
     <summary>{{ .pytanie }}</summary>
-    <div class="odpowiedz">{{ $.strona.RenderString (dict "display" "block") .odpowiedz }}</div>
+    <div class="odpowiedz">{{ partial "markdown.html" (dict "strona" $.strona "tekst" .odpowiedz) }}</div>
   </details>
   {{- end }}
 </section>

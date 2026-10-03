@@ -1,6 +1,10 @@
-{{- /* Numer telefonu do odnosnika tel: - same cyfry, +48 dla numeru 9-cyfrowego.
-       "76 72-26-880" -> "+48767226880". Ta sama regula jest w
-       tools/importuj-z-gamstom.py. */ -}}
+{{- /* Numer telefonu do odnosnika tel: - same cyfry z "+" na poczatku.
+       "76 72-26-880" -> "+48767226880" (9 cyfr = numer polski, dostaje +48),
+       "076 722 68 80" -> "+48767226880" (stary zapis z "0" na poczatku),
+       "0048 699 904 989" / "+48 699 904 989" -> "+48699904989".
+       Ta sama regula jest w tools/importuj-z-gamstom.py. */ -}}
 {{- $cyfry := replaceRE `\D` "" (string .) -}}
-{{- if eq (len $cyfry) 9 }}{{ $cyfry = printf "+48%s" $cyfry }}{{ else }}{{ $cyfry = printf "+%s" $cyfry }}{{ end -}}
-{{- return $cyfry -}}
+{{- if hasPrefix $cyfry "00" }}{{ $cyfry = strings.TrimPrefix "00" $cyfry }}
+{{- else if and (hasPrefix $cyfry "0") (eq (len $cyfry) 10) }}{{ $cyfry = strings.TrimPrefix "0" $cyfry }}{{ end -}}
+{{- if eq (len $cyfry) 9 }}{{ $cyfry = printf "48%s" $cyfry }}{{ end -}}
+{{- return (printf "+%s" $cyfry) -}}

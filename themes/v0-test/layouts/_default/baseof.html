@@ -6,7 +6,9 @@
   {{- $nazwa := hugo.Data.gabinet.nazwa_krotka | default site.Title }}
   <title>{{ if .IsHome }}{{ $nazwa }}{{ else if eq .Kind "404" }}Nie znaleziono strony | {{ $nazwa }}{{ else }}{{ .Title }} | {{ $nazwa }}{{ end }}</title>
   <meta name="description" content="{{ .Description | default hugo.Data.ustawienia.seo_opis }}">
+  {{- if ne .Kind "404" }}
   <link rel="canonical" href="{{ .Permalink }}">
+  {{- end }}
   {{- with resources.Get "css/v0.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}">
   {{- end }}

@@ -63,8 +63,12 @@ odnośnika; strona, której nie ma = błąd budowania.
 **Markdown** (`tresc`, `wstep`, `odpowiedz`): renderowany jako blok
 (`.RenderString (dict "display" "block")` — jak `markdownify`, ale zawsze z akapitami
 i z hookami odnośników strony). Surowy HTML jest wyłączony
-(`markup.goldmark.renderer.unsafe: false`). Odnośnik do podstrony piszemy jako
-`/slug/` — szablon dokleja ścieżkę bazową serwisu (hook `render-link.html`).
+(`markup.goldmark.renderer.unsafe: false`); pominięty HTML nie przerywa publikacji,
+a `<br>` zamienia się na złamanie wiersza (partial `markdown.html` — każdy szablon
+renderuje pola Markdown tak samo). Odnośnik do podstrony piszemy jako `/slug/`
+(też `/slug/#kotwica`) — hook `render-link.html` sprawdza stronę jak menu (ukryta =
+sam tekst, brak = błąd budowania, stary adres = nowy adres) i dokleja ścieżkę bazową
+serwisu; ścieżka z już doklejonym prefiksem albo pełny adres witryny są skracane.
 
 ## Bloki
 

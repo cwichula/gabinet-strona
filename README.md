@@ -90,10 +90,12 @@ GitHub wymaga do tego małego serwera OAuth. Używamy darmowego Cloudflare Worke
    - `GITHUB_CLIENT_ID` = Client ID,
    - `GITHUB_CLIENT_SECRET` = Client secret (zaszyfrowany — **Encrypt**),
    - `ALLOWED_DOMAINS` = `cwichula.github.io`.
-4. W `static/admin/config.yml` odkomentuj `base_url:` w sekcji `backend` i wpisz adres
-   Workera. Commit → po publikacji przycisk „Zaloguj się przez GitHub” działa.
+4. W `static/admin/config.yml` w sekcji `backend` odkomentuj `base_url:`, wpisz adres
+   Workera i usuń linię `auth_methods: [token]`. Commit → po publikacji na ekranie
+   logowania pojawia się przycisk „Zaloguj się przez GitHub”. (Do tego czasu jest ukryty:
+   bez `base_url` kierowałby do Netlify i nie działał.)
 
-### Logowanie tokenem (awaryjnie, działa od razu)
+### Logowanie tokenem (działa od razu; do czasu wdrożenia Workera jedyne)
 
 Na ekranie logowania **„Zaloguj się za pomocą tokenu dostępu”** — panel podaje link do
 utworzenia tokenu GitHub z właściwymi uprawnieniami (repozytorium: Contents read/write).
@@ -117,7 +119,16 @@ Zasady, które chronią stronę:
 
 - **Adres nowej strony** powstaje z tytułu, bez polskich znaków („Leczenie kanałowe” →
   `/leczenie-kanalowe/`). Zmiana adresu zapisanej strony (panel „Slug”) przenosi katalog,
-  poprawia menu i odnośniki oraz dopisuje przekierowanie ze starego adresu (`aliases`).
+  poprawia menu, przyciski i karty oraz dopisuje przekierowanie ze starego adresu
+  (`aliases`). Odnośniki wpisane w treści (`/stary-adres/`) panel zostawia bez zmian,
+  ale szablon prowadzi je od razu pod nowy adres.
+- **Odnośniki w treści** do własnych stron pisz jako `/slug/` (np. `/cennik/`, także
+  `/cennik/#ceny`); wklejony adres z paska przeglądarki też zadziała. Odnośnik do strony
+  ukrytej zostaje zwykłym tekstem, a do strony, której nie ma, zatrzymuje budowanie
+  z komunikatem, gdzie jest błąd.
+- **Linki „zobacz na stronie”** przy wpisach w panelu są wyłączone (`show_preview_links`
+  w `config.yml`): Sveltia gubi w nich część adresu `/gabinet-strona/`. Stronę otwiera
+  link w menu konta w panelu (`display_url`).
 - **Usunięcie strony** wskazywanej w menu: panel czyści odnośnik w menu, a budowanie
   zatrzymuje się z komunikatem, że pozycja menu nie ma celu — w sieci zostaje poprzednia
   wersja, a w repozytorium powstaje zgłoszenie. Popraw menu i zapisz.

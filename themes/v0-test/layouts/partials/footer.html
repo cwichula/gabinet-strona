@@ -16,10 +16,12 @@
   {{- with hugo.Data.ustawienia.stopka_tekst }}
   <p>{{ . }}</p>
   {{- end }}
-  {{- with $g.rejestrowe }}
+  {{- /* dane rejestrowe tylko, gdy jest choc jeden numer (CMS zapisuje puste pola jako "") */ -}}
+  {{- $rej := $g.rejestrowe | default dict -}}
+  {{- if or $rej.nip $rej.regon $rej.pwz $rej.rpwdl }}
   {{- $etykiety := dict "nip" "NIP" "regon" "REGON" "pwz" "Numer prawa wykonywania zawodu" "rpwdl" "Numer księgi rejestrowej RPWDL" }}
   <p class="rejestrowe">{{ $g.nazwa }}
-    {{- range $klucz := slice "nip" "regon" "pwz" "rpwdl" }}{{ with index $g.rejestrowe $klucz }} · {{ index $etykiety $klucz }}: {{ . }}{{ end }}{{ end }}
+    {{- range $klucz := slice "nip" "regon" "pwz" "rpwdl" }}{{ with index $rej $klucz }} · {{ index $etykiety $klucz }}: {{ . }}{{ end }}{{ end }}
   </p>
   {{- end }}
   <p>© {{ now.Year }} {{ $g.nazwa_krotka | default site.Title }}</p>

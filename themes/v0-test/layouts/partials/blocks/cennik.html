@@ -19,7 +19,7 @@
 {{- end }}
 <section class="{{ partial "blok-klasy.html" $b }}">
   <h2>{{ $b.naglowek | default "Cennik" }}</h2>
-  {{- with $b.wstep }}{{ $.strona.RenderString (dict "display" "block") . }}{{ end }}
+  {{- with $b.wstep }}{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
   {{- range $wybrane }}
   <table class="cennik">
     <caption>{{ .nazwa }}</caption>

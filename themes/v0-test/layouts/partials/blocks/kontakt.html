@@ -2,6 +2,6 @@
 {{- $b := .blok -}}
 <section class="{{ partial "blok-klasy.html" $b }}">
   <h2>{{ $b.naglowek | default "Kontakt" }}</h2>
-  {{- with $b.tresc }}{{ $.strona.RenderString (dict "display" "block") . }}{{ end }}
+  {{- with $b.tresc }}{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
   {{ partial "dane-kontaktowe.html" }}
 </section>

@@ -5,14 +5,14 @@
   {{- with $b.naglowek }}
   <h2>{{ . }}</h2>
   {{- end }}
-  {{- with $b.wstep }}{{ $.strona.RenderString (dict "display" "block") . }}{{ end }}
+  {{- with $b.wstep }}{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
   {{- with $b.elementy }}
   <ul class="karty">
     {{- range $i, $k := . }}
     {{- $cel := partial "cel-linku.html" (dict "strona" $k.strona "gdzie" (printf "%s: karta „%s” (blok karty)" $gdzie $k.tytul)) }}
     <li class="karta">
       <h3>{{ with $cel.href }}<a href="{{ . }}">{{ $k.tytul }}</a>{{ else }}{{ $k.tytul }}{{ end }}</h3>
-      {{- with $k.tresc }}{{ $.strona.RenderString (dict "display" "block") . }}{{ end }}
+      {{- with $k.tresc }}{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
     </li>
     {{- end }}
   </ul>

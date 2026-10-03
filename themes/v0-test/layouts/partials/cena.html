@@ -1,12 +1,28 @@
 {{- /* Cena pozycji cennika jak na stronie: "650 zł" albo "250–400 zł"
-       (polpauza miedzy cenami, twarda spacja   przed "zł").
-       Wejscie: pozycja z data/cennik.yaml. Brak cena_do = jedna cena. */ -}}
-{{- $od := .cena_od -}}
-{{- $do := .cena_do | default 0 -}}
+       (polpauza miedzy cenami, twarda spacja przed "zł"; od 10 000 zl
+       odstep tysiecy - tez twarda spacja, np. "12 500 zł").
+       Wejscie: pozycja z data/cennik.yaml. Brak cena_do = jedna cena.
+       Brak ceny, cena nie bedaca liczba albo "cena do" mniejsza niz "cena od"
+       przerywa budowanie z czytelnym bledem (CMS nie sprawdza zaleznosci pol). */ -}}
+{{- $gdzie := printf "Cennik (data/cennik.yaml): pozycja „%s”" (.nazwa | default "bez nazwy") -}}
+{{- $od := printf "%v" .cena_od -}}
+{{- $do := printf "%v" (.cena_do | default "") -}}
 {{- $tekst := "" -}}
-{{- if and $do (gt $do $od) -}}
-  {{- $tekst = printf "%v–%v zł" $od $do -}}
+{{- if not (findRE `^[0-9]+$` $od) -}}
+  {{- errorf "%s: brak ceny albo cena nie jest liczbą całkowitą (pole „Cena (lub cena od)”, jest: %q)." $gdzie (.cena_od | default "") -}}
+{{- else if and $do (not (findRE `^[0-9]+$` $do)) -}}
+  {{- errorf "%s: „Cena do” nie jest liczbą całkowitą (jest: %q)." $gdzie $do -}}
+{{- else if and $do (lt (int $do) (int $od)) -}}
+  {{- errorf "%s: „Cena do” (%s zł) jest mniejsza niż „Cena (lub cena od)” (%s zł). Popraw cenę albo wyczyść pole „Cena do”." $gdzie $do $od -}}
 {{- else -}}
-  {{- $tekst = printf "%v zł" $od -}}
+  {{- $kwoty := slice (int $od) -}}
+  {{- if and $do (gt (int $do) (int $od)) }}{{ $kwoty = $kwoty | append (int $do) }}{{ end -}}
+  {{- $napisy := slice -}}
+  {{- range $kwoty -}}
+    {{- $n := string . -}}
+    {{- if ge . 10000 }}{{ $n = replace (lang.FormatNumberCustom 0 . "- . ,") "," " " }}{{ end -}}
+    {{- $napisy = $napisy | append $n -}}
+  {{- end -}}
+  {{- $tekst = printf "%s zł" (delimit $napisy "–") -}}
 {{- end -}}
 {{- return $tekst -}}

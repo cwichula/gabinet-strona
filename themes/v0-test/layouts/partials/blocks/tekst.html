@@ -12,5 +12,5 @@
     {{- end }}
   </figure>
   {{- end }}
-  {{ $.strona.RenderString (dict "display" "block") $b.tresc }}
+  {{ partial "markdown.html" (dict "strona" $.strona "tekst" $b.tresc) }}
 </section>

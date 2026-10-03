@@ -1,16 +1,20 @@
 {{- /* Blok "cta": naglowek, tresc; telefon i (gdy wlaczona) rezerwacja online
-       z data/gabinet.yaml. */ -}}
+       z data/gabinet.yaml. Bez telefonu i rezerwacji - bez akapitu z przyciskami. */ -}}
 {{- $b := .blok -}}
 {{- $g := hugo.Data.gabinet -}}
+{{- $telefon := index ($g.telefony | default slice) 0 -}}
+{{- $rezerwacja := false }}{{ with $g.rezerwacja }}{{ if and .wlaczona .url }}{{ $rezerwacja = . }}{{ end }}{{ end -}}
 <section class="{{ partial "blok-klasy.html" $b }}">
   <h2>{{ $b.naglowek | default "Umów wizytę" }}</h2>
-  {{- with $b.tresc }}{{ $.strona.RenderString (dict "display" "block") . }}{{ end }}
+  {{- with $b.tresc }}{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
+  {{- if or $telefon $rezerwacja }}
   <p class="przyciski">
-    {{- with index ($g.telefony | default slice) 0 }}
+    {{- with $telefon }}
     <a class="przycisk" href="{{ printf "tel:%s" (partial "tel.html" .numer) | safeURL }}">Zadzwoń: {{ .numer }}</a>
     {{- end }}
-    {{- with $g.rezerwacja }}{{ if and .wlaczona .url }}
+    {{- with $rezerwacja }}
     <a class="przycisk przycisk--drugi" href="{{ .url }}" rel="noopener external">{{ .etykieta | default "Rezerwacja online" }}</a>
-    {{- end }}{{ end }}
+    {{- end }}
   </p>
+  {{- end }}
 </section>

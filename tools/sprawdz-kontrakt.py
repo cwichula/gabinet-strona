@@ -9,7 +9,10 @@ Sprawdza:
   3. wszystkie pola "sekcje" w config.yml (Strony, Strona glowna) maja te same typy;
   4. pola kazdego typu w config.yml = pola z tabeli w docs/KONTRAKT-BLOKOW.md
      (+ pola wspolne), a typy w kontrakcie = typy w config.yml;
-  5. partial bloku czyta tylko pola ze swojego typu ($b.<pole>).
+  5. partial bloku czyta tylko pola ze swojego typu ($b.<pole>);
+  6. nazwy katalogow stron w content/strony/ (= adresy) to tylko a-z, 0-9
+     i "-" (Hugo nie zamienia "ł" w adresie; CMS zapisuje slugi poprawnie,
+     ale katalog mozna tez utworzyc recznie).
 
 Wymaga PyYAML (w CI: pip install PyYAML). Kod wyjscia 1 = blad.
 Uzycie:  python tools/sprawdz-kontrakt.py
@@ -30,7 +33,8 @@ except ImportError:  # pragma: no cover
 REPO = Path(__file__).resolve().parent.parent
 CONFIG = REPO / "static/admin/config.yml"
 KONTRAKT = REPO / "docs/KONTRAKT-BLOKOW.md"
-POLA_WSPOLNE = {"wariant"}  # "type" to klucz typu (typeKey), nie pole
+POLA_WSPOLNE = {"wariant"}
+WZOR_SLUGA = re.compile(r"[a-z0-9]+(-[a-z0-9]+)*")  # "type" to klucz typu (typeKey), nie pole
 
 bledy: list[str] = []
 
@@ -76,6 +80,16 @@ def main() -> int:
         pliki = [p for p in layouts.rglob("*") if p.is_file() and p.name != ".gitkeep"]
         for p in pliki:
             blad(f"layouts/ musi być pusty (nadpisałby szablony z themes/): {p.relative_to(REPO).as_posix()}")
+
+    # 6. nazwy katalogow stron
+    strony = REPO / "content/strony"
+    if strony.is_dir():
+        for k in sorted(p for p in strony.iterdir() if p.is_dir()):
+            if not WZOR_SLUGA.fullmatch(k.name):
+                blad(
+                    f"content/strony/{k.name}/: nazwa katalogu jest adresem strony - dozwolone tylko "
+                    "małe litery bez ogonków, cyfry i myślniki (np. leczenie-kanalowe)"
+                )
 
     # 2-3. typy w config.yml
     config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))

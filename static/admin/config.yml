@@ -49,16 +49,27 @@ backend:
   # wdroz Cloudflare Worker sveltia/sveltia-cms-auth (README, "Logowanie do panelu")
   # i wpisz tu jego adres, np.:
   # base_url: https://sveltia-cms-auth.<twoje-konto>.workers.dev
-  # Bez base_url dziala logowanie tokenem ("Sign in with token" / "Zaloguj tokenem").
+  # i USUN ponizsza linie auth_methods. Do tego czasu tylko logowanie tokenem -
+  # bez base_url przycisk "Zaloguj sie przez GitHub" kierowalby do Netlify
+  # (api.netlify.com) i nie dzialalby. https://sveltiacms.app/en/docs/backends
+  auth_methods: [token]
+  # {{collection}} = label_singular kolekcji w mianowniku ("Strona", "Menu"...),
+  # dlatego zdanie jest zbudowane tak, zeby nie wymagalo odmiany.
   commit_messages:
-    create: 'CMS: nowy wpis w „{{collection}}”: {{slug}} ({{author-login}})'
-    update: 'CMS: zmiana w „{{collection}}”: {{slug}} ({{author-login}})'
-    delete: 'CMS: usunięcie z „{{collection}}”: {{slug}} ({{author-login}})'
+    create: 'CMS: {{collection}} „{{slug}}” – nowa ({{author-login}})'
+    update: 'CMS: {{collection}} „{{slug}}” – zmiana ({{author-login}})'
+    delete: 'CMS: {{collection}} „{{slug}}” – usunięcie ({{author-login}})'
     uploadMedia: 'CMS: nowy plik {{path}} ({{author-login}})'
     deleteMedia: 'CMS: usunięty plik {{path}} ({{author-login}})'
 
 site_url: https://cwichula.github.io/gabinet-strona
 display_url: https://cwichula.github.io/gabinet-strona/
+# Linki "zobacz na stronie" przy wpisach sa wylaczone: Sveltia bierze z site_url
+# tylko domene (https://cwichula.github.io) i gubi /gabinet-strona/, wiec linki
+# prowadzilyby do 404. preview_path w kolekcjach zostaje - od niego zalezy
+# dopisywanie przekierowan (aliases) po zmianie adresu strony. Po przejsciu na
+# wlasna domene (strona w korzeniu domeny) mozna to wlaczyc z powrotem.
+show_preview_links: false
 
 # Jezyk panelu: Sveltia NIE ma opcji "locale" (jest poza schematem konfiguracji) -
 # interfejs jest po polsku, gdy przegladarka ma jezyk polski; mozna go tez wybrac
@@ -134,10 +145,12 @@ collections:
         widget: boolean
         default: false
         hint: Włączone = strony nie ma w sieci ani w menu.
+      # label_singular to nazwa w przycisku „Dodaj …” (biernik) i w liczniku „1 …”
+      # (mianownik) - gdzie się da, słowo o tej samej formie w obu („blok”, „link”).
       - &sekcje
         name: sekcje
         label: Sekcje strony
-        label_singular: sekcję
+        label_singular: blok
         widget: list
         collapsed: true
         required: false
@@ -359,7 +372,7 @@ collections:
         fields:
           - name: pozycje
             label: Pozycje menu
-            label_singular: pozycję
+            label_singular: link
             widget: list
             collapsed: true
             summary: '{{etykieta}}'
@@ -386,7 +399,7 @@ collections:
                 hint: Tylko gdy pozycja nie prowadzi do naszej strony (pełny adres https://…).
               - name: podmenu
                 label: Podmenu
-                label_singular: pozycję podmenu
+                label_singular: link podmenu
                 widget: list
                 required: false
                 collapsed: true
@@ -425,7 +438,7 @@ collections:
               - { name: nazwa, label: Nazwa kategorii, widget: string }
               - name: pozycje
                 label: Pozycje
-                label_singular: pozycję
+                label_singular: wpis cennika
                 widget: list
                 collapsed: true
                 summary: '{{nazwa}} — {{cena_od}} zł'

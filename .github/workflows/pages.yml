@@ -31,6 +31,13 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
+# Wszystkie kroki "run" przez bash z -eo pipefail (bez "shell" GitHub uzywa
+# "bash -e" BEZ pipefail - wtedy "hugo | tee" zwracaloby kod tee, czyli 0,
+# i strona z bledami budowania trafilaby do sieci).
+defaults:
+  run:
+    shell: bash
+
 env:
   HUGO_VERSION: "0.167.0"
   TZ: Europe/Warsaw
@@ -74,9 +81,10 @@ jobs:
           # Ostrzezenia Hugo (warnf w szablonach, przestarzale opcje) traktujemy
           # jak bledy - ale wypisujemy wszystkie, a nie tylko pierwszy
           # (--panicOnWarning konczy na pierwszym, ze sladem stosu).
+          # pipefail (defaults wyzej): blad Hugo (ERROR) konczy krok kodem != 0
           hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/" 2>&1 | tee hugo.log
-          if grep -q '^WARN' hugo.log; then
-            echo "::error::Hugo zgłosił ostrzeżenia (lista wyżej, wiersze WARN). Strona nie zostanie opublikowana."
+          if grep -qE '^(WARN|ERROR)' hugo.log; then
+            echo "::error::Hugo zgłosił błędy lub ostrzeżenia (lista wyżej, wiersze ERROR/WARN). Strona nie zostanie opublikowana."
             exit 1
           fi
 
