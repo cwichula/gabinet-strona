@@ -1,0 +1,57 @@
+{{- /* Blok "tekst": naglowek, nadtytul, tresc (Markdown), wypunktowanie
+       (zwykle | ptaszki -> ul.checklist), ramka {rodzaj, tresc}, zdjecie,
+       strona_zdjecia (prawa | lewa), przycisk {etykieta, strona}.
+       Ze zdjeciem: div.split (tekst + figure.figure) jak w makiecie v1;
+       bez zdjecia: div.prose. */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $tresc := partial "markdown.html" (dict "strona" $.strona "tekst" $b.tresc) | string -}}
+{{- if eq $b.wypunktowanie "ptaszki" }}{{ $tresc = replace $tresc "<ul>" `<ul class="checklist">` }}{{ end -}}
+{{- $ramka := "" -}}
+{{- with $b.ramka }}{{ with .tresc }}{{ $ramka = partial "ramka-html.html" (dict "strona" $.strona "rodzaj" $b.ramka.rodzaj "tresc" . "gdzie" $gdzie "styl" "margin-top:1.5rem") }}{{ end }}{{ end -}}
+{{- $przycisk := partial "przycisk.html" (dict "przycisk" $b.przycisk "gdzie" (printf "%s: przycisk w bloku tekst" $gdzie) "strzalka" true) -}}
+{{- if $b.zdjecie }}
+    <div class="split">
+      {{- if eq $b.strona_zdjecia "lewa" }}
+      {{ partial "figura.html" (dict "strona" $.strona "zdjecie" $b.zdjecie "priorytet" $.priorytet "gdzie" $gdzie) }}
+      {{- end }}
+      <div>
+        {{- with $b.nadtytul }}
+        <p class="eyebrow">{{ . }}</p>
+        {{- end }}
+        {{- with $b.naglowek }}
+        <h2 style="margin-top:0">{{ . }}</h2>
+        {{- end }}
+        {{ $tresc | safeHTML }}
+        {{- with $ramka }}
+        {{ . }}
+        {{- end }}
+        {{- with strings.TrimSpace $przycisk }}
+        <p style="margin-top:1.5rem">
+          {{ $przycisk }}
+        </p>
+        {{- end }}
+      </div>
+      {{- if ne $b.strona_zdjecia "lewa" }}
+      {{ partial "figura.html" (dict "strona" $.strona "zdjecie" $b.zdjecie "priorytet" $.priorytet "gdzie" $gdzie) }}
+      {{- end }}
+    </div>
+{{- else }}
+    {{- with $b.nadtytul }}
+    <p class="eyebrow">{{ . }}</p>
+    {{- end }}
+    {{- with $b.naglowek }}
+    <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ . }}</h2>
+    {{- end }}
+    <div class="prose">
+      {{ $tresc | safeHTML }}
+    </div>
+    {{- with $ramka }}
+    {{ . }}
+    {{- end }}
+    {{- with strings.TrimSpace $przycisk }}
+    <p style="margin-top:1.75rem">
+      {{ $przycisk }}
+    </p>
+    {{- end }}
+{{- end -}}

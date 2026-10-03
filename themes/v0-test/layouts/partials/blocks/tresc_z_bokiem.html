@@ -1,0 +1,11 @@
+{{- /* Blok "tresc_z_bokiem": naglowek, wstep, tresc, bok {naglowek, godziny,
+       telefony, adres, notka}. */ -}}
+{{- $b := .blok -}}
+<section {{ partial "blok-atrybuty.html" $b }}>
+  {{- with $b.naglowek }}
+  <h2>{{ . }}</h2>
+  {{- end }}
+  {{- with $b.wstep }}{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
+  {{ partial "markdown.html" (dict "strona" $.strona "tekst" $b.tresc) }}
+  {{ partial "bok.html" ($b.bok | default dict) }}
+</section>

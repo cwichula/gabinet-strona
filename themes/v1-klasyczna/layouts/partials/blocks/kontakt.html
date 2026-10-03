@@ -1,0 +1,59 @@
+{{- /* Blok "kontakt": naglowek, tresc, bok (ramka z boku); telefony, e-mail,
+       adres i dojazd z data/gabinet.yaml jako lista dl > div.contact-item makiety v1.
+       Z polem "bok": uklad split--sidebar (dane + aside.sidebar-card). */ -}}
+{{- $b := .blok -}}
+{{- $g := hugo.Data.gabinet -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- $ikona := "width:1em;height:1em;display:inline;vertical-align:-.15em" -}}
+{{- if $b.bok }}
+    <div class="split split--sidebar">
+    <div>
+{{- end }}
+      <h2 style="margin-top:0">{{ $b.naglowek | default "Kontakt" }}</h2>
+      {{- with $b.tresc }}
+      {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede" "styl" "max-width:56ch") }}
+      {{- end }}
+
+      <dl style="margin:2rem 0 0">
+        {{- range $m.telefony }}
+        <div class="contact-item">
+          <dt>
+            <svg class="ico" aria-hidden="true" style="{{ $ikona | safeCSS }}"><use href="#ico-phone"></use></svg>
+            {{ .etykieta | default "Telefon" }}
+          </dt>
+          <dd><a href="{{ printf "tel:%s" .tel | safeURL }}">{{ .numer }}</a></dd>
+        </div>
+        {{- end }}
+        {{- with $g.email }}
+        <div class="contact-item">
+          <dt>
+            <svg class="ico" aria-hidden="true" style="{{ $ikona | safeCSS }}"><use href="#ico-mail"></use></svg>
+            E-mail
+          </dt>
+          <dd><a href="mailto:{{ . }}">{{ . }}</a></dd>
+        </div>
+        {{- end }}
+        {{- with $g.adres }}
+        <div class="contact-item">
+          <dt>
+            <svg class="ico" aria-hidden="true" style="{{ $ikona | safeCSS }}"><use href="#ico-pin"></use></svg>
+            Adres gabinetu
+          </dt>
+          <dd>{{ .ulica }}, {{ .kod }} {{ .miasto }}</dd>
+        </div>
+        {{- with .dojazd }}
+        <div class="contact-item">
+          <dt>
+            <svg class="ico" aria-hidden="true" style="{{ $ikona | safeCSS }}"><use href="#ico-parking"></use></svg>
+            Dojazd
+          </dt>
+          <dd>{{ . }}</dd>
+        </div>
+        {{- end }}
+        {{- end }}
+      </dl>
+{{- with $b.bok }}
+    </div>
+{{ partial "bok.html" . }}
+    </div>
+{{- end }}

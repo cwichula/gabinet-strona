@@ -3,6 +3,11 @@ title: "Licówki"
 description: "Licówki kompozytowe i pełnoceramiczne E-MAX w Legnicy. Zamknięcie przerwy między zębami, korekta kształtu i koloru zęba."
 draft: false
 weight: 4
+usluga:
+  wyrozniona: false
+  ikona: "iskra"
+  skrot: "Zmiana kształtu i koloru zęba, zamknięcie przerwy między zębami."
+  cena_od: "licowka-kompozyt"
 sekcje:
   - type: tekst
     wariant: domyslny

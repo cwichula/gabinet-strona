@@ -2,7 +2,9 @@
 #
 # Konfiguracja panelu /admin/ - Sveltia CMS 0.227.3 (kopia w static/admin/sveltia-cms.js).
 #
-# Nazwy pol (name) MUSZA zgadzac sie z szablonami Hugo i z docs/KONTRAKT-BLOKOW.md.
+# Nazwy pol (name) MUSZA zgadzac sie z szablonami Hugo i z docs/KONTRAKT-BLOKOW.md
+# (kontrakt blokow w wersji 2). Sprawdzone ze schematem JSON Sveltia CMS 0.227.3
+# (https://unpkg.com/@sveltia/cms@0.227.3/schema/sveltia-cms.json).
 # Typy blokow (types w polu "sekcje") sprawdza tools/sprawdz-kontrakt.py: kazdy
 # typ musi miec partial blocks/<typ>.html w kazdym szablonie w themes/.
 #
@@ -25,10 +27,14 @@
 #   icon, description ........................... https://sveltiacms.app/en/docs/collections
 #   files, file, preview_path (pliki) ........... https://sveltiacms.app/en/docs/collections/files
 #   list: types, typeKey, summary, collapsed, label_singular, allow_add/remove/reorder/duplicate,
-#         thumbnail, min ........................ https://sveltiacms.app/en/docs/fields/list
+#         thumbnail, min, field (lista napisow) . https://sveltiacms.app/en/docs/fields/list
+#   boolean: default ............................ https://sveltiacms.app/en/docs/fields/boolean
 #   object (required: false = mozna dodac/usunac) https://sveltiacms.app/en/docs/fields/object
-#   relation: collection, file, value_field ('{{slug}}', 'kategorie.*.id'), display_fields,
-#             search_fields, multiple ........... https://sveltiacms.app/en/docs/fields/relation
+#   relation: collection, file, value_field ('{{slug}}', 'kategorie.*.id', 'pozycje.*.id'),
+#             display_fields, search_fields, multiple
+#                                                 https://sveltiacms.app/en/docs/fields/relation
+#             (tylko JEDEN poziom listy z "*" - 'kategorie.*.pozycje.*.id' Sveltia 0.227.3
+#             nie obsluguje, dlatego pozycje cennika sa jedna lista z polem "kategoria")
 #   markdown: buttons, editor_components, modes . https://sveltiacms.app/en/docs/fields/richtext
 #   image: choose_url ........................... https://sveltiacms.app/en/docs/fields/file
 #   string: type, pattern, readonly, hint, required (wspolne opcje pol)
@@ -145,8 +151,75 @@ collections:
         widget: boolean
         default: false
         hint: Włączone = strony nie ma w sieci ani w menu.
+      - name: usluga
+        label: Strona usługi
+        widget: object
+        required: false
+        collapsed: true
+        hint: >-
+          Dodaj, jeśli ta strona opisuje usługę gabinetu. Strona pojawi się wtedy
+          w bloku „Lista usług”, w stopce i w danych dla wyszukiwarek.
+        fields:
+          - name: wyrozniona
+            label: Usługa wyróżniona
+            widget: boolean
+            default: false
+            hint: Blok „Lista usług” może pokazywać tylko usługi wyróżnione.
+          - &ikona
+            name: ikona
+            label: Ikona
+            widget: select
+            required: false
+            hint: Mały rysunek przy tytule. Szablon dobiera do niego własną grafikę.
+            options:
+              - { label: Ząb, value: zab }
+              - { label: Iskra (estetyka), value: iskra }
+              - { label: Iskry (higiena), value: iskry }
+              - { label: Korona, value: korona }
+              - { label: Warstwy (protezy), value: warstwy }
+              - { label: 'Księżyc (bruksizm, sen)', value: ksiezyc }
+              - { label: 'Wykres (stawy, badanie)', value: puls }
+              - { label: Zdjęcie RTG, value: rtg }
+              - { label: Dziecko, value: dziecko }
+              - { label: Tarcza (bezpieczeństwo), value: tarcza }
+              - { label: Serce, value: serce }
+              - { label: Gwiazdka, value: gwiazdka }
+              - { label: Aparat fotograficzny (kamera), value: aparat }
+              - { label: Wiadomość SMS, value: sms }
+              - { label: Karta płatnicza, value: karta }
+              - { label: Telefon, value: telefon }
+              - { label: Zegar, value: zegar }
+              - { label: Kalendarz, value: kalendarz }
+              - { label: Pinezka (adres), value: pinezka }
+              - { label: Mapa, value: mapa }
+              - { label: Parking, value: parking }
+              - { label: Koperta (e-mail), value: poczta }
+              - { label: Dokument, value: dokument }
+              - { label: Dostępność (wózek), value: dostepnosc }
+              - { label: Płatek śniegu (nadwrażliwość), value: platek }
+              - { label: Ptaszek, value: ptaszek }
+              - { label: Informacja, value: info }
+              - { label: Ostrzeżenie, value: uwaga }
+          - name: skrot
+            label: Krótki opis na karcie usługi
+            widget: text
+            maxlength: 200
+            hint: 1–2 zdania na karcie w „Liście usług” i pod odnośnikiem w „Powiązanych stronach”.
+          - &cena_od
+            name: cena_od
+            label: Cena „od” (pozycja cennika)
+            widget: relation
+            collection: cennik
+            file: cennik
+            value_field: 'pozycje.*.id'
+            display_fields: ['pozycje.*.nazwa']
+            search_fields: ['pozycje.*.nazwa']
+            required: false
+            hint: Na karcie usługi pojawi się „od” i cena tej pozycji z cennika.
       # label_singular to nazwa w przycisku „Dodaj …” (biernik) i w liczniku „1 …”
       # (mianownik) - gdzie się da, słowo o tej samej formie w obu („blok”, „link”).
+      #
+      # Pola wspólne każdego bloku (docs/KONTRAKT-BLOKOW.md): wariant, polacz, kotwica.
       - &sekcje
         name: sekcje
         label: Sekcje strony
@@ -154,13 +227,22 @@ collections:
         widget: list
         collapsed: true
         required: false
-        hint: Bloki treści w kolejności wyświetlania. Kolejność zmienisz przeciągając.
+        hint: >-
+          Bloki treści w kolejności wyświetlania (kolejność zmienisz przeciągając).
+          Każdy blok to osobna sekcja strony; blok z włączonym „Połącz z blokiem
+          powyżej” dołącza do sekcji nad nim.
         types:
           - name: hero
-            label: Baner (hero)
+            label: Baner (początek strony)
             summary: 'Baner: {{naglowek}}'
             fields:
               - { name: naglowek, label: Nagłówek, widget: string }
+              - &nadtytul
+                name: nadtytul
+                label: Nadtytuł
+                widget: string
+                required: false
+                hint: Krótki napis nad nagłówkiem, np. „30 lat praktyki w centrum Legnicy”.
               - &tresc_opcjonalna
                 name: tresc
                 label: Treść
@@ -183,35 +265,84 @@ collections:
                     widget: string
                     hint: Co widać na zdjęciu — dla osób niewidomych i dla wyszukiwarek.
                   - { name: podpis, label: Podpis pod zdjęciem, widget: string, required: false }
-              - name: przycisk
+              - &przycisk
+                name: przycisk
                 label: Przycisk
                 widget: object
                 required: false
                 fields:
                   - { name: etykieta, label: Napis na przycisku, widget: string }
-                  - name: strona
+                  - &strona_wymagana
+                    name: strona
                     label: Prowadzi do strony
                     widget: relation
                     collection: strony
                     value_field: '{{slug}}'
                     display_fields: [title]
                     search_fields: [title]
+              - name: pokaz_telefon
+                label: Przycisk „Zadzwoń”
+                widget: boolean
+                default: false
+                required: false
+                hint: Przycisk z pierwszym numerem telefonu z „Danych gabinetu”.
+              - name: fakty
+                label: Krótkie fakty pod tekstem
+                label_singular: fakt
+                widget: list
+                required: false
+                collapsed: true
+                summary: '{{tekst}}'
+                hint: Np. adres, parking, formy płatności — po jednym krótkim zdaniu.
+                fields:
+                  - *ikona
+                  - &tekst_wiersz
+                    name: tekst
+                    label: Tekst
+                    widget: string
+                    hint: Pogrubienie — **tak**.
+              - name: plakietka
+                label: Plakietka na zdjęciu
+                widget: object
+                required: false
+                fields:
+                  - { name: wyroznienie, label: Wyróżniony napis, widget: string, hint: 'Np. „od 1995”.' }
+                  - { name: tekst, label: Tekst obok, widget: string, required: false }
               - &wariant
                 name: wariant
-                label: Wariant wyglądu
+                label: Tło sekcji
                 widget: select
                 required: false
                 default: domyslny
                 options:
-                  - { label: Domyślny, value: domyslny }
-                  - { label: Wyróżniony (tło), value: wyrozniony }
+                  - { label: Zwykłe, value: domyslny }
+                  - { label: Wyróżnione (kolorowe tło), value: wyrozniony }
                 hint: Szablon może wyglądać inaczej dla każdego wariantu.
+              - &polacz
+                name: polacz
+                label: Połącz z blokiem powyżej
+                widget: boolean
+                default: false
+                required: false
+                hint: >-
+                  Włączone: blok dołącza do sekcji nad nim (to samo tło, bez dużego odstępu),
+                  np. ramka albo przycisk pod cennikiem. Tło i kotwica są wtedy brane z bloku powyżej.
+              - &kotwica
+                name: kotwica
+                label: Kotwica (adres #)
+                widget: string
+                required: false
+                pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Tylko małe litery bez ogonków, cyfry i myślniki, np. ceny']
+                hint: >-
+                  Opcjonalnie. Np. „ceny” — wtedy odnośnik /adres-strony/#ceny przewinie
+                  stronę do tego bloku.
 
           - name: tekst
-            label: Tekst
+            label: Tekst (ze zdjęciem lub bez)
             summary: 'Tekst: {{naglowek}}'
             fields:
               - &naglowek_opcjonalny { name: naglowek, label: Nagłówek, widget: string, required: false }
+              - *nadtytul
               - name: tresc
                 label: Treść
                 widget: markdown
@@ -219,15 +350,65 @@ collections:
                 buttons: [bold, italic, link, bulleted-list, numbered-list, heading-three]
                 editor_components: []
                 hint: Link do innej podstrony wpisz jako /adres-strony/, np. /cennik/.
+              - name: wypunktowanie
+                label: Wygląd wypunktowań w treści
+                widget: select
+                required: false
+                default: zwykle
+                options:
+                  - { label: Zwykłe kropki, value: zwykle }
+                  - { label: 'Ptaszki (zalety, korzyści)', value: ptaszki }
+              - name: ramka
+                label: Ramka pod treścią
+                widget: object
+                required: false
+                fields:
+                  - &rodzaj_ramki
+                    name: rodzaj
+                    label: Rodzaj ramki
+                    widget: select
+                    default: info
+                    options:
+                      - { label: Informacja, value: info }
+                      - { label: Ostrzeżenie, value: uwaga }
+                      - { label: Potwierdzenie, value: ok }
+                  - &tresc_ramki
+                    name: tresc
+                    label: Treść ramki
+                    widget: markdown
+                    modes: [rich_text, raw]
+                    buttons: [bold, italic, link]
+                    editor_components: []
               - *zdjecie
+              - name: strona_zdjecia
+                label: Zdjęcie po stronie
+                widget: select
+                required: false
+                default: prawa
+                options:
+                  - { label: Prawej, value: prawa }
+                  - { label: Lewej, value: lewa }
+              - *przycisk
               - *wariant
+              - *polacz
+              - *kotwica
 
           - name: karty
-            label: Karty (np. usługi, kroki)
+            label: Karty (zalety, usługi, ceny)
             summary: 'Karty: {{naglowek}}'
             fields:
               - *naglowek_opcjonalny
               - &wstep { name: wstep, label: Wstęp, widget: markdown, required: false, modes: [rich_text, raw], buttons: [bold, italic, link], editor_components: [] }
+              - &kolumny
+                name: kolumny
+                label: Kart w rzędzie (na dużym ekranie)
+                widget: select
+                required: false
+                default: 3
+                options:
+                  - { label: '2', value: 2 }
+                  - { label: '3', value: 3 }
+                  - { label: '4', value: 4 }
               - name: elementy
                 label: Karty
                 label_singular: kartę
@@ -238,7 +419,20 @@ collections:
                 fields:
                   - { name: tytul, label: Tytuł karty, widget: string }
                   - { name: tresc, label: Treść, widget: markdown, required: false, modes: [rich_text, raw], buttons: [bold, italic, link, bulleted-list], editor_components: [] }
-                  - name: strona
+                  - *ikona
+                  - &cena
+                    name: cena
+                    label: Cena z cennika
+                    widget: relation
+                    collection: cennik
+                    file: cennik
+                    value_field: 'pozycje.*.id'
+                    display_fields: ['pozycje.*.nazwa']
+                    search_fields: ['pozycje.*.nazwa']
+                    required: false
+                    hint: Opcjonalnie — karta pokaże aktualną cenę tej pozycji z cennika.
+                  - &strona_opcjonalna
+                    name: strona
                     label: Link do strony
                     widget: relation
                     collection: strony
@@ -246,8 +440,10 @@ collections:
                     display_fields: [title]
                     search_fields: [title]
                     required: false
-                    hint: Opcjonalnie — tytuł karty stanie się odnośnikiem.
+                    hint: Opcjonalnie — cała karta stanie się odnośnikiem.
               - *wariant
+              - *polacz
+              - *kotwica
 
           - name: faq
             label: Pytania i odpowiedzi (FAQ)
@@ -265,6 +461,8 @@ collections:
                   - { name: pytanie, label: Pytanie, widget: string }
                   - { name: odpowiedz, label: Odpowiedź, widget: markdown, modes: [rich_text, raw], buttons: [bold, italic, link, bulleted-list], editor_components: [] }
               - *wariant
+              - *polacz
+              - *kotwica
 
           - name: cennik
             label: Cennik
@@ -282,14 +480,34 @@ collections:
                 search_fields: ['kategorie.*.nazwa']
                 multiple: true
                 required: false
-                hint: Puste = cały cennik. Ceny zmieniasz w kolekcji „Cennik” — zmiana pojawi się na wszystkich stronach.
+                hint: Puste (i puste „Wybrane pozycje”) = cały cennik. Ceny zmieniasz w kolekcji „Cennik” — zmiana pojawi się na wszystkich stronach.
+              - name: pozycje
+                label: Wybrane pozycje
+                widget: relation
+                collection: cennik
+                file: cennik
+                value_field: 'pozycje.*.id'
+                display_fields: ['pozycje.*.nazwa']
+                search_fields: ['pozycje.*.nazwa']
+                multiple: true
+                required: false
+                hint: Zamiast całych kategorii — tylko te pozycje, w tej kolejności.
+              - name: wyszukiwarka
+                label: Wyszukiwarka i spis kategorii
+                widget: boolean
+                default: false
+                required: false
+                hint: Pole „Szukaj zabiegu” nad tabelą i odnośniki do kategorii. Najlepiej tylko na stronie z pełnym cennikiem.
               - *wariant
+              - *polacz
+              - *kotwica
 
           - name: galeria
             label: Galeria zdjęć
             summary: 'Galeria: {{naglowek}}'
             fields:
               - *naglowek_opcjonalny
+              - *wstep
               - name: elementy
                 label: Zdjęcia
                 label_singular: zdjęcie
@@ -306,6 +524,8 @@ collections:
                     hint: Co widać na zdjęciu — dla osób niewidomych i dla wyszukiwarek.
                   - { name: podpis, label: Podpis pod zdjęciem, widget: string, required: false }
               - *wariant
+              - *polacz
+              - *kotwica
 
           - name: godziny
             label: Godziny przyjęć
@@ -314,6 +534,8 @@ collections:
               - *naglowek_opcjonalny
               - *tresc_opcjonalna
               - *wariant
+              - *polacz
+              - *kotwica
 
           - name: mapa
             label: Mapa i dojazd
@@ -322,14 +544,19 @@ collections:
               - *naglowek_opcjonalny
               - *tresc_opcjonalna
               - *wariant
+              - *polacz
+              - *kotwica
 
           - name: cta
-            label: Zaproszenie do kontaktu (telefon, rezerwacja)
+            label: Zaproszenie do kontaktu (telefon)
             summary: 'Zaproszenie: {{naglowek}}'
             fields:
               - *naglowek_opcjonalny
               - *tresc_opcjonalna
+              - *przycisk
               - *wariant
+              - *polacz
+              - *kotwica
 
           - name: kontakt
             label: Dane kontaktowe
@@ -337,7 +564,255 @@ collections:
             fields:
               - *naglowek_opcjonalny
               - *tresc_opcjonalna
+              - &bok
+                name: bok
+                label: Ramka z boku
+                widget: object
+                required: false
+                hint: Wąska kolumna obok treści (na telefonie pod treścią).
+                fields:
+                  - { name: naglowek, label: Nagłówek ramki, widget: string, required: false, hint: 'Puste = „Godziny przyjęć” albo „Kontakt”.' }
+                  - { name: godziny, label: Godziny przyjęć, widget: boolean, default: true, required: false }
+                  - { name: telefony, label: Przyciski z telefonami, widget: boolean, default: true, required: false }
+                  - { name: adres, label: Adres, widget: boolean, default: false, required: false }
+                  - { name: notka, label: Krótka notka, widget: string, required: false }
               - *wariant
+              - *polacz
+              - *kotwica
+
+          - name: lista
+            label: Lista (zalety, zakres)
+            summary: 'Lista: {{naglowek}}'
+            fields:
+              - *naglowek_opcjonalny
+              - *wstep
+              - name: styl
+                label: Wygląd listy
+                widget: select
+                default: ptaszki
+                options:
+                  - { label: 'Ptaszki (zalety, korzyści)', value: ptaszki }
+                  - { label: 'Minusy (czego nie robimy, przeciwwskazania)', value: minusy }
+                  - { label: Zwykłe kropki, value: zwykla }
+              - name: elementy
+                label: Punkty listy
+                label_singular: punkt
+                widget: list
+                min: 1
+                field: *tekst_wiersz
+              - *wariant
+              - *polacz
+              - *kotwica
+
+          - name: ramka
+            label: Ramka (informacja, ostrzeżenie)
+            summary: 'Ramka: {{rodzaj}}'
+            fields:
+              - *rodzaj_ramki
+              - *tresc_ramki
+              - *ikona
+              - *wariant
+              - *polacz
+              - *kotwica
+
+          - name: kroki
+            label: Kroki (przebieg wizyty, zabiegu)
+            summary: 'Kroki: {{naglowek}}'
+            fields:
+              - *naglowek_opcjonalny
+              - *wstep
+              - name: elementy
+                label: Kroki
+                label_singular: krok
+                widget: list
+                min: 1
+                collapsed: true
+                summary: '{{tytul}}'
+                hint: Numery kroków szablon dodaje sam.
+                fields:
+                  - { name: tytul, label: Nazwa kroku, widget: string }
+                  - { name: tresc, label: Opis, widget: markdown, required: false, modes: [rich_text, raw], buttons: [bold, italic, link], editor_components: [] }
+              - *wariant
+              - *polacz
+              - *kotwica
+
+          - name: tabela
+            label: Tabela porównawcza
+            summary: 'Tabela: {{naglowek}}'
+            fields:
+              - *naglowek_opcjonalny
+              - *wstep
+              - { name: podpis, label: Podpis tabeli, widget: string, required: false, hint: 'Jedno zdanie, co zawiera tabela.' }
+              - name: kolumny
+                label: Nagłówki kolumn
+                label_singular: kolumnę
+                widget: list
+                min: 1
+                field: { name: naglowek, label: Nagłówek kolumny, widget: string }
+                hint: Bez kolumny z ceną — cenę dodaje pole „Cena z cennika” w wierszu.
+              - name: wiersze
+                label: Wiersze
+                label_singular: wiersz
+                widget: list
+                min: 1
+                collapsed: true
+                fields:
+                  - name: komorki
+                    label: Komórki (w kolejności kolumn)
+                    label_singular: komórkę
+                    widget: list
+                    min: 1
+                    field: { name: tekst, label: Tekst komórki, widget: string }
+                  - *cena
+              - *wariant
+              - *polacz
+              - *kotwica
+
+          - name: lista_uslug
+            label: Lista usług (automatyczna)
+            summary: 'Lista usług: {{naglowek}}'
+            fields:
+              - *naglowek_opcjonalny
+              - *wstep
+              - name: tylko_wyroznione
+                label: Tylko usługi wyróżnione
+                widget: boolean
+                default: false
+                required: false
+                hint: Karty powstają same ze stron oznaczonych jako „Strona usługi”, w kolejności stron.
+              - *kolumny
+              - *wariant
+              - *polacz
+              - *kotwica
+
+          - name: pasek_zaufania
+            label: Pasek atutów (krótko, z ikonami)
+            summary: 'Atuty: {{naglowek}}'
+            fields:
+              - name: naglowek
+                label: Nagłówek
+                widget: string
+                required: false
+                hint: Dla czytników ekranu i wyszukiwarek; szablon może go nie pokazywać.
+              - name: elementy
+                label: Atuty
+                label_singular: atut
+                widget: list
+                min: 1
+                collapsed: true
+                summary: '{{tytul}}'
+                fields:
+                  - *ikona
+                  - { name: tytul, label: Tytuł, widget: string }
+                  - { name: tekst, label: Krótki opis, widget: string, required: false }
+              - *wariant
+              - *polacz
+              - *kotwica
+
+          - name: cytat
+            label: Cytat
+            summary: 'Cytat: {{autor}}'
+            fields:
+              - { name: tekst, label: Cytat, widget: text }
+              - { name: autor, label: Autor, widget: string, required: false }
+              - *wariant
+              - *polacz
+              - *kotwica
+
+          - name: powiazane
+            label: Powiązane strony
+            summary: 'Powiązane strony'
+            fields:
+              - *naglowek_opcjonalny
+              - name: elementy
+                label: Strony
+                label_singular: stronę
+                widget: list
+                min: 1
+                collapsed: true
+                summary: '{{strona}}'
+                fields:
+                  - *strona_wymagana
+                  - name: opis
+                    label: Krótki opis
+                    widget: string
+                    required: false
+                    hint: Puste = krótki opis usługi z tej strony (jeśli jest stroną usługi).
+              - *wariant
+              - *polacz
+              - *kotwica
+
+          - name: rezerwacja
+            label: Rezerwacja online
+            summary: 'Rezerwacja online'
+            fields:
+              - *naglowek_opcjonalny
+              - name: tresc
+                label: Treść
+                widget: markdown
+                required: false
+                modes: [rich_text, raw]
+                buttons: [bold, italic, link, bulleted-list]
+                editor_components: []
+                hint: Adres i nazwę serwisu ustawiasz w „Dane gabinetu → Rezerwacja online”. Wyłączona rezerwacja = blok znika.
+              - *wariant
+              - *polacz
+              - *kotwica
+
+          - name: formularz
+            label: Formularz kontaktowy (pokazowy)
+            summary: 'Formularz: {{naglowek}}'
+            fields:
+              - *naglowek_opcjonalny
+              - *wstep
+              - name: tematy
+                label: Tematy wiadomości do wyboru
+                label_singular: temat
+                widget: list
+                required: false
+                field: { name: temat, label: Temat, widget: string }
+                hint: >-
+                  Puste = tematy domyślne. Uwaga: formularz jest pokazowy — sprawdza pola,
+                  ale niczego nie wysyła (strona nie ma serwera pocztowego).
+              - *wariant
+              - *polacz
+              - *kotwica
+
+          - name: tresc_z_bokiem
+            label: Tekst z ramką z boku (godziny, telefony)
+            summary: 'Tekst z boku: {{naglowek}}'
+            fields:
+              - *naglowek_opcjonalny
+              - *wstep
+              - name: tresc
+                label: Treść
+                widget: markdown
+                modes: [rich_text, raw]
+                buttons: [bold, italic, link, bulleted-list, numbered-list, heading-three]
+                editor_components: []
+                hint: Link do innej podstrony wpisz jako /adres-strony/, np. /cennik/.
+              - *bok
+              - *wariant
+              - *polacz
+              - *kotwica
+
+          - name: przycisk
+            label: Przycisk z odnośnikiem
+            summary: 'Przycisk: {{etykieta}}'
+            fields:
+              - { name: etykieta, label: Napis na przycisku, widget: string }
+              - *strona_wymagana
+              - name: styl
+                label: Wygląd
+                widget: select
+                required: false
+                default: glowny
+                options:
+                  - { label: Wypełniony (najważniejszy), value: glowny }
+                  - { label: Obrysowany (drugorzędny), value: obrysowy }
+              - *wariant
+              - *polacz
+              - *kotwica
 
   # --------------------------------------------------------- Strona główna
   - name: strona_glowna
@@ -410,6 +885,10 @@ collections:
                   - *link_zewnetrzny
 
   # ---------------------------------------------------------------- Cennik
+  # Pozycje sa jedna plaska lista (pole "kategoria" wskazuje grupe), a nie lista
+  # w kazdej kategorii: relacja Sveltii (value_field 'pozycje.*.id') obsluguje
+  # tylko jeden poziom listy, a bloki na stronach (karty, tabela, strona uslugi,
+  # wybrane pozycje cennika) wskazuja pojedyncze pozycje.
   - name: cennik
     label: Cennik
     icon: payments
@@ -424,42 +903,55 @@ collections:
             widget: text
             required: false
           - name: kategorie
-            label: Kategorie
+            label: Kategorie (grupy w tabeli cennika)
             label_singular: kategorię
             widget: list
             collapsed: true
             summary: '{{nazwa}}'
+            hint: Kolejność kategorii = kolejność grup w tabeli cennika.
             fields:
               - name: id
                 label: Identyfikator kategorii
                 widget: string
                 pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Tylko małe litery bez ogonków, cyfry i myślniki, np. protetyka']
-                hint: Nie zmieniaj w istniejącej kategorii — wskazują ją bloki cennika na stronach.
+                hint: Nie zmieniaj w istniejącej kategorii — wskazują ją pozycje i bloki cennika na stronach.
               - { name: nazwa, label: Nazwa kategorii, widget: string }
-              - name: pozycje
-                label: Pozycje
-                label_singular: wpis cennika
-                widget: list
-                collapsed: true
-                summary: '{{nazwa}} — {{cena_od}} zł'
-                fields:
-                  - { name: nazwa, label: Nazwa usługi, widget: string }
-                  - { name: cena_od, label: Cena (lub cena od), widget: number, value_type: int, min: 0, after_input: zł }
-                  - name: cena_do
-                    label: Cena do
-                    widget: number
-                    value_type: int
-                    min: 0
-                    after_input: zł
-                    required: false
-                    hint: Tylko dla widełek, np. 250–400 zł. Puste = jedna cena.
-                  - { name: uwagi, label: Uwagi, widget: string, required: false }
-                  - name: id
-                    label: Identyfikator pozycji
-                    widget: string
-                    required: false
-                    pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Tylko małe litery bez ogonków, cyfry i myślniki']
-                    hint: Opcjonalny, techniczny. Nie zmieniaj w istniejących pozycjach.
+          - name: pozycje
+            label: Pozycje cennika
+            label_singular: pozycję
+            widget: list
+            collapsed: true
+            summary: '{{nazwa}} — {{cena_od}} zł'
+            hint: >-
+              Kolejność na liście = kolejność w tabeli (w obrębie kategorii). Nowa
+              kategoria pojawi się do wyboru w polu „Kategoria” po zapisaniu cennika.
+            fields:
+              - { name: nazwa, label: Nazwa usługi, widget: string }
+              - name: kategoria
+                label: Kategoria
+                widget: relation
+                collection: cennik
+                file: cennik
+                value_field: 'kategorie.*.id'
+                display_fields: ['kategorie.*.nazwa']
+                search_fields: ['kategorie.*.nazwa']
+              - { name: cena_od, label: Cena (lub cena od), widget: number, value_type: int, min: 0, after_input: zł }
+              - name: cena_do
+                label: Cena do
+                widget: number
+                value_type: int
+                min: 0
+                after_input: zł
+                required: false
+                hint: Tylko dla widełek, np. 250–400 zł. Puste = jedna cena.
+              - { name: uwagi, label: Uwagi, widget: string, required: false }
+              - name: id
+                label: Identyfikator pozycji
+                widget: string
+                pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Tylko małe litery bez ogonków, cyfry i myślniki, np. korona-emax']
+                hint: >-
+                  Krótka nazwa techniczna, np. korona-emax. Po nim strony wskazują tę
+                  pozycję — nie zmieniaj go w istniejących pozycjach.
 
   # --------------------------------------------------------- Dane gabinetu
   - name: dane_gabinetu
@@ -474,6 +966,7 @@ collections:
           - { name: nazwa, label: Pełna nazwa, widget: string }
           - { name: nazwa_krotka, label: Nazwa krótka (nagłówek strony), widget: string }
           - { name: lekarz, label: Lekarz, widget: string }
+          - { name: rok_zalozenia, label: Rok założenia gabinetu, widget: number, value_type: int, min: 1900, required: false, hint: 'W stopce („© 1995–…”) i w danych dla wyszukiwarek.' }
           - name: adres
             label: Adres
             widget: object
@@ -519,6 +1012,13 @@ collections:
               - { name: wlaczona, label: Pokazuj przycisk rezerwacji online, widget: boolean, default: false }
               - { name: url, label: Adres strony rezerwacji, widget: string, type: url, required: false }
               - { name: etykieta, label: Napis na przycisku, widget: string, default: Umów wizytę online }
+              - { name: dostawca, label: Nazwa serwisu rezerwacji, widget: string, required: false, hint: 'Np. Booksy — pojawia się na przyciskach („… w Booksy”).' }
+              - name: potwierdzona
+                label: Adres to profil naszego gabinetu
+                widget: boolean
+                default: false
+                hint: Wyłączone = przy przycisku rezerwacji pojawia się uwaga, że rezerwacja online jest w przygotowaniu.
+              - { name: nota, label: Nota o danych osobowych, widget: text, required: false, hint: 'Krótko: kto przetwarza dane przy rezerwacji online.' }
           - name: rejestrowe
             label: Dane rejestrowe
             widget: object
@@ -549,3 +1049,10 @@ collections:
             maxlength: 170
             hint: Używany na stronach, które nie mają własnego opisu.
           - { name: stopka_tekst, label: Tekst w stopce, widget: text, required: false }
+          - { name: logo_nazwa, label: Nazwa w nagłówku strony, widget: string, required: false, hint: 'Duży napis obok logo. Puste = nazwa krótka z „Danych gabinetu”.' }
+          - { name: logo_podpis, label: Podpis pod nazwą w nagłówku, widget: string, required: false, hint: 'Np. lekarz i miasto.' }
+          - name: pasek_informacyjny
+            label: Pasek informacyjny nad stroną
+            widget: string
+            required: false
+            hint: Krótki komunikat na górze każdej strony (np. o urlopie). Puste = brak paska.

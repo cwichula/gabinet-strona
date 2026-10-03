@@ -1,7 +1,8 @@
-{{- /* Blok "karty": naglowek, wstep, elementy [{tytul, tresc, strona}]. */ -}}
+{{- /* Blok "karty": naglowek, wstep, kolumny (ten szablon pomija),
+       elementy [{tytul, tresc, ikona (pomijana), cena (id pozycji cennika), strona}]. */ -}}
 {{- $b := .blok -}}
-{{- $gdzie := "" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
-<section class="{{ partial "blok-klasy.html" $b }}">
+{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+<section {{ partial "blok-atrybuty.html" $b }}>
   {{- with $b.naglowek }}
   <h2>{{ . }}</h2>
   {{- end }}
@@ -9,10 +10,15 @@
   {{- with $b.elementy }}
   <ul class="karty">
     {{- range $i, $k := . }}
-    {{- $cel := partial "cel-linku.html" (dict "strona" $k.strona "gdzie" (printf "%s: karta „%s” (blok karty)" $gdzie $k.tytul)) }}
+    {{- $miejsce := printf "%s: karta „%s” (blok karty)" $gdzie $k.tytul }}
+    {{- $cel := partial "cel-linku.html" (dict "strona" $k.strona "gdzie" $miejsce) }}
+    {{- $poz := partial "cennik-pozycja.html" (dict "id" $k.cena "gdzie" $miejsce) }}
     <li class="karta">
       <h3>{{ with $cel.href }}<a href="{{ . }}">{{ $k.tytul }}</a>{{ else }}{{ $k.tytul }}{{ end }}</h3>
       {{- with $k.tresc }}{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
+      {{- with $poz }}
+      <p class="cena">{{ partial "cena.html" . }}</p>
+      {{- end }}
     </li>
     {{- end }}
   </ul>

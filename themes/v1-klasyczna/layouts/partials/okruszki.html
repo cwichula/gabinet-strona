@@ -1,0 +1,13 @@
+{{- /* Sciezka nawigacji (nav.breadcrumbs) jak w makiecie v1. Wejscie: Page. */ -}}
+{{- $o := partial "okruszki-model.html" . -}}
+    <nav class="breadcrumbs" aria-label="Ścieżka nawigacji">
+      <ol>
+        {{- range $i, $e := $o }}
+        {{- if eq (add $i 1) (len $o) }}
+        <li><span aria-current="page">{{ $e.nazwa }}</span></li>
+        {{- else }}
+        <li><a href="{{ $e.href }}">{{ $e.nazwa }}</a></li>
+        {{- end }}
+        {{- end }}
+      </ol>
+    </nav>

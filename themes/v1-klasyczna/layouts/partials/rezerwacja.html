@@ -1,0 +1,72 @@
+{{- /* Rezerwacja online w szesciu miejscach makiety v1. Warunek "wlaczona"
+       sprawdzany tylko tu (gabinet-model.html) - wylaczona rezerwacja znika
+       ze wszystkich miejsc naraz.
+       Wejscie: dict "miejsce": naglowek | szuflada | pasek | stopka | przycisk | karta.
+       Kazdy odnosnik: target=_blank (pacjent nie traci strony gabinetu),
+       noopener, noreferrer (dostawca nie dowiaduje sie, z ktorej podstrony
+       pacjent przyszedl - adres podstrony sam bywa informacja o zdrowiu). */ -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- with $m.rezerwacja -}}
+{{- $r := . -}}
+{{- $w := cond (ne $r.dostawca "") (printf "w %s" $r.dostawca) "w serwisie zewnętrznym" -}}
+{{- $wSerwisie := cond (ne $r.dostawca "") (printf "w serwisie %s" $r.dostawca) "w serwisie zewnętrznym" -}}
+{{- $nowaKarta := `<span class="visually-hidden">, odnośnik otwiera się w nowej karcie</span>` | safeHTML -}}
+{{- $kal := `<svg class="ico" aria-hidden="true"><use href="#ico-calendar"></use></svg>` | safeHTML -}}
+{{- $krotko := cond (ne $r.dostawca "") $r.dostawca "Rezerwacja online" -}}
+{{- if eq $.miejsce "naglowek" -}}
+<a class="btn btn--ghost header__booking" href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">
+      {{ $kal }}
+      <span class="visually-hidden">Rezerwacja online {{ $wSerwisie }} </span>{{ $krotko }}{{ $nowaKarta }}
+    </a>
+{{- else if eq $.miejsce "szuflada" -}}
+<a class="btn btn--ghost btn--block" href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">
+      {{ $kal }}
+      Rezerwacja online {{ $w }}{{ $nowaKarta }}
+    </a>
+{{- else if eq $.miejsce "pasek" -}}
+<a class="btn btn--ghost" href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">
+    {{ $kal }}
+    <span class="visually-hidden">Rezerwacja online {{ $wSerwisie }} </span>{{ $krotko }}{{ $nowaKarta }}
+  </a>
+{{- else if eq $.miejsce "stopka" -}}
+<p class="footer__booking">
+          <a href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">
+            {{ $kal }}
+            Rezerwacja online {{ $wSerwisie }}{{ $nowaKarta }}
+          </a>
+        </p>
+{{- else if eq $.miejsce "karta" -}}
+{{- $tel := $m.telefony -}}
+      <div class="card booking">
+        <p class="booking__head">
+          {{ $kal }}
+          {{ with $r.dostawca }}<strong>{{ . }}</strong> — zewnętrzny{{ else }}Zewnętrzny{{ end }} system rezerwacji wizyt
+        </p>
+        {{- if not $r.potwierdzona }}
+        <div class="callout callout--warn">
+          <svg class="ico" aria-hidden="true"><use href="#ico-warn"></use></svg>
+          <p>Rezerwacja online jest w przygotowaniu — odnośnik prowadzi do serwisu {{ $r.dostawca | default "zewnętrznego" }}.</p>
+        </div>
+        {{- end }}
+        <a class="btn btn--primary btn--lg booking__cta" href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">
+          {{ $kal }}
+          {{ $r.etykieta }} {{ $w }}{{ $nowaKarta }}
+        </a>
+        {{- with $r.nota }}
+        <p class="booking__note">{{ . }}</p>
+        {{- end }}
+        {{- with $tel }}
+        <p class="booking__alt">Wolisz ustalić termin w rozmowie? Rejestracja telefoniczna działa jak dotąd:</p>
+        <div class="cluster">
+          {{- range first 2 . }}
+          <a class="btn btn--ghost" href="{{ printf "tel:%s" .tel | safeURL }}">
+            <svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg>
+            {{ .numer }}
+          </a>
+          {{- end }}
+        </div>
+        {{- end }}
+        <p class="booking__print">Adres rezerwacji: {{ $r.url }}{{ with $m.telefon }} · telefon {{ .numer }}{{ end }}</p>
+      </div>
+{{- end -}}
+{{- end -}}

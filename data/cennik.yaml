@@ -1,113 +1,141 @@
-# Plik edytowany w panelu /admin/ (Sveltia CMS). Pierwotnie wygenerowany przez
-# tools/importuj-z-gamstom.py z repozytorium gamstom - komentarze w tym pliku
-# znikna przy pierwszym zapisie z CMS.
+# Cennik - edytowany w panelu /admin/ (kolekcja "Cennik").
+# Kategorie to grupy w tabeli cennika; kazda pozycja wskazuje swoja kategorie
+# (pole "kategoria" = id kategorii). Identyfikatory (id) wskazuja bloki na
+# stronach (cennik, karty, tabela, strona uslugi) - nie zmieniaj ich w
+# istniejacych wpisach. Komentarze znikna przy pierwszym zapisie z CMS.
 informacja: "Niniejszy cennik ma charakter informacyjny i nie stanowi oferty handlowej w rozumieniu art. 66 § 1 Kodeksu cywilnego."
 kategorie:
   - id: "zachowawcza"
     nazwa: "Stomatologia zachowawcza, profilaktyka"
-    pozycje:
-      - id: "badanie-konsultacja"
-        nazwa: "Badanie stomatologiczne / konsultacja"
-        cena_od: 100
-      - id: "kamien-ultradzwieki"
-        nazwa: "Usunięcie kamienia ultradźwiękami"
-        cena_od: 170
-      - id: "piaskowanie"
-        nazwa: "Piaskowanie"
-        cena_od: 170
-      - id: "lakierowanie"
-        nazwa: "Lakierowanie zębów"
-        cena_od: 150
-      - id: "lak"
-        nazwa: "Lak"
-        cena_od: 150
-      - id: "wypelnienie"
-        nazwa: "Wypełnienie zęba materiałem światłoutwardzalnym"
-        cena_od: 250
-        cena_do: 400
-      - id: "wypelnienie-mleczny"
-        nazwa: "Wypełnienie w zębie mlecznym"
-        cena_od: 250
-      - id: "odbudowa"
-        nazwa: "Odbudowa zęba materiałem światłoutwardzalnym"
-        cena_od: 400
-        cena_do: 500
-      - id: "opatrunek"
-        nazwa: "Opatrunek w zębie"
-        cena_od: 170
-      - id: "zatrucie"
-        nazwa: "Zatrucie zęba"
-        cena_od: 200
   - id: "stawy"
     nazwa: "Leczenie dysfunkcji stawów skroniowo-żuchwowych"
-    pozycje:
-      - id: "szyna-tymczasowa"
-        nazwa: "Szyna tymczasowa"
-        cena_od: 250
-      - id: "szyna-michigan"
-        nazwa: "Szyna relaksacyjna Michigan"
-        cena_od: 800
-      - id: "luk-twarzowy"
-        nazwa: "Rejestracja łukiem twarzowym"
-        cena_od: 250
-      - id: "rtg-stawy"
-        nazwa: "Zdjęcie RTG czynnościowe stawów skroniowo-żuchwowych"
-        cena_od: 100
-      - id: "badanie-mfa"
-        nazwa: "Badanie czynnościowe stawów skroniowo-żuchwowych MFA"
-        cena_od: 100
-      - id: "badanie-miesni"
-        nazwa: "Badanie mięśni układu ruchu narządu żucia"
-        cena_od: 100
-      - id: "badanie-posturalne"
-        nazwa: "Badanie posturalne Langladea"
-        cena_od: 100
   - id: "estetyczna"
     nazwa: "Stomatologia estetyczna"
-    pozycje:
-      - id: "licowka-kompozyt"
-        nazwa: "Licówka światłoutwardzalna"
-        cena_od: 650
-      - id: "licowka-emax"
-        nazwa: "Licówka pełnoceramiczna E-MAX"
-        cena_od: 1500
   - id: "protetyka"
     nazwa: "Protetyka"
-    pozycje:
-      - id: "korona-tymczasowa"
-        nazwa: "Korona tymczasowa"
-        cena_od: 150
-      - id: "korona-porcelanowa"
-        nazwa: "Korona porcelanowa na podbudowie metalowej"
-        cena_od: 1000
-      - id: "korona-emax"
-        nazwa: "Korona pełnoceramiczna E-MAX"
-        cena_od: 1700
-      - id: "most-wlokno"
-        nazwa: "Most z włókna szklanego (brakujący jeden ząb)"
-        cena_od: 850
-      - id: "proteza-akronowa"
-        nazwa: "Proteza akronowa"
-        cena_od: 1900
-      - id: "proteza-elastyczna"
-        nazwa: "Proteza elastyczna"
-        cena_od: 1900
-      - id: "proteza-szkieletowa"
-        nazwa: "Proteza szkieletowa"
-        cena_od: 1900
-      - id: "proteza-akrylowa"
-        nazwa: "Proteza akrylowa całkowita"
-        cena_od: 1900
-      - id: "proteza-czesciowa"
-        nazwa: "Proteza częściowa"
-        cena_od: 1000
-        cena_do: 1900
   - id: "pozostale"
     nazwa: "Pozostałe usługi"
-    pozycje:
-      - id: "pantomogram"
-        nazwa: "Zdjęcie pantomograficzne cyfrowe"
-        cena_od: 120
-      - id: "rtg-punktowe"
-        nazwa: "Zdjęcie RTG punktowe z radiowizjografią"
-        cena_od: 50
+pozycje:
+  - id: "badanie-konsultacja"
+    kategoria: "zachowawcza"
+    nazwa: "Badanie stomatologiczne / konsultacja"
+    cena_od: 100
+  - id: "kamien-ultradzwieki"
+    kategoria: "zachowawcza"
+    nazwa: "Usunięcie kamienia ultradźwiękami"
+    cena_od: 170
+  - id: "piaskowanie"
+    kategoria: "zachowawcza"
+    nazwa: "Piaskowanie"
+    cena_od: 170
+  - id: "lakierowanie"
+    kategoria: "zachowawcza"
+    nazwa: "Lakierowanie zębów"
+    cena_od: 150
+  - id: "lak"
+    kategoria: "zachowawcza"
+    nazwa: "Lak"
+    cena_od: 150
+  - id: "wypelnienie"
+    kategoria: "zachowawcza"
+    nazwa: "Wypełnienie zęba materiałem światłoutwardzalnym"
+    cena_od: 250
+    cena_do: 400
+  - id: "wypelnienie-mleczny"
+    kategoria: "zachowawcza"
+    nazwa: "Wypełnienie w zębie mlecznym"
+    cena_od: 250
+  - id: "odbudowa"
+    kategoria: "zachowawcza"
+    nazwa: "Odbudowa zęba materiałem światłoutwardzalnym"
+    cena_od: 400
+    cena_do: 500
+  - id: "opatrunek"
+    kategoria: "zachowawcza"
+    nazwa: "Opatrunek w zębie"
+    cena_od: 170
+  - id: "zatrucie"
+    kategoria: "zachowawcza"
+    nazwa: "Zatrucie zęba"
+    cena_od: 200
+  - id: "szyna-tymczasowa"
+    kategoria: "stawy"
+    nazwa: "Szyna tymczasowa"
+    cena_od: 250
+  - id: "szyna-michigan"
+    kategoria: "stawy"
+    nazwa: "Szyna relaksacyjna Michigan"
+    cena_od: 800
+  - id: "luk-twarzowy"
+    kategoria: "stawy"
+    nazwa: "Rejestracja łukiem twarzowym"
+    cena_od: 250
+  - id: "rtg-stawy"
+    kategoria: "stawy"
+    nazwa: "Zdjęcie RTG czynnościowe stawów skroniowo-żuchwowych"
+    cena_od: 100
+  - id: "badanie-mfa"
+    kategoria: "stawy"
+    nazwa: "Badanie czynnościowe stawów skroniowo-żuchwowych MFA"
+    cena_od: 100
+  - id: "badanie-miesni"
+    kategoria: "stawy"
+    nazwa: "Badanie mięśni układu ruchu narządu żucia"
+    cena_od: 100
+  - id: "badanie-posturalne"
+    kategoria: "stawy"
+    nazwa: "Badanie posturalne Langladea"
+    cena_od: 100
+  - id: "licowka-kompozyt"
+    kategoria: "estetyczna"
+    nazwa: "Licówka światłoutwardzalna"
+    cena_od: 650
+  - id: "licowka-emax"
+    kategoria: "estetyczna"
+    nazwa: "Licówka pełnoceramiczna E-MAX"
+    cena_od: 1500
+  - id: "korona-tymczasowa"
+    kategoria: "protetyka"
+    nazwa: "Korona tymczasowa"
+    cena_od: 150
+  - id: "korona-porcelanowa"
+    kategoria: "protetyka"
+    nazwa: "Korona porcelanowa na podbudowie metalowej"
+    cena_od: 1000
+  - id: "korona-emax"
+    kategoria: "protetyka"
+    nazwa: "Korona pełnoceramiczna E-MAX"
+    cena_od: 1700
+  - id: "most-wlokno"
+    kategoria: "protetyka"
+    nazwa: "Most z włókna szklanego (brakujący jeden ząb)"
+    cena_od: 850
+  - id: "proteza-akronowa"
+    kategoria: "protetyka"
+    nazwa: "Proteza akronowa"
+    cena_od: 1900
+  - id: "proteza-elastyczna"
+    kategoria: "protetyka"
+    nazwa: "Proteza elastyczna"
+    cena_od: 1900
+  - id: "proteza-szkieletowa"
+    kategoria: "protetyka"
+    nazwa: "Proteza szkieletowa"
+    cena_od: 1900
+  - id: "proteza-akrylowa"
+    kategoria: "protetyka"
+    nazwa: "Proteza akrylowa całkowita"
+    cena_od: 1900
+  - id: "proteza-czesciowa"
+    kategoria: "protetyka"
+    nazwa: "Proteza częściowa"
+    cena_od: 1000
+    cena_do: 1900
+  - id: "pantomogram"
+    kategoria: "pozostale"
+    nazwa: "Zdjęcie pantomograficzne cyfrowe"
+    cena_od: 120
+  - id: "rtg-punktowe"
+    kategoria: "pozostale"
+    nazwa: "Zdjęcie RTG punktowe z radiowizjografią"
+    cena_od: 50

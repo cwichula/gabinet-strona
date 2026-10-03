@@ -1,0 +1,13 @@
+{{- /* Przycisk "tel:" z pierwszym (albo podanym) numerem gabinetu.
+       Wejscie: dict "klasa" (klasy przycisku), "telefon" (opcjonalnie: dict
+       numer, tel; domyslnie pierwszy numer), "napis" (domyslnie numer),
+       "ikona" (bool, domyslnie tak). */ -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- with .telefon | default $m.telefon -}}
+<a class="{{ $.klasa }}" href="{{ printf "tel:%s" .tel | safeURL }}">
+  {{- if ne $.ikona false }}
+  <svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg>
+  {{- end }}
+  {{ $.napis | default .numer }}
+</a>
+{{- end -}}

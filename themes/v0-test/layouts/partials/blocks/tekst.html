@@ -1,6 +1,12 @@
-{{- /* Blok "tekst": naglowek (opcjonalny), tresc (Markdown), zdjecie (opcjonalne). */ -}}
+{{- /* Blok "tekst": naglowek, nadtytul, tresc (Markdown), wypunktowanie,
+       ramka {rodzaj, tresc}, zdjecie, strona_zdjecia, przycisk {etykieta, strona}.
+       Ten szablon pomija wypunktowanie i strone zdjecia (zdjecie zawsze nad tekstem). */ -}}
 {{- $b := .blok -}}
-<section class="{{ partial "blok-klasy.html" $b }}">
+{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+<section {{ partial "blok-atrybuty.html" $b }}>
+  {{- with $b.nadtytul }}
+  <p class="nadtytul">{{ . }}</p>
+  {{- end }}
   {{- with $b.naglowek }}
   <h2>{{ . }}</h2>
   {{- end }}
@@ -13,4 +19,8 @@
   </figure>
   {{- end }}
   {{ partial "markdown.html" (dict "strona" $.strona "tekst" $b.tresc) }}
+  {{- with $b.ramka }}{{ with .tresc }}
+  <div class="ramka ramka--{{ $b.ramka.rodzaj | default "info" }}">{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}</div>
+  {{- end }}{{ end }}
+  {{- partial "przycisk.html" (dict "przycisk" $b.przycisk "gdzie" (printf "%s: przycisk w bloku tekst" $gdzie)) }}
 </section>

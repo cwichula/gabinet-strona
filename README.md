@@ -8,8 +8,9 @@ strona sama się przebudowuje i publikuje.
 - Strona: <https://cwichula.github.io/gabinet-strona/>
 - Panel: <https://cwichula.github.io/gabinet-strona/admin/>
 
-Etap 1 (ten stan repozytorium): instalacja i test panelu na celowo prostym szablonie
-`v0-test`. Wygląd przyjdzie w etapie 2 (szablon v1) — **bez żadnej zmiany w treści**.
+Etap 2 (ten stan repozytorium): strona ma wygląd makiety v1 — szablon
+`themes/v1-klasyczna` — a cała treść (strony, bloki, menu, cennik, dane gabinetu) nadal
+pochodzi z panelu. Szablon testowy `v0-test` zostaje jako kontrola kontraktu bloków.
 
 ## Z czego to jest zbudowane
 
@@ -26,11 +27,12 @@ content/_index.md                strona główna (bloki w front matter: sekcje)
 content/strony/_index.md         kontener podstron (sam nie ma strony w sieci)
 content/strony/<slug>/index.md   podstrona + jej zdjęcia obok (page bundle)
 data/menu.yaml                   menu (dwa poziomy)
-data/cennik.yaml                 cennik: kategorie -> pozycje
+data/cennik.yaml                 cennik: kategorie + pozycje (pozycja wskazuje kategorię)
 data/gabinet.yaml                dane gabinetu, godziny, rezerwacja, dane rejestrowe
 data/ustawienia.yaml             domyślny opis SEO, tekst stopki
 assets/images/                   zdjęcia wspólne (np. strony głównej)
-themes/v0-test/                  szablon testowy
+themes/v1-klasyczna/             szablon v1 „Klasyczna” (używany, theme w hugo.yaml)
+themes/v0-test/                  szablon testowy (surowy HTML, kontrola kontraktu)
 layouts/                         PUSTY (nadpisałby każdy szablon) - pilnuje CI
 static/admin/                    panel: index.html, config.yml, sveltia-cms.js
 docs/KONTRAKT-BLOKOW.md          typy bloków i ich pola
@@ -111,9 +113,9 @@ panelu). Sveltia nie ma opcji `locale` w konfiguracji; tłumaczenie pobiera z un
 | Strony | `content/strony/<slug>/index.md` | dodawanie, usuwanie, ukrywanie (szkic), kolejność (przeciąganie), bloki treści, zdjęcia |
 | Strona główna | `content/_index.md` | bloki treści strony głównej |
 | Menu | `data/menu.yaml` | pozycje, podmenu, kolejność; strona wybierana z listy |
-| Cennik | `data/cennik.yaml` | kategorie i pozycje; zmiana ceny widoczna na każdej stronie z blokiem cennika |
+| Cennik | `data/cennik.yaml` | kategorie i pozycje (każda z identyfikatorem i kategorią); zmiana ceny widoczna wszędzie, gdzie strona wskazuje tę pozycję (cennik, karty, tabela, karta usługi) |
 | Dane gabinetu | `data/gabinet.yaml` | adres, telefony, e-mail, godziny, rezerwacja online, dane rejestrowe |
-| Ustawienia | `data/ustawienia.yaml` | domyślny opis SEO, tekst stopki |
+| Ustawienia | `data/ustawienia.yaml` | domyślny opis SEO, tekst stopki, napisy przy logo, pasek informacyjny nad stroną |
 
 Zasady, które chronią stronę:
 
@@ -135,7 +137,10 @@ Zasady, które chronią stronę:
 - **Zdjęcia** są zmniejszane i zamieniane na WebP w przeglądarce przed zapisem
   (maks. 2048 px, limit 1 MB po konwersji), a Hugo robi z nich wersje do 1600 px.
   Opis zdjęcia (alt) jest wymagany.
-- **Ceny** są tylko w cenniku; bloki cennika na stronach wskazują kategorie.
+- **Ceny** są tylko w cenniku; bloki na stronach wskazują kategorie albo pozycje
+  cennika (po identyfikatorze). Identyfikatora istniejącej pozycji nie zmieniaj.
+- **Strona usługi**: podstrona z wypełnionym polem „Strona usługi” (ikona, krótki opis,
+  cena „od”) pojawia się sama w bloku „Lista usług”, w stopce i w danych dla Google.
 
 ## Publikacja
 
@@ -155,8 +160,9 @@ Jednorazowo w ustawieniach repozytorium: Settings → Pages → Source: **GitHub
 
 ## Szablony
 
-Szablon to katalog w `themes/` wybierany jedną linią `theme:` w `hugo.yaml`. Każdy
-szablon ma ten sam zestaw:
+Szablon to katalog w `themes/` wybierany jedną linią `theme:` w `hugo.yaml`
+(teraz `v1-klasyczna`). Podgląd innego szablonu bez zmiany pliku:
+`hugo server --theme v0-test`. Każdy szablon ma ten sam zestaw:
 
 ```
 themes/<nazwa>/layouts/_default/baseof.html, home.html, single.html
@@ -169,10 +175,33 @@ themes/<nazwa>/assets/css/...
 
 Katalog `layouts/` w korzeniu musi zostać pusty — inaczej nadpisałby każdy szablon.
 
+### Szablon v1-klasyczna
+
+Makieta v1 z repozytorium `gamstom` (`v1/_src/_layout.html`, strony v1, markup
+z `tools/build-v1.py`) pocięta na szablon Hugo:
+
+- `assets/css/style.css` i `assets/js/app.js` — kopie z makiety **bez zmian**
+  (łączone i z odciskiem w nazwie pliku przez Hugo Pipes); `assets/css/hugo.css` —
+  kilka reguł dla rzeczy, których makieta nie miała (lista z minusami, blok
+  dołączony do sekcji, pogrubienie w faktach banera);
+- `partials/naglowek.html` (pasek z godzinami, telefon, motyw, menu z rozwijanym
+  podmenu, szuflada na telefon), `stopka.html` (usługi, strony, godziny, dane
+  rejestrowe, pasek „Zadzwoń / Dojazd” na telefonie), `head.html` (meta, Open Graph,
+  ikony, manifest), `jsonld.html` (Dentist, WebSite, WebPage, BreadcrumbList, FAQPage);
+- `partials/sekcje.html` grupuje bloki w sekcje v1 (`polacz`), `partials/blocks/*` —
+  po jednym na typ bloku, z klasami makiety;
+- zdjęcia przez Hugo: `<picture>` z WebP w kilku szerokościach i zapasowym JPEG/PNG,
+  `width`/`height`, pierwsze zdjęcie strony bez `lazy` i z `fetchpriority="high"`.
+  Hugo nie koduje AVIF, więc (inaczej niż makieta) bez wersji AVIF;
+- żadnych zasobów z obcych serwerów; mapa Google ładuje się dopiero po kliknięciu.
+
 ## Kontrakt bloków
 
-Strona to lista bloków (`sekcje`): hero, tekst, karty, faq, cennik, galeria, godziny,
-mapa, cta, kontakt. Pola każdego typu opisuje [`docs/KONTRAKT-BLOKOW.md`](docs/KONTRAKT-BLOKOW.md).
+Strona to płaska lista bloków (`sekcje`), wersja kontraktu 2: hero, tekst, karty, faq,
+cennik, galeria, godziny, mapa, cta, kontakt, lista, ramka, kroki, tabela, lista_uslug,
+pasek_zaufania, cytat, powiazane, rezerwacja, formularz, tresc_z_bokiem, przycisk.
+Każdy blok to sekcja strony; przełącznik „Połącz z blokiem powyżej” dokleja blok do
+sekcji nad nim. Pola każdego typu opisuje [`docs/KONTRAKT-BLOKOW.md`](docs/KONTRAKT-BLOKOW.md).
 Nowy typ bloku = wpis w kontrakcie + typ w `config.yml` + partial we **wszystkich**
 szablonach; `tools/sprawdz-kontrakt.py` nie przepuści niekompletnej zmiany.
 
@@ -182,16 +211,18 @@ szablonach; `tools/sprawdz-kontrakt.py` nie przepuści niekompletnej zmiany.
    kontrakt bloków, panel z kolekcjami, treść startowa, cennik i dane z `gamstom`.
    Pozostaje: OAuth App + Worker + `base_url`, konto właścicielki (Write, 2FA), lista
    testów z planu — etap zamknięty, gdy przejdzie ją właścicielka na swoim koncie.
-2. **Etap 2 — szablon v1 „Klasyczna”**: pocięcie makiety v1 z `gamstom` na szablon;
-   kryterium: `theme: v1-klasyczna` i zero zmian w `content/` i `data/`. Kontrola
-   zwrotów zakazanych (`check-site.py`) jako krok CI.
+2. **Etap 2 — szablon v1 „Klasyczna”** (zrobione): makieta v1 jako szablon
+   `themes/v1-klasyczna`, kontrakt bloków rozszerzony do wersji 2 (12 nowych typów,
+   pole strony „usluga”, cennik z pozycjami na jednej liście). Treść przeniesiona do
+   nowego kształtu bez zmiany tekstów i cen. Pozostaje: porównanie z makietą na
+   ekranie, Lighthouse, kontrola zwrotów zakazanych (`check-site.py`) jako krok CI.
 3. **Etap 3 — szablony v2 „Wizytówka” i v3 „Klinika”**: ten sam kontrakt; podgląd
    szablonu bez ruszania produkcji (ręczny workflow z `--theme`).
 
 ## Import z repozytorium gamstom
 
 `tools/importuj-z-gamstom.py` jednorazowo przeniósł z `gamstom` cennik (30 pozycji,
-5 kategorii jak w tabeli v1) i dane gabinetu. Od teraz źródłem prawdy są pliki w `data/`
+5 kategorii jak w tabeli v1) i dane gabinetu (skrypt zapisuje już kształt kontraktu 2). Od teraz źródłem prawdy są pliki w `data/`
 (edytowane w panelu) — ponowne uruchomienie skryptu nadpisałoby zmiany z panelu.
 
 Dane oznaczone w `gamstom` jako niepotwierdzone (do sprawdzenia z właścicielką):

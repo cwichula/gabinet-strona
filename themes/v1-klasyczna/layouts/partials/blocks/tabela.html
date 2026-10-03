@@ -1,0 +1,42 @@
+{{- /* Blok "tabela": naglowek, wstep, podpis, kolumny (napisy), wiersze
+       [{komorki (napisy), cena (id pozycji cennika)}] - table.price-table makiety v1
+       (np. porownanie protez). Gdy choc jeden wiersz ma cene, tabela dostaje
+       ostatnia kolumne "Cena" z cennika. data-label = naglowek kolumny
+       (na telefonie tabela rozklada sie na karty). */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $kolumny := $b.kolumny | default slice -}}
+{{- $zCena := false }}{{ range $b.wiersze }}{{ if .cena }}{{ $zCena = true }}{{ end }}{{ end -}}
+{{ partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "wstep" $b.wstep "gora" $.gora) }}
+
+    <div class="table-wrap" style="margin-top:1.5rem">
+      <table class="price-table">
+        {{- with $b.podpis }}
+        <caption>{{ . }}</caption>
+        {{- end }}
+        <thead>
+          <tr>
+            {{- range $kolumny }}
+            <th scope="col">{{ . }}</th>
+            {{- end }}
+            {{- if $zCena }}
+            <th scope="col">Cena</th>
+            {{- end }}
+          </tr>
+        </thead>
+        <tbody>
+          {{- range $i, $w := $b.wiersze }}
+          {{- $komorki := $w.komorki | default slice }}
+          <tr>
+            {{- range $j, $k := $kolumny }}
+            <td{{ if gt $j 0 }} data-label="{{ $k }}"{{ end }}>{{ if lt $j (len $komorki) }}{{ partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" (index $komorki $j)) }}{{ end }}</td>
+            {{- end }}
+            {{- if $zCena }}
+            {{- $poz := partial "cennik-pozycja.html" (dict "id" $w.cena "gdzie" (printf "%s: tabela „%s”, wiersz %d" $gdzie ($b.naglowek | default "") (add $i 1))) }}
+            <td data-label="Cena">{{ with $poz }}{{ partial "cena.html" . }}{{ end }}</td>
+            {{- end }}
+          </tr>
+          {{- end }}
+        </tbody>
+      </table>
+    </div>

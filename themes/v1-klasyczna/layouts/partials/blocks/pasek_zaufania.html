@@ -1,0 +1,14 @@
+{{- /* Blok "pasek_zaufania": naglowek (w v1 tylko dla czytnikow ekranu),
+       elementy [{ikona, tytul, tekst}] - div.trust makiety v1, sekcja
+       section--tight (partial sekcje.html). */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+    <h2 class="visually-hidden">{{ $b.naglowek | default "Atuty gabinetu" }}</h2>
+    <div class="trust">
+      {{- range $b.elementy }}
+      <div class="trust__item">
+        {{ partial "ikona.html" (dict "nazwa" (.ikona | default "ptaszek") "gdzie" $gdzie) }}
+        <span><b>{{ .tytul }}</b>{{ with .tekst }}<span>{{ . }}</span>{{ end }}</span>
+      </div>
+      {{- end }}
+    </div>

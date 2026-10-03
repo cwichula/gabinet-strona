@@ -1,0 +1,128 @@
+{{- /* Pasek informacyjny (ustawienia), gorny pasek (godziny, telefon, adres,
+       motyw), naglowek z logo i menu, szuflada menu na telefon - jak
+       v1/_src/_layout.html. Wejscie: Page. */ -}}
+{{- $g := hugo.Data.gabinet -}}
+{{- $u := hugo.Data.ustawienia | default dict -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- $menu := partialCached "menu-model.html" site "menu" -}}
+{{- $biezaca := . -}}
+{{- with $u.pasek_informacyjny }}
+<div class="notice-strip" role="note"><div class="container"><svg class="ico" aria-hidden="true" style="width:1em;height:1em;display:inline;vertical-align:-.1em"><use href="#ico-info"></use></svg> {{ . }}</div></div>
+{{- end }}
+
+<div class="topbar">
+  <div class="container topbar__inner">
+    <span class="topbar__item" data-status data-godziny="{{ $m.godzinyDane }}">
+      <span class="status-dot"></span>
+      <span data-status-label>{{ $m.dniPrzyjec }}</span>
+    </span>
+    <span class="cluster" style="gap:1.25rem">
+      {{- with $m.telefon }}
+      <a class="topbar__item" href="{{ printf "tel:%s" .tel | safeURL }}">
+        <svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg>{{ .numer }}
+      </a>
+      {{- end }}
+      {{- with $g.adres }}
+      <span class="topbar__item">
+        <svg class="ico" aria-hidden="true"><use href="#ico-pin"></use></svg>{{ .ulica }}, {{ .miasto }}
+      </span>
+      {{- end }}
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Przełącz jasny i ciemny motyw">
+        <svg class="ico ico-moon" aria-hidden="true"><use href="#ico-moon"></use></svg>
+        <svg class="ico ico-sun" aria-hidden="true"><use href="#ico-sun"></use></svg>
+      </button>
+    </span>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="{{ site.Home.RelPermalink }}">
+      <svg class="brand__mark" viewBox="0 0 48 48" aria-hidden="true">
+        <rect width="48" height="48" rx="13" fill="#0f5257"/>
+        <path d="M24 13.5c-2.6-2-5.5-3.1-8-2.4-3.7 1-5.8 4.7-5.3 9.2.3 2.7 1.3 4.8 2.1 7.4.8 2.7 1 5.5 1.5 8 .3 1.9 1.3 3.2 2.7 3.2 1.8 0 2.4-1.8 2.9-4l1.1-5.3c.3-1.5 1-2.3 3-2.3s2.7.8 3 2.3l1.1 5.3c.5 2.2 1.1 4 2.9 4 1.4 0 2.4-1.3 2.7-3.2.5-2.5.7-5.3 1.5-8 .8-2.6 1.8-4.7 2.1-7.4.5-4.5-1.6-8.2-5.3-9.2-2.5-.7-5.4.4-8 2.4Z" fill="#fff"/>
+      </svg>
+      <span class="brand__text">
+        <span class="brand__name">{{ $u.logo_nazwa | default $g.nazwa_krotka | default site.Title }}</span>
+        {{- with $u.logo_podpis | default (printf "%s · %s" ($g.lekarz | default "") ($g.adres.miasto | default "") | strings.Trim " ·") }}
+        <span class="brand__sub">{{ . }}</span>
+        {{- end }}
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Menu główne">
+      <ul>
+        <li><a href="{{ site.Home.RelPermalink }}"{{ if .IsHome }} aria-current="page"{{ end }}>Start</a></li>
+        {{- range $i, $poz := $menu }}
+        {{- $aktywna := and $poz.strona ($biezaca.Eq $poz.strona) }}
+        {{- range $poz.dzieci }}{{ if and .strona ($biezaca.Eq .strona) }}{{ $aktywna = true }}{{ end }}{{ end }}
+        {{- if $poz.dzieci }}
+        <li class="nav__has-sub">
+          {{ if $poz.href }}<a href="{{ $poz.href }}"{{ if $aktywna }} aria-current="page"{{ end }}{{ if $poz.zewnetrzny }} rel="noopener external"{{ end }}>{{ $poz.etykieta }}</a>{{ else }}<span>{{ $poz.etykieta }}</span>{{ end }}
+          <button class="nav__toggle-sub" type="button" data-submenu-toggle
+                  aria-expanded="false" aria-controls="podmenu-{{ add $i 1 }}"
+                  aria-label="Rozwiń listę: {{ $poz.etykieta }}">
+            <svg class="chev" aria-hidden="true"><use href="#ico-chevron"></use></svg>
+          </button>
+          <div class="nav__sub" id="podmenu-{{ add $i 1 }}">
+            {{- range $poz.dzieci }}
+            <a href="{{ .href }}"{{ if and .strona ($biezaca.Eq .strona) }} aria-current="page"{{ end }}{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}</a>
+            {{- end }}
+          </div>
+        </li>
+        {{- else }}
+        <li><a href="{{ $poz.href }}"{{ if $aktywna }} aria-current="page"{{ end }}{{ if $poz.zewnetrzny }} rel="noopener external"{{ end }}>{{ $poz.etykieta }}</a></li>
+        {{- end }}
+        {{- end }}
+      </ul>
+    </nav>
+
+    {{- with $m.telefon }}
+    <a class="btn btn--primary header__cta" href="{{ printf "tel:%s" .tel | safeURL }}">
+      <svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg>
+      Umów wizytę
+    </a>
+    {{- end }}
+
+    {{ partial "rezerwacja.html" (dict "miejsce" "naglowek") }}
+
+    <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="menu-mobilne">
+      <svg class="ico" aria-hidden="true"><use href="#ico-menu"></use></svg>
+      <span>Menu</span>
+    </button>
+  </div>
+</header>
+
+<div class="drawer" id="menu-mobilne" data-open="false">
+  <button class="drawer__scrim" type="button" data-drawer-close tabindex="-1" aria-label="Zamknij menu"></button>
+  <div class="drawer__panel">
+    <div class="drawer__head">
+      <strong>Menu</strong>
+      <button class="drawer__close" type="button" data-drawer-close aria-label="Zamknij menu">
+        <svg class="ico" aria-hidden="true" style="width:1.3rem;height:1.3rem"><use href="#ico-close"></use></svg>
+      </button>
+    </div>
+    <nav aria-label="Menu mobilne">
+      <ul>
+        <li><a href="{{ site.Home.RelPermalink }}"{{ if .IsHome }} aria-current="page"{{ end }}>Start</a></li>
+        {{- range $menu }}
+        {{- if .href }}
+        <li><a href="{{ .href }}"{{ if and .strona ($biezaca.Eq .strona) }} aria-current="page"{{ end }}{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}</a></li>
+        {{- else }}
+        <li><span>{{ .etykieta }}</span></li>
+        {{- end }}
+        {{- range .dzieci }}
+        <li class="sub"><a href="{{ .href }}"{{ if and .strona ($biezaca.Eq .strona) }} aria-current="page"{{ end }}{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}</a></li>
+        {{- end }}
+        {{- end }}
+      </ul>
+    </nav>
+    {{- with $m.telefon }}
+    <a class="btn btn--primary btn--block" href="{{ printf "tel:%s" .tel | safeURL }}">
+      <svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg>
+      {{ .numer }}
+    </a>
+    {{- end }}
+    {{ partial "rezerwacja.html" (dict "miejsce" "szuflada") }}
+  </div>
+</div>

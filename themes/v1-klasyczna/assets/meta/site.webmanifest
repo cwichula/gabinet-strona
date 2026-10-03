@@ -1,0 +1,15 @@
+{{- $g := hugo.Data.gabinet -}}
+{{- $m := dict
+  "name" ($g.nazwa | default site.Title)
+  "short_name" ($g.nazwa_krotka | default site.Title)
+  "lang" "pl"
+  "start_url" site.Home.RelPermalink
+  "scope" site.Home.RelPermalink
+  "display" "standalone"
+  "background_color" "#ffffff"
+  "theme_color" "#0f5257"
+  "icons" (slice
+    (dict "src" ("favicon.svg" | relURL) "sizes" "any" "type" "image/svg+xml" "purpose" "any")
+    (dict "src" ("apple-touch-icon.png" | relURL) "sizes" "180x180" "type" "image/png"))
+-}}
+{{- $m | jsonify (dict "indent" "  ") -}}

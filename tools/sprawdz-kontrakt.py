@@ -12,7 +12,10 @@ Sprawdza:
   5. partial bloku czyta tylko pola ze swojego typu ($b.<pole>);
   6. nazwy katalogow stron w content/strony/ (= adresy) to tylko a-z, 0-9
      i "-" (Hugo nie zamienia "ł" w adresie; CMS zapisuje slugi poprawnie,
-     ale katalog mozna tez utworzyc recznie).
+     ale katalog mozna tez utworzyc recznie);
+  7. data/cennik.yaml: identyfikatory kategorii i pozycji sa niepuste
+     i niepowtarzalne, a kazda pozycja wskazuje istniejaca kategorie
+     (bloki na stronach wskazuja pozycje po identyfikatorze).
 
 Wymaga PyYAML (w CI: pip install PyYAML). Kod wyjscia 1 = blad.
 Uzycie:  python tools/sprawdz-kontrakt.py
@@ -32,8 +35,9 @@ except ImportError:  # pragma: no cover
 
 REPO = Path(__file__).resolve().parent.parent
 CONFIG = REPO / "static/admin/config.yml"
+CENNIK = REPO / "data/cennik.yaml"
 KONTRAKT = REPO / "docs/KONTRAKT-BLOKOW.md"
-POLA_WSPOLNE = {"wariant"}
+POLA_WSPOLNE = {"wariant", "polacz", "kotwica"}  # pola kazdego typu bloku
 WZOR_SLUGA = re.compile(r"[a-z0-9]+(-[a-z0-9]+)*")  # "type" to klucz typu (typeKey), nie pole
 
 bledy: list[str] = []
@@ -89,6 +93,24 @@ def main() -> int:
                 blad(
                     f"content/strony/{k.name}/: nazwa katalogu jest adresem strony - dozwolone tylko "
                     "małe litery bez ogonków, cyfry i myślniki (np. leczenie-kanalowe)"
+                )
+
+    # 7. cennik
+    if CENNIK.is_file():
+        cennik = yaml.safe_load(CENNIK.read_text(encoding="utf-8")) or {}
+        kategorie = [k.get("id") for k in cennik.get("kategorie") or []]
+        pozycje = cennik.get("pozycje") or []
+        for nazwa, ids in (("kategorii", kategorie), ("pozycji", [p.get("id") for p in pozycje])):
+            for i, ident in enumerate(ids, 1):
+                if not ident or not WZOR_SLUGA.fullmatch(str(ident)):
+                    blad(f"data/cennik.yaml: identyfikator {nazwa} nr {i} ({ident!r}) jest pusty albo niepoprawny")
+            for ident in sorted({i for i in ids if ids.count(i) > 1 and i}):
+                blad(f"data/cennik.yaml: identyfikator {nazwa} {ident!r} występuje więcej niż raz")
+        for p in pozycje:
+            if p.get("kategoria") not in kategorie:
+                blad(
+                    f"data/cennik.yaml: pozycja {p.get('nazwa')!r} wskazuje kategorię "
+                    f"{p.get('kategoria')!r}, której nie ma na liście kategorii"
                 )
 
     # 2-3. typy w config.yml

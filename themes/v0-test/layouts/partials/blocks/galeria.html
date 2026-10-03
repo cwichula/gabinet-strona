@@ -1,9 +1,10 @@
-{{- /* Blok "galeria": naglowek, elementy [{plik, alt, podpis}]. */ -}}
+{{- /* Blok "galeria": naglowek, wstep, elementy [{plik, alt, podpis}]. */ -}}
 {{- $b := .blok -}}
-<section class="{{ partial "blok-klasy.html" $b }}">
+<section {{ partial "blok-atrybuty.html" $b }}>
   {{- with $b.naglowek }}
   <h2>{{ . }}</h2>
   {{- end }}
+  {{- with $b.wstep }}{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
   <ul class="galeria">
     {{- range $b.elementy }}
     <li>

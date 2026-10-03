@@ -1,0 +1,12 @@
+{{- /* Blok "kroki": naglowek, wstep, elementy [{tytul, tresc}] - lista
+       numerowana ol.steps makiety v1 (numery dodaje CSS). */ -}}
+{{- $b := .blok -}}
+{{ partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "wstep" $b.wstep "gora" $.gora "lede_styl" "max-width:62ch") }}
+
+      <ol class="steps"{{ if or $b.naglowek $b.wstep }} style="margin-top:2rem"{{ end }}>
+        {{- range $b.elementy }}
+        <li>
+          <b>{{ .tytul }}</b> {{ with .tresc }}{{ partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
+        </li>
+        {{- end }}
+      </ol>

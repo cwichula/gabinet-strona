@@ -5,7 +5,7 @@
 {{- /* numer lokalu ("m. 10") myli wyszukiwarke map - pomijamy go w zapytaniu */ -}}
 {{- $budynek := replaceRE `\s+m\.\s*\d+\s*$` "" $a.ulica -}}
 {{- $zapytanie := printf "%s, %s %s" $budynek $a.kod $a.miasto -}}
-<section class="{{ partial "blok-klasy.html" $b }}">
+<section {{ partial "blok-atrybuty.html" $b }}>
   <h2>{{ $b.naglowek | default "Jak do nas trafić" }}</h2>
   <p class="adres">{{ $a.ulica }}, {{ $a.kod }} {{ $a.miasto }}</p>
   {{- with $a.dojazd }}

@@ -5,6 +5,18 @@ sekcje:
   - type: hero
     wariant: domyslny
     naglowek: "Dentysta w Legnicy, u którego nie czuć pośpiechu"
+    nadtytul: "30 lat praktyki w centrum Legnicy"
+    pokaz_telefon: true
+    fakty:
+      - ikona: "pinezka"
+        tekst: "**ul. Złotoryjska 16/18 m. 10**, 59-220 Legnica"
+      - ikona: "parking"
+        tekst: "Parking w **Galerii Gwarnej** obok"
+      - ikona: "karta"
+        tekst: "Karta i **BLIK**"
+    plakietka:
+      wyroznienie: "od 1995"
+      tekst: "ten sam lekarz, ten sam gabinet"
     tresc: |-
       Prywatny gabinet lek. stom. Doroty Rożdżestwieńskiej przy ul. Złotoryjskiej. Leczymy całe rodziny — dorosłych i dzieci — a od lat specjalizujemy się w bruksizmie i dysfunkcjach stawów skroniowo-żuchwowych.
     zdjecie:

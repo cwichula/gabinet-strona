@@ -1,0 +1,17 @@
+{{- /* Przycisk {etykieta, strona} -> odnosnik w stylu v1.
+       Wejscie: dict "przycisk" (obiekt z bloku), "gdzie" (opis do bledu),
+       "klasa" (klasy, domyslnie "btn btn--primary"), "strzalka" (bool).
+       Bez etykiety albo strony, albo do strony ukrytej - nic. */ -}}
+{{- with .przycisk -}}
+  {{- if and .etykieta .strona -}}
+    {{- $cel := partial "cel-linku.html" (dict "strona" .strona "gdzie" $.gdzie) -}}
+    {{- with $cel.href -}}
+<a class="{{ $.klasa | default "btn btn--primary" }}" href="{{ . }}">
+  {{ $.przycisk.etykieta }}
+  {{- if $.strzalka }}
+  <svg class="ico" aria-hidden="true"><use href="#ico-arrow"></use></svg>
+  {{- end }}
+</a>
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

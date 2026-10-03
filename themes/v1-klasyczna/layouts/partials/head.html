@@ -1,0 +1,71 @@
+{{- /* <head> jak w v1/_src/_layout.html: meta, kanoniczny adres, Open Graph,
+       ikony, jeden arkusz i jeden skrypt (z odciskiem w nazwie pliku), motyw
+       ustawiany przed pierwszym malowaniem, dane strukturalne. Zadnych
+       zasobow z obcych serwerow. Wejscie: Page. */ -}}
+{{- $g := hugo.Data.gabinet -}}
+{{- $u := hugo.Data.ustawienia | default dict -}}
+{{- $nazwa := $g.nazwa_krotka | default site.Title -}}
+{{- $tytul := "" -}}
+{{- if .IsHome }}{{ $tytul = printf "%s — %s" .Title $nazwa }}
+{{- else if eq .Kind "404" }}{{ $tytul = printf "Nie znaleziono strony | %s" $nazwa }}
+{{- else }}{{ $tytul = printf "%s | %s" .Title $nazwa }}{{ end -}}
+{{- $opis := .Description | default $u.seo_opis | default "" -}}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>{{ $tytul }}</title>
+<meta name="description" content="{{ $opis }}">
+{{- if ne .Kind "404" }}
+<link rel="canonical" href="{{ .Permalink }}">
+{{- else }}
+<meta name="robots" content="noindex">
+{{- end }}
+{{- with $g.lekarz }}
+<meta name="author" content="{{ . }}">
+{{- end }}
+<meta name="theme-color" content="#0f5257" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a1a1c" media="(prefers-color-scheme: dark)">
+{{- with $g.adres.miasto }}
+<meta name="geo.placename" content="{{ . }}">
+{{- end }}
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:site_name" content="{{ $nazwa }}">
+<meta property="og:title" content="{{ cond .IsHome $tytul .Title }}">
+<meta property="og:description" content="{{ $opis }}">
+{{- if ne .Kind "404" }}
+<meta property="og:url" content="{{ .Permalink }}">
+{{- end }}
+{{- with partial "og-zdjecie.html" . }}
+<meta property="og:image" content="{{ .url }}">
+<meta property="og:image:width" content="{{ .width }}">
+<meta property="og:image:height" content="{{ .height }}">
+<meta property="og:image:alt" content="{{ .alt }}">
+{{- end }}
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml">
+<link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}">
+{{- with resources.Get "meta/site.webmanifest" | resources.ExecuteAsTemplate "site.webmanifest" . }}
+<link rel="manifest" href="{{ .RelPermalink }}">
+{{- end }}
+
+{{- $css := slice (resources.Get "css/style.css") (resources.Get "css/hugo.css") | resources.Concat "css/v1.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+<script>
+  /* Ustawia motyw PRZED pierwszym malowaniem - bez tego strona mrugnelaby
+     na bialo u kogos, kto wybral ciemny. Celowo male i synchroniczne. */
+  try {
+    var m = localStorage.getItem("motyw");
+    if (m) document.documentElement.setAttribute("data-theme", m);
+  } catch (e) {}
+</script>
+{{- $js := resources.Get "js/app.js" | minify | fingerprint }}
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+
+{{- /* Podpowiedz dla przegladarki: przygotuj z wyprzedzeniem strony tego
+       serwisu, na ktore pacjent najczesciej przechodzi. */}}
+{{- $reguly := dict "prerender" (slice (dict "where" (dict "href_matches" (printf "%s*" site.Home.RelPermalink)) "eagerness" "moderate")) }}
+{{ printf "<script type=\"speculationrules\">%s</script>" ($reguly | jsonify) | safeHTML }}
+{{ partial "jsonld.html" . }}

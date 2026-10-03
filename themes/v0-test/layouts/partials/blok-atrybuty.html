@@ -1,0 +1,8 @@
+{{- /* Atrybuty <section> bloku: class="blok blok--<typ> [blok--<wariant>]"
+       i id="<kotwica>" (gdy blok ma kotwice). Pole "polacz" (dolacz do sekcji
+       powyzej) ten szablon pomija - kazdy blok to osobna <section>. */ -}}
+{{- $klasy := slice "blok" (printf "blok--%s" .type) -}}
+{{- with .wariant }}{{ if ne . "domyslny" }}{{ $klasy = $klasy | append (printf "blok--%s" (. | urlize)) }}{{ end }}{{ end -}}
+{{- $atr := printf "class=%q" (delimit $klasy " ") -}}
+{{- with .kotwica }}{{ $atr = printf "%s id=%q" $atr (. | urlize) }}{{ end -}}
+{{- return (safeHTMLAttr $atr) -}}

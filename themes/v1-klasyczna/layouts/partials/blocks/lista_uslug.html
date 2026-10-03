@@ -1,0 +1,32 @@
+{{- /* Blok "lista_uslug": naglowek, wstep, tylko_wyroznione, kolumny (2 | 3 | 4).
+       Karty usług makiety v1 (article.card.card--link) powstaja same ze stron
+       z polem "usluga": ikona, tytul strony, usluga.skrot, "od" + cena pozycji
+       usluga.cena_od z cennika, "Zobacz szczegóły". */ -}}
+{{- $b := .blok -}}
+{{- $kol := printf "%v" ($b.kolumny | default 3) -}}
+{{- if not (in (slice "2" "3" "4") $kol) }}{{ $kol = "3" }}{{ end -}}
+{{- $uslugi := partial "uslugi-strony.html" (dict "tylko_wyroznione" $b.tylko_wyroznione) -}}
+{{- with $uslugi }}
+{{ partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "wstep" $b.wstep "gora" $.gora) }}
+
+    <div class="grid grid--{{ $kol }}"{{ if or $b.naglowek $b.wstep }} style="margin-top:2rem"{{ end }}>
+      {{- range . }}
+      {{- $u := .Params.usluga }}
+      {{- $miejsce := printf "%s: pole „Strona usługi”" .File.Path }}
+      {{- $poz := partial "cennik-pozycja.html" (dict "id" $u.cena_od "gdzie" $miejsce) }}
+      <article class="card card--link">
+        {{- with $u.ikona }}
+        <span class="card__ico">{{ partial "ikona.html" (dict "nazwa" . "gdzie" $miejsce) }}</span>
+        {{- end }}
+        <h3><a class="stretched" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h3>
+        {{- with $u.skrot }}
+        <p>{{ . }}</p>
+        {{- end }}
+        {{- with $poz }}
+        <p class="card__price">od <b>{{ partial "cena.html" (dict "nazwa" .nazwa "cena_od" .cena_od) }}</b></p>
+        {{- end }}
+        <span class="card__more" aria-hidden="true">Zobacz szczegóły</span>
+      </article>
+      {{- end }}
+    </div>
+{{- end -}}

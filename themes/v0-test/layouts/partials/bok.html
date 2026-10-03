@@ -1,0 +1,19 @@
+{{- /* Ramka z boku (pole "bok" w blokach kontakt i tresc_z_bokiem):
+       dict naglowek, godziny, telefony, adres (bool; brak = godziny i telefony tak,
+       adres nie), notka. Wejscie: obiekt "bok". */ -}}
+{{- $g := hugo.Data.gabinet -}}
+{{- $godziny := ne .godziny false -}}
+{{- $telefony := ne .telefony false -}}
+<aside class="bok">
+  <h3>{{ .naglowek | default (cond $godziny "Godziny przyjęć" "Kontakt") }}</h3>
+  {{- if $godziny }}{{ partial "godziny-tabela.html" (dict "podpis" "") }}{{ end }}
+  {{- with .notka }}
+  <p>{{ . }}</p>
+  {{- end }}
+  {{- if $telefony }}{{ range $g.telefony }}
+  <p><a href="{{ printf "tel:%s" (partial "tel.html" .numer) | safeURL }}">{{ .numer }}</a></p>
+  {{- end }}{{ end }}
+  {{- if .adres }}{{ with $g.adres }}
+  <p>{{ .ulica }}<br>{{ .kod }} {{ .miasto }}</p>
+  {{- end }}{{ end }}
+</aside>

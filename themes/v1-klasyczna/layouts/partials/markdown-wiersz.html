@@ -1,0 +1,5 @@
+{{- /* Krotki tekst z CMS w jednym wierszu (Markdown bez akapitow:
+       **pogrubienie**, *kursywa*, [odnosnik](/slug/)). <br> -> spacja.
+       Wejscie: dict "strona" (Page), "tekst". */ -}}
+{{- $tekst := replaceRE `(?i)\s*<br\s*/?>\s*` " " (string (.tekst | default "")) -}}
+{{- .strona.RenderString $tekst -}}

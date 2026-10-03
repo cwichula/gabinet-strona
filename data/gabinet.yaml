@@ -4,6 +4,7 @@
 nazwa: "Prywatny Gabinet Stomatologiczny lek. stom. Dorota Rożdżestwieńska"
 nazwa_krotka: "Gabinet stomatologiczny Dorota Rożdżestwieńska"
 lekarz: "lek. stom. Dorota Rożdżestwieńska"
+rok_zalozenia: 1995
 adres:
   ulica: "ul. Złotoryjska 16/18 m. 10"
   kod: "59-220"
@@ -41,6 +42,9 @@ rezerwacja:
   wlaczona: true
   url: "https://booksy.com/pl-pl/s/stomatolog#ba_s=seo"
   etykieta: "Umów wizytę online"
+  dostawca: "Booksy"
+  potwierdzona: false
+  nota: "Rezerwacja online odbywa się w serwisie Booksy — to osobny administrator Twoich danych. Termin potwierdza gabinet telefonicznie."
 rejestrowe:
   nip: "DO_UZUPEŁNIENIA"
   regon: "DO_UZUPEŁNIENIA"

@@ -4,9 +4,9 @@ description: "Zakres usług gabinetu stomatologicznego w Legnicy: higienizacja, 
 draft: false
 weight: 1
 sekcje:
-  - type: tekst
+  - type: hero
     wariant: domyslny
-    naglowek: ""
+    naglowek: "Usługi"
     tresc: |-
       Gabinet działa przy ul. Złotoryjskiej 16/18 od 1995 roku. Przyjmujemy całe rodziny — dorosłych i dzieci.
 

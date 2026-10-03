@@ -7,7 +7,7 @@
 
 baseURL: https://cwichula.github.io/gabinet-strona/
 title: Gabinet stomatologiczny Dorota Rożdżestwieńska
-theme: v0-test
+theme: v1-klasyczna
 
 # Jezyk strony. "locale" zastapilo "languageCode" (Hugo 0.158+; stary klucz
 # daje ostrzezenie, a CI traktuje ostrzezenia jak bledy).
@@ -71,4 +71,4 @@ sitemap:
 
 params:
   # Wersja kontraktu blokow (docs/KONTRAKT-BLOKOW.md).
-  kontraktBlokow: 1
+  kontraktBlokow: 2

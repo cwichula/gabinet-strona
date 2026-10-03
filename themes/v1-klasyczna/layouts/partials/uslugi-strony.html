@@ -1,0 +1,11 @@
+{{- /* Strony uslug: podstrony z polem "usluga" (front matter), w kolejnosci
+       stron (weight). Strony ukryte (draft) Hugo pomija sam.
+       Wejscie: dict "tylko_wyroznione" (bool). Wynik: lista stron (Page). */ -}}
+{{- $wynik := slice -}}
+{{- $tylko := .tylko_wyroznione | default false -}}
+{{- range $p := (where site.RegularPages "Section" "strony").ByWeight -}}
+  {{- with $p.Params.usluga -}}
+    {{- if or (not $tylko) .wyrozniona }}{{ $wynik = $wynik | append $p }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $wynik -}}

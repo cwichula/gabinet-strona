@@ -1,0 +1,13 @@
+{{- /* Zdjecie z podpisem jak w makiecie v1: figure.figure > picture + figcaption.
+       Pionowe zdjecie dostaje sufit szerokosci --figure-w (jak w v1).
+       Wejscie: dict "strona", "zdjecie", "priorytet", "gdzie". */ -}}
+{{- $img := partial "zdjecie-zasob.html" . -}}
+{{- with $img -}}
+{{- $styl := "" }}{{ if and (ne .MediaType.SubType "svg") (gt .Height .Width) }}{{ $styl = "--figure-w:24rem" }}{{ end }}
+<figure class="figure" style="margin:0">
+  {{ partial "image.html" (merge $ (dict "styl" $styl)) }}
+  {{- with $.zdjecie.podpis }}
+  <figcaption>{{ . }}</figcaption>
+  {{- end }}
+</figure>
+{{- end -}}

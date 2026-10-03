@@ -1,0 +1,5 @@
+{{- /* Blok "ramka": rodzaj (info -> div.callout, uwaga -> callout--warn,
+       ok -> callout--ok), tresc (Markdown), ikona (domyslnie wg rodzaju). */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{ partial "ramka-html.html" (dict "strona" $.strona "rodzaj" $b.rodzaj "tresc" $b.tresc "ikona" $b.ikona "gdzie" $gdzie) }}

@@ -3,6 +3,11 @@ title: "Higienizacja"
 description: "Usuwanie kamienia nazębnego (skaling), piaskowanie, lakierowanie fluorem i lakowanie bruzd. Gabinet stomatologiczny w Legnicy."
 draft: false
 weight: 2
+usluga:
+  wyrozniona: false
+  ikona: "iskry"
+  skrot: "Usunięcie kamienia, piaskowanie, lakierowanie fluorem i lakowanie bruzd."
+  cena_od: "lakierowanie"
 sekcje:
   - type: hero
     wariant: domyslny

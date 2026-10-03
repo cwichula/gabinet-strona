@@ -1,0 +1,30 @@
+{{- /* Blok "lista_uslug": naglowek, wstep, tylko_wyroznione, kolumny (pomijane).
+       Karty powstaja ze stron z polem "usluga": tytul strony, usluga.skrot,
+       "od" + cena pozycji usluga.cena_od. */ -}}
+{{- $b := .blok -}}
+{{- $uslugi := partial "uslugi-strony.html" (dict "tylko_wyroznione" $b.tylko_wyroznione) -}}
+<section {{ partial "blok-atrybuty.html" $b }}>
+  {{- with $b.naglowek }}
+  <h2>{{ . }}</h2>
+  {{- end }}
+  {{- with $b.wstep }}{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
+  {{- with $uslugi }}
+  <ul class="karty">
+    {{- range . }}
+    {{- $u := .Params.usluga }}
+    {{- $poz := partial "cennik-pozycja.html" (dict "id" $u.cena_od "gdzie" (printf "%s: pole „Cena od” strony usługi" .File.Path)) }}
+    <li class="karta">
+      <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+      {{- with $u.skrot }}
+      <p>{{ . }}</p>
+      {{- end }}
+      {{- with $poz }}
+      <p class="cena">od {{ partial "cena.html" (dict "nazwa" .nazwa "cena_od" .cena_od) }}</p>
+      {{- end }}
+    </li>
+    {{- end }}
+  </ul>
+  {{- else }}
+  <p>Brak stron oznaczonych jako „Strona usługi”.</p>
+  {{- end }}
+</section>

@@ -1,0 +1,13 @@
+{{- /* Czesc bloku "hero" (blocks/hero.html): zdjecie banera (figure.hero__media) z plakietka
+       (figcaption.hero__badge). Podpis zdjecia banera ten szablon pomija
+       (makieta v1 nie ma miejsca na podpis w banerze; opis niesie alt). Wejscie: dict "blok", "strona",
+       "priorytet", "sizes". */ -}}
+{{- $b := .blok -}}
+<figure class="hero__media" style="margin:0">
+      {{ partial "image.html" (dict "strona" .strona "zdjecie" $b.zdjecie "priorytet" .priorytet "sizes" .sizes "szerokosci" (slice 480 800 1200)) }}
+      {{- with $b.plakietka }}{{ if .wyroznienie }}
+      <figcaption class="hero__badge">
+        <b>{{ .wyroznienie }}</b>{{ with .tekst }} <span>{{ . }}</span>{{ end }}
+      </figcaption>
+      {{- end }}{{ end }}
+    </figure>

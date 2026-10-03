@@ -1,28 +1,42 @@
-{{- /* Blok "cennik": naglowek, wstep, kategorie (lista id z data/cennik.yaml;
-       pusta lista = caly cennik). Ceny zawsze z data/cennik.yaml. */ -}}
+{{- /* Blok "cennik": naglowek, wstep, kategorie (id kategorii), pozycje (id
+       pozycji - zamiast kategorii), wyszukiwarka (ten szablon ja pomija).
+       Pusto w obu = caly cennik. Ceny zawsze z data/cennik.yaml. */ -}}
 {{- $b := .blok -}}
-{{- $gdzie := "" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
-{{- $wszystkie := hugo.Data.cennik.kategorie | default slice -}}
-{{- $wybrane := slice -}}
-{{- with $b.kategorie -}}
+{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $c := hugo.Data.cennik -}}
+{{- $wszystkiePozycje := $c.pozycje | default slice -}}
+{{- /* tabele: lista dict "nazwa" + "pozycje" */ -}}
+{{- $tabele := slice -}}
+{{- with $b.pozycje -}}
+  {{- $lista := slice -}}
   {{- range . -}}
-    {{- $id := . -}}
-    {{- $znalezione := where $wszystkie "id" $id -}}
-    {{- if $znalezione -}}
-      {{- $wybrane = $wybrane | append (index $znalezione 0) -}}
-    {{- else -}}
-      {{- errorf "%s: blok cennika wskazuje kategorię %q, której nie ma w data/cennik.yaml. Wybierz kategorię ponownie w panelu /admin/." $gdzie $id -}}
-    {{- end -}}
+    {{- with partial "cennik-pozycja.html" (dict "id" . "gdzie" (printf "%s: blok cennika" $gdzie)) }}{{ $lista = $lista | append . }}{{ end -}}
   {{- end -}}
+  {{- $tabele = $tabele | append (dict "nazwa" "" "pozycje" $lista) -}}
 {{- else -}}
-  {{- $wybrane = $wszystkie -}}
+  {{- $kategorie := $c.kategorie | default slice -}}
+  {{- with $b.kategorie -}}
+    {{- $wybrane := slice -}}
+    {{- range . -}}
+      {{- $id := . -}}
+      {{- with where $kategorie "id" $id }}{{ $wybrane = $wybrane | append (index . 0) }}{{ else -}}
+        {{- errorf "%s: blok cennika wskazuje kategorię %q, której nie ma w data/cennik.yaml. Wybierz kategorię ponownie w panelu /admin/." $gdzie $id -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $kategorie = $wybrane -}}
+  {{- end -}}
+  {{- range $kategorie -}}
+    {{- $tabele = $tabele | append (dict "nazwa" .nazwa "pozycje" (where $wszystkiePozycje "kategoria" .id)) -}}
+  {{- end -}}
 {{- end }}
-<section class="{{ partial "blok-klasy.html" $b }}">
+<section {{ partial "blok-atrybuty.html" $b }}>
   <h2>{{ $b.naglowek | default "Cennik" }}</h2>
   {{- with $b.wstep }}{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
-  {{- range $wybrane }}
+  {{- range $tabele }}
   <table class="cennik">
-    <caption>{{ .nazwa }}</caption>
+    {{- with .nazwa }}
+    <caption>{{ . }}</caption>
+    {{- end }}
     <thead>
       <tr><th scope="col">Usługa</th><th scope="col">Cena</th></tr>
     </thead>
@@ -36,7 +50,7 @@
     </tbody>
   </table>
   {{- end }}
-  {{- with hugo.Data.cennik.informacja }}
+  {{- with $c.informacja }}
   <p class="uwaga">{{ . }}</p>
   {{- end }}
 </section>

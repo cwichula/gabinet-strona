@@ -1,0 +1,9 @@
+{{- /* Naglowek sekcji: h2 (z margin-top:0, gdy to pierwszy blok sekcji - jak
+       w makiecie v1) i opcjonalny wstep (p.lede).
+       Wejscie: dict "strona", "naglowek", "wstep", "gora" (bool), "lede_styl". */ -}}
+{{- with .naglowek }}
+<h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ . }}</h2>
+{{- end }}
+{{- with .wstep }}
+{{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede" "styl" ($.lede_styl | default "max-width:62ch")) }}
+{{- end -}}

@@ -1,0 +1,92 @@
+{{- /* Blok "cennik": naglowek, wstep (podpis tabeli), kategorie (id kategorii),
+       pozycje (id pozycji - zamiast kategorii), wyszukiwarka (pole "Szukaj
+       zabiegu" i spis kategorii - skrypt v1, raz na strone).
+       Pusto w kategoriach i pozycjach = caly cennik. Ceny zawsze z data/cennik.yaml.
+       Tabela table.price-table makiety v1: kilka kategorii = wiersze-grupy
+       (tr.group), jedna kategoria albo wybrane pozycje = same wiersze. */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $c := hugo.Data.cennik -}}
+{{- $wszystkie := $c.pozycje | default slice -}}
+{{- $grupy := slice -}}
+{{- with $b.pozycje -}}
+  {{- $lista := slice -}}
+  {{- range . }}{{ with partial "cennik-pozycja.html" (dict "id" . "gdzie" (printf "%s: blok cennika" $gdzie)) }}{{ $lista = $lista | append . }}{{ end }}{{ end -}}
+  {{- $grupy = $grupy | append (dict "id" "" "nazwa" "" "pozycje" $lista) -}}
+{{- else -}}
+  {{- $kategorie := $c.kategorie | default slice -}}
+  {{- with $b.kategorie -}}
+    {{- $wybrane := slice -}}
+    {{- range . -}}
+      {{- $id := . -}}
+      {{- with where $kategorie "id" $id }}{{ $wybrane = $wybrane | append (index . 0) }}{{ else -}}
+        {{- errorf "%s: blok cennika wskazuje kategorię %q, której nie ma w data/cennik.yaml. Wybierz kategorię ponownie w panelu /admin/." $gdzie $id -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $kategorie = $wybrane -}}
+  {{- end -}}
+  {{- range $kategorie }}{{ $grupy = $grupy | append (dict "id" .id "nazwa" .nazwa "pozycje" (where $wszystkie "kategoria" .id)) }}{{ end -}}
+{{- end -}}
+{{- $zGrupami := gt (len $grupy) 1 -}}
+{{- $liczba := 0 }}{{ range $grupy }}{{ $liczba = add $liczba (len .pozycje) }}{{ end -}}
+{{- /* wyszukiwarka: skrypt v1 obsluguje jedna tabele na strone (#cennik-tabela) */ -}}
+{{- $szukaj := false -}}
+{{- if and $b.wyszukiwarka (not ($.strona.Store.Get "cennik-wyszukiwarka")) }}{{ $szukaj = true }}{{ $.strona.Store.Set "cennik-wyszukiwarka" true }}{{ end -}}
+    <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ $b.naglowek | default "Cennik" }}</h2>
+    {{- if and $szukaj $zGrupami }}
+
+    <nav class="anchor-nav" aria-label="Grupy w cenniku">
+      {{- range $grupy }}
+      <a href="#grupa-{{ .id }}">{{ .nazwa }}</a>
+      {{- end }}
+    </nav>
+    {{- end }}
+    {{- if $szukaj }}
+
+    <div class="price-tools">
+      <div class="price-search">
+        <label class="visually-hidden" for="szukaj-ceny">Szukaj w cenniku</label>
+        <input type="search" id="szukaj-ceny" data-price-search placeholder="Szukaj zabiegu, np. korona, szyna, piaskowanie">
+      </div>
+      <p data-price-count aria-live="polite" style="margin:0;color:var(--muted);font-size:var(--step--1)">Wszystkich pozycji w cenniku: {{ $liczba }}</p>
+    </div>
+    {{- end }}
+
+    <div class="table-wrap"{{ if not $szukaj }} style="margin-top:1.5rem"{{ end }}>
+      <table class="price-table"{{ if $szukaj }} id="cennik-tabela"{{ end }}>
+        {{- with $b.wstep }}
+        <caption>{{ partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .) }}</caption>
+        {{- else }}{{ if and $grupy (not $zGrupami) (index $grupy 0).nazwa }}
+        <caption>{{ (index $grupy 0).nazwa }}</caption>
+        {{- end }}{{ end }}
+        <thead>
+          <tr>
+            <th scope="col">Usługa</th>
+            <th scope="col">Cena</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{- range $grupy }}
+          {{- if $zGrupami }}
+          <tr class="group"><th colspan="2" scope="colgroup"{{ if $szukaj }} id="grupa-{{ .id }}"{{ end }}>{{ .nazwa }}</th></tr>
+          {{- end }}
+          {{- range .pozycje }}
+          <tr><td>{{ .nazwa }}{{ with .uwagi }}<br><small>{{ . }}</small>{{ end }}</td><td data-label="Cena">{{ partial "cena.html" . }}</td></tr>
+          {{- end }}
+          {{- end }}
+        </tbody>
+      </table>
+    </div>
+    {{- with $c.informacja }}
+    {{- if $szukaj }}
+
+    <div class="callout" style="margin-top:2rem">
+      <svg class="ico" aria-hidden="true"><use href="#ico-info"></use></svg>
+      <div>
+        <p>{{ . }}</p>
+      </div>
+    </div>
+    {{- else }}
+    <p style="margin-top:1rem;font-size:var(--step--1);color:var(--muted)">{{ . }}</p>
+    {{- end }}
+    {{- end }}

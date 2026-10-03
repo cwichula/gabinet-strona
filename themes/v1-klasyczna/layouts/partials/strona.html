@@ -1,0 +1,19 @@
+{{- /* Uklad strony glownej i podstron.
+       - Pierwszy blok "hero": na stronie glownej duzy baner (section.hero),
+         na podstronie naglowek strony (div.page-head: okruszki, h1, wstep).
+       - Inny pierwszy blok: naglowek strony z tytulem (h1 = tytul strony).
+       Potem bloki (partial sekcje.html). Jeden h1 na strone. */ -}}
+{{- $sekcje := .Params.sekcje | default slice -}}
+{{- $pierwszyHero := false -}}
+{{- with index $sekcje 0 }}{{ if eq .type "hero" }}{{ $pierwszyHero = true }}{{ end }}{{ end -}}
+{{- if not $pierwszyHero }}
+<div class="page-head">
+  <div class="container">
+    {{- if not .IsHome }}
+    {{ partial "okruszki.html" . }}
+    {{- end }}
+    <h1>{{ .Title }}</h1>
+  </div>
+</div>
+{{- end }}
+{{ partial "sekcje.html" . }}

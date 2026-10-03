@@ -1,0 +1,121 @@
+{{- /* Stopka i pasek dolny na telefonie - jak v1/_src/_layout.html i stopka()
+       z tools/build-v1.py. Kolumna "Usługi" = strony uslug (pole "usluga"),
+       a gdy zadnej nie ma - podmenu pierwszej pozycji menu z podmenu.
+       Kolumna "Gabinet" = pozycje menu bez podmenu. */ -}}
+{{- $g := hugo.Data.gabinet -}}
+{{- $u := hugo.Data.ustawienia | default dict -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- $menu := partialCached "menu-model.html" site "menu" -}}
+{{- $uslugi := slice -}}
+{{- range partial "uslugi-strony.html" (dict) }}{{ $uslugi = $uslugi | append (dict "etykieta" .LinkTitle "href" .RelPermalink "zewnetrzny" false) }}{{ end -}}
+{{- if not $uslugi }}{{ range $menu }}{{ if and .dzieci (not $uslugi) }}{{ $uslugi = .dzieci }}{{ end }}{{ end }}{{ end -}}
+{{- $strony := slice }}{{ range $menu }}{{ if and .href (not .dzieci) }}{{ $strony = $strony | append . }}{{ end }}{{ end -}}
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <strong style="color:#fff;font-size:1.05rem">{{ $g.nazwa_krotka | default site.Title }}</strong>
+        {{- with $g.adres }}
+        <p style="margin:0">
+          {{ .ulica }}<br>
+          {{ .kod }} {{ .miasto }}
+        </p>
+        {{- end }}
+        {{- if or $m.telefony $g.email }}
+        <p style="margin:0">
+          {{- range $m.telefony }}
+          <a href="{{ printf "tel:%s" .tel | safeURL }}">{{ .numer }}</a><br>
+          {{- end }}
+          {{- with $g.email }}
+          <a href="mailto:{{ . }}">{{ . }}</a>
+          {{- end }}
+        </p>
+        {{- end }}
+        {{- with $u.stopka_tekst }}
+        <p style="margin:0">{{ . }}</p>
+        {{- end }}
+        {{- with $g.platnosci }}
+        <p style="margin:0">Płatność: {{ delimit . ", " }}.</p>
+        {{- end }}
+        {{ partial "rezerwacja.html" (dict "miejsce" "stopka") }}
+      </div>
+
+      {{- with $uslugi }}
+      <div>
+        <h2>Usługi</h2>
+        <ul>
+          {{- range . }}
+          <li><a href="{{ .href }}"{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}</a></li>
+          {{- end }}
+        </ul>
+      </div>
+      {{- end }}
+
+      {{- with $strony }}
+      <div>
+        <h2>Gabinet</h2>
+        <ul>
+          {{- range . }}
+          <li><a href="{{ .href }}"{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}</a></li>
+          {{- end }}
+        </ul>
+      </div>
+      {{- end }}
+
+      {{- with $g.godziny }}
+      <div>
+        <h2>Godziny przyjęć</h2>
+        <ul>
+          {{- range . }}
+          {{- if and .od .do }}
+          <li>{{ .dzien }}: <strong style="color:#fff">{{ .od }}&ndash;{{ .do }}</strong></li>
+          {{- else }}
+          <li>{{ .dzien }}: nieczynne</li>
+          {{- end }}
+          {{- end }}
+        </ul>
+        {{- with $m.dojazd }}
+        <p style="margin-top:.75rem"><a href="{{ .RelPermalink }}">Dojazd i mapa →</a></p>
+        {{- end }}
+      </div>
+      {{- end }}
+    </div>
+
+    {{- /* dane rejestrowe tylko, gdy jest choc jeden numer (CMS zapisuje puste pola jako "") */}}
+    {{- $rej := $g.rejestrowe | default dict }}
+    {{- if or $rej.nip $rej.regon $rej.pwz $rej.rpwdl }}
+    {{- $etykiety := dict "nip" "NIP" "regon" "REGON" "pwz" "nr prawa wykonywania zawodu" "rpwdl" "wpis do rejestru podmiotów wykonujących działalność leczniczą (RPWDL)" }}
+    {{- $czesci := slice }}{{ range $k := slice "nip" "regon" "pwz" "rpwdl" }}{{ with index $rej $k }}{{ $czesci = $czesci | append (printf "%s %s" (index $etykiety $k) .) }}{{ end }}{{ end }}
+    <p class="footer__reg">
+      <b>Dane rejestrowe:</b> {{ delimit $czesci " · " }}
+    </p>
+    {{- end }}
+
+    <div class="footer__legal">
+      <span>&copy; {{ with $g.rok_zalozenia }}{{ if lt (int .) now.Year }}{{ . }}&ndash;{{ end }}{{ end }}<span data-rok>{{ now.Year }}</span> {{ $g.nazwa | default site.Title }}</span>
+      {{- with site.GetPage "/strony/polityka-prywatnosci" }}
+      <span class="cluster" style="gap:1rem">
+        <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+      </span>
+      {{- end }}
+    </div>
+  </div>
+</footer>
+
+{{- /* Na telefonie najwazniejsza akcja zostaje pod kciukiem przez caly czas:
+       telefon pierwszy i jedyny wypelniony, potem dojazd i rezerwacja online. */}}
+<div class="callbar">
+  {{- with $m.telefon }}
+  <a class="btn btn--primary" href="{{ printf "tel:%s" .tel | safeURL }}">
+    <svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg>
+    Zadzwoń
+  </a>
+  {{- end }}
+  {{- with $m.dojazd }}
+  <a class="btn btn--ghost" href="{{ .RelPermalink }}">
+    <svg class="ico" aria-hidden="true"><use href="#ico-pin"></use></svg>
+    Dojazd
+  </a>
+  {{- end }}
+  {{ partial "rezerwacja.html" (dict "miejsce" "pasek") }}
+</div>

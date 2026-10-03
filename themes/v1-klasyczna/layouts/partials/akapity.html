@@ -1,0 +1,8 @@
+{{- /* Pole Markdown jako akapit(y) z klasa makiety v1 (np. "lede",
+       "page-head__lead", "hero__lead"). Jeden akapit -> <p class=...>tekst</p>;
+       kilka akapitow albo lista -> zwykly HTML z klasa przy kazdym <p>.
+       Wejscie: dict "strona", "tekst", "klasa", "styl" (opcjonalny style). */ -}}
+{{- $html := partial "markdown.html" (dict "strona" .strona "tekst" .tekst) | string -}}
+{{- $atr := "" }}{{ with .klasa }}{{ $atr = printf ` class="%s"` . }}{{ end -}}
+{{- with .styl }}{{ $atr = printf `%s style="%s"` $atr . }}{{ end -}}
+{{- replace $html "<p>" (printf "<p%s>" $atr) | safeHTML -}}

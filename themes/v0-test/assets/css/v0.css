@@ -60,3 +60,16 @@ th, td { text-align: left; padding: .4rem .5rem; border-bottom: 1px solid var(--
 .stopka h2 { font-size: 1.1rem; }
 .stopka-kolumny { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
 .rejestrowe { font-size: .85em; color: #4a4f55; }
+
+/* Bloki dodane w kontrakcie 2 - nadal tylko czytelnosc. */
+.nadtytul { font-size: .9em; font-weight: 600; color: #4a4f55; margin-bottom: 0; }
+.ramka { border-left: 4px solid var(--akcent); background: var(--szary); padding: .5rem 1rem; margin: 1rem 0; }
+.ramka--uwaga { border-left-color: #a35f00; }
+.ramka--ok { border-left-color: #2e7d32; }
+.ramka__rodzaj { font-weight: 700; margin: .25rem 0; }
+.lista--minusy { list-style: "– "; }
+.kroki li { margin-bottom: .75rem; }
+.cytat blockquote { margin: 0; font-size: 1.15em; font-style: italic; }
+.bok { border: 1px solid var(--linia); border-radius: .4rem; padding: 0 1rem 1rem; margin-top: 1rem; }
+.fakty { padding-left: 1.2rem; }
+.formularz input, .formularz select, .formularz textarea { font: inherit; width: 100%; max-width: 30rem; min-height: 24px; }

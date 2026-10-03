@@ -1,6 +1,6 @@
 {{- /* Blok "faq": naglowek, elementy [{pytanie, odpowiedz}]. Bez JS (details/summary). */ -}}
 {{- $b := .blok -}}
-<section class="{{ partial "blok-klasy.html" $b }}">
+<section {{ partial "blok-atrybuty.html" $b }}>
   <h2>{{ $b.naglowek | default "Najczęstsze pytania" }}</h2>
   {{- range $b.elementy }}
   <details>

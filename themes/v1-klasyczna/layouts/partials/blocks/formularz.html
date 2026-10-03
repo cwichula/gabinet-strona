@@ -1,0 +1,97 @@
+{{- /* Blok "formularz": naglowek, wstep, tematy (napisy; puste = domyslne).
+       Formularz kontaktowy makiety v1 (form.form[data-demo-form]): przegladarka
+       sprawdza pola, skrypt v1 pokazuje potwierdzenie, ale NIC nie jest
+       wysylane - strona na GitHub Pages nie ma serwera pocztowego. Mowia o tym
+       notka pod formularzem i komunikat po wypelnieniu. Pole-pulapka na roboty
+       (firma) i zgoda RODO z administratorem danych z data/gabinet.yaml. */ -}}
+{{- $b := .blok -}}
+{{- $g := hugo.Data.gabinet -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- $tematy := $b.tematy | default (slice "Umówienie wizyty" "Pytanie o cenę" "Pytanie o leczenie" "Inne") -}}
+{{- $p := printf "f%d-" .nr -}}
+{{- $polityka := site.GetPage "/strony/polityka-prywatnosci" -}}
+    <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ $b.naglowek | default "Napisz do nas" }}</h2>
+    {{- with $b.wstep }}
+    {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede") }}
+    {{- end }}
+
+    <form class="form" data-demo-form style="margin-top:2rem">
+      <div class="field">
+        <label for="{{ $p }}imie">Imię <span class="req">*</span></label>
+        <input type="text" id="{{ $p }}imie" name="imie" autocomplete="given-name" required>
+      </div>
+
+      <div class="field">
+        <label for="{{ $p }}telefon">Telefon <span class="req">*</span></label>
+        <input type="tel" id="{{ $p }}telefon" name="telefon" autocomplete="tel" required>
+        <span class="hint">Na ten numer oddzwonimy, żeby ustalić termin.</span>
+      </div>
+
+      <div class="field">
+        <label for="{{ $p }}email">E-mail</label>
+        <input type="email" id="{{ $p }}email" name="email" autocomplete="email">
+        <span class="hint">Pole nieobowiązkowe.</span>
+      </div>
+
+      <div class="field">
+        <label for="{{ $p }}temat">Temat</label>
+        <select id="{{ $p }}temat" name="temat">
+          {{- range $tematy }}
+          <option>{{ . }}</option>
+          {{- end }}
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="{{ $p }}wiadomosc">Wiadomość <span class="req">*</span></label>
+        <textarea id="{{ $p }}wiadomosc" name="wiadomosc" rows="6" required></textarea>
+        <span class="hint">Napisz, czego dotyczy sprawa — bez opisywania stanu zdrowia.</span>
+      </div>
+
+      <p class="visually-hidden">
+        <label for="{{ $p }}firma">Nie wypełniaj tego pola</label>
+        <input type="text" id="{{ $p }}firma" name="firma" tabindex="-1" autocomplete="off" class="visually-hidden">
+      </p>
+
+      <div class="consent">
+        <input type="checkbox" id="{{ $p }}zgoda" name="zgoda" required>
+        <label for="{{ $p }}zgoda">
+          Wyrażam zgodę na przetwarzanie podanych danych w celu udzielenia odpowiedzi na moje zapytanie i ustalenia terminu wizyty. Administratorem danych jest {{ $g.nazwa_krotka | default $g.nazwa }}{{ with $g.adres }}, {{ .ulica }}, {{ .kod }} {{ .miasto }}{{ end }}. Podstawą przetwarzania jest art. 6 ust. 1 lit. a i b RODO — moja zgoda oraz działania podejmowane na moje żądanie przed zawarciem umowy. Zgodę mogę wycofać w każdej chwili, a wycofanie nie wpływa na zgodność z prawem przetwarzania, którego dokonano przed jej cofnięciem.{{ with $polityka }} Szczegóły opisuje <a href="{{ .RelPermalink }}">polityka prywatności</a>.{{ end }} <span class="req">*</span>
+        </label>
+      </div>
+
+      <div>
+        <button class="btn btn--primary btn--lg" type="submit">
+          <svg class="ico" aria-hidden="true"><use href="#ico-mail"></use></svg>
+          Wyślij wiadomość
+        </button>
+      </div>
+
+      <p class="form__note">
+        Pola oznaczone gwiazdką są obowiązkowe. Na tej stronie formularz sprawdza poprawność pól, ale jeszcze niczego nie wysyła — w sprawie wizyty zadzwoń.
+      </p>
+    </form>
+
+    <div class="callout callout--ok" data-form-result hidden tabindex="-1">
+      <svg class="ico" aria-hidden="true"><use href="#ico-check"></use></svg>
+      <div>
+        <p><strong>Formularz wypełniony poprawnie.</strong></p>
+        <p>
+          Wiadomość nie została wysłana — ta strona nie ma jeszcze obsługi formularza.{{ with $m.telefon }} Zadzwoń, proszę: <a href="{{ printf "tel:%s" .tel | safeURL }}">{{ .numer }}</a>.{{ end }}
+        </p>
+      </div>
+    </div>
+
+    <div class="callout callout--warn" style="margin-top:2rem">
+      <svg class="ico" aria-hidden="true"><use href="#ico-warn"></use></svg>
+      <div>
+        <p>
+          <strong>Formularz nie służy do przesyłania informacji o stanie zdrowia ani do konsultacji medycznych.</strong> Nie wpisuj w nim objawów, rozpoznań, przyjmowanych leków ani wyników badań — to zwykła wiadomość elektroniczna, a nie dokumentacja medyczna.
+        </p>
+        {{- with $m.telefon }}
+        <p>
+          W sprawach pilnych i przy bólu zadzwoń: <a href="{{ printf "tel:%s" .tel | safeURL }}"><strong>{{ .numer }}</strong></a>.
+        </p>
+        {{- end }}
+      </div>
+    </div>

@@ -1,10 +1,18 @@
 {{- /* Renderuje bloki z front matter "sekcje" (docs/KONTRAKT-BLOKOW.md).
        Kazdy typ bloku = partial blocks/<typ>.html. Nieznany typ: ostrzezenie
-       (w CI ostrzezenie = blad budowania, wiec nic nie trafia do sieci). */ -}}
+       (w CI ostrzezenie = blad budowania, wiec nic nie trafia do sieci).
+       Ten szablon renderuje kazdy blok jako osobna <section> - pole "polacz"
+       (dolacz do sekcji powyzej) pomija. Ta sama kotwica dwa razy na jednej
+       stronie = blad budowania. */ -}}
 {{- $strona := . -}}
 {{- $plik := "" }}{{ with .File }}{{ $plik = .Path }}{{ end -}}
+{{- $kotwice := dict -}}
 {{- range $nr, $blok := .Params.sekcje -}}
   {{- $typ := $blok.type | default "" -}}
+  {{- with $blok.kotwica -}}
+    {{- if index $kotwice . }}{{ errorf "%s: kotwica %q występuje na stronie więcej niż raz (sekcja nr %d). Zmień ją w panelu /admin/." $plik . (add $nr 1) }}{{ end -}}
+    {{- $kotwice = merge $kotwice (dict . true) -}}
+  {{- end -}}
   {{- $szablon := printf "blocks/%s.html" $typ -}}
   {{- if and $typ (templates.Exists (printf "partials/%s" $szablon)) -}}
     {{- partial $szablon (dict "blok" $blok "strona" $strona "nr" $nr) -}}

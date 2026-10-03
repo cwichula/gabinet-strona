@@ -1,0 +1,37 @@
+{{- /* Dane gabinetu wyliczone raz (partialCached): telefony z odnosnikami tel:,
+       godziny w formacie skryptu v1 ("1:9:00-19:00;2:..."), napis o dniach
+       przyjec, strona z mapa/dojazdem, rezerwacja online (gdy wlaczona i ma adres).
+       Wynik: dict. */ -}}
+{{- $g := hugo.Data.gabinet -}}
+{{- $telefony := slice -}}
+{{- range $g.telefony }}{{ $telefony = $telefony | append (dict "etykieta" .etykieta "numer" .numer "tel" (partial "tel.html" .numer)) }}{{ end -}}
+{{- $numery := dict "poniedziałek" 1 "wtorek" 2 "środa" 3 "czwartek" 4 "piątek" 5 "sobota" 6 "niedziela" 7 -}}
+{{- $dopelniacz := slice "" "poniedziałku" "wtorku" "środy" "czwartku" "piątku" "soboty" "niedzieli" -}}
+{{- $czesci := slice }}{{ $otwarte := slice -}}
+{{- range $i, $d := $g.godziny | default slice -}}
+  {{- $nr := index $numery (lower $d.dzien) | default (add $i 1) -}}
+  {{- if and $d.od $d.do -}}
+    {{- $czesci = $czesci | append (printf "%d:%s-%s" $nr $d.od $d.do) -}}
+    {{- $otwarte = $otwarte | append $nr -}}
+  {{- end -}}
+{{- end -}}
+{{- $dni := "Godziny przyjęć w stopce strony" -}}
+{{- with $otwarte -}}
+  {{- $pierwszy := index . 0 }}{{ $ostatni := index . (sub (len .) 1) -}}
+  {{- if eq (len .) 1 -}}
+    {{- $dni = "Przyjmujemy jeden dzień w tygodniu" -}}
+  {{- else if eq (sub $ostatni $pierwszy) (sub (len .) 1) -}}
+    {{- $dni = printf "Przyjmujemy od %s do %s" (index $dopelniacz $pierwszy) (index $dopelniacz $ostatni) -}}
+  {{- end -}}
+{{- end -}}
+{{- /* strona "Dojazd": pierwsza strona z blokiem mapy, potem z blokiem kontaktu */ -}}
+{{- $dojazd := false -}}
+{{- range $typ := slice "mapa" "kontakt" -}}
+  {{- range $p := (where site.RegularPages "Section" "strony").ByWeight -}}
+    {{- if not $dojazd }}{{ range $p.Params.sekcje }}{{ if eq .type $typ }}{{ $dojazd = $p }}{{ end }}{{ end }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+{{- $rez := false -}}
+{{- with $g.rezerwacja }}{{ if and .wlaczona .url }}{{ $rez = dict "url" .url "etykieta" (.etykieta | default "Umów wizytę online") "dostawca" (.dostawca | default "") "potwierdzona" (.potwierdzona | default false) "nota" (.nota | default "") }}{{ end }}{{ end -}}
+{{- $telefon := false }}{{ with $telefony }}{{ $telefon = index . 0 }}{{ end -}}
+{{- return dict "telefony" $telefony "telefon" $telefon "godzinyDane" (delimit $czesci ";") "dniPrzyjec" $dni "dojazd" $dojazd "rezerwacja" $rez -}}

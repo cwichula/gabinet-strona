@@ -1,0 +1,12 @@
+{{- /* Przycisk {etykieta, strona} jako odnosnik w akapicie.
+       Wejscie: dict "przycisk" (obiekt z bloku), "gdzie" (opis do bledu),
+       "klasa" (opcjonalnie). Bez etykiety albo strony, albo do strony
+       ukrytej - nic. */ -}}
+{{- with .przycisk -}}
+  {{- if and .etykieta .strona -}}
+    {{- $cel := partial "cel-linku.html" (dict "strona" .strona "gdzie" $.gdzie) -}}
+    {{- with $cel.href }}
+<p><a class="{{ $.klasa | default "przycisk" }}" href="{{ . }}">{{ $.przycisk.etykieta }}</a></p>
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

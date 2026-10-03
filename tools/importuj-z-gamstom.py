@@ -153,19 +153,22 @@ def zbuduj_cennik(gamstom: Path) -> dict:
         nadmiar = set(przypisane) - set(pozycje)
         raise BladImportu(f"grupy v1 nie pokrywaja cennika 1:1 (brak: {brak}, nadmiar: {nadmiar})")
     teksty = json.loads((gamstom / "v1/_src/tresci/cennik.json").read_text(encoding="utf-8"))
+    # Ksztalt kontraktu blokow 2: kategorie {id, nazwa} + jedna lista pozycji
+    # z polem "kategoria" (relacja Sveltii obsluguje tylko jeden poziom listy).
     kategorie = []
+    lista = []
     for gid, nazwa, ids in grupy:
-        lista = []
+        kategorie.append({"id": gid, "nazwa": nazwa})
         for pid in ids:
             od, do = parsuj_cene(pozycje[pid]["cena"])
-            poz = {"id": pid, "nazwa": pozycje[pid]["nazwa"], "cena_od": od}
+            poz = {"id": pid, "kategoria": gid, "nazwa": pozycje[pid]["nazwa"], "cena_od": od}
             if do != od:
                 poz["cena_do"] = do
             lista.append(poz)
-        kategorie.append({"id": gid, "nazwa": nazwa, "pozycje": lista})
     return {
         "informacja": teksty["p_005"],
         "kategorie": kategorie,
+        "pozycje": lista,
     }
 
 
@@ -214,6 +217,7 @@ def zbuduj_gabinet(gamstom: Path) -> dict:
         "nazwa": g["nazwa"],
         "nazwa_krotka": g["nazwa_krotka"],
         "lekarz": g["lekarz"],
+        "rok_zalozenia": int(g["rok_zalozenia"]),
         "adres": {
             "ulica": g["adres_ulica"],
             "kod": g["adres_kod"],
@@ -227,6 +231,9 @@ def zbuduj_gabinet(gamstom: Path) -> dict:
             "wlaczona": bool(g["rezerwacja_wlaczona"]),
             "url": g["rezerwacja_url"],
             "etykieta": g["rezerwacja_etykieta"],
+            "dostawca": g.get("rezerwacja_dostawca", ""),
+            "potwierdzona": bool(g.get("rezerwacja_potwierdzona", False)),
+            "nota": g.get("rezerwacja_nota", ""),
         },
         "rejestrowe": {
             "nip": g["rejestrowe_nip"],
@@ -259,7 +266,7 @@ def main() -> int:
         return 1
     zapisz_yaml(REPO / "data/cennik.yaml", NAGLOWEK, cennik)
     zapisz_yaml(REPO / "data/gabinet.yaml", NAGLOWEK, gabinet)
-    liczba = sum(len(k["pozycje"]) for k in cennik["kategorie"])
+    liczba = len(cennik["pozycje"])
     print(f"cennik: {len(cennik['kategorie'])} kategorii, {liczba} pozycji")
     return 0
 

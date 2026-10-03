@@ -4,9 +4,9 @@ description: "Pierwsza wizyta u dentysty w Legnicy: jak się umówić, co przygo
 draft: false
 weight: 6
 sekcje:
-  - type: tekst
+  - type: hero
     wariant: domyslny
-    naglowek: ""
+    naglowek: "Pierwsza wizyta"
     tresc: "Rozmowa, badanie, plan leczenia z ceną, termin. Opisujemy tu każdy z tych czterech kroków — razem z tym, co przygotować i ile to kosztuje."
   - type: karty
     wariant: domyslny

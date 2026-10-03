@@ -1,0 +1,64 @@
+{{- /* Blok "hero": naglowek, nadtytul, tresc, zdjecie, przycisk {etykieta, strona},
+       pokaz_telefon, fakty [{ikona, tekst}], plakietka {wyroznienie, tekst}.
+       - pierwszy blok podstrony: naglowek strony (div.page-head) z okruszkami,
+         h1 i wstepem - jak podstrony makiety v1;
+       - pierwszy blok strony glownej albo baner w srodku strony: section.hero
+         jak strona glowna v1 (w srodku strony h2 zamiast h1).
+       Pusty naglowek -> tytul strony. Pola wspolne: wariant (pomijany - baner
+       ma wlasne tlo), kotwica, polacz (pomijane - baner zawsze osobno). */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $naGorze := eq .nr 0 -}}
+{{- $naglowek := $b.naglowek | default $.strona.Title -}}
+{{- $id := "" }}{{ with $b.kotwica }}{{ $id = . | urlize }}{{ end -}}
+{{- $sizes := "(min-width: 56rem) 46vw, 100vw" -}}
+{{- if and $naGorze (not $.strona.IsHome) }}
+<div class="page-head"{{ with $id }} id="{{ . }}"{{ end }}>
+  <div class="container">
+    {{- if $b.zdjecie }}
+    <div class="split">
+    <div>
+    {{- end }}
+    {{ partial "okruszki.html" $.strona }}
+    {{- with $b.nadtytul }}
+    <p class="eyebrow">{{ . }}</p>
+    {{- end }}
+    <h1>{{ $naglowek }}</h1>
+    {{- with $b.tresc }}
+    {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "page-head__lead") }}
+    {{- end }}
+    {{- partial "hero-akcje.html" (dict "blok" $b "strona" $.strona "gdzie" $gdzie "styl" "margin-top:1.25rem") }}
+    {{- if $b.zdjecie }}
+    </div>
+    {{ partial "hero-zdjecie.html" (dict "blok" $b "strona" $.strona "priorytet" $.priorytet "sizes" $sizes) }}
+    </div>
+    {{- end }}
+  </div>
+</div>
+{{- else }}
+<section class="hero"{{ with $id }} id="{{ . }}"{{ end }}>
+  <div class="container hero__grid">
+    <div>
+      {{- with $b.nadtytul }}
+      <p class="eyebrow">{{ . }}</p>
+      {{- end }}
+      {{ if $naGorze }}<h1>{{ $naglowek }}</h1>{{ else }}<h2>{{ $naglowek }}</h2>{{ end }}
+      {{- with $b.tresc }}
+      {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "hero__lead") }}
+      {{- end }}
+      {{- partial "hero-akcje.html" (dict "blok" $b "strona" $.strona "gdzie" $gdzie "klasa" "cluster hero__actions" "duze" true) }}
+      {{- with $b.fakty }}
+      <p class="hero__meta">
+        {{- range . }}
+        <span>{{ partial "ikona.html" (dict "nazwa" .ikona "styl" "width:1em;height:1em;display:inline;vertical-align:-.15em" "gdzie" $gdzie) }}
+          {{ partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .tekst) }}</span>
+        {{- end }}
+      </p>
+      {{- end }}
+    </div>
+    {{- if $b.zdjecie }}
+    {{ partial "hero-zdjecie.html" (dict "blok" $b "strona" $.strona "priorytet" $.priorytet "sizes" $sizes) }}
+    {{- end }}
+  </div>
+</section>
+{{- end -}}

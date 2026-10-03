@@ -1,0 +1,17 @@
+{{- /* Blok "cta": naglowek, tresc, przycisk {etykieta, strona} - pas div.cta-band
+       makiety v1: przycisk z pierwszym numerem telefonu i (opcjonalnie)
+       przycisk do strony. */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+    <div class="cta-band">
+      <div>
+        <h2>{{ $b.naglowek | default "Umów wizytę" }}</h2>
+        {{- with $b.tresc }}
+        {{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}
+        {{- end }}
+      </div>
+      <div class="cluster">
+        {{ partial "telefon-btn.html" (dict "klasa" "btn btn--on-brand btn--lg") }}
+        {{ partial "przycisk.html" (dict "przycisk" $b.przycisk "gdzie" (printf "%s: przycisk w bloku cta" $gdzie) "klasa" "btn btn--on-brand-ghost btn--lg") }}
+      </div>
+    </div>

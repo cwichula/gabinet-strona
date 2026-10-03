@@ -1,0 +1,10 @@
+{{- /* Blok "cytat": tekst, autor. */ -}}
+{{- $b := .blok -}}
+<section {{ partial "blok-atrybuty.html" $b }}>
+  <figure class="cytat">
+    <blockquote><p>{{ $b.tekst }}</p></blockquote>
+    {{- with $b.autor }}
+    <figcaption>— {{ . }}</figcaption>
+    {{- end }}
+  </figure>
+</section>

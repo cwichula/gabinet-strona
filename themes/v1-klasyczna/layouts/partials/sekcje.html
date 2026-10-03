@@ -1,0 +1,74 @@
+{{- /* Bloki z front matter "sekcje" (docs/KONTRAKT-BLOKOW.md) w sekcjach makiety v1:
+         <section class="section [section--surface]"><div class="container">...</div></section>
+       Kazdy blok zaczyna nowa sekcje; blok z "polacz: true" dolacza do sekcji
+       powyzej (div.blok-dalej). Tlo (wariant) i kotwica sekcji - z jej pierwszego
+       bloku; kotwica bloku dolaczonego trafia na jego div. Baner (hero) to zawsze
+       osobna sekcja (partial sam ja buduje). Sekcja, ktorej bloki nic nie
+       wypisaly (np. wylaczona rezerwacja), znika.
+       Pierwsze zdjecie strony (w bloku nr 0 albo 1) laduje sie od razu
+       (fetchpriority=high), pozostale leniwie.
+       Nieznany typ: ostrzezenie (w CI = blad). Ta sama kotwica dwa razy = blad. */ -}}
+{{- $strona := . -}}
+{{- $plik := "Strona" }}{{ with .File }}{{ $plik = .Path }}{{ end -}}
+{{- $sekcje := .Params.sekcje | default slice -}}
+
+{{- /* numer bloku z pierwszym zdjeciem, jesli jest na gorze strony */ -}}
+{{- $nrZdjecia := -1 -}}
+{{- range $nr, $b := $sekcje -}}
+  {{- if and (lt $nrZdjecia 0) (le $nr 1) (or $b.zdjecie (and (eq $b.type "galeria") $b.elementy)) }}{{ $nrZdjecia = $nr }}{{ end -}}
+{{- end -}}
+
+{{- /* grupowanie w sekcje */ -}}
+{{- $grupy := slice }}{{ $biezaca := slice }}{{ $kotwice := dict -}}
+{{- range $nr, $b := $sekcje -}}
+  {{- $typ := $b.type | default "" -}}
+  {{- with $b.kotwica -}}
+    {{- if index $kotwice . }}{{ errorf "%s: kotwica %q występuje na stronie więcej niż raz (sekcja nr %d). Zmień ją w panelu /admin/." $plik . (add $nr 1) }}{{ end -}}
+    {{- $kotwice = merge $kotwice (dict . true) -}}
+  {{- end -}}
+  {{- if not (and $typ (templates.Exists (printf "partials/blocks/%s.html" $typ))) -}}
+    {{- warnf "%s: sekcja nr %d ma nieznany typ bloku %q i została pominięta. Dozwolone typy opisuje docs/KONTRAKT-BLOKOW.md." $plik (add $nr 1) $typ -}}
+  {{- else -}}
+    {{- $el := dict "blok" $b "nr" $nr -}}
+    {{- $poprzedniHero := false }}{{ with $biezaca }}{{ if eq (index . 0).blok.type "hero" }}{{ $poprzedniHero = true }}{{ end }}{{ end -}}
+    {{- if and $b.polacz $biezaca (ne $typ "hero") (not $poprzedniHero) -}}
+      {{- $biezaca = $biezaca | append $el -}}
+    {{- else -}}
+      {{- with $biezaca }}{{ $grupy = $grupy | append (dict "bloki" .) }}{{ end -}}
+      {{- $biezaca = slice $el -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- with $biezaca }}{{ $grupy = $grupy | append (dict "bloki" .) }}{{ end -}}
+
+{{- /* sekcje */ -}}
+{{- $waskie := slice "faq" "formularz" "rezerwacja" -}}
+{{- range $g := $grupy -}}
+  {{- $grupa := $g.bloki -}}
+  {{- $pierwszy := (index $grupa 0).blok -}}
+  {{- $html := "" -}}
+  {{- range $i, $el := $grupa -}}
+    {{- $out := partial (printf "blocks/%s.html" $el.blok.type) (dict "blok" $el.blok "strona" $strona "nr" $el.nr "gora" (eq $i 0) "priorytet" (eq $el.nr $nrZdjecia)) | string | strings.TrimSpace -}}
+    {{- if $out -}}
+      {{- if not $html }}{{ $html = $out }}{{ else -}}
+        {{- $id := "" }}{{ with $el.blok.kotwica }}{{ $id = printf ` id="%s"` (. | urlize) }}{{ end -}}
+        {{- $html = printf "%s\n<div class=\"blok-dalej\"%s>\n%s\n</div>" $html $id $out -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if $html -}}
+    {{- if eq $pierwszy.type "hero" }}
+{{ $html | safeHTML }}
+    {{- else }}
+    {{- $klasy := slice "section" }}
+    {{- if eq $pierwszy.wariant "wyrozniony" }}{{ $klasy = $klasy | append "section--surface" }}{{ end }}
+    {{- if eq $pierwszy.type "pasek_zaufania" }}{{ $klasy = $klasy | append "section--tight" }}{{ end }}
+
+<section class="{{ delimit $klasy " " }}"{{ with $pierwszy.kotwica }} id="{{ . | urlize }}"{{ end }}>
+  <div class="container{{ if in $waskie $pierwszy.type }} container--narrow{{ end }}">
+{{ $html | safeHTML }}
+  </div>
+</section>
+    {{- end }}
+  {{- end -}}
+{{- end -}}

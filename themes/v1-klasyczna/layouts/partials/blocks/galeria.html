@@ -1,0 +1,68 @@
+{{- /* Blok "galeria": naglowek, wstep, elementy [{plik, alt, podpis}].
+       Siatka miniatur (4:3, WebP + JPEG/PNG) i powiekszenie w natywnym <dialog>
+       (skrypt v1, okno raz na strone). Pierwsze 4 miniatury bez lazy - jak w v1.
+       Podpis zdjecia pokazuje sie w powiekszeniu (zamiast tekstu alternatywnego). */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+    {{- if $b.naglowek }}
+    <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ $b.naglowek }}</h2>
+    {{- else }}
+    <h2 class="visually-hidden">Zdjęcia</h2>
+    {{- end }}
+    {{- with $b.wstep }}
+    {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede" "styl" "max-width:60ch") }}
+    {{- end }}
+    <div class="gallery" style="margin-top:2rem">
+      {{- range $i, $z := $b.elementy }}
+      {{- with partial "zdjecie-zasob.html" (dict "strona" $.strona "zdjecie" $z "gdzie" (printf "%s: galeria, zdjęcie nr %d" $gdzie (add $i 1))) }}
+      {{- $alt := $z.alt | strings.TrimSpace }}
+      {{- $opis := $z.podpis | default $alt }}
+      {{- if eq .MediaType.SubType "svg" }}
+      <button type="button" data-lightbox data-full="{{ .RelPermalink }}" data-alt="{{ $opis }}">
+        <img src="{{ .RelPermalink }}" alt="{{ $alt }}"{{ if ge $i 4 }} loading="lazy"{{ end }} decoding="async">
+        <span class="visually-hidden">Powiększ zdjęcie</span>
+      </button>
+      {{- else }}
+      {{- $duze := false }}{{ if gt .Width 1400 }}{{ $duze = .Resize "1400x webp" }}{{ else }}{{ $duze = .Process "webp" }}{{ end }}
+      {{- $mWebp := .Fill "640x480 webp" }}
+      <button type="button" data-lightbox
+              data-full="{{ $duze.RelPermalink }}"
+              data-alt="{{ $opis }}">
+        <picture>
+          {{- if eq .MediaType.SubType "webp" }}
+          <img src="{{ $mWebp.RelPermalink }}" alt="{{ $alt }}"
+               width="{{ $mWebp.Width }}" height="{{ $mWebp.Height }}"{{ if ge $i 4 }} loading="lazy"{{ end }} decoding="async">
+          {{- else }}
+          {{- $mZapas := .Fill (printf "640x480 %s" (cond (eq .MediaType.SubType "png") "png" "jpg")) }}
+          <source srcset="{{ $mWebp.RelPermalink }}" type="image/webp">
+          <img src="{{ $mZapas.RelPermalink }}" alt="{{ $alt }}"
+               width="{{ $mZapas.Width }}" height="{{ $mZapas.Height }}"{{ if ge $i 4 }} loading="lazy"{{ end }} decoding="async">
+          {{- end }}
+        </picture>
+        <span class="visually-hidden">Powiększ zdjęcie</span>
+      </button>
+      {{- end }}
+      {{- end }}
+      {{- end }}
+    </div>
+    {{- if not ($.strona.Store.Get "lightbox") }}{{ $.strona.Store.Set "lightbox" true }}
+  <dialog class="lightbox" id="lightbox" aria-label="Powiększone zdjęcie">
+    <figure class="lightbox__fig">
+      <img data-lb-img src="data:," alt="" width="1400" height="1050" decoding="async">
+      <figcaption data-lb-cap></figcaption>
+    </figure>
+    <div class="lightbox__bar">
+      <button class="lightbox__btn" type="button" data-lb-close aria-label="Zamknij powiększenie">
+        <svg class="ico" aria-hidden="true" style="width:1.2rem;height:1.2rem"><use href="#ico-close"></use></svg>
+      </button>
+    </div>
+    <div class="lightbox__nav">
+      <button class="lightbox__btn" type="button" data-lb-prev aria-label="Poprzednie zdjęcie">
+        <svg class="ico" aria-hidden="true" style="width:1.2rem;height:1.2rem;transform:rotate(180deg)"><use href="#ico-arrow"></use></svg>
+      </button>
+      <button class="lightbox__btn" type="button" data-lb-next aria-label="Następne zdjęcie">
+        <svg class="ico" aria-hidden="true" style="width:1.2rem;height:1.2rem"><use href="#ico-arrow"></use></svg>
+      </button>
+    </div>
+  </dialog>
+    {{- end }}

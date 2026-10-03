@@ -1,0 +1,49 @@
+{{- /* Zdjecie jako <picture>: WebP w kilku szerokosciach + zapasowy oryginalny
+       format (JPEG/PNG), atrybuty width/height (bez skakania ukladu).
+       Hugo nie koduje AVIF, wiec - inaczej niz w makiecie v1 - bez zrodla AVIF.
+       Wejscie: dict
+         "strona"      Page, do ktorej nalezy blok,
+         "zdjecie"     dict plik, alt,
+         "szerokosci"  lista szerokosci w px (domyslnie 480, 800, 1200),
+         "sizes"       atrybut sizes (domyslnie pol ekranu od 52rem),
+         "priorytet"   true = pierwsze zdjecie strony: bez lazy, fetchpriority=high,
+         "styl"        atrybut style dla <img> (np. --figure-w),
+         "gdzie"       opis miejsca do komunikatu o bledzie. */ -}}
+{{- $img := partial "zdjecie-zasob.html" . -}}
+{{- with $img -}}
+{{- $alt := $.zdjecie.alt | strings.TrimSpace -}}
+{{- $ladowanie := cond ($.priorytet | default false) `fetchpriority="high"` `loading="lazy"` -}}
+{{- if eq .MediaType.SubType "svg" -}}
+<img src="{{ .RelPermalink }}" alt="{{ $alt }}" {{ safeHTMLAttr $ladowanie }} decoding="async">
+{{- else -}}
+  {{- $szer := $.szerokosci | default (slice 480 800 1200) -}}
+  {{- $max := 0 }}{{ range $szer }}{{ if gt . $max }}{{ $max = . }}{{ end }}{{ end -}}
+  {{- $lista := slice -}}
+  {{- range sort $szer }}{{ if lt . $img.Width }}{{ $lista = $lista | append . }}{{ end }}{{ end -}}
+  {{- if le $img.Width $max }}{{ $lista = $lista | append $img.Width }}{{ end -}}
+  {{- $lista = uniq $lista -}}
+  {{- $format := .MediaType.SubType -}}
+  {{- $zapas := cond (eq $format "png") "png" "jpg" -}}
+  {{- $webp := slice }}{{ $inne := slice }}{{ $najw := false -}}
+  {{- range $lista -}}
+    {{- $w := . -}}
+    {{- $v := false }}{{ if lt $w $img.Width }}{{ $v = $img.Resize (printf "%dx webp" $w) }}{{ else }}{{ $v = $img.Process "webp" }}{{ end -}}
+    {{- $webp = $webp | append (printf "%s %dw" $v.RelPermalink $v.Width) -}}
+    {{- if ne $format "webp" -}}
+      {{- $o := false }}{{ if lt $w $img.Width }}{{ $o = $img.Resize (printf "%dx %s" $w $zapas) }}{{ else }}{{ $o = $img.Process $zapas }}{{ end -}}
+      {{- $inne = $inne | append (printf "%s %dw" $o.RelPermalink $o.Width) -}}
+      {{- $najw = $o -}}
+    {{- else -}}
+      {{- $najw = $v -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $sizes := $.sizes | default "(min-width: 52rem) 50vw, 100vw" -}}
+  {{- $srcImg := cond (eq $format "webp") $webp $inne -}}
+<picture>
+  {{- if ne $format "webp" }}
+  <source type="image/webp" srcset="{{ delimit $webp ", " }}"{{ if gt (len $webp) 1 }} sizes="{{ $sizes }}"{{ end }}>
+  {{- end }}
+  <img src="{{ $najw.RelPermalink }}"{{ if gt (len $srcImg) 1 }} srcset="{{ delimit $srcImg ", " }}" sizes="{{ $sizes }}"{{ end }} alt="{{ $alt }}" width="{{ $najw.Width }}" height="{{ $najw.Height }}" {{ safeHTMLAttr $ladowanie }} decoding="async"{{ with $.styl }} style="{{ . | safeCSS }}"{{ end }}>
+</picture>
+{{- end -}}
+{{- end -}}

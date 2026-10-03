@@ -4,9 +4,9 @@ description: "Cennik gabinetu stomatologicznego w Legnicy: wszystkie pozycje i c
 draft: false
 weight: 5
 sekcje:
-  - type: tekst
+  - type: hero
     wariant: domyslny
-    naglowek: ""
+    naglowek: "Cennik"
     tresc: |-
       Wszystkie kwoty na wierzchu — bez dopytywania przez telefon. Tam, gdzie koszt zależy od zakresu pracy, podajemy widełki, a dokładną cenę usłyszysz po badaniu, zanim zaczniemy leczenie.
   - type: cennik
@@ -14,6 +14,8 @@ sekcje:
     naglowek: "Pełny cennik"
     wstep: "Ceny w złotych, za jeden ząb lub jeden zabieg, o ile nazwa pozycji nie mówi inaczej."
     kategorie: []
+    pozycje: []
+    wyszukiwarka: true
   - type: faq
     wariant: domyslny
     naglowek: "Pytania o ceny"

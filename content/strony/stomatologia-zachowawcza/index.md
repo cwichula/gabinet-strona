@@ -3,10 +3,15 @@ title: "Leczenie próchnicy"
 description: "Leczenie próchnicy, wypełnienia światłoutwardzalne, ubytki przyszyjkowe i nadwrażliwość zębów. Gabinet stomatologiczny w Legnicy."
 draft: false
 weight: 3
+usluga:
+  wyrozniona: false
+  ikona: "zab"
+  skrot: "Wypełnienia światłoutwardzalne, odbudowa zęba, ubytki przyszyjkowe."
+  cena_od: "wypelnienie"
 sekcje:
-  - type: tekst
+  - type: hero
     wariant: domyslny
-    naglowek: ""
+    naglowek: "Leczenie próchnicy"
     tresc: |-
       Stomatologia zachowawcza to leczenie ubytków próchnicowych i zachowanie zębów w ich naturalnym kształcie i kolorze. Im wcześniej zajmiemy się ubytkiem, tym mniej zdrowej tkanki trzeba usunąć.
   - type: karty

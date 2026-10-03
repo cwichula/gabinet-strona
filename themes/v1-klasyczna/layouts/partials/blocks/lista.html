@@ -1,0 +1,21 @@
+{{- /* Blok "lista": naglowek, wstep, styl (ptaszki -> ul.checklist, minusy ->
+       ul.checklist.checklist--minus, zwykla -> zwykla lista w div.prose),
+       elementy (napisy; **pogrubienie** dozwolone). */ -}}
+{{- $b := .blok -}}
+{{- $styl := $b.styl | default "ptaszki" -}}
+{{ partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "wstep" $b.wstep "gora" $.gora) }}
+    {{- if eq $styl "zwykla" }}
+    <div class="prose">
+      <ul>
+        {{- range $b.elementy }}
+        <li>{{ partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .) }}</li>
+        {{- end }}
+      </ul>
+    </div>
+    {{- else }}
+    <ul class="checklist{{ if eq $styl "minusy" }} checklist--minus{{ end }}">
+      {{- range $b.elementy }}
+      <li>{{ partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .) }}</li>
+      {{- end }}
+    </ul>
+    {{- end }}

@@ -1,0 +1,16 @@
+{{- /* Blok "tresc_z_bokiem": naglowek, wstep, tresc, bok {naglowek, godziny,
+       telefony, adres, notka} - uklad split--sidebar makiety v1 (tekst
+       i aside.sidebar-card z godzinami i telefonami). */ -}}
+{{- $b := .blok -}}
+    <div class="split split--sidebar">
+      <div>
+        {{- with $b.naglowek }}
+        <h2 style="margin-top:0">{{ . }}</h2>
+        {{- end }}
+        {{- with $b.wstep }}
+        {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede") }}
+        {{- end }}
+        {{ partial "markdown.html" (dict "strona" $.strona "tekst" $b.tresc) }}
+      </div>
+{{ partial "bok.html" ($b.bok | default dict) }}
+    </div>

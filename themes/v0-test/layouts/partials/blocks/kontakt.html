@@ -1,7 +1,9 @@
-{{- /* Blok "kontakt": naglowek, tresc; adres, telefony, e-mail z data/gabinet.yaml. */ -}}
+{{- /* Blok "kontakt": naglowek, tresc, bok (ramka z boku); adres, telefony,
+       e-mail z data/gabinet.yaml. */ -}}
 {{- $b := .blok -}}
-<section class="{{ partial "blok-klasy.html" $b }}">
+<section {{ partial "blok-atrybuty.html" $b }}>
   <h2>{{ $b.naglowek | default "Kontakt" }}</h2>
   {{- with $b.tresc }}{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
   {{ partial "dane-kontaktowe.html" }}
+  {{- with $b.bok }}{{ partial "bok.html" . }}{{ end }}
 </section>

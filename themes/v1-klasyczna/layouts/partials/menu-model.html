@@ -1,0 +1,27 @@
+{{- /* Menu z data/menu.yaml jako dane (dwa poziomy: pozycje i podmenu).
+       Wynik: lista dict "etykieta", "href", "strona" (Page albo false),
+       "zewnetrzny" (bool), "dzieci" (lista tak samo zbudowanych dict).
+       Strony ukryte (draft) sa pomijane; strona, ktorej nie ma, to blad
+       budowania (partial cel-linku.html). Wywolywany przez partialCached -
+       ten sam wynik dla menu, szuflady, stopki i okruszkow. */ -}}
+{{- $pozycje := slice -}}
+{{- range $i, $poz := hugo.Data.menu.pozycje -}}
+  {{- $gdzie := printf "Menu (data/menu.yaml): pozycja „%s”" ($poz.etykieta | default (printf "nr %d" (add $i 1))) -}}
+  {{- $cel := partial "cel-linku.html" (dict "strona" $poz.strona "link_zewnetrzny" $poz.link_zewnetrzny "gdzie" $gdzie) -}}
+  {{- $dzieci := slice -}}
+  {{- range $j, $pod := $poz.podmenu -}}
+    {{- $gdziePod := printf "%s, podmenu „%s”" $gdzie ($pod.etykieta | default (printf "nr %d" (add $j 1))) -}}
+    {{- $celPod := partial "cel-linku.html" (dict "strona" $pod.strona "link_zewnetrzny" $pod.link_zewnetrzny "gdzie" $gdziePod) -}}
+    {{- if $celPod.href -}}
+      {{- $dzieci = $dzieci | append (dict "etykieta" $pod.etykieta "href" $celPod.href "strona" $celPod.strona "zewnetrzny" (not $celPod.strona) "dzieci" slice) -}}
+    {{- else if not $celPod.ukryta -}}
+      {{- errorf "%s nie ma ani strony, ani linku zewnętrznego. Uzupełnij albo usuń ją w panelu /admin/ (Menu)." $gdziePod -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if or $cel.href $dzieci -}}
+    {{- $pozycje = $pozycje | append (dict "etykieta" $poz.etykieta "href" $cel.href "strona" $cel.strona "zewnetrzny" (and $cel.href (not $cel.strona)) "dzieci" $dzieci) -}}
+  {{- else if not $cel.ukryta -}}
+    {{- errorf "%s nie ma ani strony, ani linku zewnętrznego, ani podmenu. Uzupełnij albo usuń ją w panelu /admin/ (Menu)." $gdzie -}}
+  {{- end -}}
+{{- end -}}
+{{- return $pozycje -}}

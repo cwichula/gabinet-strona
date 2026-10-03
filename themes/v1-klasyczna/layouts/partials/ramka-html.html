@@ -1,0 +1,12 @@
+{{- /* Ramka (div.callout) jak w makiecie v1.
+       Wejscie: dict "strona", "rodzaj" (info | uwaga | ok), "tresc" (Markdown),
+       "ikona" (klucz ikony; domyslnie wg rodzaju), "styl", "gdzie". */ -}}
+{{- $rodzaj := .rodzaj | default "info" -}}
+{{- $klasa := index (dict "info" "callout" "uwaga" "callout callout--warn" "ok" "callout callout--ok") $rodzaj | default "callout" -}}
+{{- $ikona := .ikona | default (index (dict "info" "info" "uwaga" "uwaga" "ok" "ptaszek") $rodzaj) | default "info" -}}
+<div class="{{ $klasa }}"{{ with .styl }} style="{{ . | safeCSS }}"{{ end }}>
+  {{ partial "ikona.html" (dict "nazwa" $ikona "gdzie" .gdzie) }}
+  <div>
+    {{ partial "markdown.html" (dict "strona" .strona "tekst" .tresc) }}
+  </div>
+</div>

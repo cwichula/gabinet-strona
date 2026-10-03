@@ -1,0 +1,36 @@
+{{- /* Dokad prowadzi odnosnik z menu, karty albo przycisku.
+       Wejscie: dict "strona" (slug z content/strony/<slug>/), "link_zewnetrzny",
+       "gdzie" (opis miejsca do komunikatu o bledzie).
+       Wynik: dict "href" (pusty = brak odnosnika), "ukryta" (strona istnieje,
+       ale jest szkicem - draft), "strona" (Page albo nil).
+       Slug, ktory jest starym adresem innej strony (aliases po zmianie nazwy),
+       prowadzi do tej strony. Strona, ktorej nie ma w ogole, przerywa budowanie
+       z czytelnym bledem. */ -}}
+{{- $wynik := dict "href" "" "ukryta" false "strona" false -}}
+{{- with .strona -}}
+  {{- $slug := . -}}
+  {{- with site.GetPage (printf "/strony/%s" $slug) -}}
+    {{- $wynik = dict "href" .RelPermalink "ukryta" false "strona" . -}}
+  {{- else -}}
+    {{- /* stary adres strony po zmianie nazwy (przekierowanie w "aliases";
+           Hugo podaje je bez koncowego "/", np. "/stary-adres") */ -}}
+    {{- $poAliasie := false -}}
+    {{- range $p := site.RegularPages -}}
+      {{- range .Aliases }}{{ if eq (trim . "/") $slug }}{{ $poAliasie = $p }}{{ end }}{{ end -}}
+    {{- end -}}
+    {{- if os.FileExists (printf "content/strony/%s/index.md" $slug) -}}
+      {{- $wynik = dict "href" "" "ukryta" true "strona" false -}}
+    {{- else if $poAliasie -}}
+      {{- $wynik = dict "href" $poAliasie.RelPermalink "ukryta" false "strona" $poAliasie -}}
+    {{- else -}}
+      {{- errorf "%s wskazuje stronę %q, której nie ma (brak content/strony/%s/index.md). Popraw to miejsce w panelu /admin/ (wybierz istniejącą stronę) albo przywróć usuniętą stronę." $.gdzie $slug $slug -}}
+      {{- /* "ukryta", zeby menu nie zglaszalo tej samej pozycji drugi raz */ -}}
+      {{- $wynik = dict "href" "" "ukryta" true "strona" false -}}
+    {{- end -}}
+  {{- end -}}
+{{- else -}}
+  {{- with .link_zewnetrzny -}}
+    {{- $wynik = dict "href" . "ukryta" false "strona" false -}}
+  {{- end -}}
+{{- end -}}
+{{- return $wynik -}}

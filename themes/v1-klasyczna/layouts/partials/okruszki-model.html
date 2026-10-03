@@ -1,0 +1,19 @@
+{{- /* Sciezka nawigacji (okruszki) strony: Start -> [pozycja menu, w ktorej
+       podmenu jest ta strona] -> ta strona. Hierarchia stron jest tylko
+       w menu (data/menu.yaml), wiec rodzica bierzemy stamtad.
+       Wejscie: Page. Wynik: lista dict "nazwa", "href", "url" (pelny adres);
+       ostatni element to biezaca strona. */ -}}
+{{- $strona := . -}}
+{{- $wynik := slice (dict "nazwa" "Start" "href" site.Home.RelPermalink "url" site.Home.Permalink) -}}
+{{- if not .IsHome -}}
+  {{- $rodzic := false -}}
+  {{- range partialCached "menu-model.html" site "menu" -}}
+    {{- $p := . -}}
+    {{- range .dzieci -}}
+      {{- if and .strona ($strona.Eq .strona) $p.strona (not ($strona.Eq $p.strona)) (not $rodzic) }}{{ $rodzic = $p }}{{ end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $rodzic }}{{ $wynik = $wynik | append (dict "nazwa" .etykieta "href" .href "url" .strona.Permalink) }}{{ end -}}
+  {{- $wynik = $wynik | append (dict "nazwa" (.LinkTitle | default .Title) "href" .RelPermalink "url" .Permalink) -}}
+{{- end -}}
+{{- return $wynik -}}

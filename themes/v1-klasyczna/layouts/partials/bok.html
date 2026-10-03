@@ -1,0 +1,27 @@
+{{- /* Ramka z boku (aside.sidebar-card) jak w makiecie v1 - pole "bok" blokow
+       kontakt i tresc_z_bokiem: naglowek, godziny, telefony, adres (bool),
+       notka. Brak pola = godziny i telefony tak, adres nie. Wejscie: obiekt "bok". */ -}}
+{{- $g := hugo.Data.gabinet -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- $godziny := ne .godziny false -}}
+{{- $telefony := ne .telefony false -}}
+    <aside class="sidebar-card">
+      <h2>{{ .naglowek | default (cond $godziny "Godziny przyjęć" "Kontakt") }}</h2>
+      {{- if $godziny }}
+      {{ partial "godziny-tabela.html" . }}
+      {{- end }}
+      {{- with .notka }}
+      <p style="margin:0;font-size:var(--step--1);color:var(--muted)">
+        {{ . }}
+      </p>
+      {{- end }}
+      {{- if $telefony }}{{ range $i, $t := $m.telefony }}
+      {{ partial "telefon-btn.html" (dict "telefon" $t "klasa" (cond (eq $i 0) "btn btn--primary btn--block" "btn btn--ghost btn--block") "ikona" (eq $i 0)) }}
+      {{- end }}{{ end }}
+      {{- if .adres }}{{ with $g.adres }}
+      <p style="margin:0">
+        <svg class="ico" aria-hidden="true" style="width:1em;height:1em;display:inline;vertical-align:-.15em"><use href="#ico-pin"></use></svg>
+        {{ .ulica }}, {{ .kod }} {{ .miasto }}
+      </p>
+      {{- end }}{{ end }}
+    </aside>

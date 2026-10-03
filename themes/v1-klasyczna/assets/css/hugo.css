@@ -1,0 +1,29 @@
+/* ==========================================================================
+   Szablon v1-klasyczna (Hugo) - dodatki do arkusza makiety v1 (style.css).
+
+   style.css jest kopia makiety v1 bez zmian. Tu tylko to, czego makieta nie
+   miala, a czego wymaga kontrakt blokow (docs/KONTRAKT-BLOKOW.md): lista
+   z minusami, odstep bloku dolaczonego do sekcji ("polacz"), naglowek
+   banera, gdy baner nie jest pierwszym blokiem strony. Kolory wylacznie
+   z tokenow style.css, wiec motyw ciemny dziala bez dodatkowych regul.
+   ========================================================================== */
+
+/* Lista "minusy" (czego nie robimy, przeciwwskazania): jak .checklist,
+   ale kolko z kreska w kolorach ostrzezenia zamiast ptaszka. */
+.checklist--minus li::before {
+  background: var(--warn-100) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a5a00' stroke-width='3.2' stroke-linecap='round'%3E%3Cpath d='M6 12h12'/%3E%3C/svg%3E") center / .85em no-repeat;
+}
+
+/* Blok dolaczony do sekcji powyzej (pole "polacz"). */
+.blok-dalej { margin-top: var(--sp-6); }
+.blok-dalej > :first-child { margin-top: 0; }
+
+/* Baner w srodku strony ma h2 zamiast h1 - ten sam wyglad. */
+.hero h2 { font-size: var(--step-5); margin-bottom: var(--sp-4); }
+
+/* Baner podstrony ze zdjeciem: zdjecie obok naglowka w pasie page-head. */
+.page-head .split { align-items: center; }
+.page-head .figure { margin: 0; }
+
+/* Pogrubienie z Markdown (**...**) w faktach banera wyglada jak <b> z makiety. */
+.hero__meta strong { color: var(--ink); font-weight: 680; }

@@ -1,0 +1,70 @@
+{{- /* Dane strukturalne (schema.org, JSON-LD): gabinet (Dentist) z data/gabinet.yaml,
+       serwis, strona, sciezka nawigacji (BreadcrumbList) i - gdy strona ma
+       bloki FAQ - FAQPage z ich pytan. Wejscie: Page. */ -}}
+{{- $g := hugo.Data.gabinet -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- $dom := site.Home.Permalink -}}
+{{- $idGabinet := printf "%s#gabinet" $dom -}}
+{{- $graf := slice -}}
+
+{{- /* gabinet */ -}}
+{{- $gab := dict "@type" (slice "Dentist" "MedicalBusiness" "LocalBusiness") "@id" $idGabinet "name" ($g.nazwa | default site.Title) "url" $dom -}}
+{{- with $g.nazwa_krotka }}{{ $gab = merge $gab (dict "alternateName" .) }}{{ end -}}
+{{- with partial "og-zdjecie.html" site.Home }}{{ $gab = merge $gab (dict "image" .url) }}{{ end -}}
+{{- $gab = merge $gab (dict "logo" ("favicon.svg" | absURL)) -}}
+{{- with $m.telefon }}{{ $gab = merge $gab (dict "telephone" .tel) }}{{ end -}}
+{{- with $g.email }}{{ $gab = merge $gab (dict "email" .) }}{{ end -}}
+{{- with $g.rok_zalozenia }}{{ $gab = merge $gab (dict "foundingDate" (string .)) }}{{ end -}}
+{{- with $g.adres -}}
+  {{- $gab = merge $gab (dict "address" (dict "@type" "PostalAddress" "streetAddress" .ulica "postalCode" .kod "addressLocality" .miasto "addressCountry" "PL")) -}}
+{{- end -}}
+{{- $dni := dict "poniedziałek" "Monday" "wtorek" "Tuesday" "środa" "Wednesday" "czwartek" "Thursday" "piątek" "Friday" "sobota" "Saturday" "niedziela" "Sunday" -}}
+{{- $godziny := slice -}}
+{{- range $d := $g.godziny -}}
+  {{- if and $d.od $d.do -}}
+    {{- with index $dni (lower $d.dzien) -}}
+      {{- $od := cond (eq (len $d.od) 4) (printf "0%s" $d.od) $d.od -}}
+      {{- $do := cond (eq (len $d.do) 4) (printf "0%s" $d.do) $d.do -}}
+      {{- $godziny = $godziny | append (dict "@type" "OpeningHoursSpecification" "dayOfWeek" (printf "https://schema.org/%s" .) "opens" $od "closes" $do) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- with $godziny }}{{ $gab = merge $gab (dict "openingHoursSpecification" .) }}{{ end -}}
+{{- $ceny := slice }}{{ range hugo.Data.cennik.pozycje }}{{ with .cena_od }}{{ $ceny = $ceny | append (int .) }}{{ end }}{{ with .cena_do }}{{ $ceny = $ceny | append (int .) }}{{ end }}{{ end -}}
+{{- with $ceny }}{{ $s := sort . }}{{ $gab = merge $gab (dict "priceRange" (printf "%d–%d PLN" (index $s 0) (index $s (sub (len $s) 1))) "currenciesAccepted" "PLN") }}{{ end -}}
+{{- with $g.platnosci }}{{ $gab = merge $gab (dict "paymentAccepted" (delimit . ", ")) }}{{ end -}}
+{{- $uslugi := slice }}{{ range partial "uslugi-strony.html" (dict) }}{{ $uslugi = $uslugi | append (dict "@type" "MedicalProcedure" "name" .Title "url" .Permalink) }}{{ end -}}
+{{- with $uslugi }}{{ $gab = merge $gab (dict "availableService" .) }}{{ end -}}
+{{- $graf = $graf | append $gab -}}
+
+{{- /* serwis i strona */ -}}
+{{- $graf = $graf | append (dict "@type" "WebSite" "@id" (printf "%s#serwis" $dom) "url" $dom "name" ($g.nazwa_krotka | default site.Title) "inLanguage" "pl-PL" "publisher" (dict "@id" $idGabinet)) -}}
+{{- if ne .Kind "404" -}}
+  {{- $strona := dict "@type" "WebPage" "@id" (printf "%s#strona" .Permalink) "url" .Permalink "name" .Title "inLanguage" "pl-PL" "isPartOf" (dict "@id" (printf "%s#serwis" $dom)) -}}
+  {{- with .Description | default hugo.Data.ustawienia.seo_opis }}{{ $strona = merge $strona (dict "description" .) }}{{ end -}}
+  {{- $graf = $graf | append $strona -}}
+
+  {{- /* okruszki */ -}}
+  {{- if not .IsHome -}}
+    {{- $el := slice -}}
+    {{- range $i, $o := partial "okruszki-model.html" . -}}
+      {{- $el = $el | append (dict "@type" "ListItem" "position" (add $i 1) "name" $o.nazwa "item" $o.url) -}}
+    {{- end -}}
+    {{- $graf = $graf | append (dict "@type" "BreadcrumbList" "itemListElement" $el) -}}
+  {{- end -}}
+
+  {{- /* FAQ ze wszystkich blokow FAQ strony */ -}}
+  {{- $pytania := slice -}}
+  {{- range .Params.sekcje -}}
+    {{- if eq .type "faq" -}}
+      {{- range .elementy -}}
+        {{- if and .pytanie .odpowiedz -}}
+          {{- $odp := partial "markdown.html" (dict "strona" $ "tekst" .odpowiedz) | plainify | htmlUnescape | strings.TrimSpace -}}
+          {{- $pytania = $pytania | append (dict "@type" "Question" "name" .pytanie "acceptedAnswer" (dict "@type" "Answer" "text" $odp)) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $pytania }}{{ $graf = $graf | append (dict "@type" "FAQPage" "mainEntity" .) }}{{ end -}}
+{{- end }}
+<script type="application/ld+json">{{ dict "@context" "https://schema.org" "@graph" $graf | jsonify | safeJS }}</script>

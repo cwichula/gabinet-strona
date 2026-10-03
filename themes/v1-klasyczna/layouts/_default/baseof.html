@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.Locale | default "pl" }}" prefix="og: https://ogp.me/ns#">
+<head>
+{{ partial "head.html" . }}
+</head>
+<body>
+
+<a class="skip-link" href="#tresc">Przejdź do treści</a>
+
+{{ partial "ikony.html" . }}
+
+{{ partial "naglowek.html" . }}
+
+<main id="tresc">
+{{- block "main" . }}{{ end }}
+</main>
+
+{{ partial "stopka.html" . }}
+
+</body>
+</html>

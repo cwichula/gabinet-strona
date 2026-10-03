@@ -1,0 +1,14 @@
+{{- /* Blok "lista": naglowek, wstep, styl (ptaszki | minusy | zwykla),
+       elementy (napisy; **pogrubienie** dozwolone). */ -}}
+{{- $b := .blok -}}
+<section {{ partial "blok-atrybuty.html" $b }}>
+  {{- with $b.naglowek }}
+  <h2>{{ . }}</h2>
+  {{- end }}
+  {{- with $b.wstep }}{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
+  <ul class="lista lista--{{ $b.styl | default "ptaszki" }}">
+    {{- range $b.elementy }}
+    <li>{{ . | $.strona.RenderString }}</li>
+    {{- end }}
+  </ul>
+</section>

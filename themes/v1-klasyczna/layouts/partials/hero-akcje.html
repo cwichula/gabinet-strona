@@ -1,0 +1,13 @@
+{{- /* Czesc bloku "hero" (blocks/hero.html): przycisk
+       "Zadzwon" (gdy pokaz_telefon) i przycisk do strony.
+       Wejscie: dict "blok", "strona", "gdzie", "klasa", "styl", "duze" (bool). */ -}}
+{{- $b := .blok -}}
+{{- $lg := cond (.duze | default false) " btn--lg" "" -}}
+{{- $tel := "" }}{{ if $b.pokaz_telefon }}{{ $tel = partial "telefon-btn.html" (dict "klasa" (printf "btn btn--primary%s" $lg)) }}{{ end -}}
+{{- $link := partial "przycisk.html" (dict "przycisk" $b.przycisk "gdzie" (printf "%s: przycisk w bloku hero" .gdzie) "klasa" (printf "btn btn--ghost%s" $lg)) -}}
+{{- if or (strings.TrimSpace $tel) (strings.TrimSpace $link) }}
+      <div class="{{ .klasa | default "cluster" }}"{{ with .styl }} style="{{ . | safeCSS }}"{{ end }}>
+        {{ $tel }}
+        {{ $link }}
+      </div>
+{{- end -}}

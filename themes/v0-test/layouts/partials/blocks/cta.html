@@ -1,19 +1,25 @@
-{{- /* Blok "cta": naglowek, tresc; telefon i (gdy wlaczona) rezerwacja online
-       z data/gabinet.yaml. Bez telefonu i rezerwacji - bez akapitu z przyciskami. */ -}}
+{{- /* Blok "cta": naglowek, tresc, przycisk {etykieta, strona}; telefon i (gdy
+       wlaczona) rezerwacja online z data/gabinet.yaml. */ -}}
 {{- $b := .blok -}}
+{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
 {{- $g := hugo.Data.gabinet -}}
 {{- $telefon := index ($g.telefony | default slice) 0 -}}
 {{- $rezerwacja := false }}{{ with $g.rezerwacja }}{{ if and .wlaczona .url }}{{ $rezerwacja = . }}{{ end }}{{ end -}}
-<section class="{{ partial "blok-klasy.html" $b }}">
+{{- $link := false -}}
+{{- with $b.przycisk }}{{ if and .etykieta .strona }}{{ with (partial "cel-linku.html" (dict "strona" .strona "gdzie" (printf "%s: przycisk w bloku cta" $gdzie))).href }}{{ $link = . }}{{ end }}{{ end }}{{ end -}}
+<section {{ partial "blok-atrybuty.html" $b }}>
   <h2>{{ $b.naglowek | default "Umów wizytę" }}</h2>
   {{- with $b.tresc }}{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
-  {{- if or $telefon $rezerwacja }}
+  {{- if or $telefon $rezerwacja $link }}
   <p class="przyciski">
     {{- with $telefon }}
     <a class="przycisk" href="{{ printf "tel:%s" (partial "tel.html" .numer) | safeURL }}">Zadzwoń: {{ .numer }}</a>
     {{- end }}
+    {{- with $link }}
+    <a class="przycisk przycisk--drugi" href="{{ . }}">{{ $b.przycisk.etykieta }}</a>
+    {{- end }}
     {{- with $rezerwacja }}
-    <a class="przycisk przycisk--drugi" href="{{ .url }}" rel="noopener external">{{ .etykieta | default "Rezerwacja online" }}</a>
+    <a class="przycisk przycisk--drugi" href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .etykieta | default "Rezerwacja online" }}</a>
     {{- end }}
   </p>
   {{- end }}
