@@ -81,6 +81,9 @@ jobs:
         uses: actions/configure-pages@v6
 
       - name: Budowanie strony (Hugo)
+        env:
+          # kopia robocza na github.io: zawsze noindex (hugo.yaml: params.robocza)
+          HUGO_PARAMS_ROBOCZA: "true"
         run: |
           hugo version
           # Ostrzezenia Hugo (warnf w szablonach, przestarzale opcje) traktujemy
@@ -110,6 +113,41 @@ jobs:
         with:
           path: public
 
+      # --- Wersja na wlasna domene (hosting) -------------------------------
+      # Tylko gdy w Settings -> Secrets and variables -> Actions -> Variables
+      # jest HOSTING_SERWER (opis w README, "Hosting na własnej domenie").
+      # Ta sama tresc, inny adres bazowy; bez panelu /admin/ (panel zostaje
+      # na github.io - tam dziala logowanie), z .htaccess z katalogu hosting/.
+      # O widocznosci w Google decyduje ustawienie w panelu ("Ukryj strone
+      # przed wyszukiwarkami"), nie ten krok.
+      - name: Budowanie wersji na domenę
+        if: vars.HOSTING_SERWER != ''
+        env:
+          ADRES: ${{ vars.HOSTING_ADRES || 'https://dobrydentysta.legnica.pl/' }}
+        run: |
+          hugo --gc --minify --baseURL "$ADRES" -d public-hosting 2>&1 | tee hugo-hosting.log
+          if grep -qE '^(WARN|ERROR)' hugo-hosting.log; then
+            echo "::error::Hugo zgłosił błędy lub ostrzeżenia przy wersji na domenę."
+            exit 1
+          fi
+          python tools/kontrola-strony.py public-hosting --baseurl "$ADRES"
+          rm -rf public-hosting/admin
+          cp hosting/.htaccess public-hosting/.htaccess
+          # zaden adres kopii roboczej nie moze trafic na domene
+          if grep -rl --include='*.html' --include='*.xml' --include='*.txt' 'github\.io' public-hosting; then
+            echo "::error::Wersja na domenę odwołuje się do github.io (pliki wyżej)."
+            exit 1
+          fi
+
+      - name: Artefakt wersji na domenę
+        if: vars.HOSTING_SERWER != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: strona-hosting
+          path: public-hosting
+          include-hidden-files: true   # .htaccess
+          retention-days: 7
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -121,12 +159,94 @@ jobs:
         name: Publikacja na GitHub Pages
         uses: actions/deploy-pages@v5
 
+  # Wysylka wersji na domene na hosting przez SFTP albo FTPS (lftp mirror).
+  # Zmienne (Variables): HOSTING_SERWER, HOSTING_PROTOKOL (sftp|ftps),
+  # HOSTING_KATALOG (np. public_html), opcjonalnie HOSTING_PORT, HOSTING_ADRES,
+  # HOSTING_SSH_KNOWN_HOSTS (wiersz known_hosts serwera SFTP).
+  # Sekrety (Secrets): HOSTING_UZYTKOWNIK, HOSTING_HASLO.
+  #
+  # Usuwanie starych plikow (--delete) dopiero, gdy w katalogu docelowym lezy
+  # znacznik .gabinet-strona, czyli katalog zostal zalozony przez ten workflow.
+  # Pierwsza wysylka tylko dodaje i nadpisuje - nic, co juz bylo na serwerze
+  # (np. pliki hostingu, poczta w zle wskazanym katalogu), nie zostanie skasowane.
+  hosting:
+    needs: build
+    if: vars.HOSTING_SERWER != ''
+    runs-on: ubuntu-latest
+    environment:
+      name: hosting
+      url: ${{ vars.HOSTING_ADRES || 'https://dobrydentysta.legnica.pl/' }}
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: strona-hosting
+          path: public-hosting
+
+      - name: Instalacja lftp
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+      - name: Wysyłka na hosting
+        env:
+          PROTOKOL: ${{ vars.HOSTING_PROTOKOL }}
+          SERWER: ${{ vars.HOSTING_SERWER }}
+          PORT: ${{ vars.HOSTING_PORT }}
+          KATALOG: ${{ vars.HOSTING_KATALOG }}
+          ZNANY_HOST: ${{ vars.HOSTING_SSH_KNOWN_HOSTS }}
+          UZYTKOWNIK: ${{ secrets.HOSTING_UZYTKOWNIK }}
+          LFTP_PASSWORD: ${{ secrets.HOSTING_HASLO }}
+        run: |
+          test -s public-hosting/index.html && test -s public-hosting/.htaccess \
+            || { echo "::error::Niekompletna wersja na domenę (brak index.html lub .htaccess)."; exit 1; }
+          test -n "$UZYTKOWNIK" && test -n "$LFTP_PASSWORD" \
+            || { echo "::error::Brak sekretów HOSTING_UZYTKOWNIK / HOSTING_HASLO."; exit 1; }
+          case "$KATALOG" in
+            ""|"/"|"."|"~"|"./")
+              echo "::error::HOSTING_KATALOG musi wskazywać katalog strony (np. public_html), nie katalog główny konta."
+              exit 1 ;;
+          esac
+          case "$PROTOKOL" in
+            sftp)
+              adres="sftp://$SERWER${PORT:+:$PORT}"
+              ustawienia="set sftp:auto-confirm no;"
+              mkdir -p ~/.ssh
+              if [ -n "$ZNANY_HOST" ]; then
+                printf '%s\n' "$ZNANY_HOST" >> ~/.ssh/known_hosts
+              else
+                echo "::warning::Brak HOSTING_SSH_KNOWN_HOSTS - klucz serwera pobrany bez weryfikacji (ssh-keyscan)."
+                ssh-keyscan -p "${PORT:-22}" "$SERWER" >> ~/.ssh/known_hosts 2>/dev/null
+              fi ;;
+            ftps)
+              adres="ftp://$SERWER${PORT:+:$PORT}"
+              ustawienia="set ftp:ssl-force true; set ftp:ssl-protect-data true; set ssl:verify-certificate true;" ;;
+            *)
+              echo "::error::HOSTING_PROTOKOL musi być sftp albo ftps (zwykły FTP wysyła hasło jawnym tekstem)."
+              exit 1 ;;
+          esac
+          polacz="set net:max-retries 3; set net:timeout 30; $ustawienia open --env-password -u \"$UZYTKOWNIK\" \"$adres\""
+
+          lftp -c "$polacz; cd \"$KATALOG\"" \
+            || { echo "::error::Nie mogę wejść do katalogu $KATALOG na serwerze $SERWER."; exit 1; }
+          if lftp -c "$polacz; cd \"$KATALOG\"; cls -1a" | grep -qx '\.gabinet-strona'; then
+            usun="--delete"
+          else
+            usun=""
+            echo "::notice::Pierwsza wysyłka do $KATALOG - bez usuwania plików z serwera."
+          fi
+
+          lftp -c "$polacz; mirror --reverse $usun --verbose --parallel=4 \
+            --exclude-glob .well-known/ --exclude-glob cgi-bin/ \
+            --exclude-glob .gabinet-strona --exclude-glob .user.ini --exclude-glob .ftpquota \
+            public-hosting/ \"$KATALOG\""
+
+          printf 'Katalog strony zarządzany przez GitHub Actions (repozytorium gabinet-strona).\n' > .gabinet-strona
+          lftp -c "$polacz; put -O \"$KATALOG\" .gabinet-strona"
+
   # Nieudany przebieg po zapisie w panelu nie trafia do niczyjej skrzynki
   # (GitHub powiadamia tylko autora przebiegu, a ten moze nie czytac maili
   # z Actions). Zgloszenie (issue) dostaje e-mailem kazdy obserwujacy repozytorium.
   # Jedno otwarte zgloszenie naraz: kolejne bledy dopisuja sie jako komentarze.
   powiadomienie:
-    needs: [build, deploy]
+    needs: [build, deploy, hosting]
     if: failure()
     runs-on: ubuntu-latest
     permissions:

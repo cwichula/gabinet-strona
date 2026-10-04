@@ -9,7 +9,7 @@
   {{- if ne .Kind "404" }}
   <link rel="canonical" href="{{ .Permalink }}">
   {{- end }}
-  {{- if (hugo.Data.ustawienia | default dict).ukryj_przed_wyszukiwarkami }}
+  {{- if or (hugo.Data.ustawienia | default dict).ukryj_przed_wyszukiwarkami site.Params.robocza }}
   <meta name="robots" content="noindex, nofollow">
   {{- else if eq .Kind "404" }}
   <meta name="robots" content="noindex">

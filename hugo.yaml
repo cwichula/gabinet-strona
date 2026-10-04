@@ -82,3 +82,7 @@ sitemap:
 params:
   # Wersja kontraktu blokow (docs/KONTRAKT-BLOKOW.md).
   kontraktBlokow: 3
+  # Kopia robocza (GitHub Pages): zawsze noindex i "Disallow: /", niezaleznie
+  # od ustawienia w panelu. Wlacza ja workflow zmienna HUGO_PARAMS_ROBOCZA=true;
+  # build na wlasna domene (hosting) jej nie ustawia.
+  robocza: false

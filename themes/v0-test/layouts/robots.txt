@@ -4,6 +4,6 @@
        robots.txt w katalogu glownym domeny - ten plik dziala w pelni dopiero
        na wlasnej domenie. */ -}}
 User-agent: *
-{{ if (hugo.Data.ustawienia | default dict).ukryj_przed_wyszukiwarkami }}Disallow: /{{ else }}Disallow: {{ "admin/" | relURL }}{{ end }}
+{{ if or (hugo.Data.ustawienia | default dict).ukryj_przed_wyszukiwarkami site.Params.robocza }}Disallow: /{{ else }}Disallow: {{ "admin/" | relURL }}{{ end }}
 
 Sitemap: {{ "sitemap.xml" | absURL }}

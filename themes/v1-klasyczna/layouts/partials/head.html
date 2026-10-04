@@ -21,8 +21,10 @@
 {{- if ne .Kind "404" }}
 <link rel="canonical" href="{{ .Permalink }}">
 {{- end }}
-{{- /* ustawienia: "ukryj przed wyszukiwarkami" (np. przed uzupelnieniem danych) */}}
-{{- if $u.ukryj_przed_wyszukiwarkami }}
+{{- /* ustawienia: "ukryj przed wyszukiwarkami" (np. przed uzupelnieniem danych);
+       params.robocza: kopia robocza na GitHub Pages - zawsze ukryta, zeby nie
+       konkurowala w Google ze strona na wlasnej domenie */}}
+{{- if or $u.ukryj_przed_wyszukiwarkami site.Params.robocza }}
 <meta name="robots" content="noindex, nofollow">
 {{- else if eq .Kind "404" }}
 <meta name="robots" content="noindex">
