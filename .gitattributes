@@ -4,6 +4,7 @@
 *.jpeg binary
 *.png binary
 *.webp binary
+*.avif binary
 static/admin/sveltia-cms.js -text
 *.gif binary
 *.bmp binary

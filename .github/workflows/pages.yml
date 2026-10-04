@@ -123,7 +123,7 @@ jobs:
 
       # --- Wersja na wlasna domene (hosting) -------------------------------
       # Tylko gdy w Settings -> Secrets and variables -> Actions -> Variables
-      # jest HOSTING_SERWER (opis w README, "Hosting na własnej domenie").
+      # jest HOSTING_SERWER (opis w docs/HOSTING.md).
       # Ta sama tresc, inny adres bazowy; bez panelu /admin/ (panel zostaje
       # na github.io - tam dziala logowanie), z .htaccess z katalogu hosting/.
       # O widocznosci w Google decyduje ustawienie w panelu ("Ukryj strone

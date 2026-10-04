@@ -52,7 +52,7 @@ backend:
   repo: cwichula/gabinet-strona
   branch: main
   # Logowanie przez GitHub ("Zaloguj przez GitHub") idzie przez wlasny klient OAuth:
-  # Cloudflare Worker sveltia/sveltia-cms-auth (README, "Logowanie do panelu").
+  # Cloudflare Worker sveltia/sveltia-cms-auth (docs/LOGOWANIE.md).
   # Worker trzyma GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET i ALLOWED_DOMAINS;
   # OAuth App w GitHubie ma callback <base_url>/callback.
   # Token zostaje jako zapasowa metoda logowania. https://sveltiacms.app/en/docs/backends
