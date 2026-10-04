@@ -34,7 +34,7 @@ sekcje:
       rodzaj: info
       tresc: "Nie trzeba mieć wszystkich objawów naraz. Do rozmowy z lekarzem wystarczą dwa lub trzy punkty z listy."
     zdjecie:
-      plik: "gabinet-06.jpg"
+      plik: "/images/gabinet-06.jpg"
       alt: "Omawianie z pacjentem zdjęcia rentgenowskiego wyświetlonego na monitorze przy fotelu"
       podpis: "Objawy i zdjęcia omawiamy przy fotelu, na monitorze."
     strona_zdjecia: prawa
@@ -72,7 +72,7 @@ sekcje:
       Dopiero wtedy wiadomo, czy wystarczy szyna, czy wcześniej trzeba zająć się [próchnicą i brakującymi wypełnieniami](/stomatologia-zachowawcza/). Szynę wykonuje się bowiem do docelowego kształtu zębów.
     wypunktowanie: ptaszki
     zdjecie:
-      plik: "gabinet-09.jpg"
+      plik: "/images/gabinet-09.jpg"
       alt: "Pacjent przy aparacie rentgenowskim z radiowizjografią do zdjęć punktowych"
       podpis: "Zdjęcia rentgenowskie wykonujemy na miejscu."
     strona_zdjecia: lewa

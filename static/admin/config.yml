@@ -14,7 +14,7 @@
 #   site_url, display_url ....................... https://sveltiacms.app/en/docs/customization
 #   jezyk panelu (brak opcji locale, wg przegladarki) https://sveltiacms.app/en/docs/ui
 #   slug: encoding, clean_accents ............... https://sveltiacms.app/en/docs/collections/entries/slugs
-#   media_folder, public_folder (tez '' = obok wpisu, paczki stron Hugo)
+#   media_folder, public_folder (wspolna biblioteka /assets/images)
 #                                                 https://sveltiacms.app/en/docs/media/internal
 #   media_libraries.all: transformations, max_file_size, slugify_filename
 #                                                 https://sveltiacms.app/en/docs/media
@@ -91,7 +91,8 @@ slug:
 # Zdjecia wspolne (strona glowna, dane wspolne): assets/images, a nie static/,
 # bo Hugo przetwarza tylko pliki z assets/ i z paczek stron (zmniejszanie, WebP,
 # width/height). Wartosc pola "/images/x.webp" szablon zamienia na assets/images/x.webp.
-# Podstrony trzymaja swoje zdjecia obok index.md (media_folder: '' w kolekcji Strony).
+# Podstrony korzystaja z tej samej biblioteki (jedno zdjecie = jeden plik, bez kopii
+# w kazdej podstronie). Szablon nadal przyjmuje tez plik obok index.md (paczka strony).
 media_folder: assets/images
 public_folder: /images
 
@@ -122,8 +123,8 @@ collections:
       Strona ukryta (szkic) znika ze strony i z menu. Menu układasz w kolekcji „Menu”.
     folder: content/strony
     path: '{{slug}}/index'
-    media_folder: ''
-    public_folder: ''
+    media_folder: /assets/images
+    public_folder: /images
     create: true
     delete: true
     reorder:

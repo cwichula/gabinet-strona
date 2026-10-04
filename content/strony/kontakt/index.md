@@ -57,7 +57,7 @@ sekcje:
       Przyjeżdżasz z dzieckiem? Pierwszą wizytę traktujemy jako adaptacyjną i nie spieszymy się z nią — więcej o tym piszemy na stronie [dentysta dla dzieci](/dentysta-dla-dzieci/). Chcesz najpierw zobaczyć, jak wygląda gabinet od środka? Zdjęcia są w [galerii](/galeria/).
     wypunktowanie: ptaszki
     zdjecie:
-      plik: "wejscie-zlotoryjska.jpg"
+      plik: "/images/wejscie-zlotoryjska.jpg"
       alt: "Budynek gabinetu przy ul. Złotoryjskiej w Legnicy z niebieską strzałką wskazującą wejście"
       podpis: "Niebieska strzałka wskazuje wejście do gabinetu od ul. Złotoryjskiej."
     strona_zdjecia: prawa

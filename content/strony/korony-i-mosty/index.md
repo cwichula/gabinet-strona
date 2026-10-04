@@ -28,7 +28,7 @@ sekcje:
       Jeśli ubytek jest mniejszy, zwykle wystarczy [wypełnienie lub odbudowa zęba](/stomatologia-zachowawcza/). A jeśli przeszkadza Ci wyłącznie wygląd powierzchni licowej przedniego zęba, mniej inwazyjną drogą są [licówki](/licowki/).
     wypunktowanie: ptaszki
     zdjecie:
-      plik: "gabinet-04.jpg"
+      plik: "/images/gabinet-04.jpg"
       alt: "Lekarka podczas zabiegu stomatologicznego u pacjenta leżącego w fotelu"
       podpis: "Pracę protetyczną planujemy po badaniu — dopiero wtedy znamy zakres i koszt."
     strona_zdjecia: prawa
@@ -66,7 +66,7 @@ sekcje:
       Most z włókna szklanego ma swoje granice. Sprawdza się przy *jednym* brakującym zębie i wymaga, by zęby obok były stabilne i zdrowe. Przy większych brakach rozważamy [protezę](/protezy-zebowe/) albo most tradycyjny — co wybrać, ustalamy po badaniu.
     wypunktowanie: ptaszki
     zdjecie:
-      plik: "gabinet-10.jpg"
+      plik: "/images/gabinet-10.jpg"
       alt: "Lekarka z pacjentem po zakończonym zabiegu stomatologicznym"
     strona_zdjecia: lewa
     wariant: domyslny

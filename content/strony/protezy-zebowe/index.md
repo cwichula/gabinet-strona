@@ -29,7 +29,7 @@ sekcje:
       Przy jednym braku warto najpierw rozważyć [most z włókna szklanego albo koronę](/korony-i-mosty/) — wtedy nie nosi się nic ruchomego.
     wypunktowanie: ptaszki
     zdjecie:
-      plik: "instruktaz-szczotkowania.jpg"
+      plik: "/images/gabinet-12.jpg"
       alt: "Model szczęki ze szczoteczką używany do instruktażu prawidłowego szczotkowania zębów"
       podpis: "Instruktaż prawidłowego czyszczenia zębów."
     wariant: domyslny
@@ -104,7 +104,7 @@ sekcje:
     naglowek: "Wykonanie protezy krok po kroku"
     wstep: "Od pierwszego badania do gotowej pracy mija zwykle kilka tygodni."
     zdjecie:
-      plik: "rejestracja.jpg"
+      plik: "/images/gabinet-07.jpg"
       alt: "Stanowisko rejestracji: biurko z komputerem, przy którym umawiane są wizyty"
       podpis: "Rejestracja gabinetu — tu umawiamy kolejne wizyty."
     wariant: wyrozniony

@@ -285,7 +285,7 @@ sekcje:
       - Kamera wewnątrzustna — widzisz dokładnie to samo, co lekarz
       - Płatność gotówką, kartą i BLIKIEM
     zdjecie:
-      plik: gabinet-09.jpg
+      plik: "/images/gabinet-09.jpg"
       alt: Pacjent przy aparacie rentgenowskim z radiowizjografią do zdjęć punktowych
       podpis: Zdjęcia punktowe wykonujemy w gabinecie, cyfrowo.
     przycisk:

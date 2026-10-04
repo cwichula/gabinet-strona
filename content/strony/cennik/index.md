@@ -56,7 +56,7 @@ sekcje:
       Dlatego kwotę poznajesz przed leczeniem, nie po nim. Jeśli w trakcie okaże się, że plan trzeba zmienić, mówimy o tym i o nowym koszcie, zanim cokolwiek zrobimy.
     wypunktowanie: ptaszki
     zdjecie:
-      plik: "gabinet-07.jpg"
+      plik: "/images/gabinet-07.jpg"
       alt: "Stanowisko rejestracji: biurko z komputerem, przy którym umawiane są wizyty"
       podpis: "Plan leczenia i jego koszt omawiamy na końcu pierwszej wizyty."
     strona_zdjecia: prawa

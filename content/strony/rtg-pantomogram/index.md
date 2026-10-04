@@ -24,7 +24,7 @@ sekcje:
 
       Zdjęcie rentgenowskie nie jest więc dodatkiem, tylko normalnym etapem diagnostyki. Pokazuje uzębienie w powiększeniu, a to często przesądza o tym, czy ząb da się jeszcze wyleczyć, czy trzeba go usunąć.
     zdjecie:
-      plik: "gabinet-13.jpg"
+      plik: "/images/gabinet-13.jpg"
       alt: "Aparat rentgenowski z pantomografem stojący w pracowni gabinetu"
       podpis: "Pantomograf stoi w gabinecie — po zdjęcie nie trzeba nigdzie jeździć."
     wariant: domyslny
@@ -48,7 +48,7 @@ sekcje:
       Zdjęcie pantomograficzne cyfrowe kosztuje **120 zł** — pozycja z [cennika](/cennik/).
     wypunktowanie: ptaszki
     zdjecie:
-      plik: "gabinet-08.jpg"
+      plik: "/images/gabinet-08.jpg"
       alt: "Wykonywanie zdjęcia pantomograficznego pacjentowi w ochronnym fartuchu ołowianym"
       podpis: "Do zdjęcia panoramicznego stoi się w osłonie ochronnej."
     wariant: wyrozniony
@@ -64,7 +64,7 @@ sekcje:
 
       Zdjęcie RTG **czynnościowe stawów skroniowo-żuchwowych** (100 zł) jest osobnym badaniem i wchodzi w skład [diagnostyki dysfunkcji stawów](/stawy-skroniowo-zuchwowe/).
     zdjecie:
-      plik: "gabinet-09.jpg"
+      plik: "/images/gabinet-09.jpg"
       alt: "Pacjent przy aparacie rentgenowskim z radiowizjografią do zdjęć punktowych"
       podpis: "Zdjęcie punktowe z radiowizjografią pojawia się na monitorze od razu."
     strona_zdjecia: lewa

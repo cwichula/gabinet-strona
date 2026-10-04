@@ -23,7 +23,7 @@ sekcje:
 
       Takie objawy świadczą o stanie zapalnym. Nieleczone zapalenie dziąseł najczęściej przechodzi w zapalenie przyzębia, czyli paradontozę. Dochodzi wtedy do zaniku kości wyrostka zębodołowego, odsłonięcia szyjek zębowych, przemieszczania się zębów, rozchwiania, a nawet do ich utraty.
     zdjecie:
-      plik: "instruktaz.jpg"
+      plik: "/images/gabinet-12.jpg"
       alt: "Model szczęki ze szczoteczką używany do instruktażu prawidłowego szczotkowania zębów"
       podpis: "Technikę szczotkowania pokazujemy na modelu — to część wizyty, nie dodatek."
     strona_zdjecia: prawa
@@ -77,7 +77,7 @@ sekcje:
       Przegląd u dziecka łączymy zwykle z lakowaniem i lakierowaniem — opisujemy to osobno na stronie [dentysta dla dzieci](/dentysta-dla-dzieci/). Jeśli przychodzisz do nas pierwszy raz, zobacz, jak wygląda [pierwsza wizyta](/pierwsza-wizyta/).
     wypunktowanie: ptaszki
     zdjecie:
-      plik: "badanie-kontrolne.jpg"
+      plik: "/images/gabinet-05.jpg"
       alt: "Lekarka podczas badania kontrolnego jamy ustnej pacjenta"
     strona_zdjecia: lewa
     wariant: domyslny

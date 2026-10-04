@@ -31,12 +31,12 @@ polityki prywatności oznaczone „DO UZUPEŁNIENIA”).
 hugo.yaml                        konfiguracja (baseURL, theme, adresy /<slug>/)
 content/_index.md                strona główna (bloki w front matter: sekcje)
 content/strony/_index.md         kontener podstron (sam nie ma strony w sieci)
-content/strony/<slug>/index.md   podstrona + jej zdjęcia obok (page bundle)
+content/strony/<slug>/index.md   podstrona (zdjęcia ze wspólnej biblioteki assets/images/)
 data/menu.yaml                   menu (dwa poziomy) i listy odnośników stopki
 data/cennik.yaml                 cennik: kategorie + pozycje (pozycja wskazuje kategorię)
 data/gabinet.yaml                dane gabinetu, godziny, rezerwacja, dane rejestrowe
 data/ustawienia.yaml             domyślny opis SEO, tekst stopki, napisy szablonu, ukrycie przed wyszukiwarkami
-assets/images/                   zdjęcia wspólne (np. strony głównej)
+assets/images/                   biblioteka zdjęć (wszystkie strony; pole „plik”: /images/x.jpg)
 themes/v1-klasyczna/             szablon v1 „Klasyczna” (używany, theme w hugo.yaml)
 layouts/                         PUSTY (nadpisałby każdy szablon) - pilnuje CI
 static/admin/                    panel: index.html, config.yml, sveltia-cms.js

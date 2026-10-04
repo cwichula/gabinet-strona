@@ -19,7 +19,7 @@ sekcje:
 
       Zapisujemy imię, nazwisko i numer telefonu — numeru używamy do przypomnienia SMS.
     zdjecie:
-      plik: "gabinet-07.jpg"
+      plik: "/images/gabinet-07.jpg"
       alt: "Stanowisko rejestracji: biurko z komputerem, przy którym umawiane są wizyty"
       podpis: "Przy tym biurku odbieramy telefon."
     strona_zdjecia: lewa
@@ -122,7 +122,7 @@ sekcje:
       - Jeśli to pomaga, weź słuchawki i swoją muzykę.
     wypunktowanie: ptaszki
     zdjecie:
-      plik: "gabinet-11.jpg"
+      plik: "/images/gabinet-11.jpg"
       alt: "Poczekalnia gabinetu: stolik, krzesła i materiały informacyjne dla pacjentów"
       podpis: "Poczekalnia — tu zaczyna się każda wizyta."
     strona_zdjecia: prawa

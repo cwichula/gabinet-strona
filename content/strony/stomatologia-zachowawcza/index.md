@@ -28,7 +28,7 @@ sekcje:
       tresc: |-
         Dlatego cena leczenia jednego zęba rośnie z czasem, a nie dlatego, że zmieniają się stawki. Mały ubytek to jedno wypełnienie. Ten sam ząb pół roku później może już wymagać odbudowy ściany, opatrunku albo leczenia miazgi.
     zdjecie:
-      plik: "gabinet-01.jpg"
+      plik: "/images/gabinet-01.jpg"
       alt: "Gabinet zabiegowy: unit stomatologiczny z fotelem, lampą i monitorem, duże okno z widokiem na zieleń"
       podpis: "Gabinet zabiegowy przy ul. Złotoryjskiej w Legnicy."
     wariant: domyslny
@@ -105,7 +105,7 @@ sekcje:
       Badanie, zdjęcie RTG i opatrunek to osobne pozycje cennika — nie są wliczone w cenę wypełnienia. Pełną kwotę poznajesz po badaniu — decyzję podejmujesz, już ją znając.
     wypunktowanie: ptaszki
     zdjecie:
-      plik: "gabinet-08.jpg"
+      plik: "/images/gabinet-08.jpg"
       alt: "Wykonywanie zdjęcia pantomograficznego pacjentowi w ochronnym fartuchu ołowianym"
       podpis: "Zdjęcie RTG wykonujemy na miejscu — ubytek między zębami bywa widoczny tylko na nim."
     wariant: wyrozniony

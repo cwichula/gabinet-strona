@@ -77,7 +77,7 @@ sekcje:
       - Zdjęć z banku zdjęć. Każda fotografia na tej stronie pokazuje ten gabinet, ten sprzęt i tę poczekalnię.
     wypunktowanie: ptaszki
     zdjecie:
-      plik: "gabinet-01.jpg"
+      plik: "/images/gabinet-01.jpg"
       alt: "Gabinet zabiegowy: unit stomatologiczny z fotelem, lampą i monitorem, duże okno z widokiem na zieleń"
       podpis: "Zdjęcie z gabinetu przy ul. Złotoryjskiej, nie z banku zdjęć."
     strona_zdjecia: prawa

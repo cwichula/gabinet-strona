@@ -28,7 +28,7 @@ sekcje:
       - Nie dostajesz skierowania do innej pracowni i nie wracasz z opisem po tygodniu
     wypunktowanie: ptaszki
     zdjecie:
-      plik: "gabinet-13.jpg"
+      plik: "/images/gabinet-13.jpg"
       alt: "Aparat rentgenowski z pantomografem stojący w pracowni gabinetu"
       podpis: "Pantomograf stoi w pracowni gabinetu."
     strona_zdjecia: prawa
@@ -48,7 +48,7 @@ sekcje:
       rodzaj: info
       tresc: "O tym, czy zdjęcie jest potrzebne i jakie, decyduje lekarz po badaniu. Jeśli jesteś w ciąży albo podejrzewasz ciążę, powiedz o tym przed badaniem — ma to wpływ na decyzję o wykonaniu zdjęcia."
     zdjecie:
-      plik: "gabinet-09.jpg"
+      plik: "/images/gabinet-09.jpg"
       alt: "Pacjent przy aparacie rentgenowskim z radiowizjografią do zdjęć punktowych"
       podpis: "Zdjęcie punktowe pojawia się na monitorze zaraz po naświetleniu."
     strona_zdjecia: lewa
@@ -64,7 +64,7 @@ sekcje:
 
       Obraz z kamery wykorzystujemy też przy instruktażu higieny: pokazujemy konkretne miejsca, które wymagają poprawy przy szczotkowaniu.
     zdjecie:
-      plik: "gabinet-06.jpg"
+      plik: "/images/gabinet-06.jpg"
       alt: "Omawianie z pacjentem zdjęcia rentgenowskiego wyświetlonego na monitorze przy fotelu"
       podpis: "Monitor przy fotelu jest ustawiony tak, żeby pacjent widział to samo, co lekarz."
     strona_zdjecia: prawa

@@ -32,7 +32,7 @@ sekcje:
       rodzaj: uwaga
       tresc: "Jeśli żuchwa zablokowała się w otwarciu i nie udaje się zamknąć ust, nie czekaj na planowy termin — zadzwoń od razu: [699 904 989](tel:+48699904989)."
     zdjecie:
-      plik: "gabinet-06.jpg"
+      plik: "/images/gabinet-06.jpg"
       alt: "Omawianie z pacjentem zdjęcia rentgenowskiego wyświetlonego na monitorze przy fotelu"
       podpis: "Wynik badania i zdjęcie omawiamy na monitorze, przy fotelu."
     strona_zdjecia: prawa
@@ -70,7 +70,7 @@ sekcje:
 
       Proste testy oceniające związek zgryzu z postawą ciała: symetrię barków, ustawienie głowy, równowagę. Pozwalają zorientować się, czy problem idzie od zgryzu w dół, czy od postawy w górę. Wynik czytamy razem z pozostałymi badaniami.
     zdjecie:
-      plik: "gabinet-09.jpg"
+      plik: "/images/gabinet-09.jpg"
       alt: "Pacjent przy aparacie rentgenowskim z radiowizjografią do zdjęć punktowych"
       podpis: "Zdjęcia wykonujemy w gabinecie, bez odsyłania do innej pracowni."
     strona_zdjecia: prawa

@@ -25,7 +25,7 @@ sekcje:
 
       Nie obiecujemy dziecku, że „nic nie będzie czuło” — obietnica, której nie da się dotrzymać, psuje zaufanie na lata. Mówimy natomiast, co się będzie działo, i pytamy, czy można zacząć.
     zdjecie:
-      plik: "gabinet-12.jpg"
+      plik: "/images/gabinet-12.jpg"
       alt: "Model szczęki ze szczoteczką używany do instruktażu prawidłowego szczotkowania zębów"
       podpis: "Na modelu szczęki dziecko samo pokazuje, jak myje zęby."
     strona_zdjecia: prawa
@@ -59,7 +59,7 @@ sekcje:
       Pomaga też **kamera wewnątrzustna**: obraz zęba w dużym powiększeniu trafia na monitor. U młodszych pacjentów działa to zaskakująco dobrze — dziecko widzi „swój ząb na telewizorze” i zaczyna dopytywać.
     wypunktowanie: ptaszki
     zdjecie:
-      plik: "gabinet-01.jpg"
+      plik: "/images/gabinet-01.jpg"
       alt: "Gabinet zabiegowy: unit stomatologiczny z fotelem, lampą i monitorem, duże okno z widokiem na zieleń"
       podpis: "Gabinet jest jasny, z dużym oknem i klimatyzacją."
     strona_zdjecia: lewa

@@ -24,7 +24,7 @@ sekcje:
       - Rejestracja wyłącznie telefoniczna — termin ustalamy w rozmowie
     wypunktowanie: ptaszki
     zdjecie:
-      plik: "dorota-rozdzestwienska.jpg"
+      plik: "/images/dorota-rozdzestwienska.jpg"
       alt: "Lek. stom. Dorota Rożdżestwieńska, prowadząca gabinet przy ul. Złotoryjskiej w Legnicy"
       podpis: "lek. stom. Dorota Rożdżestwieńska — prowadzi gabinet przy ul. Złotoryjskiej 16/18 m. 10 od 1995 roku."
     strona_zdjecia: prawa
@@ -44,7 +44,7 @@ sekcje:
       - O zbliżającym się terminie przypominamy SMS-em
     wypunktowanie: ptaszki
     zdjecie:
-      plik: "gabinet-10.jpg"
+      plik: "/images/gabinet-10.jpg"
       alt: "Lekarka z pacjentem po zakończonym zabiegu stomatologicznym"
       podpis: "Po zabiegu zostaje chwila na pytania."
     strona_zdjecia: lewa
@@ -80,7 +80,7 @@ sekcje:
 
       Za wizytę zapłacisz gotówką, kartą lub BLIKIEM; terminal jest w gabinecie. Dla komfortu pacjentów pomieszczenia są klimatyzowane.
     zdjecie:
-      plik: "gabinet-09.jpg"
+      plik: "/images/gabinet-09.jpg"
       alt: "Pacjent przy aparacie rentgenowskim z radiowizjografią do zdjęć punktowych"
       podpis: "Zdjęcia punktowe i pantomogram wykonujemy [na miejscu](/rtg-pantomogram/)."
     strona_zdjecia: prawa

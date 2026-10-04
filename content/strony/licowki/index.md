@@ -30,7 +30,7 @@ sekcje:
       Zabieg dotyczy zębów widocznych w uśmiechu, więc kolor dobieramy do zębów sąsiednich. Licówka zmienia wygląd tylko tego zęba, na którym ją wykonujemy — nie rozjaśnia pozostałych.
     wypunktowanie: ptaszki
     zdjecie:
-      plik: "gabinet-10.jpg"
+      plik: "/images/gabinet-10.jpg"
       alt: "Lekarka z pacjentem po zakończonym zabiegu stomatologicznym"
       podpis: "Kształt i kolor ustalamy razem z pacjentem, przed rozpoczęciem pracy."
     strona_zdjecia: prawa
@@ -74,7 +74,7 @@ sekcje:
       Nie w każdym przypadku to właściwa droga. Przy bardzo dużej przerwie albo przy wadzie zgryzu trwalszy efekt daje leczenie ortodontyczne — wtedy mówimy o tym wprost, zamiast dobudowywać materiał w nadmiarze.
     wypunktowanie: zwykle
     zdjecie:
-      plik: "gabinet-02.jpg"
+      plik: "/images/gabinet-02.jpg"
       alt: "Stanowisko zabiegowe z lampą bezcieniową, końcówkami i monitorem do prezentacji zdjęć RTG"
     strona_zdjecia: lewa
     wariant: wyrozniony
