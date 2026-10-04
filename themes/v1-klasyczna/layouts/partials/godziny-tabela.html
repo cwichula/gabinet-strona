@@ -1,17 +1,15 @@
-{{- /* Tabela godzin przyjec (table.hours) z data/gabinet.yaml - jak _godziny()
-       w tools/build-v1.py; data-dzien = numer dnia (1 = poniedzialek), skrypt
+{{- /* Tabela godzin przyjec (table.hours) z data/gabinet.yaml (przez
+       gabinet-model.html); data-dzien = numer dnia (1 = poniedzialek), skrypt
        podswietla dzisiejszy wiersz. */ -}}
-{{- $numery := dict "poniedziałek" 1 "wtorek" 2 "środa" 3 "czwartek" 4 "piątek" 5 "sobota" 6 "niedziela" 7 -}}
-{{- with hugo.Data.gabinet.godziny }}
+{{- with (partialCached "gabinet-model.html" site "gabinet").tydzien }}
       <table class="hours">
         <caption class="visually-hidden">Godziny przyjęć gabinetu</caption>
         <tbody>
-        {{- range $i, $d := . }}
-        {{- $nr := index $numery (lower $d.dzien) | default (add $i 1) }}
-        {{- if and $d.od $d.do }}
-        <tr data-dzien="{{ $nr }}"><th scope="row">{{ $d.dzien }}</th><td>{{ $d.od }}&ndash;{{ $d.do }}</td></tr>
+        {{- range . }}
+        {{- if and .od .do }}
+        <tr data-dzien="{{ .nr }}"><th scope="row">{{ .dzien }}</th><td>{{ .od }}&ndash;{{ .do }}</td></tr>
         {{- else }}
-        <tr data-dzien="{{ $nr }}"><th scope="row">{{ $d.dzien }}</th><td class="closed">nieczynne</td></tr>
+        <tr data-dzien="{{ .nr }}"><th scope="row">{{ .dzien }}</th><td class="closed">nieczynne</td></tr>
         {{- end }}
         {{- end }}
         </tbody>

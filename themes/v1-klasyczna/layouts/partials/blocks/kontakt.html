@@ -42,7 +42,7 @@
             <svg class="ico" aria-hidden="true" style="{{ $ikona | safeCSS }}"><use href="#ico-pin"></use></svg>
             Adres gabinetu
           </dt>
-          <dd>{{ .ulica }}, {{ .kod }} {{ .miasto }}</dd>
+          <dd>{{ partial "adres.html" . }}</dd>
         </div>
         {{- /* parking (krotko, jak w v1), a gdy go nie ma - opis dojazdu */}}
         {{- if .parking }}

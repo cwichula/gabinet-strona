@@ -79,7 +79,7 @@
         </p>
         {{- with $g.adres }}{{ if .ulica }}
         <p>
-          {{ with $s.ramka_adres }}{{ partial "tekst-wiersze.html" . }}{{ else }}Adres gabinetu:{{ end }} {{ .ulica }}, {{ with .kod }}{{ . }} {{ end }}{{ .miasto }}.
+          {{ with $s.ramka_adres }}{{ partial "tekst-wiersze.html" . }}{{ else }}Adres gabinetu:{{ end }} {{ partial "adres.html" . }}.
         </p>
         {{- end }}{{ end }}
       </div>

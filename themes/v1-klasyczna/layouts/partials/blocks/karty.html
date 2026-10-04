@@ -16,8 +16,7 @@
       {{- if and $poz (not $k.tresc) (not $k.ikona) (not $cel.href) }}
       <div class="card"><h3 style="font-size:var(--step-0);margin:0">{{ $k.tytul }}</h3><p class="card__price" style="border:0;padding:0"><b>{{ partial "cena.html" $poz }}</b></p></div>
       {{- else }}
-      {{- if $cel.href }}
-      <article class="card card--link">
+      {{ if $cel.href }}<article class="card card--link">{{ else }}<div class="card">{{ end }}
         {{- with $k.ikona }}
         <span class="card__ico">{{ partial "ikona.html" (dict "nazwa" . "gdzie" $miejsce) }}</span>
         {{- end }}
@@ -28,22 +27,10 @@
         {{- with $poz }}
         <p class="card__price"><b>{{ partial "cena.html" . }}</b></p>
         {{- end }}
+        {{- if $cel.href }}
         <span class="card__more" aria-hidden="true">Zobacz szczegóły</span>
-      </article>
-      {{- else }}
-      <div class="card">
-        {{- with $k.ikona }}
-        <span class="card__ico">{{ partial "ikona.html" (dict "nazwa" . "gdzie" $miejsce) }}</span>
         {{- end }}
-        <h3>{{ with $cel.href }}<a class="stretched" href="{{ . }}">{{ $k.tytul }}</a>{{ else }}{{ $k.tytul }}{{ end }}</h3>
-        {{- with $k.tresc }}
-        {{ partial "karta-tresc.html" (dict "strona" $.strona "tekst" . "ptaszki" (eq $b.wypunktowanie "ptaszki")) }}
-        {{- end }}
-        {{- with $poz }}
-        <p class="card__price"><b>{{ partial "cena.html" . }}</b></p>
-        {{- end }}
-      </div>
-      {{- end }}
+      {{ if $cel.href }}</article>{{ else }}</div>{{ end }}
       {{- end }}
       {{- end }}
     </div>

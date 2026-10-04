@@ -55,7 +55,7 @@
       {{- end }}
       {{- if $b.adres }}{{ with $g.adres }}
       <p style="{{ $muted | safeCSS }}">
-        {{ .ulica }}, {{ .kod }} {{ .miasto }}
+        {{ partial "adres.html" . }}
       </p>
       {{- end }}{{ end }}
       {{- with $b.notka_dol }}
