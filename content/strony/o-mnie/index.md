@@ -1,7 +1,7 @@
 ---
 title: "O gabinecie"
 seo_tytul: "Stomatolog Legnica — o gabinecie | Dorota Rożdżestwieńska"
-description: "Gabinet stomatologiczny Dorota Rożdżestwieńska, Legnica, ul. Złotoryjska. Działa od 30 lat. Poznaj lekarkę, sposób pracy i wyposażenie. Tel. 76 72-26-880."
+description: "Gabinet stomatologiczny Dorota Rożdżestwieńska, Legnica, ul. Złotoryjska. Działa od 30 lat. Poznaj lekarkę, sposób pracy i wyposażenie. Tel. 699 904 989."
 draft: false
 weight: 12
 sekcje:

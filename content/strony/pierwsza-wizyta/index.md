@@ -1,7 +1,7 @@
 ---
 title: "Pierwsza wizyta"
 seo_tytul: "Pierwsza wizyta Legnica | Gabinet Dorota Rożdżestwieńska"
-description: "Pierwsza wizyta u dentysty, Legnica: jak się umówić, co przygotować, ile trwa i ile kosztuje — badanie z konsultacją 100 zł. Rejestracja: 76 72-26-880."
+description: "Pierwsza wizyta u dentysty, Legnica: jak się umówić, co przygotować, ile trwa i ile kosztuje — badanie z konsultacją 100 zł. Rejestracja: 699 904 989."
 draft: false
 weight: 15
 sekcje:
@@ -24,14 +24,9 @@ sekcje:
       podpis: "Przy tym biurku odbieramy telefon."
     strona_zdjecia: lewa
     wariant: domyslny
-  - type: rezerwacja
-    wariant: domyslny
-    polacz: true
   - type: tekst
     tresc: |-
       Ceny swojego leczenia nie ustalisz przez internet: plan leczenia wraz z kwotą przedstawiamy na wizycie, po badaniu — badanie stomatologiczne z konsultacją kosztuje 100 zł.
-
-      Co dokładnie dzieje się po kliknięciu odnośnika rezerwacji, opisujemy na stronie [kontakt](/kontakt/).
     wariant: domyslny
     polacz: true
   - type: lista
@@ -138,7 +133,7 @@ sekcje:
       - pytanie: "Ile kosztuje pierwsza wizyta u dentysty w Legnicy?"
         odpowiedz: "Badanie stomatologiczne z konsultacją kosztuje 100 zł. W tej cenie jest rozmowa, przegląd zębów i dziąseł oraz plan leczenia z podanym kosztem. Zdjęcie RTG punktowe to dodatkowo 50 zł, a pantomogram cyfrowy 120 zł."
       - pytanie: "Jak umówić się do dentysty w Legnicy?"
-        odpowiedz: "Telefonicznie, pod numerem [76 72-26-880](tel:+48767226880) lub [699 904 989](tel:+48699904989) — tą drogą termin ustalamy od razu w rozmowie. Gabinet przyjmuje od poniedziałku do czwartku. Przy umawianiu powiedz, co Cię sprowadza — pilne przypadki staramy się przyjąć tego samego dnia."
+        odpowiedz: "Telefonicznie, pod numerem [699 904 989](tel:+48699904989) — tą drogą termin ustalamy od razu w rozmowie. Gabinet przyjmuje od poniedziałku do czwartku. Przy umawianiu powiedz, co Cię sprowadza — pilne przypadki staramy się przyjąć tego samego dnia."
       - pytanie: "Co zabrać na pierwszą wizytę u dentysty?"
         odpowiedz: "Dokument tożsamości, listę przyjmowanych na stałe leków i poprzednie zdjęcia RTG, jeśli je masz. Przygotuj też informację o chorobach przewlekłych, alergiach na leki oraz o ciąży lub jej podejrzeniu."
       - pytanie: "Ile trwa pierwsza wizyta u dentysty?"

@@ -1,7 +1,7 @@
 ---
 title: "Polityka prywatności"
 seo_tytul: "Polityka prywatności Legnica | Gabinet Rożdżestwieńska"
-description: "Polityka prywatności gabinetu stomatologicznego Legnica: jakie dane zbieramy, podstawy z RODO, okresy przechowywania i Twoje prawa. Pytania: 76 72-26-880."
+description: "Polityka prywatności gabinetu stomatologicznego Legnica: jakie dane zbieramy, podstawy z RODO, okresy przechowywania i Twoje prawa. Pytania: 699 904 989."
 draft: false
 weight: 18
 sekcje:
@@ -13,7 +13,7 @@ sekcje:
     waska: true
     rodzaj: uwaga
     tresc: |-
-      **Ten dokument jest projektem przygotowanym w ramach makiety nowej strony.** Przed publikacją wymaga sprawdzenia przez prawnika specjalizującego się w RODO w działalności leczniczej — w kosztorysie odpowiadają temu zadania **T-12** i **T-15**. Dotyczy to także [punktu 7](#rezerwacja) o rezerwacji online w serwisie zewnętrznym: trzeba w nim przesądzić, czy gabinet zawiera z operatorem tego serwisu umowę powierzenia przetwarzania.
+      **Ten dokument jest projektem przygotowanym w ramach makiety nowej strony.** Przed publikacją wymaga sprawdzenia przez prawnika specjalizującego się w RODO w działalności leczniczej — w kosztorysie odpowiadają temu zadania **T-12** i **T-15**.
 
       Fragmenty oznaczone ==DO UZUPEŁNIENIA== lub ==DO POTWIERDZENIA== czekają na dane od gabinetu.
     wariant: domyslny
@@ -32,15 +32,13 @@ sekcje:
         kotwica: odbiorcy
       - etykieta: "6. Mapa Google"
         kotwica: mapa
-      - etykieta: "7. Rezerwacja online"
-        kotwica: rezerwacja
-      - etykieta: "8. Twoje prawa"
+      - etykieta: "7. Twoje prawa"
         kotwica: prawa
-      - etykieta: "9. Pliki cookie"
+      - etykieta: "8. Pliki cookie"
         kotwica: cookies
-      - etykieta: "10. Dobrowolność"
+      - etykieta: "9. Dobrowolność"
         kotwica: dobrowolnosc
-      - etykieta: "11. Zmiany"
+      - etykieta: "10. Zmiany"
         kotwica: zmiany
     polacz: true
   - type: tekst
@@ -56,7 +54,7 @@ sekcje:
       **Prywatny Gabinet Stomatologiczny lek. stom. Dorota Rożdżestwieńska**\
       ul. Złotoryjska 16/18 m. 10, 59-220 Legnica
 
-      - telefon: [76 72-26-880](tel:+48767226880), [699 904 989](tel:+48699904989)
+      - telefon: [699 904 989](tel:+48699904989)
       - e-mail: [gabstom13@wp.pl](mailto:gabstom13@wp.pl) ==DO POTWIERDZENIA==
 
       Dane rejestrowe praktyki — NIP **DO UZUPEŁNIENIA**, REGON **DO UZUPEŁNIENIA**, numer prawa wykonywania zawodu **DO UZUPEŁNIENIA**, wpis do rejestru podmiotów wykonujących działalność leczniczą (RPWDL) **DO UZUPEŁNIENIA** — gabinet uzupełni przed publikacją.
@@ -152,40 +150,13 @@ sekcje:
     polacz: true
   - type: tekst
     tresc: |-
-      Kliknięcie przycisku jest zgodą w rozumieniu art. 6 ust. 1 lit. a RODO. Pamiętamy ją tylko do zamknięcia karty przeglądarki — patrz [punkt 9](#cookies).
+      Kliknięcie przycisku jest zgodą w rozumieniu art. 6 ust. 1 lit. a RODO. Pamiętamy ją tylko do zamknięcia karty przeglądarki — patrz [punkt 8](#cookies).
 
       Google może przetwarzać te dane także poza Europejskim Obszarem Gospodarczym, w tym w Stanach Zjednoczonych. Podstawą przekazania są standardowe klauzule umowne zatwierdzone przez Komisję Europejską oraz decyzja Komisji z 10 lipca 2023 r. stwierdzająca odpowiedni stopień ochrony w ramach **EU–US Data Privacy Framework**.
     polacz: true
   - type: tekst
     waska: true
-    naglowek: "7. Rezerwacja online w serwisie zewnętrznym"
-    tresc: |-
-      Serwis udostępnia **odnośnik** do zewnętrznego systemu rezerwacji wizyt Booksy. To zwykły odnośnik otwierany w nowej karcie, a nie kalendarz osadzony na naszej stronie.
-    wariant: wyrozniony
-    kotwica: rezerwacja
-  - type: ramka
-    rodzaj: ok
-    tresc: |-
-      **Samo odwiedzenie naszej strony nie przekazuje do tego serwisu żadnych danych ani nie ustawia żadnych jego plików cookie.** Nie pobieramy z jego serwerów ani jednego pliku. Dane wychodzą dopiero wtedy, gdy klikniesz odnośnik — czyli na Twoje wyraźne działanie. Dlatego serwis nadal nie potrzebuje banera zgody na pliki cookie (patrz [punkt 9](#cookies)).
-    ikona: tarcza
-    polacz: true
-  - type: tekst
-    tresc: |-
-      Od chwili przejścia do systemu rezerwacji Twoje dane przetwarza **operator serwisu Booksy jako osobny administrator**, na podstawie własnej polityki prywatności i własnego regulaminu. Gabinet nie decyduje tam ani o celach, ani o sposobach przetwarzania.
-
-      Z systemu rezerwacji gabinet otrzymuje tylko dane niezbędne do obsługi wizyty: imię i nazwisko, numer telefonu, wybrany termin i rodzaj wizyty. Dalej przetwarzamy je tak jak zgłoszenie telefoniczne — opisuje to [punkt 2](#dane).
-    ramka:
-      rodzaj: uwaga
-      tresc: |-
-        **Nie wpisuj szczegółów zdrowotnych w pole uwag w zewnętrznym systemie.** Informacje o zdrowiu to **szczególna kategoria danych z art. 9 RODO** i wymagają mocniejszej ochrony niż dane kontaktowe. O objawach, lekach i przebytych chorobach rozmawiamy na wizycie albo telefonicznie.
-    polacz: true
-  - type: tekst
-    tresc: |-
-      **Termin potwierdza gabinet.** Rejestracja telefoniczna pozostaje dostępna i **nie wymaga** korzystania z serwisu zewnętrznego — wizytę umówisz pod numerem [76 72-26-880](tel:+48767226880) albo [699 904 989](tel:+48699904989).
-    polacz: true
-  - type: tekst
-    waska: true
-    naglowek: "8. Twoje prawa"
+    naglowek: "7. Twoje prawa"
     tresc: |-
       W związku z przetwarzaniem danych masz prawo do:
 
@@ -214,11 +185,9 @@ sekcje:
     polacz: true
   - type: tekst
     waska: true
-    naglowek: "9. Pliki cookie i dane zapisywane w przeglądarce"
+    naglowek: "8. Pliki cookie i dane zapisywane w przeglądarce"
     tresc: |-
       Uczciwie i krótko: **ten serwis nie używa cookies śledzących**. Nie ma tu Google Analytics ani innego narzędzia analitycznego, nie ma pikseli reklamowych, zewnętrznych czcionek ani bibliotek z obcych serwerów. Jedynym wyjątkiem jest mapa Google z [punktu 6](#mapa), ładowana po Twoim kliknięciu.
-
-      Odnośnik do zewnętrznego systemu rezerwacji z [punktu 7](#rezerwacja) też niczego nie pobiera: to zwykły odnośnik, który przekazuje coś dopiero wtedy, gdy w niego klikniesz.
 
       Strona zapisuje w Twojej przeglądarce dokładnie dwie informacje — i obie w niej zostają, nigdy nie są nikomu wysyłane:
 
@@ -235,7 +204,7 @@ sekcje:
     kotwica: cookies
   - type: tekst
     waska: true
-    naglowek: "10. Czy podanie danych jest obowiązkowe?"
+    naglowek: "9. Czy podanie danych jest obowiązkowe?"
     tresc: |-
       Podanie danych jest dobrowolne, ale od części z nich zależy, czy gabinet będzie mógł Ci pomóc.
 
@@ -249,15 +218,15 @@ sekcje:
     kotwica: dobrowolnosc
   - type: tekst
     waska: true
-    naglowek: "11. Data obowiązywania i zasady zmian"
+    naglowek: "10. Data obowiązywania i zasady zmian"
     tresc: |-
       Polityka obowiązuje od ==DO POTWIERDZENIA== — data zostanie wpisana w dniu publikacji, po sprawdzeniu dokumentu przez prawnika.
 
       Aktualizujemy ją, gdy zmieni się sposób działania gabinetu lub serwisu albo gdy zmienią się przepisy. Każdą nową wersję publikujemy pod tym samym adresem, z datą.
 
-      Zmiana polityki nie odbiera Ci żadnego z praw z [punktu 8](#prawa). Jeśli dotyczy danych przetwarzanych na podstawie zgody, poprosimy o zgodę ponownie, a nie uznamy jej milcząco za udzieloną.
+      Zmiana polityki nie odbiera Ci żadnego z praw z [punktu 7](#prawa). Jeśli dotyczy danych przetwarzanych na podstawie zgody, poprosimy o zgodę ponownie, a nie uznamy jej milcząco za udzieloną.
 
-      Masz pytanie o swoje dane? Zadzwoń pod [76 72-26-880](tel:+48767226880) albo napisz na [gabstom13@wp.pl](mailto:gabstom13@wp.pl).
+      Masz pytanie o swoje dane? Zadzwoń pod [699 904 989](tel:+48699904989) albo napisz na [gabstom13@wp.pl](mailto:gabstom13@wp.pl).
     wariant: wyrozniony
     kotwica: zmiany
   - type: powiazane

@@ -1,7 +1,7 @@
 ---
 title: "Wyposażenie gabinetu"
 seo_tytul: "Wyposażenie gabinetu Legnica | Dorota Rożdżestwieńska"
-description: "Pantomograf i radiowizjografia na miejscu, kamera wewnątrzustna, przypomnienia SMS, płatność kartą i BLIKIEM, klimatyzacja. Gabinet w Legnicy: 76 72-26-880."
+description: "Pantomograf i radiowizjografia na miejscu, kamera wewnątrzustna, przypomnienia SMS, płatność kartą i BLIKIEM, klimatyzacja. Gabinet w Legnicy: 699 904 989."
 draft: false
 weight: 16
 sekcje:
@@ -109,7 +109,7 @@ sekcje:
     tresc: |-
       Gabinet mieści się w centrum Legnicy, pod adresem ul. Złotoryjska 16/18 m. 10. Nie opisujemy tu udogodnień, których nie moglibyśmy potwierdzić.
 
-      Jeśli poruszasz się z trudnością, korzystasz z wózka albo kul, przychodzisz z małym dzieckiem w wózku lub masz inne szczególne potrzeby — zadzwoń przed wizytą pod 76 72-26-880. Powiemy dokładnie, jak wygląda dojście do gabinetu, i umówimy Cię na godzinę, w której będziemy mogli pomóc.
+      Jeśli poruszasz się z trudnością, korzystasz z wózka albo kul, przychodzisz z małym dzieckiem w wózku lub masz inne szczególne potrzeby — zadzwoń przed wizytą pod 699 904 989. Powiemy dokładnie, jak wygląda dojście do gabinetu, i umówimy Cię na godzinę, w której będziemy mogli pomóc.
     ikona: dostepnosc
     wariant: wyrozniony
     polacz: true

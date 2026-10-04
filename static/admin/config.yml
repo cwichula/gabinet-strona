@@ -1266,7 +1266,7 @@ collections:
               - { name: wlaczona, label: Pokazuj przycisk rezerwacji online, widget: boolean, default: false, required: false }
               - { name: url, label: Adres strony rezerwacji, widget: string, type: url, required: false }
               - { name: etykieta, label: Napis na przycisku, widget: string, default: Umów wizytę online }
-              - { name: dostawca, label: Nazwa serwisu rezerwacji, widget: string, required: false, hint: 'Np. Booksy — pojawia się na przyciskach („… w Booksy”).' }
+              - { name: dostawca, label: Nazwa serwisu rezerwacji, widget: string, required: false, hint: 'Nazwa serwisu, w którym pacjent rezerwuje wizytę — pojawia się na przyciskach.' }
               - name: potwierdzona
                 label: Adres to profil naszego gabinetu
                 widget: boolean

@@ -1,7 +1,7 @@
 ---
 title: "Dentysta dla dzieci"
 seo_tytul: "Dentysta dla dzieci Legnica | Gabinet Dorota Rożdżestwieńska"
-description: "Dentysta dla dzieci w Legnicy: pierwsza wizyta adaptacyjna, lakowanie i lakierowanie fluorem, leczenie zębów mlecznych, RTG na miejscu. Tel. 76 72-26-880."
+description: "Dentysta dla dzieci w Legnicy: pierwsza wizyta adaptacyjna, lakowanie i lakierowanie fluorem, leczenie zębów mlecznych, RTG na miejscu. Tel. 699 904 989."
 draft: false
 weight: 10
 usluga:

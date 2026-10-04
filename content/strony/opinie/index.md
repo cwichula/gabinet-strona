@@ -1,7 +1,7 @@
 ---
 title: "Opinie pacjentów"
 seo_tytul: "Opinie o gabinecie Legnica | lek. stom. D. Rożdżestwieńska"
-description: "Gabinet stomatologiczny Legnica: gdzie zostawić opinię, dlaczego nie publikujemy wymyślonych ocen i jak odpowiadamy na opinie pacjentów. Tel. 76 72-26-880."
+description: "Gabinet stomatologiczny Legnica: gdzie zostawić opinię, dlaczego nie publikujemy wymyślonych ocen i jak odpowiadamy na opinie pacjentów. Tel. 699 904 989."
 draft: false
 weight: 17
 sekcje:
@@ -63,7 +63,7 @@ sekcje:
     wariant: domyslny
   - type: ramka
     rodzaj: uwaga
-    tresc: "Nagły ból, obrzęk albo uraz zęba to sprawa pilna. Zadzwoń pod [76 72-26-880](tel:+48767226880) lub [699 904 989](tel:+48699904989) — pilne przypadki staramy się przyjąć tego samego dnia."
+    tresc: "Nagły ból, obrzęk albo uraz zęba to sprawa pilna. Zadzwoń pod [699 904 989](tel:+48699904989) — pilne przypadki staramy się przyjąć tego samego dnia."
     ikona: uwaga
     wariant: domyslny
     polacz: true

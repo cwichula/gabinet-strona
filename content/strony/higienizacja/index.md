@@ -1,7 +1,7 @@
 ---
 title: "Higienizacja"
 seo_tytul: "Higienizacja zębów Legnica | Gabinet Dorota Rożdżestwieńska"
-description: "Usuwanie kamienia nazębnego (skaling), piaskowanie, lakierowanie fluorem i lakowanie bruzd. Gabinet stomatologiczny Legnica. Tel. 76 72-26-880."
+description: "Usuwanie kamienia nazębnego (skaling), piaskowanie, lakierowanie fluorem i lakowanie bruzd. Gabinet stomatologiczny Legnica. Tel. 699 904 989."
 draft: false
 weight: 7
 usluga:

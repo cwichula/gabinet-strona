@@ -1,13 +1,13 @@
 ---
 title: "Kontakt"
 seo_tytul: "Kontakt — dentysta Legnica | Gabinet Dorota Rożdżestwieńska"
-description: "Gabinet stomatologiczny w centrum Legnicy, ul. Złotoryjska 16/18 m. 10. Zdjęcie wejścia, parking w Galerii Gwarnej, mapa i godziny. Rejestracja: 76 72-26-880."
+description: "Gabinet stomatologiczny w centrum Legnicy, ul. Złotoryjska 16/18 m. 10. Zdjęcie wejścia, parking w Galerii Gwarnej, mapa i godziny. Rejestracja: 699 904 989."
 draft: false
 weight: 14
 sekcje:
   - type: hero
     naglowek: "Kontakt i dojazd — gabinet w centrum Legnicy"
-    tresc: "Gabinet mieści się przy ul. Złotoryjskiej 16/18 m. 10, kilka kroków od Galerii Gwarnej. Poniżej numery do rejestracji, godziny przyjęć, zdjęcie wejścia i mapa dojazdu."
+    tresc: "Gabinet mieści się przy ul. Złotoryjskiej 16/18 m. 10, kilka kroków od Galerii Gwarnej. Poniżej numer do rejestracji, godziny przyjęć, zdjęcie wejścia i mapa dojazdu."
     pokaz_telefon: false
     wariant: domyslny
   - type: kontakt
@@ -25,38 +25,21 @@ sekcje:
     tresc: |-
       Dzwoniąc, powiedz krótko, co Cię sprowadza — ból, przegląd, kontynuacja leczenia czy proteza. Dzięki temu rejestracja zarezerwuje odpowiednio długi termin. O zbliżającej się wizycie przypomnimy SMS-em.
 
-      Oba numery prowadzą do rejestracji. Jeśli na stacjonarnym jest zajęte, zadzwoń na komórkowy. Bywa też, że telefon odezwie się dopiero po chwili — w godzinach przyjęć przy fotelu jest pacjent.
+      Bywa, że telefon odezwie się dopiero po chwili — w godzinach przyjęć przy fotelu jest pacjent.
 
       Jeśli jesteś u nas pierwszy raz, zajrzyj wcześniej na stronę [pierwsza wizyta](/pierwsza-wizyta/) — opisujemy tam krok po kroku, jak wygląda badanie i co warto ze sobą zabrać. Ceny zabiegów zebraliśmy w [cenniku](/cennik/); samo badanie z konsultacją kosztuje 100 zł.
     wypunktowanie: zwykle
     strona_zdjecia: prawa
     wariant: domyslny
     polacz: true
-  - type: rezerwacja
-    naglowek: "Jak umówić wizytę"
-    tresc: "Dzwonisz, mówisz, co Cię sprowadza, i termin ustalamy w rozmowie. Numery do rejestracji są wyżej na tej stronie — telefon pozostaje drogą najpewniejszą."
-    wariant: wyrozniony
   - type: tekst
-    tresc: |-
-      ### Co się dzieje, kiedy klikniesz odnośnik rezerwacji
-
-      - Odnośnik otwiera **serwis zewnętrzny** — Booksy — w nowej karcie. Nasza strona zostaje otwarta w poprzedniej.
-      - Booksy jest **osobnym administratorem** danych, które tam podasz, i przetwarza je na podstawie własnej polityki prywatności.
-      - Nasza strona niczego z tego serwisu **nie pobiera**. Dopóki nie klikniesz, nie idzie do niego żadna informacja o Twojej wizycie u nas — dlatego serwis nadal nie potrzebuje banera zgody na pliki cookie.
-      - **Termin potwierdza gabinet.** Zgłoszenie w serwisie zewnętrznym jest prośbą o termin, a nie jego potwierdzeniem; odezwiemy się telefonicznie.
-      - Rejestracja telefoniczna działa jak dotąd i nic jej nie zastępuje. Przy bólu i w sprawach pilnych zadzwoń: [**76 72-26-880**](tel:+48767226880) lub [699 904 989](tel:+48699904989).
-
-      Rezerwacja online jest w przygotowaniu: odnośnik prowadzi na razie do serwisu Booksy, a nie do kalendarza tego gabinetu — pewny termin ustalisz telefonicznie.
-
-      Jak traktujemy dane przy rezerwacji w serwisie zewnętrznym, opisuje [polityka prywatności](/polityka-prywatnosci/#rezerwacja).
-    wypunktowanie: zwykle
-    strona_zdjecia: prawa
-    wariant: domyslny
-    polacz: true
+    naglowek: "Jak umówić wizytę"
+    tresc: "Dzwonisz, mówisz, co Cię sprowadza, i termin ustalamy w rozmowie. Numer do rejestracji jest wyżej na tej stronie — telefon pozostaje drogą najpewniejszą."
+    wariant: wyrozniony
   - type: faq
     elementy:
       - pytanie: "Czy wizytę można umówić online?"
-        odpowiedz: "Oprócz rejestracji telefonicznej strona udostępnia odnośnik do zewnętrznego serwisu rezerwacji Booksy. Odnośnik otwiera się w nowej karcie, a serwis ten jest osobnym administratorem podanych w nim danych. Termin potwierdza gabinet telefonicznie. Rejestracja pod numerem [76 72-26-880](tel:+48767226880) pozostaje drogą najpewniejszą i nic jej nie zastępuje."
+        odpowiedz: "Nie. Wizyty umawiamy telefonicznie, pod numerem [699 904 989](tel:+48699904989). W rozmowie dobieramy termin do tego, co Cię sprowadza — ból, przegląd czy kontynuacja leczenia wymagają innej długości wizyty."
     wariant: domyslny
     polacz: true
   - type: tekst

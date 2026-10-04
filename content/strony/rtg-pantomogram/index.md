@@ -1,7 +1,7 @@
 ---
 title: "RTG i pantomogram"
 seo_tytul: "Pantomogram Legnica | Gabinet Dorota Rożdżestwieńska"
-description: "Pantomogram cyfrowy 120 zł, zdjęcie RTG punktowe z radiowizjografią 50 zł. Aparat rentgenowski z pantomografem stoi w gabinecie w Legnicy. Tel. 76 72-26-880."
+description: "Pantomogram cyfrowy 120 zł, zdjęcie RTG punktowe z radiowizjografią 50 zł. Aparat rentgenowski z pantomografem stoi w gabinecie w Legnicy. Tel. 699 904 989."
 draft: false
 weight: 9
 usluga:

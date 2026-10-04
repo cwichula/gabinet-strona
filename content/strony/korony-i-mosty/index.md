@@ -1,7 +1,7 @@
 ---
 title: "Korony i mosty"
 seo_tytul: "Korony i mosty Legnica | Gabinet Dorota Rożdżestwieńska"
-description: "Korony porcelanowe i pełnoceramiczne E-MAX, most z włókna szklanego bez mocnego szlifowania zębów obok. Legnica, ul. Złotoryjska. Zadzwoń: 76 72-26-880."
+description: "Korony porcelanowe i pełnoceramiczne E-MAX, most z włókna szklanego bez mocnego szlifowania zębów obok. Legnica, ul. Złotoryjska. Zadzwoń: 699 904 989."
 draft: false
 weight: 5
 usluga:

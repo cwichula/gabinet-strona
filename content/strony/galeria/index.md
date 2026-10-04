@@ -1,7 +1,7 @@
 ---
 title: "Galeria"
 seo_tytul: "Galeria zdjęć gabinetu Legnica | Dorota Rożdżestwieńska"
-description: "Zdjęcia gabinetu stomatologicznego w Legnicy: stanowisko zabiegowe, poczekalnia i pracownia RTG z pantomografem. Zobacz wnętrze przed wizytą: 76 72-26-880."
+description: "Zdjęcia gabinetu stomatologicznego w Legnicy: stanowisko zabiegowe, poczekalnia i pracownia RTG z pantomografem. Zobacz wnętrze przed wizytą: 699 904 989."
 draft: false
 weight: 13
 sekcje:

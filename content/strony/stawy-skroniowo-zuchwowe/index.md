@@ -1,7 +1,7 @@
 ---
 title: "Stawy skroniowo-żuchwowe"
 seo_tytul: "Stawy skroniowo-żuchwowe Legnica | Gabinet Rożdżestwieńska"
-description: "Trzeszczenie w żuchwie, ból przy gryzieniu, ograniczone otwieranie ust. Diagnostyka czynnościowa i szynoterapia — Legnica, ul. Złotoryjska. Tel. 76 72-26-880."
+description: "Trzeszczenie w żuchwie, ból przy gryzieniu, ograniczone otwieranie ust. Diagnostyka czynnościowa i szynoterapia — Legnica, ul. Złotoryjska. Tel. 699 904 989."
 draft: false
 weight: 3
 usluga:
@@ -30,7 +30,7 @@ sekcje:
     wypunktowanie: ptaszki
     ramka:
       rodzaj: uwaga
-      tresc: "Jeśli żuchwa zablokowała się w otwarciu i nie udaje się zamknąć ust, nie czekaj na planowy termin — zadzwoń od razu: [76 72-26-880](tel:+48767226880)."
+      tresc: "Jeśli żuchwa zablokowała się w otwarciu i nie udaje się zamknąć ust, nie czekaj na planowy termin — zadzwoń od razu: [699 904 989](tel:+48699904989)."
     zdjecie:
       plik: "gabinet-06.jpg"
       alt: "Omawianie z pacjentem zdjęcia rentgenowskiego wyświetlonego na monitorze przy fotelu"
@@ -158,7 +158,7 @@ sekcje:
       - pytanie: "Jak długo nosi się szynę relaksacyjną?"
         odpowiedz: "Na ogół w nocy, przez wiele miesięcy, a przy utrzymującym się bruksizmie także dłużej — podobnie jak okulary, szyna działa wtedy, kiedy się jej używa. Potrzebne są wizyty kontrolne: szyna wymaga dopasowania, a z czasem się ściera."
       - pytanie: "Czy do badania stawów skroniowo-żuchwowych potrzebne jest skierowanie?"
-        odpowiedz: "Nie. Gabinet jest prywatny, więc skierowanie nie jest potrzebne — wystarczy telefon do rejestracji pod numer [76 72-26-880](tel:+48767226880). Jeśli masz wcześniejsze zdjęcia RTG, opisy badań albo starą szynę, weź je ze sobą na wizytę."
+        odpowiedz: "Nie. Gabinet jest prywatny, więc skierowanie nie jest potrzebne — wystarczy telefon do rejestracji pod numer [699 904 989](tel:+48699904989). Jeśli masz wcześniejsze zdjęcia RTG, opisy badań albo starą szynę, weź je ze sobą na wizytę."
     wariant: wyrozniony
   - type: powiazane
     naglowek: "Przeczytaj też"

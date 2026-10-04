@@ -15,7 +15,7 @@ oba szablony budują się z tej samej treści (zmiana szablonu = jedna linia w `
 
 **Przed uruchomieniem strony dla pacjentów:** w panelu „Ustawienia” wyłącz „Ukryj
 stronę przed wyszukiwarkami” (teraz włączone, jak w makiecie v1 — w danych są jeszcze
-pola do uzupełnienia: dane rejestrowe, godziny, adres rezerwacji online, fragmenty
+pola do uzupełnienia: dane rejestrowe, godziny, fragmenty
 polityki prywatności oznaczone „DO UZUPEŁNIENIA”).
 
 ## Z czego to jest zbudowane
@@ -242,7 +242,7 @@ Pomijane zawsze: `.well-known/`, `cgi-bin/`, `.user.ini`, `.ftpquota`.
    `http://…` i `www.…` (przekierowanie), `/cennik.php` (301 na `/cennik/`),
    `/nie-ma-takiej/` (strona 404 gabinetu).
 6. Stary hosting wyłączyć po kilku dniach, gdy zmiana DNS rozejdzie się po sieci.
-7. Po uzupełnieniu danych (godziny, dane rejestrowe, rezerwacja, polityka prywatności):
+7. Po uzupełnieniu danych (godziny, dane rejestrowe, polityka prywatności):
    panel → Ustawienia → wyłączyć „Ukryj stronę przed wyszukiwarkami”, potem Google
    Search Console: dodać domenę i wysłać `sitemap.xml`.
 
@@ -333,9 +333,13 @@ szablonach; `tools/sprawdz-kontrakt.py` nie przepuści niekompletnej zmiany.
 
 Dane oznaczone w `gamstom` jako niepotwierdzone (do sprawdzenia z właścicielką):
 godziny przyjęć (przykładowe), e-mail, dane rejestrowe (pola w „Dane gabinetu → Dane
-rejestrowe” są puste — wiersz w stopce pojawi się po ich wpisaniu) i adres rezerwacji
-online (obecnie wyszukiwarka Booksy, a nie profil gabinetu — do zmiany albo wyłączenia
-w „Dane gabinetu → Rezerwacja online”).
+rejestrowe” są puste — wiersz w stopce pojawi się po ich wpisaniu).
+
+Rezerwacja online jest wyłączona (bez adresu i serwisu): wizyty umawia się tylko
+telefonicznie, pod jednym numerem — komórkowym 699 904 989 (numer stacjonarny
+usunięty ze strony). Włączenie w przyszłości: „Dane gabinetu → Rezerwacja online”
+(adres profilu gabinetu, nazwa serwisu, nota o danych), plus bloki „Rezerwacja online”
+na stronach i punkt o serwisie zewnętrznym w polityce prywatności.
 
 ## Aktualizacja Sveltia CMS
 

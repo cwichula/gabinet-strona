@@ -1,7 +1,7 @@
 ---
 title: "Bruksizm i szyna Michigan"
 seo_tytul: "Bruksizm i szyna Michigan Legnica | Gabinet Rożdżestwieńska"
-description: "Zgrzytasz zębami w nocy? Diagnostyka bruksizmu i szyna relaksacyjna Michigan w Legnicy. Szyna 800 zł, konsultacja 100 zł. Umów wizytę: 76 72-26-880."
+description: "Zgrzytasz zębami w nocy? Diagnostyka bruksizmu i szyna relaksacyjna Michigan w Legnicy. Szyna 800 zł, konsultacja 100 zł. Umów wizytę: 699 904 989."
 draft: false
 weight: 2
 usluga:

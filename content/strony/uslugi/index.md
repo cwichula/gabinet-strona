@@ -2,7 +2,7 @@
 weight: 1
 title: Usługi
 seo_tytul: Usługi stomatologiczne Legnica | Gabinet Rożdżestwieńska
-description: 'Zakres usług gabinetu stomatologicznego w Legnicy: leczenie próchnicy, higienizacja, protezy, korony, licówki, RTG i szyna Michigan. Tel. 76 72-26-880.'
+description: 'Zakres usług gabinetu stomatologicznego w Legnicy: leczenie próchnicy, higienizacja, protezy, korony, licówki, RTG i szyna Michigan. Tel. 699 904 989.'
 draft: false
 usluga: null
 sekcje:
@@ -27,7 +27,7 @@ sekcje:
     tresc: |-
       Gabinet działa przy ul. Złotoryjskiej 16/18 m. 10 od 1995 roku, a prowadzi go lek. stom. Dorota Rożdżestwieńska. Przyjmujemy całe rodziny — dorosłych i dzieci. Zakres usług jest świadomie wąski: robimy to, co da się zrobić dobrze w jednym gabinecie, z diagnostyką RTG na miejscu i bez odsyłania pacjenta w kilka miejsc.
 
-      Poniżej znajdziesz wszystkie dziewięć obszarów leczenia, pogrupowanych tematycznie. Jeśli nie wiesz, do której grupy należy Twój problem — zadzwoń pod [76 72-26-880](tel:+48767226880) albo po prostu przyjdź na [pierwszą wizytę](/pierwsza-wizyta/): badanie z konsultacją kosztuje 100 zł i kończy się planem leczenia razem z kosztem.
+      Poniżej znajdziesz wszystkie dziewięć obszarów leczenia, pogrupowanych tematycznie. Jeśli nie wiesz, do której grupy należy Twój problem — zadzwoń pod [699 904 989](tel:+48699904989) albo po prostu przyjdź na [pierwszą wizytę](/pierwsza-wizyta/): badanie z konsultacją kosztuje 100 zł i kończy się planem leczenia razem z kosztem.
     zdjecie: null
     przycisk: null
     wariant: domyslny
@@ -229,7 +229,7 @@ sekcje:
     wypunktowanie: zwykle
     ramka:
       rodzaj: info
-      tresc: Zdjęcie RTG można u nas wykonać także wtedy, gdy leczysz się w innym gabinecie i potrzebujesz tylko diagnostyki. Zadzwoń pod [76 72-26-880](tel:+48767226880), żeby ustalić termin.
+      tresc: Zdjęcie RTG można u nas wykonać także wtedy, gdy leczysz się w innym gabinecie i potrzebujesz tylko diagnostyki. Zadzwoń pod [699 904 989](tel:+48699904989), żeby ustalić termin.
     strona_zdjecia: prawa
     pokaz_telefony: false
   - type: powiazane
