@@ -1,7 +1,9 @@
 {{- /* Naglowek sekcji: h2 (z margin-top:0, gdy to pierwszy blok sekcji - jak
        w makiecie v1) i opcjonalny wstep (p.lede).
-       Wejscie: dict "strona", "naglowek", "wstep", "gora" (bool), "lede_styl". */ -}}
-{{- with .naglowek }}
+       Wejscie: dict "strona", "naglowek", "domyslny" (naglowek, gdy pusty, ale
+       tylko dla pierwszego bloku sekcji - blok dolaczony nie dostaje
+       domyslnego tytulu), "wstep", "gora" (bool), "lede_styl". */ -}}
+{{- with .naglowek | default (cond .gora (.domyslny | default "") "") }}
 <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ . }}</h2>
 {{- end }}
 {{- with .wstep }}

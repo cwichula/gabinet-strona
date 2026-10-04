@@ -13,9 +13,7 @@
   {{- end -}}
 {{- end -}}
 {{- with $linki }}
-    {{- with $b.naglowek }}
-    <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ . }}</h2>
-    {{- end }}
+    {{- partial "h2.html" (dict "naglowek" $b.naglowek "gora" $.gora) }}
     <div class="related">
       {{- range . }}
       <a href="{{ .href }}">{{ .tytul }}{{ with .opis }}<span>{{ . }}</span>{{ end }}</a>

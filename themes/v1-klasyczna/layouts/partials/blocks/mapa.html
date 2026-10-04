@@ -9,9 +9,7 @@
 {{- /* zapytanie do map: bez "ul." i bez numeru lokalu ("m. 10"), ktore myla wyszukiwarke */ -}}
 {{- $ulica := replaceRE `\s+m\.\s*\d+\s*$` "" ($a.ulica | default "") | replaceRE `^(?i)ul\.\s*` "" -}}
 {{- $zapytanie := printf "%s, %s %s" $ulica ($a.kod | default "") ($a.miasto | default "") | urlquery -}}
-    {{- with $b.naglowek | default (cond $.gora "Jak do nas trafić" "") }}
-    <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ . }}</h2>
-    {{- end }}
+    {{- partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" "Jak do nas trafić" "gora" $.gora) }}
     {{- with $b.tresc }}
     {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede" "styl" "max-width:62ch") }}
     {{- end }}

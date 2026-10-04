@@ -37,9 +37,7 @@
 {{- /* wyszukiwarka: skrypt v1 obsluguje jedna tabele na strone (#cennik-tabela) */ -}}
 {{- $szukaj := false -}}
 {{- if and $b.wyszukiwarka (not ($.pamiec.Get "cennik-wyszukiwarka")) }}{{ $szukaj = true }}{{ $.pamiec.Set "cennik-wyszukiwarka" true }}{{ end -}}
-    {{- with $b.naglowek | default (cond $.gora "Cennik" "") }}
-    <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ . }}</h2>
-    {{- end }}
+    {{- partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" "Cennik" "gora" $.gora) }}
     {{- if and $szukaj $zGrupami }}
 
     <nav class="anchor-nav" aria-label="Grupy w cenniku">

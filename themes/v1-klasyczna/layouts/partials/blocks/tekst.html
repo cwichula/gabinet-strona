@@ -54,12 +54,7 @@
     {{- with $eyebrow }}
     {{ . | safeHTML }}
     {{- end }}
-    {{- with $b.naglowek }}
-    <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ . }}</h2>
-    {{- end }}
-    {{- with $b.wstep }}
-    {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede" "styl" "max-width:62ch") }}
-    {{- end }}
+    {{- partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "wstep" $b.wstep "gora" $.gora) }}
     {{- with $tresc }}
     <div class="prose"{{ if or $b.wstep (hasPrefix (strings.TrimSpace ($b.tresc | default "")) "#") }} style="margin-top:2rem"{{ end }}>
       {{ . | safeHTML }}
