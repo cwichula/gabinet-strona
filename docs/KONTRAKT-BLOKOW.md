@@ -74,7 +74,7 @@ w obsłudze niż dwa poziomy rozwijanych list.
 Szablon renderuje bloki po kolei: `range .Params.sekcje` →
 `partial "blocks/<type>.html" (dict "blok" . "strona" $strona "nr" $indeks …)`.
 Nieznany typ = ostrzeżenie `warnf`, a w CI ostrzeżenie przerywa publikację.
-Szablon może pominąć `polacz` (każdy blok osobno — tak robi `v0-test`); szablon
+Szablon może pominąć `polacz` (każdy blok osobno); szablon
 `v1-klasyczna` grupuje bloki w `<section class="section">`.
 
 Pierwszy blok typu `hero` jest **nagłówkiem strony** (`h1`): na stronie głównej duży
@@ -506,7 +506,6 @@ wskazują pojedyncze pozycje (`cena`, `cena_od`, `pozycje`).
 
 | Szablon | Pomija |
 |---|---|
-| `v0-test` | `polacz` (każdy blok to osobna `<section>`), `waska`, ikony, `kolumny`, `strona_zdjecia`, `wypunktowanie`, `wyszukiwarka`, `kolumna` cennika, `styl` przycisków, `napisy`; formularz bez skryptu. |
 | `v1-klasyczna` | podpis zdjęcia w banerze (`hero`), `wariant` banera (baner ma własne tło); formy płatności (`platnosci`) tylko w danych dla wyszukiwarek, bez wiersza w stopce (stopka v1 ich nie ma). |
 
 ## Zmiany w wersji 2

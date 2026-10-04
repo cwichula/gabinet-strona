@@ -1,9 +1,0 @@
-{{- /* Blok "godziny": naglowek, tresc; godziny z data/gabinet.yaml. */ -}}
-{{- $b := .blok -}}
-<section {{ partial "blok-atrybuty.html" $b }}>
-  {{- with $b.naglowek | default (cond (and $b.polacz (gt $.nr 0)) "" "Godziny przyjęć") }}
-  <h2>{{ . }}</h2>
-  {{- end }}
-  {{ partial "godziny-tabela.html" (dict "podpis" "") }}
-  {{- with $b.tresc }}{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}{{ end }}
-</section>

@@ -1,7 +1,0 @@
-{{- /* Pole Markdown z CMS -> HTML (z hookami odnosnikow strony).
-       Wejscie: dict "strona" (Page), "tekst" (Markdown).
-       Surowy HTML jest wylaczony (hugo.yaml) - tylko <br> (np. wklejony tekst)
-       zamieniamy na zlamanie wiersza Markdown (dwie spacje + nowy wiersz),
-       zeby slowa po obu stronach sie nie sklejaly. */ -}}
-{{- $tekst := replaceRE `(?i)[ \t]*<br\s*/?>[ \t]*\n?` "  \n" (string (.tekst | default "")) -}}
-{{- .strona.RenderString (dict "display" "block") $tekst -}}

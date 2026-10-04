@@ -1,9 +1,0 @@
-{{- /* Jedna pozycja menu: odnosnik (z aria-current na biezacej stronie)
-       albo sam napis, gdy pozycja tylko grupuje podmenu. */ -}}
-{{- $poz := .poz -}}
-{{- if $poz.href -}}
-  {{- $aktywna := and $poz.strona (.biezaca.Eq $poz.strona) -}}
-  <a href="{{ $poz.href }}"{{ if $aktywna }} aria-current="page"{{ end }}>{{ $poz.etykieta }}</a>
-{{- else -}}
-  <span>{{ $poz.etykieta }}</span>
-{{- end -}}

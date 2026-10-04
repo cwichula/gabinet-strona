@@ -1,9 +1,0 @@
-{{- /* Blok "ramka": rodzaj (info | uwaga | ok), tresc (Markdown), ikona (pomijana). */ -}}
-{{- $b := .blok -}}
-{{- $etykiety := dict "info" "Informacja" "uwaga" "Uwaga" "ok" "Dobrze wiedzieć" -}}
-<section {{ partial "blok-atrybuty.html" $b }}>
-  <div class="ramka ramka--{{ $b.rodzaj | default "info" }}">
-    <p class="ramka__rodzaj">{{ index $etykiety ($b.rodzaj | default "info") | default "Informacja" }}</p>
-    {{ partial "markdown.html" (dict "strona" $.strona "tekst" $b.tresc) }}
-  </div>
-</section>

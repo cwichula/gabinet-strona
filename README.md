@@ -10,8 +10,8 @@ strona sama się przebudowuje i publikuje.
 
 Etap 2 (ten stan repozytorium, zakończony): strona ma wygląd makiety v1 — szablon
 `themes/v1-klasyczna` — a cała treść (strony, bloki, menu, cennik, dane gabinetu) nadal
-pochodzi z panelu. Szablon testowy `v0-test` zostaje jako kontrola kontraktu bloków;
-oba szablony budują się z tej samej treści (zmiana szablonu = jedna linia w `hugo.yaml`).
+pochodzi z panelu. Szablon wybiera jedna linia w `hugo.yaml`; nowy szablon buduje się
+z tej samej treści, o ile spełnia kontrakt bloków.
 
 **Przed uruchomieniem strony dla pacjentów:** w panelu „Ustawienia” wyłącz „Ukryj
 stronę przed wyszukiwarkami” (teraz włączone, jak w makiecie v1 — w danych są jeszcze
@@ -38,7 +38,6 @@ data/gabinet.yaml                dane gabinetu, godziny, rezerwacja, dane rejest
 data/ustawienia.yaml             domyślny opis SEO, tekst stopki, napisy szablonu, ukrycie przed wyszukiwarkami
 assets/images/                   zdjęcia wspólne (np. strony głównej)
 themes/v1-klasyczna/             szablon v1 „Klasyczna” (używany, theme w hugo.yaml)
-themes/v0-test/                  szablon testowy (surowy HTML, kontrola kontraktu)
 layouts/                         PUSTY (nadpisałby każdy szablon) - pilnuje CI
 static/admin/                    panel: index.html, config.yml, sveltia-cms.js
 docs/KONTRAKT-BLOKOW.md          typy bloków i ich pola
@@ -251,8 +250,8 @@ Pomijane zawsze: `.well-known/`, `cgi-bin/`, `.user.ini`, `.ftpquota`.
 Szablon to katalog w `themes/` wybierany jedną linią `theme:` w `hugo.yaml`
 (teraz `v1-klasyczna`). Zmiana szablonu na stronie = zmiana tej linii i commit — treść
 (`content/`, `data/`) zostaje bez zmian. Podgląd innego szablonu bez zmiany pliku:
-`hugo server --theme v0-test` (albo `hugo --theme v0-test -d <katalog>` i
-`python tools/kontrola-strony.py <katalog>`). Oba szablony przechodzą `hugo` bez
+`hugo server --theme <nazwa>` (albo `hugo --theme <nazwa> -d <katalog>` i
+`python tools/kontrola-strony.py <katalog>`). Szablon musi przechodzić `hugo` bez
 ostrzeżeń i `tools/kontrola-strony.py` bez błędów, także po zapisie wszystkich wpisów
 z panelu. Każdy szablon ma ten sam zestaw:
 
@@ -260,7 +259,7 @@ z panelu. Każdy szablon ma ten sam zestaw:
 themes/<nazwa>/layouts/_default/baseof.html, home.html, single.html
 themes/<nazwa>/layouts/404.html
 themes/<nazwa>/layouts/_default/_markup/render-link.html   (odnośniki /slug/ w treści)
-themes/<nazwa>/layouts/partials/nav.html, footer.html, image.html, sekcje.html ...
+themes/<nazwa>/layouts/partials/naglowek.html, stopka.html, image.html, sekcje.html ...
 themes/<nazwa>/layouts/partials/blocks/<typ>.html          (po jednym na typ bloku)
 themes/<nazwa>/layouts/robots.txt                          (Sitemap, ukrycie przed wyszukiwarkami)
 themes/<nazwa>/assets/css/...
@@ -306,7 +305,7 @@ szablonach; `tools/sprawdz-kontrakt.py` nie przepuści niekompletnej zmiany.
 
 ## Etapy
 
-1. **Etap 1 — instalacja i test panelu** (szablon `v0-test`): repozytorium, publikacja,
+1. **Etap 1 — instalacja i test panelu** (szablon testowy `v0-test`, usunięty po etapie 2): repozytorium, publikacja,
    kontrakt bloków, panel z kolekcjami, treść startowa, cennik i dane z `gamstom`.
    Pozostaje: OAuth App + Worker + `base_url`, konto właścicielki (Write, 2FA), lista
    testów z planu — etap zamknięty, gdy przejdzie ją właścicielka na swoim koncie.

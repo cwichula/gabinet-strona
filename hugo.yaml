@@ -55,7 +55,8 @@ ignoreLogs: ['warning-goldmark-raw-html']
 
 imaging:
   # Zdjecia z CMS przychodza juz jako WebP <= 2048 px; Hugo zmniejsza je
-  # do <= 1600 px i zapisuje jako WebP (partial image.html).
+  # do szerokosci 480/800/1200 px i zapisuje jako WebP (partial zdjecie-zasob.html
+  # + image.html szablonu v1-klasyczna).
   resampleFilter: lanczos
   anchor: smart
   webp:

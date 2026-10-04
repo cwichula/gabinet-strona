@@ -3,7 +3,7 @@
 """Kontrola jakosci i zgodnosci zbudowanej strony (wynik Hugo w public/).
 
 Przeniesienie istoty tools/check-site.py z prototypu gamstom na wynik Hugo - dziala na
-gotowym HTML, wiec jest niezalezne od szablonu (v1-klasyczna, v0-test, ...).
+gotowym HTML, wiec jest niezalezne od szablonu (themes/*).
 Uruchamiane w CI po budowaniu; blad = strona nie zostaje opublikowana.
 
 Sprawdza na kazdej stronie HTML (poza panelem admin/):
