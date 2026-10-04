@@ -869,6 +869,9 @@ hr {
   padding: 0;
   color: var(--muted);
 }
+/* Jak w menu (.nav li + li): lista bez klasy lapala odstep miedzy punktami
+   zwyklych list w tresci, wiec biezaca strona stala nizej niz "Start". */
+.breadcrumbs li + li { margin-top: 0; }
 .breadcrumbs li + li::before { content: "/"; margin-right: .5rem; color: var(--line); }
 .breadcrumbs a { color: var(--muted); text-decoration: none; }
 .breadcrumbs a:hover { color: var(--brand-700); text-decoration: underline; }
