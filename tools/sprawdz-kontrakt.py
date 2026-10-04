@@ -15,7 +15,10 @@ Sprawdza:
      ale katalog mozna tez utworzyc recznie);
   7. data/cennik.yaml: identyfikatory kategorii i pozycji sa niepuste
      i niepowtarzalne, a kazda pozycja wskazuje istniejaca kategorie
-     (bloki na stronach wskazuja pozycje po identyfikatorze).
+     (bloki na stronach wskazuja pozycje po identyfikatorze);
+  8. telefony ("699 904 989") i ceny ("800 zł", "250–400 zł") wpisane recznie
+     w content/ i data/ustawienia.yaml wystepuja w data/gabinet.yaml (telefony)
+     i data/cennik.yaml (cena_od / cena_do).
 
 Wymaga PyYAML (w CI: pip install PyYAML). Kod wyjscia 1 = blad.
 Uzycie:  python tools/sprawdz-kontrakt.py
@@ -38,7 +41,10 @@ CONFIG = REPO / "static/admin/config.yml"
 CENNIK = REPO / "data/cennik.yaml"
 KONTRAKT = REPO / "docs/KONTRAKT-BLOKOW.md"
 POLA_WSPOLNE = {"wariant", "waska", "polacz", "kotwica"}  # pola kazdego typu bloku
+GABINET = REPO / "data/gabinet.yaml"
 WZOR_SLUGA = re.compile(r"[a-z0-9]+(-[a-z0-9]+)*")  # "type" to klucz typu (typeKey), nie pole
+WZOR_TELEFONU = re.compile(r"(?<![\d+])(?:\+48[  ]?)?\d{3}[  -]\d{3}[  -]\d{3}(?!\d)")
+WZOR_CENY = re.compile(r"(?<![\d.,])(\d[\d  ]*\d|\d)(?:[  ]?[–-][  ]?(\d[\d  ]*\d|\d))?[  ]?zł")
 
 bledy: list[str] = []
 
@@ -77,6 +83,29 @@ def typy_z_kontraktu() -> dict[str, set[str]]:
     return typy
 
 
+def sprawdz_fakty_w_tresci() -> None:
+    """Telefony i ceny wpisane recznie w tresc (opisy SEO, akapity) musza
+    istniec w data/gabinet.yaml i data/cennik.yaml - inaczej po zmianie numeru
+    albo ceny w panelu tekst stron po cichu by sie zestarzal."""
+    gabinet = yaml.safe_load(GABINET.read_text(encoding="utf-8")) or {}
+    numery = {re.sub(r"\D", "", str(t.get("numer", ""))) for t in gabinet.get("telefony") or []}
+    cennik = yaml.safe_load(CENNIK.read_text(encoding="utf-8")) or {}
+    ceny = {
+        int(p[k]) for p in cennik.get("pozycje") or [] for k in ("cena_od", "cena_do") if p.get(k) not in (None, "")
+    }
+    pliki = sorted((REPO / "content").rglob("*.md")) + [REPO / "data/ustawienia.yaml"]
+    for plik in pliki:
+        sciezka = plik.relative_to(REPO).as_posix()
+        for nr, wiersz in enumerate(plik.read_text(encoding="utf-8").splitlines(), 1):
+            for tel in WZOR_TELEFONU.findall(wiersz) + re.findall(r"tel:([+\d]+)", wiersz):
+                if re.sub(r"\D", "", tel)[-9:] not in numery:
+                    blad(f"{sciezka}:{nr}: telefon {tel!r} nie występuje w data/gabinet.yaml (telefony)")
+            for m in WZOR_CENY.finditer(wiersz):
+                for kwota in filter(None, (m.group(1), m.group(2))):
+                    if int(re.sub(r"\D", "", kwota)) not in ceny:
+                        blad(f"{sciezka}:{nr}: cena {m.group(0)!r} nie występuje w data/cennik.yaml")
+
+
 def main() -> int:
     # 1. layouts/ w korzeniu
     layouts = REPO / "layouts"
@@ -112,6 +141,9 @@ def main() -> int:
                     f"data/cennik.yaml: pozycja {p.get('nazwa')!r} wskazuje kategorię "
                     f"{p.get('kategoria')!r}, której nie ma na liście kategorii"
                 )
+
+    # 8. telefony i ceny wpisane w tresc
+    sprawdz_fakty_w_tresci()
 
     # 2-3. typy w config.yml
     config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))

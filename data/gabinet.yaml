@@ -1,6 +1,5 @@
-# Plik edytowany w panelu /admin/ (Sveltia CMS). Pierwotnie wygenerowany przez
-# tools/importuj-z-gamstom.py z repozytorium gamstom - komentarze w tym pliku
-# znikna przy pierwszym zapisie z CMS.
+# Plik edytowany w panelu /admin/ (Sveltia CMS, "Dane gabinetu"); komentarze
+# w tym pliku znikna przy pierwszym zapisie z CMS.
 nazwa: "Prywatny Gabinet Stomatologiczny lek. stom. Dorota Rożdżestwieńska"
 nazwa_krotka: "Gabinet stomatologiczny Dorota Rożdżestwieńska"
 lekarz: "lek. stom. Dorota Rożdżestwieńska"
@@ -49,7 +48,8 @@ rezerwacja:
   potwierdzona: false
   nota: ""
 # Dane rejestrowe: do uzupelnienia przez gabinet (NIP, REGON, nr prawa
-# wykonywania zawodu, nr ksiegi RPWDL). Puste = wiersz w stopce sie nie pokazuje.
+# wykonywania zawodu, nr ksiegi RPWDL). Puste = wiersz w stopce sie nie pokazuje,
+# a w polityce prywatnosci (shortcode gabinet) jest "DO UZUPELNIENIA".
 rejestrowe:
   nip: ""
   regon: ""

@@ -55,9 +55,9 @@ sekcje:
       ul. Złotoryjska 16/18 m. 10, 59-220 Legnica
 
       - telefon: [699 904 989](tel:+48699904989)
-      - e-mail: ==DO UZUPEŁNIENIA==
+      - e-mail: {{% gabinet "email" %}}
 
-      Dane rejestrowe praktyki — NIP **DO UZUPEŁNIENIA**, REGON **DO UZUPEŁNIENIA**, numer prawa wykonywania zawodu **DO UZUPEŁNIENIA**, wpis do rejestru podmiotów wykonujących działalność leczniczą (RPWDL) **DO UZUPEŁNIENIA** — gabinet uzupełni przed publikacją.
+      Dane rejestrowe praktyki — NIP {{% gabinet "rejestrowe.nip" %}}, REGON {{% gabinet "rejestrowe.regon" %}}, numer prawa wykonywania zawodu {{% gabinet "rejestrowe.pwz" %}}, wpis do rejestru podmiotów wykonujących działalność leczniczą (RPWDL) {{% gabinet "rejestrowe.rpwdl" %}}.
     ramka:
       rodzaj: info
       tresc: |-

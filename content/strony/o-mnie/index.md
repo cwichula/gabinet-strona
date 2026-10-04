@@ -1,16 +1,16 @@
 ---
 title: "O gabinecie"
 seo_tytul: "Stomatolog Legnica — o gabinecie | Dorota Rożdżestwieńska"
-description: "Gabinet stomatologiczny Dorota Rożdżestwieńska, Legnica, ul. Złotoryjska. Działa od 30 lat. Poznaj lekarkę, sposób pracy i wyposażenie. Tel. 699 904 989."
+description: "Gabinet stomatologiczny Dorota Rożdżestwieńska, Legnica, ul. Złotoryjska. Działa od 1995 roku. Poznaj lekarkę, sposób pracy i wyposażenie. Tel. 699 904 989."
 draft: false
 weight: 12
 sekcje:
   - type: hero
-    naglowek: "O gabinecie: trzydzieści lat w jednym miejscu w Legnicy"
+    naglowek: "O gabinecie: od 1995 roku w jednym miejscu w Legnicy"
     tresc: "Prywatny gabinet stomatologiczny w centrum Legnicy, przy ul. Złotoryjskiej 16/18 m. 10. Prowadzi go lek. stom. Dorota Rożdżestwieńska — ten sam adres i ta sama lekarka od 1995 roku."
   - type: tekst
     ikona: "tarcza"
-    naglowek: "Gabinet istnieje już od trzydziestu lat"
+    naglowek: "Gabinet działa nieprzerwanie od 1995 roku"
     nadtytul: "Kim jesteśmy i od kiedy"
     tresc: |-
       Jeśli szukasz dentysty w Legnicy i zależy Ci na tym, żeby za rok przyjęła Cię ta sama osoba — to jest ten adres. Gabinet pracuje od 1995 roku i przez cały ten czas nie zmienił ani lokalu, ani lekarza.

@@ -197,6 +197,16 @@ Markdown, ale złamania wiersza wpisane w panelu zostają.
 **Wyróżnienie w treści**: `==DO UZUPEŁNIENIA==` w polu Markdown to napis wyróżniony
 (`<mark>`; szablon może narysować go jako plakietkę).
 
+**Dane gabinetu w treści**: `{{% gabinet "rejestrowe.nip" %}}` w polu Markdown wstawia
+wartość z `data/gabinet.yaml` (ścieżka po kropkach, np. `email`, `adres.miasto`);
+pusta wartość = `==DO UZUPEŁNIENIA==`. Dzięki temu dane rejestrowe i e-mail wpisuje
+się raz, w „Dane gabinetu” (używa tego polityka prywatności). Każdy szablon musi mieć
+shortcode `gabinet`.
+
+Telefony i ceny wpisane w treść ręcznie (np. w opisie SEO) sprawdza
+`tools/sprawdz-kontrakt.py`: numer musi być w `data/gabinet.yaml`, a kwota w
+`data/cennik.yaml` — po zmianie numeru albo ceny CI wskaże strony do poprawy.
+
 ## Bloki
 
 ### `hero` — baner (początek strony)

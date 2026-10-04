@@ -1,0 +1,8 @@
+{{- /* Wartosc z data/gabinet.yaml w tresci strony (panel: „Dane gabinetu”),
+       np. {{% gabinet "rejestrowe.nip" %}} albo {{% gabinet "email" %}}.
+       Pusta wartosc = wyroznione „DO UZUPEŁNIENIA”, zeby brak byl widoczny
+       na stronie i znikl sam po uzupelnieniu danych. Wywolanie {{% %}}, bo
+       wynik przechodzi przez Markdown (==...== = <mark>). */ -}}
+{{- $w := hugo.Data.gabinet -}}
+{{- range split (.Get 0) "." }}{{ $w = index $w . }}{{ end -}}
+{{- with $w }}{{ . }}{{ else }}==DO UZUPEŁNIENIA=={{ end -}}

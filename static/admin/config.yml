@@ -1235,7 +1235,7 @@ collections:
                 label: Numer
                 widget: string
                 pattern: ['^[+0-9 ()-]{9,20}$', 'Same cyfry, spacje i myślniki, np. 699 904 989']
-          - { name: email, label: E-mail, widget: string, type: email, required: false, hint: 'Puste = adres e-mail nie pojawia się na stronie (kontakt, stopka, dane dla Google). Po wpisaniu uzupełnij też e-mail w polityce prywatności (punkt 1).' }
+          - { name: email, label: E-mail, widget: string, type: email, required: false, hint: 'Puste = adres e-mail nie pojawia się na stronie (kontakt, stopka, dane dla Google). Polityka prywatności pobiera go stąd sama.' }
           - name: obszar
             label: Obszar, z którego przyjmujemy pacjentów
             label_singular: obszar
@@ -1280,6 +1280,7 @@ collections:
             widget: object
             hint: >-
               Wiersz „Dane rejestrowe” w stopce pojawia się, gdy wpiszesz choć jeden numer.
+              Polityka prywatności pobiera numery stąd (puste = „DO UZUPEŁNIENIA”).
               Nie wpisuj tu tekstu zastępczego — byłby widoczny na każdej stronie.
             fields:
               - { name: nip, label: NIP, widget: string, required: false }
