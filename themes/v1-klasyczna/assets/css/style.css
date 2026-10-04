@@ -13,20 +13,21 @@
 /* --------------------------------------------------------------- 1. Tokeny */
 
 :root {
-  /* marka - petrol/teal, kolor zaufania w ochronie zdrowia */
-  --brand-900: #06282b;
-  --brand-800: #0b3f43;
-  --brand-700: #0f5257;
-  --brand-600: #157078;
-  --brand-500: #1c8c94;
-  --brand-200: #a9d7d9;
-  --brand-100: #dceff0;
-  --brand-50:  #f2f9f9;
+  /* marka - bordo (jak dobry-dentysta-legnica.pages.dev); --brand-900 to grafit
+     ciemnych pasow: pasek gorny, stopka */
+  --brand-900: #15181c;
+  --brand-800: #6a1222;
+  --brand-700: #9b1c31;
+  --brand-600: #b0283e;
+  --brand-500: #c4475b;
+  --brand-200: #e8bcc4;
+  --brand-100: #f5e9eb;
+  --brand-50:  #fbf4f5;
 
-  /* akcent - terakota, uzywana oszczednie: odznaki, wyroznienia */
-  --accent-700: #8f3f17;
-  --accent-600: #b4531f;
-  --accent-100: #fbeade;
+  /* akcent - grafit: drugi przycisk, odznaki */
+  --accent-700: #14171a;
+  --accent-600: #15181c;
+  --accent-100: #e3e6e9;
 
   /* semantyka */
   --ok-700: #1f6b3f;
@@ -35,21 +36,21 @@
   --warn-100: #fdf1d8;
 
   /* neutralne */
-  --ink:       #10211f;
-  --ink-soft:  #35474a;
-  --muted:     #5b6e70;
-  --line:      #dde6e6;
-  --line-soft: #eaf1f1;
+  --ink:       #14171a;
+  --ink-soft:  #474d55;
+  --muted:     #5f656d;
+  --line:      #dadde1;
+  --line-soft: #e7e9ec;
   --bg:        #ffffff;
-  --surface:   #f7fafa;
-  --surface-2: #eef5f5;
+  --surface:   #edeff1;
+  --surface-2: #e3e6e9;
 
   /* role */
-  --page-bg: var(--bg);
+  --page-bg: #f6f7f8;
   --card-bg: var(--bg);
-  --shadow-sm: 0 1px 2px rgb(6 40 43 / 6%), 0 1px 3px rgb(6 40 43 / 6%);
-  --shadow-md: 0 4px 10px rgb(6 40 43 / 7%), 0 12px 28px rgb(6 40 43 / 7%);
-  --shadow-lg: 0 10px 20px rgb(6 40 43 / 9%), 0 28px 60px rgb(6 40 43 / 10%);
+  --shadow-sm: 0 1px 2px rgb(20 23 26 / 5%), 0 1px 3px rgb(20 23 26 / 5%);
+  --shadow-md: 0 1px 2px rgb(20 23 26 / 4%), 0 10px 28px -14px rgb(20 23 26 / 16%);
+  --shadow-lg: 0 2px 6px rgb(20 23 26 / 4%), 0 28px 56px -24px rgb(20 23 26 / 26%);
 
   /* typografia - wylacznie czcionki systemowe: 0 zapytan, 0 B transferu,
      a kazda z nich ma komplet polskich znakow diakrytycznych */
@@ -87,7 +88,7 @@
 
 /* Kolor pisma na przycisku WYPELNIONYM. W motywie jasnym tlo przycisku
    (--brand-700) jest ciemne, wiec napis jest bialy. W ciemnym ten sam token
-   staje sie jasnym cyjanem - bo tam sluzy za kolor pisma na ciemnym tle -
+   staje sie jasnym rozem - bo tam sluzy za kolor pisma na ciemnym tle -
    wiec napis musi sciemniec. Bez tego bialy napis na jasnym cyjanie daje
    1,72:1 przy wymaganych 4,5:1. */
 :root {
@@ -98,10 +99,10 @@
      w motywie ciemnym rozjasniaja sie, bo sluza tam za kolor PISMA na
      ciemnym tle - uzyte jako TLO pasma dawaly biel na jasnym. Te cztery
      tokeny celowo nie sa przedefiniowane nizej. */
-  --pasmo-1: #0b3f43;
-  --pasmo-2: #157078;
-  --na-pasmie: #ffffff;
-  --na-pasmie-cichy: #dbeced;
+  --pasmo-1: #15181c;
+  --pasmo-2: #22262b;
+  --na-pasmie: #f2f3f4;
+  --na-pasmie-cichy: #b8bec5;
 }
 
 /* Motyw ciemny. Domyslna preferencja systemu + jawny wybor przelacznikiem.
@@ -109,18 +110,18 @@
    wewnatrz tego bloku. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --ink:       #e8f1f1;
-    --ink-soft:  #c0d2d2;
-    --muted:     #9bb0b1;
-    --line:      #22393b;
-    --line-soft: #1a2d2f;
-    --bg:        #0a1a1c;
-    --surface:   #0f2325;
-    --surface-2: #142c2f;
-    --brand-100: #123b3e;
-    --brand-200: #1d5a5e;
-    --brand-50:  #0f2325;
-    --accent-100: #3a2114;
+    --ink:       #f2f3f4;
+    --ink-soft:  #c9cdd2;
+    --muted:     #9ea4ac;
+    --line:      #2b3036;
+    --line-soft: #202429;
+    --bg:        #111316;
+    --surface:   #181b1f;
+    --surface-2: #1f2328;
+    --brand-100: #3a1a22;
+    --brand-200: #5c2633;
+    --brand-50:  #1e1619;
+    --accent-100: #2a2e34;
     --ok-100:    #12301f;
     --warn-100:  #332714;
     --page-bg:   var(--bg);
@@ -133,18 +134,18 @@
 }
 
 :root[data-theme="dark"] {
-  --ink:       #e8f1f1;
-  --ink-soft:  #c0d2d2;
-  --muted:     #9bb0b1;
-  --line:      #22393b;
-  --line-soft: #1a2d2f;
-  --bg:        #0a1a1c;
-  --surface:   #0f2325;
-  --surface-2: #142c2f;
-  --brand-100: #123b3e;
-  --brand-200: #1d5a5e;
-  --brand-50:  #0f2325;
-  --accent-100: #3a2114;
+  --ink:       #f2f3f4;
+  --ink-soft:  #c9cdd2;
+  --muted:     #9ea4ac;
+  --line:      #2b3036;
+  --line-soft: #202429;
+  --bg:        #111316;
+  --surface:   #181b1f;
+  --surface-2: #1f2328;
+  --brand-100: #3a1a22;
+  --brand-200: #5c2633;
+  --brand-50:  #1e1619;
+  --accent-100: #2a2e34;
   --ok-100:    #12301f;
   --warn-100:  #332714;
   --page-bg:   var(--bg);
@@ -155,25 +156,27 @@
   color-scheme: dark;
 }
 
-/* W motywie ciemnym teksty markowe musza sie rozjasnic, inaczej petrol
+/* W motywie ciemnym teksty markowe musza sie rozjasnic, inaczej bordo
    na prawie czarnym tle schodzi ponizej kontrastu 4.5:1 */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --brand-700: #7fd3d8;
-    --brand-800: #a6e3e6;
-    --accent-600: #e59a68;
-    --accent-700: #f0b48a;
+    --brand-700: #f08a9b;
+    --brand-800: #f7b7c1;
+    --brand-600: #e06a7e;
+    --accent-600: #e6e8eb;
+    --accent-700: #f2f3f4;
     --ok-700: #86d8a4;
-    --btn-fill-fg: #0a1a1c;
+    --btn-fill-fg: #111316;
   }
 }
 :root[data-theme="dark"] {
-  --brand-700: #7fd3d8;
-  --brand-800: #a6e3e6;
-  --accent-600: #e59a68;
-  --accent-700: #f0b48a;
+  --brand-700: #f08a9b;
+  --brand-800: #f7b7c1;
+  --brand-600: #e06a7e;
+  --accent-600: #e6e8eb;
+  --accent-700: #f2f3f4;
   --ok-700: #86d8a4;
-  --btn-fill-fg: #0a1a1c;
+  --btn-fill-fg: #111316;
 }
 
 /* ------------------------------------------------------------- 2. Podstawa */
@@ -247,7 +250,7 @@ hr {
 }
 :where(a, button, input, select, textarea, summary):focus:not(:focus-visible) { outline: none; }
 
-::selection { background: var(--brand-200); color: var(--brand-900); }
+::selection { background: var(--brand-200); color: var(--ink); }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -383,7 +386,7 @@ hr {
 
 .topbar {
   background: var(--brand-900);
-  color: #cfe6e7;
+  color: #d4d8dd;
   font-size: var(--step--1);
 }
 .topbar__inner {
@@ -573,7 +576,7 @@ hr {
 }
 .drawer[data-open="true"] { visibility: visible; }
 .drawer__scrim {
-  background: rgb(6 40 43 / 45%);
+  background: rgb(20 23 26 / 45%);
   opacity: 0;
   transition: opacity .25s var(--ease);
   border: 0;
@@ -1065,7 +1068,7 @@ dialog.lightbox {
   color: var(--ink);
   overflow: hidden;
 }
-dialog.lightbox::backdrop { background: rgb(6 40 43 / 80%); backdrop-filter: blur(3px); }
+dialog.lightbox::backdrop { background: rgb(20 23 26 / 80%); backdrop-filter: blur(3px); }
 .lightbox__fig { margin: 0; display: grid; }
 .lightbox__fig img { width: 100%; max-height: 78vh; object-fit: contain; background: #000; }
 .lightbox__fig figcaption {
@@ -1085,7 +1088,7 @@ dialog.lightbox::backdrop { background: rgb(6 40 43 / 80%); backdrop-filter: blu
   width: 2.8rem; height: 2.8rem;
   border: 0;
   border-radius: 50%;
-  background: rgb(6 40 43 / 72%);
+  background: rgb(20 23 26 / 72%);
   color: #fff;
   cursor: pointer;
 }
@@ -1164,8 +1167,8 @@ dialog.lightbox::backdrop { background: rgb(6 40 43 / 80%); backdrop-filter: blu
 }
 .field textarea { min-height: 8rem; resize: vertical; }
 .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--brand-600); }
-.field input:user-invalid, .field textarea:user-invalid { border-color: var(--accent-600); }
-.req { color: var(--accent-600); }
+.field input:user-invalid, .field textarea:user-invalid { border-color: var(--brand-700); }
+.req { color: var(--brand-700); }
 
 .consent {
   display: grid;
@@ -1199,17 +1202,17 @@ dialog.lightbox::backdrop { background: rgb(6 40 43 / 80%); backdrop-filter: blu
    minmax(0, 1fr) pilnuje, by kolumna tekstu nie liczyla min-content. */
 @media (width >= 62rem) { .cta-band { grid-template-columns: minmax(0, 1fr) auto; } }
 .cta-band h2 { margin: 0 0 var(--sp-2); color: #fff; font-size: var(--step-3); }
-.cta-band p { margin: 0; color: #cfe6e7; max-width: 50ch; }
+.cta-band p { margin: 0; color: var(--na-pasmie-cichy); max-width: 50ch; }
 
 .site-footer {
   margin-top: var(--sp-8);
   padding-block: var(--sp-7) var(--sp-5);
   background: var(--brand-900);
-  color: #b9d3d5;
+  color: #bfc4ca;
   font-size: .95rem;
 }
 .site-footer h2, .site-footer h3 { color: #fff; font-size: var(--step-0); margin: 0 0 var(--sp-3); }
-.site-footer a { color: #e3f1f2; text-decoration: none; }
+.site-footer a { color: #f2f3f4; text-decoration: none; }
 .site-footer a:hover { color: #fff; text-decoration: underline; }
 /* Dolny wiersz stopki: copyright i odnosniki prawne. Same odnosniki
    musza miec 44 px celu dotykowego, choc tekst jest drobny. */
@@ -1231,10 +1234,10 @@ dialog.lightbox::backdrop { background: rgb(6 40 43 / 80%); backdrop-filter: blu
   gap: var(--sp-2) var(--sp-5);
   justify-content: space-between;
   font-size: .85rem;
-  color: #8fb0b2;
+  color: #9ea4ac;
 }
-.footer__reg { font-size: .82rem; line-height: 1.7; color: #8fb0b2; }
-.footer__reg b { color: #cfe6e7; font-weight: 620; }
+.footer__reg { font-size: .82rem; line-height: 1.7; color: #9ea4ac; }
+.footer__reg b { color: #d4d8dd; font-weight: 620; }
 
 /* ------------------------------------------- 17. Mobilny pasek kontaktowy */
 
@@ -1256,7 +1259,7 @@ dialog.lightbox::backdrop { background: rgb(6 40 43 / 80%); backdrop-filter: blu
   background: color-mix(in srgb, var(--bg) 92%, transparent);
   backdrop-filter: blur(12px);
   border-top: 1px solid var(--line);
-  box-shadow: 0 -4px 20px rgb(6 40 43 / 8%);
+  box-shadow: 0 -4px 20px rgb(20 23 26 / 8%);
 }
 /* Wezsze marginesy wewnetrzne niz w zwyklym przycisku: tu szerokosc kolumny
    wyznacza siatka, a padding decyduje tylko o tym, czy etykieta sie zmiesci. */

@@ -7,7 +7,7 @@
   "scope" site.Home.RelPermalink
   "display" "standalone"
   "background_color" "#ffffff"
-  "theme_color" "#0f5257"
+  "theme_color" "#9b1c31"
   "icons" (slice
     (dict "src" ("favicon.svg" | relURL) "sizes" "any" "type" "image/svg+xml" "purpose" "any")
     (dict "src" ("apple-touch-icon.png" | relURL) "sizes" "180x180" "type" "image/png"))
