@@ -13,7 +13,7 @@ sekcje:
     waska: true
     rodzaj: uwaga
     tresc: |-
-      **Ten dokument jest projektem przygotowanym w ramach makiety nowej strony.** Przed publikacją wymaga sprawdzenia przez prawnika specjalizującego się w RODO w działalności leczniczej — w kosztorysie odpowiadają temu zadania **T-12** i **T-15**.
+      **Ten dokument jest projektem.** Przed uruchomieniem strony wymaga sprawdzenia przez prawnika specjalizującego się w RODO w działalności leczniczej.
 
       Fragmenty oznaczone ==DO UZUPEŁNIENIA== lub ==DO POTWIERDZENIA== czekają na dane od gabinetu.
     wariant: domyslny
