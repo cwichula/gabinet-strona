@@ -219,7 +219,7 @@ Settings → Secrets and variables → Actions:
 | Variable | `HOSTING_KATALOG` | katalog strony na serwerze, np. `public_html` albo `domains/dobrydentysta.legnica.pl/public_html` |
 | Variable | `HOSTING_PORT` | tylko gdy inny niż domyślny (np. SFTP na porcie 2222) |
 | Variable | `HOSTING_ADRES` | tylko gdy inny niż `https://dobrydentysta.legnica.pl/` |
-| Variable | `HOSTING_SSH_KNOWN_HOSTS` | dla SFTP, zalecane: wynik `ssh-keyscan -p <port> <serwer>` (bez tego klucz serwera nie jest weryfikowany) |
+| Variable | `HOSTING_SSH_KNOWN_HOSTS` | dla SFTP **wymagane**: wynik `ssh-keyscan -p <port> <serwer>`, sprawdzony z odciskiem klucza od firmy hostingowej (bez tego wysyłka się nie zacznie) |
 | Secret | `HOSTING_UZYTKOWNIK` | login FTP/SFTP |
 | Secret | `HOSTING_HASLO` | hasło FTP/SFTP |
 

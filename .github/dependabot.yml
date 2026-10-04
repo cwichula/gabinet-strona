@@ -1,0 +1,11 @@
+# Aktualizacje akcji GitHub w .github/workflows/ (przypietych do SHA commita):
+# Dependabot otwiera pull request z nowym SHA i numerem wersji w komentarzu.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      akcje:
+        patterns: ["*"]

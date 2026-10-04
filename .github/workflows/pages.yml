@@ -54,9 +54,9 @@ jobs:
     env:
       HUGO_ENVIRONMENT: production
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/setup-python@v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12"
 
@@ -64,6 +64,14 @@ jobs:
         run: |
           python -m pip install --quiet "PyYAML==6.0.3"
           python tools/sprawdz-kontrakt.py
+
+      - name: Sumy kontrolne (panel Sveltia, archiwum starej strony)
+        run: |
+          # sveltia-cms.js ma byc bajt w bajt kopia opisana w WERSJA-SVELTIA.txt
+          suma=$(sed -n 's/^SHA-256: *\([0-9a-f]\{64\}\).*/\1/p' static/admin/WERSJA-SVELTIA.txt)
+          test -n "$suma" || { echo "::error::Brak SHA-256 w static/admin/WERSJA-SVELTIA.txt"; exit 1; }
+          echo "$suma *static/admin/sveltia-cms.js" | sha256sum -c -
+          (cd archiwum/stara-strona/site && sha256sum -c --quiet ../_meta/MANIFEST.sha256)
 
       - name: Instalacja Hugo Extended ${{ env.HUGO_VERSION }}
         run: |
@@ -78,7 +86,7 @@ jobs:
           echo "$RUNNER_TEMP/hugo-bin" >> "$GITHUB_PATH"
 
       - id: pages
-        uses: actions/configure-pages@v6
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 
       - name: Budowanie strony (Hugo)
         env:
@@ -109,7 +117,7 @@ jobs:
           # sa w logu do przeczytania przez czlowieka.
           python tools/kontrola-strony.py public --baseurl "${{ steps.pages.outputs.base_url }}/"
 
-      - uses: actions/upload-pages-artifact@v5
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: public
 
@@ -141,7 +149,7 @@ jobs:
 
       - name: Artefakt wersji na domenę
         if: vars.HOSTING_SERWER != ''
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: strona-hosting
           path: public-hosting
@@ -157,7 +165,7 @@ jobs:
     steps:
       - id: deployment
         name: Publikacja na GitHub Pages
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
 
   # Wysylka wersji na domene na hosting przez SFTP albo FTPS (lftp mirror).
   # Zmienne (Variables): HOSTING_SERWER, HOSTING_PROTOKOL (sftp|ftps),
@@ -177,7 +185,7 @@ jobs:
       name: hosting
       url: ${{ vars.HOSTING_ADRES || 'https://dobrydentysta.legnica.pl/' }}
     steps:
-      - uses: actions/download-artifact@v8
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: strona-hosting
           path: public-hosting
@@ -209,12 +217,12 @@ jobs:
               adres="sftp://$SERWER${PORT:+:$PORT}"
               ustawienia="set sftp:auto-confirm no;"
               mkdir -p ~/.ssh
-              if [ -n "$ZNANY_HOST" ]; then
-                printf '%s\n' "$ZNANY_HOST" >> ~/.ssh/known_hosts
-              else
-                echo "::warning::Brak HOSTING_SSH_KNOWN_HOSTS - klucz serwera pobrany bez weryfikacji (ssh-keyscan)."
-                ssh-keyscan -p "${PORT:-22}" "$SERWER" >> ~/.ssh/known_hosts 2>/dev/null
-              fi ;;
+              # bez znanego klucza serwera haslo mogloby trafic do podstawionego serwera
+              test -n "$ZNANY_HOST" || {
+                echo "::error::Brak HOSTING_SSH_KNOWN_HOSTS (wynik: ssh-keyscan -p <port> <serwer>, sprawdzony z odciskiem klucza od firmy hostingowej)."
+                exit 1
+              }
+              printf '%s\n' "$ZNANY_HOST" >> ~/.ssh/known_hosts ;;
             ftps)
               adres="ftp://$SERWER${PORT:+:$PORT}"
               ustawienia="set ftp:ssl-force true; set ftp:ssl-protect-data true; set ssl:verify-certificate true;" ;;
