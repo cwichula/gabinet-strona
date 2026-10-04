@@ -18,6 +18,10 @@
 {{- $strona := . -}}
 {{- $plik := "Strona" }}{{ with .File }}{{ $plik = .Path }}{{ end -}}
 {{- $sekcje := .Params.sekcje | default slice -}}
+{{- /* pamiec blokow na czas jednego renderowania strony ("raz na strone":
+       lightbox galerii, wyszukiwarka cennika, kotwice grupa-*). Nie Page.Store -
+       ten nie jest czyszczony przy przebudowie w hugo server po zmianie szablonu. */ -}}
+{{- $pamiec := newScratch -}}
 
 {{- /* numer bloku z pierwszym zdjeciem, jesli jest na gorze strony */ -}}
 {{- $nrZdjecia := -1 -}}
@@ -64,7 +68,7 @@
   {{- $html := "" }}{{ $zwarta := eq $pierwszy.type "pasek_zaufania" -}}
   {{- range $i, $el := $grupa -}}
     {{- if eq $el.blok.type "spis" }}{{ $zwarta = true }}{{ end -}}
-    {{- $out := partial (printf "blocks/%s.html" $el.blok.type) (dict "blok" $el.blok "strona" $strona "nr" $el.nr "gora" (eq $i 0) "priorytet" (eq $el.nr $nrZdjecia)) | string | strings.TrimSpace -}}
+    {{- $out := partial (printf "blocks/%s.html" $el.blok.type) (dict "blok" $el.blok "strona" $strona "nr" $el.nr "gora" (eq $i 0) "priorytet" (eq $el.nr $nrZdjecia) "pamiec" $pamiec) | string | strings.TrimSpace -}}
     {{- if $out -}}
       {{- if not $html }}{{ $html = $out }}{{ else -}}
         {{- $id := "" }}{{ with $el.blok.kotwica }}{{ $id = printf ` id="%s"` (. | urlize) }}{{ end -}}

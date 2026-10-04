@@ -109,13 +109,13 @@
     var minutes = now.getHours() * 60 + now.getMinutes();
     var today = map[day];
     var open = false;
+    var toMin = function (hhmm) {
+      var p = hhmm.trim().split(":");
+      return Number(p[0]) * 60 + Number(p[1] || 0);
+    };
 
     if (today) {
       var se = today.split("-");
-      var toMin = function (hhmm) {
-        var p = hhmm.trim().split(":");
-        return Number(p[0]) * 60 + Number(p[1] || 0);
-      };
       open = minutes >= toMin(se[0]) && minutes < toMin(se[1]);
     }
 
@@ -132,7 +132,7 @@
       var names = ["", "w poniedziałek", "we wtorek", "w środę", "w czwartek",
                    "w piątek", "w sobotę", "w niedzielę"];
       var nextDay = null;
-      if (today && minutes < Number(map[day].split("-")[0].split(":")[0]) * 60) {
+      if (today && minutes < toMin(today.split("-")[0])) {
         label.textContent = "Dziś od " + map[day].split("-")[0];
         return;
       }
@@ -147,8 +147,9 @@
   });
 
   /* Podswietlenie dzisiejszego wiersza w tabeli godzin */
-  var todayRow = $(".hours [data-dzien='" + (new Date().getDay() === 0 ? 7 : new Date().getDay()) + "']");
-  if (todayRow) todayRow.setAttribute("data-today", "");
+  $$(".hours [data-dzien='" + (new Date().getDay() === 0 ? 7 : new Date().getDay()) + "']").forEach(function (row) {
+    row.setAttribute("data-today", "");
+  });
 
   /* -------------------------------------------------------- 4. Powiekszanie */
   /* Zastepuje fancybox 1.3.4 + jQuery 1.4 (razem ok. 95 kB) natywnym
@@ -205,7 +206,7 @@
      Przy okazji strona kontaktu schudla o 1-2 MB. */
 
   /* Tytul ramki (czytany przez czytnik ekranu) bierze adres z parametru q
-     adresu mapy. Ten adres generator sklada z tresci/gabinet.json, wiec po
+     adresu mapy. Ten adres szablon sklada z data/gabinet.yaml, wiec po
      zmianie adresu w CMS tytul zmienia sie razem z mapa - zamiast trzymac
      tutaj druga, zapomniana kopie adresu. */
   var tytulMapy = function (src) {
@@ -272,24 +273,23 @@
   }
 
   /* ---------------------------------------------- 7. Formularz kontaktowy */
-  /* Makieta demo: nie wysyla niczego. Na docelowym hostingu obsluguje to
-     jeden plik PHP (zadanie T-40 w kosztorysie). Tu pokazujemy wylacznie
-     zachowanie interfejsu i komplet pol wymaganych przez RODO. */
+  /* Formularz jeszcze niczego nie wysyla (brak obslugi na serwerze). Tu
+     pokazujemy wylacznie zachowanie interfejsu i komplet pol wymaganych przez
+     RODO. Kazdy formularz na stronie osobno; komunikat stoi zaraz po nim. */
 
-  var form = $("[data-demo-form]");
-  if (form) {
+  $$("[data-demo-form]").forEach(function (form) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       if (!form.reportValidity()) return;
-      var box = $("[data-form-result]", form.parentNode) || $("[data-form-result]");
-      if (box) {
+      var box = form.nextElementSibling;
+      if (box && box.hasAttribute("data-form-result")) {
         box.hidden = false;
         box.focus();
         box.scrollIntoView({ block: "center", behavior: "smooth" });
       }
       form.hidden = true;
     });
-  }
+  });
 
   /* -------------------------------------------------- 8. Rok w stopce */
 

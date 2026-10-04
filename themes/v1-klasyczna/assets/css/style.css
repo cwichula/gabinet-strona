@@ -1311,7 +1311,7 @@ dialog.lightbox::backdrop { background: rgb(20 23 26 / 80%); backdrop-filter: bl
   inset: auto 0 0;
   z-index: 90;
   display: grid;
-  /* Liczba pozycji zalezy od flagi rezerwacji w dane.json: dwie albo trzy.
+  /* Liczba pozycji zalezy od rezerwacja.wlaczona w data/gabinet.yaml: dwie albo trzy.
      Kolumny powstaja wiec automatycznie, a minmax(0, 1fr) pilnuje, zeby
      najdluzsza etykieta nie rozpychala paska poza ekran przy 320 px. */
   grid-auto-flow: column;

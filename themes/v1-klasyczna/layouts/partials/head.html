@@ -41,7 +41,7 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pl_PL">
 <meta property="og:site_name" content="{{ $nazwa }}">
-<meta property="og:title" content="{{ cond (or .IsHome (eq .Kind "404") (isset .Params "seo_tytul")) $tytul .Title }}">
+<meta property="og:title" content="{{ cond (or .IsHome (eq .Kind "404") .Params.seo_tytul) $tytul .Title }}">
 <meta property="og:description" content="{{ $opis }}">
 {{- if ne .Kind "404" }}
 <meta property="og:url" content="{{ .Permalink }}">

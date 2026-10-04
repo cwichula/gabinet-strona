@@ -5,7 +5,9 @@
        sprawdza pola, skrypt v1 pokazuje potwierdzenie, ale NIC nie jest
        wysylane - strona na GitHub Pages nie ma serwera pocztowego. Mowia o tym
        notka pod formularzem i komunikat po wypelnieniu. Pole-pulapka na roboty
-       (firma) i zgoda RODO z administratorem danych z data/gabinet.yaml. */ -}}
+       (firma) i zgoda RODO z administratorem danych z data/gabinet.yaml.
+       method="post": gdyby skrypt sie nie zaladowal, dane pacjenta nie trafia
+       do adresu strony (GET), historii przegladarki i logow serwera. */ -}}
 {{- $b := .blok -}}
 {{- $g := hugo.Data.gabinet -}}
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
@@ -24,7 +26,7 @@
     {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede") }}
     {{- end }}
 
-    <form class="form" data-demo-form style="margin-top:2rem">
+    <form class="form" data-demo-form method="post" style="margin-top:2rem">
       <div class="field">
         <label for="{{ $p }}imie">Imię <span class="req">*</span></label>
         <input type="text" id="{{ $p }}imie" name="imie" autocomplete="given-name" required>

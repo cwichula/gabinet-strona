@@ -36,7 +36,7 @@
 {{- $liczba := 0 }}{{ range $grupy }}{{ $liczba = add $liczba (len .pozycje) }}{{ end -}}
 {{- /* wyszukiwarka: skrypt v1 obsluguje jedna tabele na strone (#cennik-tabela) */ -}}
 {{- $szukaj := false -}}
-{{- if and $b.wyszukiwarka (not ($.strona.Store.Get "cennik-wyszukiwarka")) }}{{ $szukaj = true }}{{ $.strona.Store.Set "cennik-wyszukiwarka" true }}{{ end -}}
+{{- if and $b.wyszukiwarka (not ($.pamiec.Get "cennik-wyszukiwarka")) }}{{ $szukaj = true }}{{ $.pamiec.Set "cennik-wyszukiwarka" true }}{{ end -}}
     {{- with $b.naglowek | default (cond $.gora "Cennik" "") }}
     <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ . }}</h2>
     {{- end }}
@@ -75,7 +75,7 @@
         <tbody>
           {{- range $grupy }}
           {{- if $zGrupami }}
-          {{- $kot := printf "grupa-%s" .id }}{{ $nowa := not ($.strona.Store.Get $kot) }}{{ $.strona.Store.Set $kot true }}
+          {{- $kot := printf "grupa-%s" .id }}{{ $nowa := not ($.pamiec.Get $kot) }}{{ $.pamiec.Set $kot true }}
           <tr class="group"><th colspan="2" scope="colgroup"{{ if $nowa }} id="{{ $kot }}"{{ end }}>{{ .nazwa }}</th></tr>
           {{- end }}
           {{- range .pozycje }}
