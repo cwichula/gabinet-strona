@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Galeria</title>
+<meta name="description" content="Galeria" />
+<meta http-equiv="imagetoolbar" content="no" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script>
+	!window.jQuery && document.write('<script src="jquery-1.4.3.min.js"><\/script>');
+</script>
+<script type="text/javascript" src="galeria/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+<script type="text/javascript" src="galeria/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<link rel="stylesheet" type="text/css" href="galeria/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+<script type="text/javascript">
+		$(document).ready(function() {
+			
+			$("a[rel=example_group]").fancybox({
+				'overlayShow'		: true,
+				'transitionIn'		: 'elastic',
+				'transitionOut'		: 'elastic',
+				'titlePosition' 	: 'over',
+				'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+					return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+				}
+			});
+
+		});
+</script>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Language" content="pl" />
+<meta name="robots" content="index,follow,all">
+<meta name="revisit-after" content="30 days">
+<meta name="keywords" content="dentysta legnica, stomatolog legnica, protezy legnica, dorota rożdżestwieńska, stomatologia legnica, gabinet stomatologiczny legnica, gabinet dentystyczny legnica, stomatolodzy legnica, dentyści legnica, Dolny śląsk, Pogotowie Dentystyczne Legnica, Pogotowie Stomatologiczne Legnica" />
+<link href="default.css" rel="stylesheet" type="text/css" />
+<link rel="shortcut icon" href="images/zab.bmp" />
+<!--[if IE 7]><link rel="stylesheet" href="ie.css" type="text/css" media="screen" /><![endif]-->
+<!--[if IE 6]>
+<center>
+<big><big>
+<font color="yellow">
+<b>Uwaga:</b><br>
+Używasz starej wersji programu Internet Explorer.<br>
+Strona, którą przeglądasz jest oparta o standardy, których ta przeglądarka nie obsługuje.<br>
+Pobierz <a href="http://www.dobreprogramy.pl/Internet-Explorer,Program,Windows,12086.html">nowoczesną przeglądarkę.</a>
+</font>
+</big></big>
+</center>
+<![endif]--></head>
+<body>
+<div id="header">
+	<div id="logo">
+		<h1>Prywatny Gabinet Stomatologiczny</h1>
+		<h2>lekarz stomatolog Dorota Rożdżestwieńska</h2>
+</div>	<div id="menu">
+		<ul>
+			<li><a href="index.php" title="Strona główna">Strona główna</a></li>
+			<li><a href="uslugi.php" title="Wykaz usług stomatologicznych">Usługi</a></li>
+			<li><a href="cennik.php" title="Cennik usług stomatologicznych">Cennik</a></li>
+			<li><a href="nowosci.php" title=""><font color="red">Nowości</font></a></li>
+			<li class="active"><a href="galeria.php" title="Galeria">Galeria</a></li>
+			<li><a href="kontakt.php" title="Kontakt ze mną i godziny pracy">Kontakt</a></li>
+		</ul>
+	</div>
+</div>
+<div id="page">
+	<div id="content">
+		<div style="margin-bottom: 20px;">
+			<h1 class="title">Galeria</h1>
+			<a rel="example_group" href="galeria/foto/1.jpg"><img class="last" src="galeria/foto/1min.jpg" /></a>
+			<a rel="example_group" href="galeria/foto/2.jpg"><img class="last" src="galeria/foto/2min.jpg" /></a>
+			<a rel="example_group" href="galeria/foto/3.jpg"><img class="last" src="galeria/foto/3min.jpg" /></a>
+			<a rel="example_group" href="galeria/foto/12.jpg"><img class="last" src="galeria/foto/12min.jpg" /></a>
+			<a rel="example_group" href="galeria/foto/4.jpg"><img class="last" src="galeria/foto/4min.jpg" /></a>
+			<a rel="example_group" href="galeria/foto/5.jpg"><img class="last" src="galeria/foto/5min.jpg" /></a>
+			<a rel="example_group" href="galeria/foto/8.jpg"><img class="last" src="galeria/foto/8min.jpg" /></a>
+			<a rel="example_group" href="galeria/foto/9.jpg"><img class="last" src="galeria/foto/9min.jpg" /></a>
+			<a rel="example_group" href="galeria/foto/10.jpg"><img class="last" src="galeria/foto/10min.jpg" /></a>
+			<a rel="example_group" href="galeria/foto/11.jpg"><img class="last" src="galeria/foto/11min.jpg" /></a>
+			<a rel="example_group" href="galeria/foto/15.jpeg"><img class="last" src="galeria/foto/15min.jpeg" /></a>
+			<a rel="example_group" href="galeria/foto/13.jpg"><img class="last" src="galeria/foto/13min.jpg" /></a>
+			<a rel="example_group" href="galeria/foto/14.jpg"><img class="last" src="galeria/foto/14min.jpg" /></a>
+		</div>
+		<div>&nbsp;</div>
+		
+	</div>
+	<!-- end content -->
+
+	<div style="clear: both;">&nbsp;</div>
+</div>
+<!-- end page -->
+<div id="footer">
+	<p id="legal">&copy; 2011-2026 Prywatny Gabinet Stomatologiczny lek. stom. D. Rożdżestwieńska | Designed by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a></p>
+</div></body>
+</html>

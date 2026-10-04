@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Kontrola jakosci i zgodnosci zbudowanej strony (wynik Hugo w public/).
 
-Przeniesienie istoty gamstom/tools/check-site.py na wynik Hugo - dziala na
+Przeniesienie istoty tools/check-site.py z prototypu gamstom na wynik Hugo - dziala na
 gotowym HTML, wiec jest niezalezne od szablonu (v1-klasyczna, v0-test, ...).
 Uruchamiane w CI po budowaniu; blad = strona nie zostaje opublikowana.
 
@@ -86,7 +86,7 @@ NIE_ADRESY = ("http://www.w3.org/", "https://www.w3.org/", "http://www.sitemaps.
 
 # Zwroty niedozwolone w materialach gabinetu lekarskiego (art. 14 ust. 1 ustawy
 # o dzialalnosci leczniczej - informacja tak, reklama nie). Lista i logika
-# przeniesione 1:1 z gamstom/tools/check-site.py.
+# przeniesione 1:1 z check-site.py z prototypu gamstom.
 #
 # ZAKAZANE to zwroty, ktore sa reklama bez wzgledu na kontekst (blad).
 # PODEJRZANE w jednym zdaniu sa reklama, a w drugim zwyklym polskim - uwaga

@@ -1,0 +1,53 @@
+BACKUP dobrydentysta.legnica.pl -- 2026-10-01
+
+200    4926       index.php
+200    12842      uslugi.php
+200    8032       cennik.php
+200    4278       nowosci.php
+200    4960       galeria.php
+200    4628       kontakt.php
+200    3959       default.css
+404    355        ie.css
+200    2689       whcookies.js
+404    355        jquery-1.4.3.min.js
+200    8494       galeria/fancybox/jquery.fancybox-1.3.4.css
+200    15624      galeria/fancybox/jquery.fancybox-1.3.4.pack.js
+200    1279       galeria/fancybox/jquery.mousewheel-3.0.4.pack.js
+200    26853      images/vv.jpg
+200    1014       images/zab.bmp
+200    423        images/img01.jpg
+200    103939     images/img02.jpg
+200    104513     media/11.jpg
+200    43959      media/11min.jpg
+200    138140     media/dom.png
+200    386187     media/cennik_2025.pdf
+
+200    89256      galeria/foto/1.jpg
+200    44426      galeria/foto/1min.jpg
+200    93976      galeria/foto/2.jpg
+200    46455      galeria/foto/2min.jpg
+200    101320     galeria/foto/3.jpg
+200    33150      galeria/foto/3min.jpg
+200    107543     galeria/foto/4.jpg
+200    28644      galeria/foto/4min.jpg
+200    87227      galeria/foto/5.jpg
+200    29417      galeria/foto/5min.jpg
+200    109584     galeria/foto/8.jpg
+200    29345      galeria/foto/8min.jpg
+200    89727      galeria/foto/9.jpg
+200    26779      galeria/foto/9min.jpg
+200    89341      galeria/foto/10.jpg
+200    30225      galeria/foto/10min.jpg
+200    75727      galeria/foto/11.jpg
+200    25502      galeria/foto/11min.jpg
+200    100572     galeria/foto/12.jpg
+200    27521      galeria/foto/12min.jpg
+200    97601      galeria/foto/13.jpg
+200    30176      galeria/foto/13min.jpg
+200    92263      galeria/foto/14.jpg
+200    24542      galeria/foto/14min.jpg
+200    124013     galeria/foto/15.jpeg
+200    26225      galeria/foto/15min.jpeg
+200    254744     polityka-prywatnosci.pdf   (DODANE 2026-10-01: plik ISTNIEJE na serwerze, linkowany tylko z banera cookie w whcookies.js)
+
+2026-10-04: kopia przeniesiona z repozytorium gamstom (dane/) do gabinet-strona (archiwum/stara-strona/). Z 28 plikow JPG usunieto EXIF/GPS (segmenty APP1, bez ponownej kompresji - piksele identyczne), MANIFEST.sha256 przeliczony. Oryginaly z EXIF: lokalnie poza repo.

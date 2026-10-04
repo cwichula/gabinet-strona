@@ -44,7 +44,7 @@ static/admin/                    panel: index.html, config.yml, sveltia-cms.js
 docs/KONTRAKT-BLOKOW.md          typy bloków i ich pola
 tools/sprawdz-kontrakt.py        kontrola kontraktu (CI)
 tools/kontrola-strony.py         kontrola zbudowanej strony: struktura, linki, zasoby, art. 14 (CI)
-tools/importuj-z-gamstom.py      jednorazowy import cennika i danych z repo gamstom
+archiwum/stara-strona/          kopia starej strony (stan „przed”, źródło przekierowań 301) - build jej nie widzi
 ```
 
 ## Praca lokalna
@@ -270,8 +270,8 @@ Katalog `layouts/` w korzeniu musi zostać pusty — inaczej nadpisałby każdy 
 
 ### Szablon v1-klasyczna
 
-Makieta v1 z repozytorium `gamstom` (`v1/_src/_layout.html`, strony v1, markup
-z `tools/build-v1.py`) pocięta na szablon Hugo:
+Makieta v1 z zakończonego prototypu `gamstom` (szablon strony, strony v1 i markup
+z jego generatora) pocięta na szablon Hugo:
 
 - `assets/css/style.css` i `assets/js/app.js` — kopie z makiety **bez zmian**
   (łączone i z odciskiem w nazwie pliku przez Hugo Pipes); `assets/css/hugo.css` —
@@ -322,14 +322,14 @@ szablonach; `tools/sprawdz-kontrakt.py` nie przepuści niekompletnej zmiany.
    ceny zawsze z cennika (np. karty cen zamiast kwot w zdaniu na stronie
    higienizacji i pierwszej wizyty, pełne nazwy pozycji w ramce cen), szablon bez
    wersji AVIF zdjęć, kilka odstępów i rozmiarów zdjęć portretowych.
-3. **Etap 3 — szablony v2 „Wizytówka” i v3 „Klinika”**: ten sam kontrakt; podgląd
-   szablonu bez ruszania produkcji (ręczny workflow z `--theme`).
+3. ~~Etap 3 — szablony v2 „Wizytówka” i v3 „Klinika”~~: zarzucony. Szablonem strony
+   zostaje v1 „Klasyczna”; makiety v2 i v3 nie są przenoszone.
 
-## Import z repozytorium gamstom
+## Import z prototypu gamstom
 
-`tools/importuj-z-gamstom.py` jednorazowo przeniósł z `gamstom` cennik (30 pozycji,
-5 kategorii jak w tabeli v1) i dane gabinetu (skrypt zapisuje już kształt kontraktu 2). Od teraz źródłem prawdy są pliki w `data/`
-(edytowane w panelu) — ponowne uruchomienie skryptu nadpisałoby zmiany z panelu.
+Cennik (30 pozycji, 5 kategorii jak w tabeli v1) i dane gabinetu zostały jednorazowo
+przeniesione z prototypu `gamstom` skryptem `tools/importuj-z-gamstom.py` (usunięty po
+imporcie, jest w historii git). Źródłem prawdy są pliki w `data/` edytowane w panelu.
 
 Dane oznaczone w `gamstom` jako niepotwierdzone (do sprawdzenia z właścicielką):
 godziny przyjęć (przykładowe), e-mail, dane rejestrowe (pola w „Dane gabinetu → Dane
@@ -340,6 +340,18 @@ telefonicznie, pod jednym numerem — komórkowym 699 904 989 (numer stacjonarny
 usunięty ze strony). Włączenie w przyszłości: „Dane gabinetu → Rezerwacja online”
 (adres profilu gabinetu, nazwa serwisu, nota o danych), plus bloki „Rezerwacja online”
 na stronach i punkt o serwisie zewnętrznym w polityce prywatności.
+
+## Archiwum
+
+Katalog `archiwum/` przechowuje to, co warto było zachować z zakończonego prototypu
+`cwichula/gamstom` (to repozytorium jest prywatne i zarchiwizowane, z pełną historią).
+Hugo, panel i CI go nie czytają, więc nie wpływa na stronę.
+
+- `archiwum/stara-strona/`: kopia starej strony dobrydentysta.legnica.pl z 1 października
+  2026 r. (stan „przed”; z niej pochodzą stare adresy `*.php` przekierowywane w
+  `hosting/.htaccess`). Zdjęcia bez EXIF/GPS, integralność: `_meta/MANIFEST.sha256`.
+
+Makiety v1–v3, generator i obieg Pages CMS z prototypu nie zostały przeniesione.
 
 ## Aktualizacja Sveltia CMS
 

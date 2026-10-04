@@ -1,0 +1,313 @@
+/*
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+*/
+
+body {
+	margin: 0;
+	padding: 0;
+	background: #F0F8FF url(images/img01.jpg) repeat-x;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 13px;
+	color: #666666;
+}
+
+h1, h2, h3 {
+	margin: 0;
+}
+
+h1 {
+	font-size: 197%;
+	font-weight: normal;
+	color: #3F586B;
+	text-shadow: 2px 2px 3px gray;
+}
+
+h2 {
+	font-size: 147%;
+	font-style: italic;
+	font-weight: normal;
+	color: #C61CA8;
+	text-shadow: 1px 1px 3px gray;
+}
+
+h3 {
+	font-size: 135%;
+	margin-top: 15px;
+	color: #0A60C9;
+	font-weight: bold;
+}
+
+h4 {
+	font-size: 125%;
+	margin-top: 15px;
+	margin-bottom: -2px;
+	color: #6BAAF8;
+	font-weight: bold;
+}
+
+ol, ul {
+	line-height: 170%;
+}
+
+
+ol {
+	margin-left: 0;
+	padding-left: 0;
+	list-style-position: inside;
+}
+
+ul {
+	margin-left: 0;
+	padding-left: 0;
+}
+
+blockquote {
+	margin-top: 35px;
+	text-align: center;
+	line-height: 35px;
+	font-size: 18px;
+	font-style: italic;
+}
+
+
+a {
+	color: #FF5723;
+}
+
+a:hover {
+	text-decoration: none;
+	color: #1777B1;
+}
+
+img {
+	border: none;
+}
+
+img.left {
+	float: left;
+	margin: 3px 15px 0 0;
+}
+
+img.right {
+	float: right;
+	margin: 3px 0 0 15px;
+}
+
+hr {
+	display: none;
+}
+
+/* Header */
+
+#header {
+	width: 700px;
+	height: 235px;
+	margin: 0 auto;
+	background: #A4C0C8 url(images/img02.jpg) no-repeat;
+}
+
+/* Logo */
+
+#logo {
+	height: 190px;
+}
+
+#logo h1, #logo h2 {
+	text-align: center;
+}
+
+#logo h1 {
+	padding-top: 40px;
+	font-size: 300%;
+}
+
+#logo h2 {
+	padding-top: 10px;
+	font-size: 180%;
+}
+
+#logo a {
+	text-decoration: none;
+	color: #3F586B;
+}
+
+
+/* Menu */
+
+#menu {
+	padding-top: 0;
+	margin-left: -60px;
+	margin-right: -60px;
+}
+
+#menu ul {
+	margin: 0;
+	padding: 8px 0 0 0;
+	list-style: none;
+	line-height: normal;
+	text-align: center;
+}
+
+#menu li {
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+
+#menu a {
+	padding: 0 26px;
+	text-decoration: none;
+	font-size: 136%;
+	font-weight: bold;
+	color: #610720;
+}
+
+#menu a:hover {
+	text-decoration: underline;
+}
+
+#menu .active a {
+	color: #FFFFFF;
+}
+
+#content  td
+{
+	text-decoration: none;
+	text-align: left;
+	font-size: 16px; 
+	color: black;
+	border: 1px;
+	border-style: solid;
+	border-color: black;
+	margin-top: 30px;
+	margin-bottom: 35px;
+	font-family: Arial, Times, serif;
+}
+
+#content  table
+{
+	text-decoration: none;
+	border-style: none;
+	margin-top: 30px;
+	margin-bottom: 0px;
+	font-family: Arial, Times, serif;
+}
+
+#content ul {
+	margin-top: -15px;
+	margin-left: 80px;
+	list-style-type: square;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	line-height: 21px;
+	font-size: 16px;
+}
+
+
+a {
+	outline: none;
+}
+
+a img.first {
+	margin: 20px 30px 20px 0px;
+	float: left;
+	clear: left;
+	border: 1px solid #BBB;
+	padding: 2px;
+	vertical-align: top;
+}
+
+a img.last {
+	margin: 20px 0px 20px 35px;
+	border: 1px solid #BBB;
+	padding: 2px;
+	vertical-align: top;
+}
+
+a img.cacy {
+	margin: -20px 0px 0px 30px;
+	float: right;
+	clear: right;
+	border: 1px solid #BBB;
+	padding: 2px;
+	vertical-align: top;
+}
+
+/* Page */
+
+#page {
+	width: 730px;
+	margin: 0 auto;
+	padding: 50px 0;
+}
+
+/* Content */
+
+#content {
+	float: left;
+	width: 730px;
+	padding-top: 0px;
+	border: solid 1px #cbcbcb;
+	background: #fafafa;
+	padding: 20px 60px 0px 60px;
+	margin: 0px 0px 0px -60px;
+	border-radius: 30px;
+	-moz-box-shadow: 0px 0px 20px #cbcbcb;
+	-webkit-box-shadow: 0px 0px 20px #cbcbcb;
+
+}
+
+#content p {
+	text-align: justify;
+	line-height: 21px;
+	font-size: 16px;
+}
+
+.twocols {
+}
+
+.twocols .title {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #97C984;
+}
+
+.twocols .col1, .twocols .col2 {
+	width: 190px;
+}
+
+.twocols .col1 {
+	float: left;
+}
+
+.twocols .col2 {
+	float: right;
+}
+
+.twocols ul {
+}
+
+.twocols ul li {
+	padding-left: 0;
+}
+
+/* Footer */
+
+#footer {
+	height: 15px;
+	padding: 8px;
+	background: #5F919E;
+	border-top: 5px solid #4C747E;
+}
+
+#footer p {
+	margin: 0;
+	text-align: center;
+	line-height: normal;
+	font-size: 75%;
+	color: #FFFFFF;
+}
+
+#footer a {
+	color: #FFFFFF;
+}

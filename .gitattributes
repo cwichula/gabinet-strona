@@ -5,3 +5,9 @@
 *.png binary
 *.webp binary
 static/admin/sveltia-cms.js -text
+*.gif binary
+*.bmp binary
+*.ico binary
+*.pdf binary
+# Archiwum starej strony: bajt w bajt jak pobrano (sumy w _meta/MANIFEST.sha256).
+archiwum/stara-strona/site/** -text
