@@ -5,8 +5,7 @@
 {{- $rodzaj := .rodzaj | default "info" -}}
 {{- $klasa := index (dict "info" "callout" "uwaga" "callout callout--warn" "ok" "callout callout--ok") $rodzaj | default "callout" -}}
 {{- $ikona := .ikona | default (index (dict "info" "info" "uwaga" "uwaga" "ok" "ptaszek") $rodzaj) | default "info" -}}
-{{- $html := partial "markdown.html" (dict "strona" .strona "tekst" .tresc) | string -}}
-{{- if .ptaszki }}{{ $html = replace $html "<ul>" `<ul class="checklist">` }}{{ end -}}
+{{- $html := partial "markdown-ptaszki.html" (dict "strona" .strona "tekst" .tresc "ptaszki" .ptaszki) -}}
 <div class="{{ $klasa }}"{{ with .styl }} style="{{ . | safeCSS }}"{{ end }}>
   {{ partial "ikona.html" (dict "nazwa" $ikona "gdzie" .gdzie) }}
   <div>

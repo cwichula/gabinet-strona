@@ -22,7 +22,7 @@
         {{- end }}
         <h3>{{ with $cel.href }}<a class="stretched" href="{{ . }}">{{ $k.tytul }}</a>{{ else }}{{ $k.tytul }}{{ end }}</h3>
         {{- with $k.tresc }}
-        {{ partial "karta-tresc.html" (dict "strona" $.strona "tekst" . "ptaszki" (eq $b.wypunktowanie "ptaszki")) }}
+        {{ partial "markdown-ptaszki.html" (dict "strona" $.strona "tekst" . "ptaszki" (eq $b.wypunktowanie "ptaszki")) }}
         {{- end }}
         {{- with $poz }}
         <p class="card__price"><b>{{ partial "cena.html" . }}</b></p>

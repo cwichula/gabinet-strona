@@ -8,8 +8,7 @@
 {{- $b := .blok -}}
 {{- $gdzie := $.gdzie -}}
 {{- $ptaszki := eq $b.wypunktowanie "ptaszki" -}}
-{{- $tresc := "" }}{{ with $b.tresc }}{{ $tresc = partial "markdown.html" (dict "strona" $.strona "tekst" .) | string }}{{ end -}}
-{{- if $ptaszki }}{{ $tresc = replace $tresc "<ul>" `<ul class="checklist">` }}{{ end -}}
+{{- $tresc := "" }}{{ with $b.tresc }}{{ $tresc = partial "markdown-ptaszki.html" (dict "strona" $.strona "tekst" . "ptaszki" $ptaszki) | string }}{{ end -}}
 {{- $ramka := "" -}}
 {{- with $b.ramka }}{{ with .tresc }}{{ $ramka = partial "ramka-html.html" (dict "strona" $.strona "rodzaj" $b.ramka.rodzaj "tresc" . "gdzie" $gdzie "styl" "margin-top:1.5rem" "ptaszki" $ptaszki) }}{{ end }}{{ end -}}
 {{- $przycisk := partial "przycisk.html" (dict "przycisk" $b.przycisk "gdzie" (printf "%s: przycisk w bloku tekst" $gdzie) "strzalka" true) -}}
