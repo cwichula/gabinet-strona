@@ -60,7 +60,7 @@
         {{- range $poz.dzieci }}{{ if and .strona ($biezaca.Eq .strona) }}{{ $aktywna = true }}{{ end }}{{ end }}
         {{- if $poz.dzieci }}
         <li class="nav__has-sub">
-          {{ if $poz.href }}<a href="{{ $poz.href }}"{{ if $aktywna }} aria-current="page"{{ end }}{{ if $poz.zewnetrzny }} rel="noopener external"{{ end }}>{{ $poz.etykieta }}</a>{{ else }}<span>{{ $poz.etykieta }}</span>{{ end }}
+          {{ if $poz.href }}{{ partial "menu-link.html" (dict "poz" $poz "aktywna" $aktywna) }}{{ else }}<span>{{ $poz.etykieta }}</span>{{ end }}
           <button class="nav__toggle-sub" type="button" data-submenu-toggle
                   aria-expanded="false" aria-controls="podmenu-{{ add $i 1 }}"
                   aria-label="Rozwiń listę: {{ $poz.etykieta }}">
@@ -68,12 +68,12 @@
           </button>
           <div class="nav__sub" id="podmenu-{{ add $i 1 }}">
             {{- range $poz.dzieci }}
-            <a href="{{ .href }}"{{ if and .strona ($biezaca.Eq .strona) }} aria-current="page"{{ end }}{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}</a>
+            {{ partial "menu-link.html" (dict "poz" . "aktywna" (and .strona ($biezaca.Eq .strona))) }}
             {{- end }}
           </div>
         </li>
         {{- else }}
-        <li><a href="{{ $poz.href }}"{{ if $aktywna }} aria-current="page"{{ end }}{{ if $poz.zewnetrzny }} rel="noopener external"{{ end }}>{{ $poz.etykieta }}</a></li>
+        <li>{{ partial "menu-link.html" (dict "poz" $poz "aktywna" $aktywna) }}</li>
         {{- end }}
         {{- end }}
       </ul>
@@ -109,17 +109,17 @@
         <li><a href="{{ site.Home.RelPermalink }}"{{ if .IsHome }} aria-current="page"{{ end }}>Start</a></li>
         {{- range $menu }}
         {{- if .href }}
-        <li><a href="{{ .href }}"{{ if and .strona ($biezaca.Eq .strona) }} aria-current="page"{{ end }}{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}</a></li>
+        <li>{{ partial "menu-link.html" (dict "poz" . "aktywna" (and .strona ($biezaca.Eq .strona))) }}</li>
         {{- else }}
         <li><span>{{ .etykieta }}</span></li>
         {{- end }}
         {{- range .dzieci }}
-        <li class="sub"><a href="{{ .href }}"{{ if and .strona ($biezaca.Eq .strona) }} aria-current="page"{{ end }}{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}</a></li>
+        <li class="sub">{{ partial "menu-link.html" (dict "poz" . "aktywna" (and .strona ($biezaca.Eq .strona))) }}</li>
         {{- end }}
         {{- end }}
         {{- /* pozycje dodatkowe (data/menu.yaml "dodatkowe") - tylko w szufladzie, jak w v1 */}}
         {{- range partialCached "menu-lista.html" "dodatkowe" "dodatkowe" }}
-        <li><a href="{{ .href }}"{{ if and .strona ($biezaca.Eq .strona) }} aria-current="page"{{ end }}{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}</a></li>
+        <li>{{ partial "menu-link.html" (dict "poz" . "aktywna" (and .strona ($biezaca.Eq .strona))) }}</li>
         {{- end }}
       </ul>
     </nav>

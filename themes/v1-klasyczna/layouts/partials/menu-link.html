@@ -1,0 +1,6 @@
+{{- /* Odnosnik pozycji menu (naglowek, menu mobilne, stopka).
+       Wejscie: dict "poz" (pozycja z menu-model / menu-lista: href, etykieta,
+       zewnetrzny), "aktywna" (bool - aria-current="page"). */ -}}
+{{- with .poz -}}
+<a href="{{ .href }}"{{ if $.aktywna }} aria-current="page"{{ end }}{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}</a>
+{{- end -}}

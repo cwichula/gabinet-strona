@@ -56,7 +56,7 @@
         <h2>{{ $n.stopka_uslugi | default "Usługi" }}</h2>
         <ul>
           {{- range . }}
-          <li><a href="{{ .href }}"{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}</a></li>
+          <li>{{ partial "menu-link.html" (dict "poz" .) }}</li>
           {{- end }}
         </ul>
       </div>
@@ -67,7 +67,7 @@
         <h2>{{ $n.stopka_gabinet | default "Gabinet" }}</h2>
         <ul>
           {{- range . }}
-          <li><a href="{{ .href }}"{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}</a></li>
+          <li>{{ partial "menu-link.html" (dict "poz" .) }}</li>
           {{- end }}
         </ul>
       </div>
@@ -107,7 +107,7 @@
       {{- with $dolna }}
       <span class="cluster" style="gap:1rem">
         {{- range . }}
-        <a href="{{ .href }}"{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}</a>
+        {{ partial "menu-link.html" (dict "poz" .) }}
         {{- end }}
       </span>
       {{- end }}
