@@ -1253,12 +1253,8 @@ dialog.lightbox::backdrop { background: rgb(20 23 26 / 80%); backdrop-filter: bl
   align-items: center;
   padding: clamp(1.75rem, 4vw, var(--sp-7));
   border-radius: var(--radius-lg);
-  /* Delikatny akcent marki: bordowa poswiata w prawym gornym rogu (za
-     przyciskami) i cienka bordowa linia z lewej. Najjasniejsze miejsce
-     poswiaty to ok. 40% bordo na grafitowym tle - tekst nadal >= 6.9:1. */
-  background:
-    radial-gradient(ellipse 60% 120% at 100% 0%, rgb(155 28 49 / 40%), transparent 70%),
-    linear-gradient(135deg, var(--pasmo-1), var(--pasmo-2));
+  background: linear-gradient(135deg, var(--pasmo-1), var(--pasmo-2));
+  /* delikatny akcent marki: cienka bordowa linia z lewej */
   box-shadow: inset 4px 0 0 var(--akcent-pasma);
   color: var(--na-pasmie);
 }
