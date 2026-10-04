@@ -472,6 +472,11 @@ hr {
   padding: 0;
 }
 .nav li { display: flex; align-items: center; white-space: nowrap; }
+/* Lista menu nie ma klasy, wiec lapala sie na odstep miedzy punktami
+   zwyklych list w tresci (:where(ul, ol):not([class]) li + li, sekcja 2):
+   kazda pozycja poza pierwsza schodzila o .35em nizej niz "Start".
+   Ta sama specyficznosc, pozniej w pliku - wygrywa. */
+.nav li + li { margin-top: 0; }
 .nav a {
   display: inline-flex;
   align-items: center;
