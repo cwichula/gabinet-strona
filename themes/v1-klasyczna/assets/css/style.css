@@ -408,6 +408,21 @@ hr {
   min-height: 2.75rem;
 }
 .topbar .ico { width: 1em; height: 1em; opacity: .85; }
+.topbar__kontakt { gap: .1rem 1.25rem; margin-left: auto; }
+
+/* Telefon: godziny i przelacznik motywu w pierwszym wierszu, telefon
+   i adres pod spodem. We flexie przelacznik zawijal sie do osobnego,
+   trzeciego wiersza i pasek rosl do ok. 170 px. */
+@media (width < 50rem) {
+  .topbar__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0 .5rem;
+    padding-block: 0;
+  }
+  .topbar__inner > .theme-toggle { grid-column: 2; grid-row: 1; }
+  .topbar__kontakt { grid-column: 1 / -1; grid-row: 2; margin-left: 0; gap: 0 .6rem; }
+}
 
 /* Wskaznik "otwarte teraz" wyliczany w JS; bez JS zostaje sam tekst godzin */
 .status-dot {
@@ -496,14 +511,30 @@ hr {
   background: var(--brand-50);
 }
 
-/* Rozwijane podmenu uslug - dziala na hover i na klawiature */
-.nav__has-sub { position: relative; }
+/* Rozwijane podmenu uslug - dziala na hover i na klawiature.
+   "Uslugi" i strzalka to JEDNA pozycja menu: wspolne tlo po najechaniu
+   (na calym li), strzalka tuz przy slowie. Osobno klikalne zostaja -
+   slowo prowadzi do strony uslug, strzalka rozwija liste (klawiatura,
+   ekran dotykowy). */
+.nav__has-sub {
+  position: relative;
+  border-radius: var(--radius-sm);
+}
+.nav__has-sub > a { padding-right: .15rem; }
+.nav__has-sub > a:hover,
+.nav__has-sub > a[aria-current="page"] { background: none; }
+.nav__has-sub:hover,
+.nav__has-sub:focus-within { background: var(--surface-2); }
+.nav__has-sub:has(> a[aria-current="page"]) { background: var(--brand-50); }
+.nav__has-sub:hover > a,
+.nav__has-sub:hover > .nav__toggle-sub { color: var(--brand-700); }
 .nav__toggle-sub {
   display: inline-flex;
   align-items: center;
-  gap: .3em;
+  justify-content: center;
+  min-width: 1.6rem;     /* z wysokoscia 44 px: cel >= 24 x 24 px (WCAG 2.5.8) */
   min-height: 2.75rem;   /* 44 px celu dotykowego */
-  padding: .4rem .7rem;
+  padding: .4rem .5rem .4rem .2rem;
   border: 0;
   border-radius: var(--radius-sm);
   background: none;
@@ -513,15 +544,24 @@ hr {
   font-weight: 600;
   cursor: pointer;
 }
-.nav__toggle-sub:hover { background: var(--surface-2); color: var(--brand-700); }
 .nav__toggle-sub .chev { width: .7em; height: .7em; transition: transform .2s var(--ease); }
-.nav__toggle-sub[aria-expanded="true"] .chev { transform: rotate(180deg); }
+.nav__toggle-sub[aria-expanded="true"] .chev,
+.nav__has-sub:hover .chev { transform: rotate(180deg); }
 
+/* Podmenu zamyka sie z opoznieniem, a nad nim lezy niewidoczny "most"
+   (::before) przez szczeline miedzy pozycja a lista. Bez tego zjazd myszka
+   z "Uslugi" w dol konczyl :hover i lista znikala, zanim kursor do niej
+   dotarl - trzeba bylo klikac strzalke. visibility zamiast display, bo
+   tylko ona daje sie opoznic; ukryta lista nadal nie przyjmuje fokusu. */
 .nav__sub {
   position: absolute;
   top: calc(100% + .35rem);
   left: 0;
-  display: none;
+  z-index: 20;
+  display: grid;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .15s var(--ease), visibility 0s linear .3s;
   grid-template-columns: repeat(2, minmax(13rem, 1fr));
   gap: .1rem;
   min-width: 30rem;
@@ -531,8 +571,17 @@ hr {
   border-radius: var(--radius);
   box-shadow: var(--shadow-lg);
 }
+.nav__sub::before {
+  content: "";
+  position: absolute;
+  inset: -.6rem 0 100% 0;   /* od gornej krawedzi listy w gore, przez szczeline */
+}
 .nav__has-sub:hover .nav__sub,
-.nav__toggle-sub[aria-expanded="true"] + .nav__sub { display: grid; }
+.nav__toggle-sub[aria-expanded="true"] + .nav__sub {
+  visibility: visible;
+  opacity: 1;
+  transition-delay: 0s;
+}
 .nav__sub a {
   display: block;
   padding: .55rem .7rem;

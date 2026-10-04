@@ -16,7 +16,7 @@
       <span class="status-dot"></span>
       <span data-status-label>{{ $m.dniPrzyjec }}</span>
     </span>
-    <span class="cluster" style="gap:1.25rem">
+    <span class="cluster topbar__kontakt">
       {{- with $m.telefon }}
       <a class="topbar__item" href="{{ printf "tel:%s" .tel | safeURL }}">
         <svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg>{{ .numer }}
@@ -27,11 +27,13 @@
         <svg class="ico" aria-hidden="true"><use href="#ico-pin"></use></svg>{{ .ulica }}, {{ .miasto }}
       </span>
       {{- end }}
-      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Przełącz jasny i ciemny motyw">
-        <svg class="ico ico-moon" aria-hidden="true"><use href="#ico-moon"></use></svg>
-        <svg class="ico ico-sun" aria-hidden="true"><use href="#ico-sun"></use></svg>
-      </button>
     </span>
+    {{- /* przelacznik poza grupa telefon/adres: na telefonie stoi w pierwszym
+           wierszu obok godzin, zamiast spadac do osobnego wiersza */}}
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Przełącz jasny i ciemny motyw">
+      <svg class="ico ico-moon" aria-hidden="true"><use href="#ico-moon"></use></svg>
+      <svg class="ico ico-sun" aria-hidden="true"><use href="#ico-sun"></use></svg>
+    </button>
   </div>
 </div>
 
