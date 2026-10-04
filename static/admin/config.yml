@@ -1234,7 +1234,7 @@ collections:
                 label: Numer
                 widget: string
                 pattern: ['^[+0-9 ()-]{9,20}$', 'Same cyfry, spacje i myślniki, np. 699 904 989']
-          - { name: email, label: E-mail, widget: string, type: email, required: false }
+          - { name: email, label: E-mail, widget: string, type: email, required: false, hint: 'Puste = adres e-mail nie pojawia się na stronie (kontakt, stopka, dane dla Google). Po wpisaniu uzupełnij też e-mail w polityce prywatności (punkt 1).' }
           - name: obszar
             label: Obszar, z którego przyjmujemy pacjentów
             label_singular: obszar

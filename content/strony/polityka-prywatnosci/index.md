@@ -55,7 +55,7 @@ sekcje:
       ul. Złotoryjska 16/18 m. 10, 59-220 Legnica
 
       - telefon: [699 904 989](tel:+48699904989)
-      - e-mail: [gabstom13@wp.pl](mailto:gabstom13@wp.pl) ==DO POTWIERDZENIA==
+      - e-mail: ==DO UZUPEŁNIENIA==
 
       Dane rejestrowe praktyki — NIP **DO UZUPEŁNIENIA**, REGON **DO UZUPEŁNIENIA**, numer prawa wykonywania zawodu **DO UZUPEŁNIENIA**, wpis do rejestru podmiotów wykonujących działalność leczniczą (RPWDL) **DO UZUPEŁNIENIA** — gabinet uzupełni przed publikacją.
     ramka:
@@ -226,7 +226,7 @@ sekcje:
 
       Zmiana polityki nie odbiera Ci żadnego z praw z [punktu 7](#prawa). Jeśli dotyczy danych przetwarzanych na podstawie zgody, poprosimy o zgodę ponownie, a nie uznamy jej milcząco za udzieloną.
 
-      Masz pytanie o swoje dane? Zadzwoń pod [699 904 989](tel:+48699904989) albo napisz na [gabstom13@wp.pl](mailto:gabstom13@wp.pl).
+      Masz pytanie o swoje dane? Zadzwoń pod [699 904 989](tel:+48699904989).
     wariant: wyrozniony
     kotwica: zmiany
   - type: powiazane
