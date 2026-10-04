@@ -48,14 +48,14 @@ sekcje:
     elementy:
       - etykieta: Wszystkie usługi
         kotwica: wszystkie-uslugi
-      - etykieta: Bruksizm i stawy
-        kotwica: leczenie-stawow
+      - etykieta: Profilaktyka
+        kotwica: profilaktyka
       - etykieta: Protetyka
         kotwica: protetyka
       - etykieta: Estetyka
         kotwica: estetyka
-      - etykieta: Profilaktyka
-        kotwica: profilaktyka
+      - etykieta: Bruksizm i stawy
+        kotwica: leczenie-stawow
       - etykieta: Diagnostyka RTG
         kotwica: diagnostyka
       - etykieta: Czego nie robimy
