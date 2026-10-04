@@ -1,7 +1,7 @@
 /* ==========================================================================
    Szablon v1-klasyczna (Hugo) - dodatki do arkusza makiety v1 (style.css).
 
-   style.css jest kopia makiety v1 bez zmian. Tu tylko to, czego makieta nie
+   style.css wywodzi sie z arkusza makiety v1. Tu to, czego makieta nie
    miala, a czego wymaga kontrakt blokow (docs/KONTRAKT-BLOKOW.md): lista
    z minusami, odstep bloku dolaczonego do sekcji ("polacz"), naglowek
    banera, gdy baner nie jest pierwszym blokiem strony, plakietki
@@ -29,11 +29,8 @@
 .page-head .split { align-items: center; }
 .page-head .figure { margin: 0; }
 
-/* Pogrubienie z Markdown (**...**) w faktach banera wyglada jak <b> z makiety. */
-.hero__meta strong { color: var(--ink); font-weight: 680; }
-
 /* Wyrozniony napis w tresci (Markdown ==tekst==, np. „DO UZUPEŁNIENIA”) -
-   plakietka jak .badge.badge--accent w makiecie v1 (polityka prywatnosci). */
+   plakietka w kolorach akcentu (polityka prywatnosci). */
 mark {
   display: inline-flex;
   align-items: center;

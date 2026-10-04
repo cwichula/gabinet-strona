@@ -94,7 +94,7 @@
 :root {
   --btn-fill-fg: #ffffff;
 
-  /* Pasma markowe (.section--brand, .cta-band) sa ciemne w OBU motywach,
+  /* Pasma markowe (.cta-band, stopka) sa ciemne w OBU motywach,
      wiec bialy napis na nich jest poprawny zawsze. Tokeny --brand-600/-800
      w motywie ciemnym rozjasniaja sie, bo sluza tam za kolor PISMA na
      ciemnym tle - uzyte jako TLO pasma dawaly biel na jasnym. Te cztery
@@ -276,14 +276,6 @@ hr {
 .section { padding-block: clamp(2.5rem, 6vw, var(--sp-9)); }
 .section--tight { padding-block: clamp(2rem, 4vw, var(--sp-7)); }
 .section--surface { background: var(--surface); }
-.section--brand {
-  background: var(--pasmo-1);
-  color: var(--na-pasmie);
-}
-.section--brand h2, .section--brand h3 { color: #fff; }
-.section--brand p { color: var(--na-pasmie-cichy); }
-
-.stack > * + * { margin-top: var(--sp-4); }
 .prose { max-width: var(--measure); }
 .prose > :first-child { margin-top: 0; }
 
@@ -355,10 +347,7 @@ hr {
 }
 .btn:active { transform: translateY(0); }
 
-.btn--primary { --btn-bg: var(--brand-700); --btn-bd: var(--brand-700); }
-.btn--primary { color: var(--btn-fill-fg); }
-
-.btn--accent { --btn-bg: var(--accent-600); --btn-bd: var(--accent-600); color: var(--btn-fill-fg); }
+.btn--primary { --btn-bg: var(--brand-700); --btn-bd: var(--brand-700); color: var(--btn-fill-fg); }
 
 .btn--ghost {
   --btn-bg: transparent;
@@ -464,6 +453,7 @@ hr {
   text-decoration: none;
   color: var(--ink);
   margin-right: auto;
+  min-height: 2.75rem;
 }
 .brand__mark { width: 2.4rem; height: 2.4rem; flex: none; }
 .brand__text { display: grid; line-height: 1.2; }
@@ -473,7 +463,6 @@ hr {
   font-size: 1.02rem;
   letter-spacing: -.02em;
 }
-.brand { min-height: 2.75rem; }
 .brand__sub { font-size: .76rem; color: var(--muted); letter-spacing: .01em; }
 
 .nav { display: none; }
@@ -505,7 +494,6 @@ hr {
   font-size: .95rem;
   font-weight: 600;
   text-decoration: none;
-  white-space: nowrap;
 }
 .nav a:hover { background: var(--surface-2); color: var(--brand-700); }
 .nav a[aria-current="page"] {
@@ -719,7 +707,7 @@ hr {
   font-size: var(--step--1);
   color: var(--muted);
 }
-.hero__meta b { color: var(--ink); font-weight: 680; }
+.hero__meta strong { color: var(--ink); font-weight: 680; }
 
 .hero__media {
   position: relative;
@@ -827,22 +815,6 @@ hr {
   color: var(--muted);
 }
 .card__price b { color: var(--brand-700); font-size: var(--step-0); }
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: .35em;
-  padding: .25em .7em;
-  border-radius: var(--radius-pill);
-  background: var(--brand-50);
-  color: var(--brand-700);
-  border: 1px solid var(--brand-100);
-  font-size: .78rem;
-  font-weight: 680;
-  letter-spacing: .01em;
-}
-.badge--accent { background: var(--accent-100); color: var(--accent-700); border-color: transparent; }
-.badge--ok { background: var(--ok-100); color: var(--ok-700); border-color: transparent; }
 
 /* ---------------------------------------------- 9. Naglowek strony, okruszki */
 
@@ -1438,18 +1410,6 @@ body { padding-bottom: 4.5rem; }
   color: var(--ink-soft);
 }
 .anchor-nav a:hover { border-color: var(--brand-600); color: var(--brand-700); background: var(--brand-50); }
-
-.review {
-  display: grid;
-  gap: var(--sp-3);
-  padding: var(--sp-5);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--card-bg);
-}
-.review__stars { color: #e3a008; letter-spacing: .1em; }
-.review cite { font-style: normal; font-weight: 650; font-size: .95rem; }
-.review cite span { display: block; font-weight: 500; font-size: var(--step--1); color: var(--muted); }
 
 .notice-strip {
   padding: var(--sp-3) 0;
