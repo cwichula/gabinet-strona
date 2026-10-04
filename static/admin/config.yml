@@ -51,14 +51,13 @@ backend:
   name: github
   repo: cwichula/gabinet-strona
   branch: main
-  # Logowanie przez GitHub ("Zaloguj przez GitHub") wymaga wlasnego klienta OAuth:
-  # wdroz Cloudflare Worker sveltia/sveltia-cms-auth (README, "Logowanie do panelu")
-  # i wpisz tu jego adres, np.:
-  # base_url: https://sveltia-cms-auth.<twoje-konto>.workers.dev
-  # i USUN ponizsza linie auth_methods. Do tego czasu tylko logowanie tokenem -
-  # bez base_url przycisk "Zaloguj sie przez GitHub" kierowalby do Netlify
-  # (api.netlify.com) i nie dzialalby. https://sveltiacms.app/en/docs/backends
-  auth_methods: [token]
+  # Logowanie przez GitHub ("Zaloguj przez GitHub") idzie przez wlasny klient OAuth:
+  # Cloudflare Worker sveltia/sveltia-cms-auth (README, "Logowanie do panelu").
+  # Worker trzyma GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET i ALLOWED_DOMAINS;
+  # OAuth App w GitHubie ma callback <base_url>/callback.
+  # Token zostaje jako zapasowa metoda logowania. https://sveltiacms.app/en/docs/backends
+  base_url: https://sveltia-cms-auth.cwichula.workers.dev
+  auth_methods: [oauth, token]
   # {{collection}} = label_singular kolekcji w mianowniku ("Strona", "Menu"...),
   # dlatego zdanie jest zbudowane tak, zeby nie wymagalo odmiany.
   commit_messages:
