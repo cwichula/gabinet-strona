@@ -9,7 +9,7 @@
        Tabela table.price-table makiety v1: kilka kategorii = wiersze-grupy
        (tr.group), jedna kategoria albo wybrane pozycje = same wiersze. */ -}}
 {{- $b := .blok -}}
-{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $gdzie := $.gdzie -}}
 {{- $c := hugo.Data.cennik -}}
 {{- $n := (hugo.Data.ustawienia | default dict).napisy | default dict -}}
 {{- $wszystkie := $c.pozycje | default slice -}}

@@ -4,7 +4,7 @@
        ostatnia kolumne "Cena" z cennika. data-label = naglowek kolumny
        (na telefonie tabela rozklada sie na karty). */ -}}
 {{- $b := .blok -}}
-{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $gdzie := $.gdzie -}}
 {{- $kolumny := $b.kolumny | default slice -}}
 {{- $zCena := false }}{{ range $b.wiersze }}{{ if .cena }}{{ $zCena = true }}{{ end }}{{ end -}}
 {{ partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "wstep" $b.wstep "gora" $.gora) }}

@@ -4,7 +4,7 @@
        ciasniejsza (section--tight, partial sekcje.html). Kotwica, ktorej nie ma
        na stronie (zaden blok jej nie ma), przerywa budowanie. */ -}}
 {{- $b := .blok -}}
-{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $gdzie := $.gdzie -}}
 {{- $kotwice := slice }}{{ range $.strona.Params.sekcje }}{{ with .kotwica }}{{ $kotwice = $kotwice | append . }}{{ end }}{{ end -}}
 {{- with $b.elementy }}
     <nav class="anchor-nav" aria-label="{{ $b.naglowek | default "Spis treści" }}">

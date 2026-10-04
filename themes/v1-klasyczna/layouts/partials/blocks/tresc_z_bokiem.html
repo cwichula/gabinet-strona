@@ -16,5 +16,5 @@
         {{- end }}
         {{ "<!--kolumna-->" | safeHTML }}
       </div>
-{{ partial "bok.html" (dict "bok" ($b.bok | default dict) "strona" $.strona) }}
+{{ partial "bok.html" (dict "bok" ($b.bok | default dict) "strona" $.strona "gdzie" $.gdzie) }}
     </div>

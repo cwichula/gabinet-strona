@@ -6,7 +6,7 @@
        dolaczone ("polacz") trafiaja do kolumny tekstu (znacznik dla sekcje.html);
        bez zdjecia: div.prose. */ -}}
 {{- $b := .blok -}}
-{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $gdzie := $.gdzie -}}
 {{- $ptaszki := eq $b.wypunktowanie "ptaszki" -}}
 {{- $tresc := "" }}{{ with $b.tresc }}{{ $tresc = partial "markdown.html" (dict "strona" $.strona "tekst" .) | string }}{{ end -}}
 {{- if $ptaszki }}{{ $tresc = replace $tresc "<ul>" `<ul class="checklist">` }}{{ end -}}

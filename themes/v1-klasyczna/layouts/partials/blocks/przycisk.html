@@ -2,7 +2,7 @@
        styl (glowny -> btn--primary ze strzalka, obrysowy -> btn--ghost).
        Zwykle dolaczony do sekcji powyzej ("polacz"). */ -}}
 {{- $b := .blok -}}
-{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $gdzie := $.gdzie -}}
 {{- $p := dict "etykieta" ($b.etykieta | default "") "strona" ($b.strona | default "") "styl" ($b.styl | default "") "kotwica_celu" ($b.kotwica_celu | default "") -}}
 {{- with strings.TrimSpace (partial "przycisk.html" (dict "przycisk" $p "gdzie" (printf "%s: blok „Przycisk”" $gdzie) "strzalka" true)) }}
     <p>

@@ -68,7 +68,7 @@
   {{- $html := "" }}{{ $zwarta := eq $pierwszy.type "pasek_zaufania" -}}
   {{- range $i, $el := $grupa -}}
     {{- if eq $el.blok.type "spis" }}{{ $zwarta = true }}{{ end -}}
-    {{- $out := partial (printf "blocks/%s.html" $el.blok.type) (dict "blok" $el.blok "strona" $strona "nr" $el.nr "gora" (eq $i 0) "priorytet" (eq $el.nr $nrZdjecia) "pamiec" $pamiec) | string | strings.TrimSpace -}}
+    {{- $out := partial (printf "blocks/%s.html" $el.blok.type) (dict "blok" $el.blok "strona" $strona "nr" $el.nr "gora" (eq $i 0) "priorytet" (eq $el.nr $nrZdjecia) "pamiec" $pamiec "gdzie" $plik) | string | strings.TrimSpace -}}
     {{- if $out -}}
       {{- if not $html }}{{ $html = $out }}{{ else -}}
         {{- $id := "" }}{{ with $el.blok.kotwica }}{{ $id = printf ` id="%s"` (. | urlize) }}{{ end -}}

@@ -2,5 +2,5 @@
        ok -> callout--ok), tresc (Markdown), ikona (domyslnie wg rodzaju),
        wypunktowanie (ptaszki -> listy jako ul.checklist). */ -}}
 {{- $b := .blok -}}
-{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $gdzie := $.gdzie -}}
 {{ partial "ramka-html.html" (dict "strona" $.strona "rodzaj" $b.rodzaj "tresc" $b.tresc "ikona" $b.ikona "gdzie" $gdzie "ptaszki" (eq $b.wypunktowanie "ptaszki")) }}

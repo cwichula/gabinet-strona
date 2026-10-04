@@ -4,7 +4,7 @@
        karta ze strona = article.card.card--link (cala karta klikalna),
        karta z sama cena = mala karta ceny (strona glowna v1, "Ile to kosztuje"). */ -}}
 {{- $b := .blok -}}
-{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $gdzie := $.gdzie -}}
 {{- $kol := printf "%v" ($b.kolumny | default 3) -}}
 {{- if not (in (slice "2" "3" "4") $kol) }}{{ $kol = "3" }}{{ end -}}
 {{ partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "wstep" $b.wstep "gora" $.gora) }}

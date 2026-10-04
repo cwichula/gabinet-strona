@@ -3,7 +3,7 @@
        Pusta etykieta = tytul strony; pusty opis = usluga.skrot wskazanej strony.
        Strona ukryta (szkic) = pominieta. */ -}}
 {{- $b := .blok -}}
-{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $gdzie := $.gdzie -}}
 {{- $linki := slice -}}
 {{- range $el := $b.elementy -}}
   {{- $cel := partial "cel-linku.html" (dict "strona" $el.strona "gdzie" (printf "%s: blok „Powiązane strony”" $gdzie)) -}}

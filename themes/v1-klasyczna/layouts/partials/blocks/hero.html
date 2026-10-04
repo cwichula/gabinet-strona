@@ -7,7 +7,7 @@
        Pusty naglowek -> tytul strony. Pola wspolne: wariant (pomijany - baner
        ma wlasne tlo), kotwica, polacz (pomijane - baner zawsze osobno). */ -}}
 {{- $b := .blok -}}
-{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $gdzie := $.gdzie -}}
 {{- $naGorze := eq .nr 0 -}}
 {{- $naglowek := $b.naglowek | default $.strona.Title -}}
 {{- $id := "" }}{{ with $b.kotwica }}{{ $id = . | urlize }}{{ end -}}

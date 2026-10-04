@@ -3,7 +3,7 @@
        numerem telefonu, (opcjonalnie) przyciski z pozostalymi numerami
        i (opcjonalnie) przycisk do strony. */ -}}
 {{- $b := .blok -}}
-{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $gdzie := $.gdzie -}}
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
     <div class="cta-band">
       <div>

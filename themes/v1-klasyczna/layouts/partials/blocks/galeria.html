@@ -3,7 +3,7 @@
        (skrypt v1, okno raz na strone). Pierwsze 4 miniatury bez lazy - jak w v1.
        Podpis zdjecia pokazuje sie w powiekszeniu (zamiast tekstu alternatywnego). */ -}}
 {{- $b := .blok -}}
-{{- $gdzie := "Strona" }}{{ with $.strona.File }}{{ $gdzie = .Path }}{{ end -}}
+{{- $gdzie := $.gdzie -}}
     {{- if $b.naglowek }}
     <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ $b.naglowek }}</h2>
     {{- else }}

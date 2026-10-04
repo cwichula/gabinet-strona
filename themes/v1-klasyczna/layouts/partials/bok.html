@@ -6,12 +6,12 @@
        Przyciski: z lista cen - najpierw przycisk do strony (wypelniony), potem
        pierwszy telefon; bez cen - telefony (pierwszy wypelniony), potem przycisk
        (obrysowany). Przy przycisku do strony - tylko pierwszy numer.
-       Wejscie: dict "bok", "strona" (Page - do odnosnikow i bledow),
+       Wejscie: dict "bok", "strona" (Page - do odnosnikow), "gdzie" (opis do bledow),
        "duze" (bool - duzy pierwszy przycisk telefonu, jak na stronie kontaktu v1). */ -}}
 {{- $b := .bok | default dict -}}
 {{- $g := hugo.Data.gabinet -}}
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
-{{- $gdzie := "Strona" }}{{ with .strona }}{{ with .File }}{{ $gdzie = .Path }}{{ end }}{{ end -}}
+{{- $gdzie := .gdzie | default "Strona" -}}
 {{- $godziny := ne $b.godziny false -}}
 {{- $telefony := ne $b.telefony false -}}
 {{- $pozycje := slice -}}
