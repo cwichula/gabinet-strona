@@ -12,7 +12,16 @@
 
 <div class="topbar">
   <div class="container topbar__inner">
-    <span class="topbar__item" data-status data-godziny="{{ $m.godziny_dane }}">
+    {{- /* napisy dla skryptu (app.js, "Otwarte teraz"): {godzina} i {dzien}
+           wstawia skrypt; dni z przyimkiem rozdzielone "|" (1 = poniedzialek) */}}
+    {{- $godzina := dict "time" "{godzina}" }}
+    {{- $dni := slice }}{{ range slice "onMonday" "onTuesday" "onWednesday" "onThursday" "onFriday" "onSaturday" "onSunday" }}{{ $dni = $dni | append (T .) }}{{ end }}
+    <span class="topbar__item" data-status data-godziny="{{ $m.godziny_dane }}"
+          data-napis-otwarte="{{ T "statusOpenUntil" $godzina }}"
+          data-napis-dzis="{{ T "statusOpensToday" $godzina }}"
+          data-napis-otwieramy="{{ T "statusClosedOpens" (dict "day" "{dzien}" "time" "{godzina}") }}"
+          data-napis-zamkniete="{{ T "statusClosed" }}"
+          data-napis-dni="{{ delimit $dni "|" }}">
       <span class="status-dot"></span>
       <span data-status-label>{{ $m.dni_przyjec }}</span>
     </span>

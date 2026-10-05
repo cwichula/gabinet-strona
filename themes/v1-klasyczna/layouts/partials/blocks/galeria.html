@@ -41,7 +41,7 @@
       {{- end }}
     </div>
     {{- if not ($.pamiec.Get "lightbox") }}{{ $.pamiec.Set "lightbox" true }}
-  <dialog class="lightbox" id="lightbox" aria-label="{{ T "enlargedPhoto" }}">
+  <dialog class="lightbox" id="lightbox" aria-label="{{ T "enlargedPhoto" }}" data-napis-licznik="{{ T "photoCounter" (dict "number" "{nr}" "total" "{razem}") }}">
     <figure class="lightbox__fig">
       <img data-lb-img src="data:," alt="" width="1400" height="1050" decoding="async">
       <figcaption data-lb-cap></figcaption>

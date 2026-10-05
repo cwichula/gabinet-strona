@@ -25,7 +25,7 @@
       {{- end }}
     </ul>
     {{- end }}
-      <div class="map-embed{{ if $lista }} odstep-5{{ end }}" data-map
+      <div class="map-embed{{ if $lista }} odstep-5{{ end }}" data-map data-napis-tytul="{{ T "mapTitle" }}"
            data-map-src="https://www.google.com/maps?q={{ $zapytanie | safeURL }}&output=embed&hl=pl&z=17">
         <div class="map-consent">
           <svg class="ico" aria-hidden="true" style="width:2rem;height:2rem;color:var(--brand-600)"><use href="#ico-map"></use></svg>

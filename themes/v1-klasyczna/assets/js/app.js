@@ -15,6 +15,15 @@
   var $  = function (sel, root) { return (root || document).querySelector(sel); };
   var $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
 
+  /* Napisy przychodza z szablonu w atrybutach data-napis-<nazwa> (teksty
+     w i18n/pl.yaml motywu), wiec w tym pliku nie ma tekstow strony.
+     {klucz} w napisie zastepuje wartosc z "wartosci". */
+  var napis = function (el, nazwa, wartosci) {
+    return (el.getAttribute("data-napis-" + nazwa) || "").replace(/\{(\w+)\}/g, function (cale, klucz) {
+      return wartosci && klucz in wartosci ? String(wartosci[klucz]) : cale;
+    });
+  };
+
   /* ------------------------------------------------------------ 1. Motyw */
   /* Wybor uzytkownika wygrywa z ustawieniem systemu i przezywa przeladowanie.
      Skrypt ustawiajacy atrybut data-theme siedzi w <head> kazdej podstrony,
@@ -136,16 +145,15 @@
     if (!label) return;
 
     if (open) {
-      label.textContent = "Otwarte teraz · do " + map[day].split("-")[1];
+      label.textContent = napis(el, "otwarte", { godzina: map[day].split("-")[1] });
     } else {
       /* Najblizszy dzien przyjec, liczac od jutra, maksymalnie tydzien w przod.
-         Przyimek siedzi w tablicy razem z nazwa dnia, bo po polsku jest
-         "we wtorek", a nie "w wtorek". */
-      var names = ["", "w poniedziałek", "we wtorek", "w środę", "w czwartek",
-                   "w piątek", "w sobotę", "w niedzielę"];
+         Przyimek siedzi w napisie razem z nazwa dnia (data-napis-dni), bo po
+         polsku jest "we wtorek", a nie "w wtorek". */
+      var names = [""].concat((el.getAttribute("data-napis-dni") || "").split("|"));
       var nextDay = null;
       if (today && minutes < toMin(today.split("-")[0])) {
-        label.textContent = "Dziś od " + map[day].split("-")[0];
+        label.textContent = napis(el, "dzis", { godzina: map[day].split("-")[0] });
         return;
       }
       for (var i = 1; i <= 7; i++) {
@@ -153,8 +161,8 @@
         if (map[d]) { nextDay = d; break; }
       }
       label.textContent = nextDay
-        ? "Zamknięte · otwieramy " + names[nextDay] + " o " + map[nextDay].split("-")[0]
-        : "Zamknięte";
+        ? napis(el, "otwieramy", { dzien: names[nextDay] || "", godzina: map[nextDay].split("-")[0] })
+        : napis(el, "zamkniete");
     }
   });
 
@@ -179,8 +187,8 @@
       var btn = items[index];
       lbImg.src = btn.getAttribute("data-full");
       lbImg.alt = btn.getAttribute("data-alt") || "";
-      lbCap.textContent = (btn.getAttribute("data-alt") || "") +
-        "  (" + (index + 1) + " z " + items.length + ")";
+      lbCap.textContent = (btn.getAttribute("data-alt") || "") + "  " +
+        napis(lightbox, "licznik", { nr: index + 1, razem: items.length });
     };
 
     items.forEach(function (btn, i) {
@@ -220,11 +228,11 @@
   /* Tytul ramki (czytany przez czytnik ekranu) bierze adres z parametru q
      adresu mapy. Ten adres szablon sklada z data/gabinet.yaml, wiec po
      zmianie adresu w CMS tytul zmienia sie razem z mapa - zamiast trzymac
-     tutaj druga, zapomniana kopie adresu. */
-  var tytulMapy = function (src) {
+     tutaj druga, zapomniana kopie adresu. Poczatek tytulu: data-napis-tytul. */
+  var tytulMapy = function (box, src) {
     var adres = "";
     try { adres = new URL(src, location.href).searchParams.get("q") || ""; } catch (e) { /* stara przegladarka */ }
-    return "Mapa dojazdu do gabinetu" + (adres ? ": " + adres : "");
+    return napis(box, "tytul") + (adres ? ": " + adres : "");
   };
 
   $$("[data-map]").forEach(function (box) {
@@ -233,7 +241,7 @@
     btn.addEventListener("click", function () {
       var frame = document.createElement("iframe");
       frame.src = box.getAttribute("data-map-src");
-      frame.title = tytulMapy(frame.src);
+      frame.title = tytulMapy(box, frame.src);
       frame.loading = "lazy";
       frame.referrerPolicy = "no-referrer-when-downgrade";
       frame.setAttribute("allowfullscreen", "");
@@ -275,8 +283,8 @@
       });
       if (counter) {
         counter.textContent = q
-          ? "Pasujące pozycje: " + shown
-          : "Wszystkich pozycji w cenniku: " + rows.length;
+          ? napis(counter, "pasujace", { liczba: shown })
+          : napis(counter, "wszystkie", { liczba: rows.length });
       }
     };
 

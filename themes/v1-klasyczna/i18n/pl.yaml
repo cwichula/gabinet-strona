@@ -35,6 +35,20 @@ thursdayGenitive: "czwartku"
 fridayGenitive: "piątku"
 saturdayGenitive: "soboty"
 sundayGenitive: "niedzieli"
+# napis "otwarte teraz" w gornym pasku - sklada go assets/js/app.js
+# (atrybuty data-napis-*; szablon wstawia w {{ .x }} znaczniki {godzina}, {dzien})
+statusOpenUntil: "Otwarte teraz · do {{ .time }}"
+statusOpensToday: "Dziś od {{ .time }}"
+statusClosedOpens: "Zamknięte · otwieramy {{ .day }} o {{ .time }}"
+statusClosed: "Zamknięte"
+# dni tygodnia z przyimkiem ("we wtorek", a nie "w wtorek")
+onMonday: "w poniedziałek"
+onTuesday: "we wtorek"
+onWednesday: "w środę"
+onThursday: "w czwartek"
+onFriday: "w piątek"
+onSaturday: "w sobotę"
+onSunday: "w niedzielę"
 
 # --- stopka
 footerServices: "Usługi"
@@ -109,9 +123,13 @@ enlargedPhoto: "Powiększone zdjęcie"
 closeEnlarged: "Zamknij powiększenie"
 previousPhoto: "Poprzednie zdjęcie"
 nextPhoto: "Następne zdjęcie"
+# podpis w powiekszeniu: "(3 z 12)" (app.js)
+photoCounter: "({{ .number }} z {{ .total }})"
 
 # --- mapa
 mapHeading: "Mapa dojazdu"
+# tytul ramki z mapa (app.js dokleja ": " i adres)
+mapTitle: "Mapa dojazdu do gabinetu"
 mapConsent: "Mapa pochodzi z serwisu Google. Jej wczytanie przekaże Google Twój adres IP, dlatego ładujemy ją dopiero po Twoim kliknięciu."
 showGoogleMap: "Pokaż mapę Google"
 openNavigation: "Albo otwórz nawigację w nowej karcie →"

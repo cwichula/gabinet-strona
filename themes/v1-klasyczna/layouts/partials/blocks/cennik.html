@@ -53,7 +53,7 @@
         <label class="visually-hidden" for="szukaj-ceny">{{ T "searchPrices" }}</label>
         <input type="search" id="szukaj-ceny" data-price-search placeholder="{{ $n.cennik_podpowiedz | default (T "searchPricesPlaceholder") }}">
       </div>
-      <p data-price-count aria-live="polite" class="dopisek bez-marginesu">{{ T "priceCountAll" (dict "count" $liczba) }}</p>
+      <p data-price-count data-napis-wszystkie="{{ T "priceCountAll" (dict "count" "{liczba}") }}" data-napis-pasujace="{{ T "priceCountMatching" (dict "count" "{liczba}") }}" aria-live="polite" class="dopisek bez-marginesu">{{ T "priceCountAll" (dict "count" $liczba) }}</p>
     </div>
     {{- end }}
 
