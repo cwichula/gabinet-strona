@@ -14,7 +14,7 @@
         {{- with $b.tresc }}
         {{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}
         {{- end }}
-        {{ "<!--kolumna-->" | safeHTML }}
+        {{ partial "znacznik-kolumny.html" . | safeHTML }}
       </div>
 {{ partial "bok.html" (dict "bok" ($b.bok | default dict) "strona" $.strona "gdzie" $.gdzie) }}
     </div>

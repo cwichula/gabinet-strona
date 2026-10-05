@@ -7,7 +7,7 @@
        Gdy sekcja zaczyna sie blokiem z kolumna obok (tekst ze zdjeciem, tekst
        z ramka z boku, kontakt z ramka z boku) albo ma dolaczony blok z ramka
        z boku, kolejne bloki dolaczone trafiaja do jego kolumny tekstu
-       (znacznik <!--kolumna--> w partialu bloku) - jak w makiecie v1, gdzie
+       (znacznik ze znacznik-kolumny.html w partialu bloku) - jak w makiecie v1, gdzie
        kroki, karta rezerwacji czy cytat stoja obok zdjecia albo ramki.
        Baner (hero) to zawsze osobna sekcja (partial sam ja buduje). Sekcja,
        ktorej bloki nic nie wypisaly (np. wylaczona rezerwacja), znika.
@@ -60,8 +60,9 @@
 
 {{- /* sekcje */ -}}
 {{- $waskie := slice "faq" "formularz" "rezerwacja" -}}
-{{- $znacznik := "<!--kolumna-->" -}}
+{{- $znacznik := partial "znacznik-kolumny.html" . -}}
 {{- $doKolumny := slice "tekst" "ramka" "kroki" "lista" "cytat" "przycisk" "rezerwacja" "godziny" -}}
+{{- $otwieraKolumne := slice "tresc_z_bokiem" "kontakt" -}}
 {{- range $g := $grupy -}}
   {{- $grupa := $g.bloki -}}
   {{- $pierwszy := (index $grupa 0).blok -}}
@@ -81,7 +82,7 @@
                szeroki (karty, tabela, powiazane strony, cta, tekst ze zdjeciem...)
                staje pod spodem i zamyka kolumne. */ -}}
         {{- if strings.Contains $out $znacznik -}}
-          {{- if in (slice "tresc_z_bokiem" "kontakt") $el.blok.type -}}
+          {{- if in $otwieraKolumne $el.blok.type -}}
             {{- $html = printf "%s%s" (replace $html $znacznik "") $dalej -}}
           {{- else -}}
             {{- $html = printf "%s%s" (replace $html $znacznik "") (replace $dalej $znacznik "") -}}

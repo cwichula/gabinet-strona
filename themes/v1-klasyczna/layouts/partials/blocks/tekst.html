@@ -43,7 +43,7 @@
           {{ $przycisk }}
         </p>
         {{- end }}
-        {{ "<!--kolumna-->" | safeHTML }}
+        {{ partial "znacznik-kolumny.html" . | safeHTML }}
       </div>
       {{- if ne $b.strona_zdjecia "lewa" }}
       {{ partial "figura.html" (dict "strona" $.strona "zdjecie" $b.zdjecie "priorytet" $.priorytet "gdzie" $gdzie) }}
