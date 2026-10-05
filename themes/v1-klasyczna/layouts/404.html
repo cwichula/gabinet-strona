@@ -70,13 +70,12 @@
     </div>
 
     {{- with $m.telefony }}
-    {{- $ost := sub (len .) 1 }}
     <div class="callout" style="margin-top:2.5rem">
       <svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg>
       <div>
         <p>
           {{ with $s.ramka_telefon }}{{ partial "tekst-wiersze.html" . }}{{ else }}Jeśli nie możesz czegoś znaleźć albo chcesz umówić wizytę, zadzwoń do rejestracji:{{ end }}
-          {{ range $i, $t := . }}{{ if $i }}{{ if eq $i $ost }} lub {{ else }}, {{ end }}{{ end }}<a href="{{ printf "tel:%s" $t.tel | safeURL }}">{{ if eq $i 0 }}<strong>{{ $t.numer }}</strong>{{ else }}{{ $t.numer }}{{ end }}</a>{{ end }}.
+          {{ partial "telefony-zdanie.html" . }}.
         </p>
         {{- with $g.adres }}{{ if .ulica }}
         <p>

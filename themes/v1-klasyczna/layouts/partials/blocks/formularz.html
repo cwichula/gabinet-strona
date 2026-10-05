@@ -15,10 +15,8 @@
 {{- $p := printf "f%d-" .nr -}}
 {{- $polityka := site.GetPage "/strony/polityka-prywatnosci" -}}
 {{- $n := (hugo.Data.ustawienia | default dict).napisy | default dict -}}
-{{- /* telefony do zdania "W sprawach pilnych ... zadzwon" */ -}}
-{{- $nr := slice -}}
-{{- range $i, $t := $m.telefony }}{{ $nr = $nr | append (printf `<a href="tel:%s">%s</a>` $t.tel (cond (eq $i 0) (printf "<strong>%s</strong>" $t.numer) $t.numer)) }}{{ end -}}
-{{- $pilne := "" }}{{ with $nr }}{{ $pilne = printf "W sprawach pilnych i przy bólu zadzwoń: %s." (delimit . ", " " lub ") }}{{ end -}}
+{{- /* zdanie "W sprawach pilnych ... zadzwon" z telefonami */ -}}
+{{- $pilne := "" }}{{ with $m.telefony }}{{ $pilne = printf "W sprawach pilnych i przy bólu zadzwoń: %s." (partial "telefony-zdanie.html" .) }}{{ end -}}
     {{- partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" "Napisz do nas" "gora" $.gora) }}
     {{- with $b.wstep }}
     {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede") }}

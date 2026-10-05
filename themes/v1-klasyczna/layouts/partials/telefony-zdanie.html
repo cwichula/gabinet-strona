@@ -1,0 +1,11 @@
+{{- /* Numery telefonow jako fragment zdania "A, B lub C": odnosniki tel:,
+       pierwszy numer pogrubiony. Wejscie: slice telefonow (gabinet-model.html,
+       "telefony"). Wynik: HTML (pusty, gdy nie ma numerow). */ -}}
+{{- $linki := slice -}}
+{{- range $i, $t := . -}}
+  {{- $numer := htmlEscape $t.numer -}}
+  {{- if eq $i 0 }}{{ $numer = printf "<strong>%s</strong>" $numer }}{{ end -}}
+  {{- $linki = $linki | append (printf `<a href="%s">%s</a>` (htmlEscape (printf "tel:%s" $t.tel)) $numer) -}}
+{{- end -}}
+{{- $wynik := delimit $linki ", " " lub " | safeHTML -}}
+{{- return $wynik -}}

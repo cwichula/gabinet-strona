@@ -59,10 +59,7 @@
         <p class="booking__alt">Wolisz ustalić termin w rozmowie? Rejestracja telefoniczna działa jak dotąd:</p>
         <div class="cluster">
           {{- range first 2 . }}
-          <a class="btn btn--ghost" href="{{ printf "tel:%s" .tel | safeURL }}">
-            <svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg>
-            {{ .numer }}
-          </a>
+          {{ partial "telefon-btn.html" (dict "klasa" "btn btn--ghost" "telefon" .) }}
           {{- end }}
         </div>
         {{- end }}

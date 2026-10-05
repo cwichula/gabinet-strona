@@ -79,12 +79,7 @@
       </ul>
     </nav>
 
-    {{- with $m.telefon }}
-    <a class="btn btn--primary header__cta" href="{{ printf "tel:%s" .tel | safeURL }}">
-      <svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg>
-      {{ ($u.napisy | default dict).przycisk_naglowka | default "Umów wizytę" }}
-    </a>
-    {{- end }}
+    {{ partial "telefon-btn.html" (dict "klasa" "btn btn--primary header__cta" "napis" (($u.napisy | default dict).przycisk_naglowka | default "Umów wizytę")) }}
 
     {{ partial "rezerwacja.html" (dict "miejsce" "naglowek") }}
 
@@ -123,12 +118,7 @@
         {{- end }}
       </ul>
     </nav>
-    {{- with $m.telefon }}
-    <a class="btn btn--primary btn--block" href="{{ printf "tel:%s" .tel | safeURL }}">
-      <svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg>
-      {{ .numer }}
-    </a>
-    {{- end }}
+    {{ partial "telefon-btn.html" (dict "klasa" "btn btn--primary btn--block") }}
     {{ partial "rezerwacja.html" (dict "miejsce" "szuflada") }}
   </div>
 </div>

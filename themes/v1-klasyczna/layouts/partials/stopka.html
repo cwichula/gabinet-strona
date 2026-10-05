@@ -118,12 +118,7 @@
 {{- /* Na telefonie najwazniejsza akcja zostaje pod kciukiem przez caly czas:
        telefon pierwszy i jedyny wypelniony, potem dojazd i rezerwacja online. */}}
 <div class="callbar">
-  {{- with $m.telefon }}
-  <a class="btn btn--primary" href="{{ printf "tel:%s" .tel | safeURL }}">
-    <svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg>
-    Zadzwoń
-  </a>
-  {{- end }}
+  {{ partial "telefon-btn.html" (dict "klasa" "btn btn--primary" "napis" "Zadzwoń") }}
   {{- with $m.dojazd }}
   <a class="btn btn--ghost" href="{{ .RelPermalink }}">
     <svg class="ico" aria-hidden="true"><use href="#ico-pin"></use></svg>
