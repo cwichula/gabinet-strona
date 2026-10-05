@@ -44,7 +44,7 @@
   --surface-2: #e3e6e9;
 
   /* role */
-  --page-bg: #f6f7f8;
+  --page-bg: #f6f7f8;   /* jasny i ciemny (--bg) takze w partials/kolory-motywu.html */
   --card-bg: var(--bg);
   --shadow-sm: 0 1px 2px rgb(20 23 26 / 5%), 0 1px 3px rgb(20 23 26 / 5%);
   --shadow-md: 0 1px 2px rgb(20 23 26 / 4%), 0 10px 28px -14px rgb(20 23 26 / 16%);

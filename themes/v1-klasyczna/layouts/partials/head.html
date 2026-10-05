@@ -33,8 +33,9 @@
 {{- with $g.lekarz }}
 <meta name="author" content="{{ . }}">
 {{- end }}
-<meta name="theme-color" content="#f6f7f8" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#111316" media="(prefers-color-scheme: dark)">
+{{- $kolory := partial "kolory-motywu.html" . }}
+<meta name="theme-color" content="{{ $kolory.jasny }}" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="{{ $kolory.ciemny }}" media="(prefers-color-scheme: dark)">
 {{- with $g.adres.miasto }}
 <meta name="geo.placename" content="{{ . }}">
 {{- end }}

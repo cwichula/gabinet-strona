@@ -1,13 +1,14 @@
 {{- $g := hugo.Data.gabinet -}}
+{{- $kolory := partial "kolory-motywu.html" . -}}
 {{- $m := dict
   "name" ($g.nazwa | default site.Title)
   "short_name" ($g.nazwa_krotka | default site.Title)
-  "lang" "pl"
+  "lang" (site.Language.Locale | default "pl")
   "start_url" site.Home.RelPermalink
   "scope" site.Home.RelPermalink
   "display" "standalone"
-  "background_color" "#ffffff"
-  "theme_color" "#9b1c31"
+  "background_color" $kolory.jasny
+  "theme_color" $kolory.jasny
   "icons" (slice
     (dict "src" ("favicon.svg" | relURL) "sizes" "any" "type" "image/svg+xml" "purpose" "any")
     (dict "src" ("apple-touch-icon.png" | relURL) "sizes" "180x180" "type" "image/png"))
