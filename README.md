@@ -71,7 +71,7 @@ repozytorium”** i wskaż katalog repozytorium. Zmiany trafiają wtedy do plik�
 Przed commitem w kodzie (szablony, konfiguracja):
 
 ```
-python tools/sprawdz-kontrakt.py      # wymaga PyYAML
+python tools/sprawdz-kontrakt.py      # wymaga PyYAML: pip install -r tools/requirements.txt
 hugo --gc --minify                    # bez ERROR i bez WARN
 python tools/kontrola-strony.py       # na public/, 0 błędów (uwagi do przeczytania)
 ```

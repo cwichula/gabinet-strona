@@ -62,7 +62,7 @@ jobs:
 
       - name: Kontrola kontraktu bloków
         run: |
-          python -m pip install --quiet "PyYAML==6.0.3"
+          python -m pip install --quiet -r tools/requirements.txt
           python tools/sprawdz-kontrakt.py
 
       - name: Sumy kontrolne (panel Sveltia, archiwum starej strony)
