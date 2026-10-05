@@ -10,15 +10,15 @@
 {{ partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "wstep" $b.wstep "gora" $.gora) }}
     <div class="grid grid--{{ $kol }}"{{ if or $b.naglowek $b.wstep }} style="margin-top:2rem"{{ end }}>
       {{- range $k := $b.elementy }}
-      {{- $miejsce := printf "%s: karta „%s” (blok karty)" $gdzie $k.tytul }}
-      {{- $cel := partial "cel-linku.html" (dict "strona" $k.strona "gdzie" $miejsce) }}
-      {{- $poz := partial "cennik-pozycja.html" (dict "id" $k.cena "gdzie" $miejsce) }}
+      {{- $gdzieKarty := printf "%s: karta „%s” (blok karty)" $gdzie $k.tytul }}
+      {{- $cel := partial "cel-linku.html" (dict "strona" $k.strona "gdzie" $gdzieKarty) }}
+      {{- $poz := partial "cennik-pozycja.html" (dict "id" $k.cena "gdzie" $gdzieKarty) }}
       {{- if and $poz (not $k.tresc) (not $k.ikona) (not $cel.href) }}
       <div class="card"><h3 style="font-size:var(--step-0);margin:0">{{ $k.tytul }}</h3><p class="card__price" style="border:0;padding:0"><b>{{ partial "cena.html" $poz }}</b></p></div>
       {{- else }}
       {{ if $cel.href }}<article class="card card--link">{{ else }}<div class="card">{{ end }}
         {{- with $k.ikona }}
-        <span class="card__ico">{{ partial "ikona.html" (dict "nazwa" . "gdzie" $miejsce) }}</span>
+        <span class="card__ico">{{ partial "ikona.html" (dict "nazwa" . "gdzie" $gdzieKarty) }}</span>
         {{- end }}
         <h3>{{ with $cel.href }}<a class="stretched" href="{{ . }}">{{ $k.tytul }}</a>{{ else }}{{ $k.tytul }}{{ end }}</h3>
         {{- with $k.tresc }}

@@ -12,11 +12,11 @@
     <div class="grid grid--{{ $kol }}"{{ if or $b.naglowek $b.wstep }} style="margin-top:2rem"{{ end }}>
       {{- range . }}
       {{- $u := .Params.usluga }}
-      {{- $miejsce := printf "%s: pole „Strona usługi”" .File.Path }}
-      {{- $poz := partial "cennik-pozycja.html" (dict "id" $u.cena_od "gdzie" $miejsce) }}
+      {{- $gdzieKarty := printf "%s: pole „Strona usługi”" .File.Path }}
+      {{- $poz := partial "cennik-pozycja.html" (dict "id" $u.cena_od "gdzie" $gdzieKarty) }}
       <article class="card card--link">
         {{- with $u.ikona }}
-        <span class="card__ico">{{ partial "ikona.html" (dict "nazwa" . "gdzie" $miejsce) }}</span>
+        <span class="card__ico">{{ partial "ikona.html" (dict "nazwa" . "gdzie" $gdzieKarty) }}</span>
         {{- end }}
         <h3><a class="stretched" href="{{ .RelPermalink }}">{{ $u.nazwa | default .LinkTitle }}</a></h3>
         {{- with $u.skrot }}

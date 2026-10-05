@@ -10,7 +10,7 @@
 {{- $ptaszki := eq $b.wypunktowanie "ptaszki" -}}
 {{- $tresc := "" }}{{ with $b.tresc }}{{ $tresc = partial "markdown-ptaszki.html" (dict "strona" $.strona "tekst" . "ptaszki" $ptaszki) | string }}{{ end -}}
 {{- $ramka := "" -}}
-{{- with $b.ramka }}{{ with .tresc }}{{ $ramka = partial "ramka-html.html" (dict "strona" $.strona "rodzaj" $b.ramka.rodzaj "tresc" . "gdzie" $gdzie "styl" "margin-top:1.5rem" "ptaszki" $ptaszki) }}{{ end }}{{ end -}}
+{{- with $b.ramka }}{{ with .tresc }}{{ $ramka = partial "ramka-html.html" (dict "strona" $.strona "rodzaj" $b.ramka.rodzaj "tekst" . "gdzie" $gdzie "styl" "margin-top:1.5rem" "ptaszki" $ptaszki) }}{{ end }}{{ end -}}
 {{- $przycisk := partial "przycisk.html" (dict "przycisk" $b.przycisk "gdzie" (printf "%s: przycisk w bloku tekst" $gdzie) "strzalka" true) -}}
 {{- $telefony := "" -}}
 {{- if $b.pokaz_telefony }}{{ $telefony = partial "telefony-btn.html" (dict "styl" "margin-top:1.5rem") }}{{ end -}}

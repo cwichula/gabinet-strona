@@ -3,4 +3,4 @@
        wypunktowanie (ptaszki -> listy jako ul.checklist). */ -}}
 {{- $b := .blok -}}
 {{- $gdzie := $.gdzie -}}
-{{ partial "ramka-html.html" (dict "strona" $.strona "rodzaj" $b.rodzaj "tresc" $b.tresc "ikona" $b.ikona "gdzie" $gdzie "ptaszki" (eq $b.wypunktowanie "ptaszki")) }}
+{{ partial "ramka-html.html" (dict "strona" $.strona "rodzaj" $b.rodzaj "tekst" $b.tresc "ikona" $b.ikona "gdzie" $gdzie "ptaszki" (eq $b.wypunktowanie "ptaszki")) }}

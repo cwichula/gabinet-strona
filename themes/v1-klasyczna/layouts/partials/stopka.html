@@ -56,7 +56,7 @@
         <h2>{{ $n.stopka_uslugi | default "Usługi" }}</h2>
         <ul>
           {{- range . }}
-          <li>{{ partial "menu-link.html" (dict "poz" .) }}</li>
+          <li>{{ partial "menu-link.html" (dict "pozycja" .) }}</li>
           {{- end }}
         </ul>
       </div>
@@ -67,7 +67,7 @@
         <h2>{{ $n.stopka_gabinet | default "Gabinet" }}</h2>
         <ul>
           {{- range . }}
-          <li>{{ partial "menu-link.html" (dict "poz" .) }}</li>
+          <li>{{ partial "menu-link.html" (dict "pozycja" .) }}</li>
           {{- end }}
         </ul>
       </div>
@@ -107,7 +107,7 @@
       {{- with $dolna }}
       <span class="cluster" style="gap:1rem">
         {{- range . }}
-        {{ partial "menu-link.html" (dict "poz" .) }}
+        {{ partial "menu-link.html" (dict "pozycja" .) }}
         {{- end }}
       </span>
       {{- end }}
