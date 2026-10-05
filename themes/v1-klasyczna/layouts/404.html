@@ -2,7 +2,8 @@
        (strona_404, panel: Ustawienia), puste pole = napis domyslny ponizej.
        Telefony i adres z data/gabinet.yaml. Odnosniki: strona glowna + lista
        strona_404.linki (pusta = pozycje menu); strona ukryta albo usunieta jest
-       pomijana bez bledu - 404 nie moze przerwac budowania. */ -}}
+       pomijana bez bledu - 404 nie moze przerwac budowania. Gdy z listy nie
+       zostanie zadna strona, tez ida pozycje menu. */ -}}
 {{ define "main" }}
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
 {{- $g := hugo.Data.gabinet -}}
@@ -55,7 +56,7 @@
 
     <div class="related">
       <a href="{{ site.Home.RelPermalink }}">Strona główna{{ with $s.opis_glownej }}<span>{{ . }}</span>{{ end }}</a>
-      {{- if $s.linki }}
+      {{- if $linki }}
       {{- range $linki }}
       <a href="{{ .href }}">{{ .tytul }}{{ with .opis }}<span>{{ . }}</span>{{ end }}</a>
       {{- end }}
