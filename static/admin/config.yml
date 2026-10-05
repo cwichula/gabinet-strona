@@ -383,7 +383,8 @@ collections:
                   Włączone: blok dołącza do sekcji nad nim (to samo tło, bez dużego odstępu),
                   np. ramka albo przycisk pod cennikiem. Gdy sekcja zaczyna się tekstem
                   ze zdjęciem albo z ramką z boku, połączone bloki stają w kolumnie tekstu.
-                  Pusty nagłówek połączonego bloku = bez nagłówka. Ignorowane w banerze.
+                  Pusty nagłówek połączonego bloku = bez nagłówka, także bez domyślnego.
+                  Ignorowane w banerze.
               - &kotwica
                 name: kotwica
                 label: Kotwica (adres #)
@@ -404,8 +405,9 @@ collections:
                 widget: string
                 required: false
                 hint: >-
-                  Niektóre bloki mają nagłówek domyślny (np. „Najczęstsze pytania”). W bloku
-                  połączonym z blokiem powyżej pusty nagłówek = brak nagłówka.
+                  Niektóre bloki mają nagłówek domyślny (np. „Najczęstsze pytania” albo
+                  „Umów wizytę”). W bloku połączonym z blokiem powyżej pusty nagłówek
+                  = brak nagłówka.
               - *nadtytul
               - *ikona_nadtytulu
               - name: wstep

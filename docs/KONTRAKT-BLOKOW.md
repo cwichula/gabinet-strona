@@ -300,7 +300,7 @@ typem w Sveltia/Decap: lista nie może być bezpośrednio typem, musi być polem
 
 | Pole | Typ | Wymagane | Opis |
 |---|---|---|---|
-| `naglowek` | tekst | nie | Nagłówek `h2`. |
+| `naglowek` | tekst | nie | Nagłówek `h2` (domyślnie ukryty „Zdjęcia gabinetu” — tylko dla czytników ekranu; w bloku dołączonym — brak). |
 | `wstep` | Markdown | nie | Tekst przed zdjęciami. |
 | `elementy` | lista | tak | Zdjęcia: `plik`, `alt` (wymagane), `podpis`. |
 
@@ -333,7 +333,7 @@ z pozostałymi numerami i przycisk do strony.
 
 | Pole | Typ | Wymagane | Opis |
 |---|---|---|---|
-| `naglowek` | tekst | nie | Nagłówek `h2` (domyślnie „Umów wizytę”). |
+| `naglowek` | tekst | nie | Nagłówek `h2` (domyślnie „Umów wizytę”; w bloku dołączonym — brak). |
 | `tresc` | Markdown | nie | Tekst zachęty. |
 | `wszystkie_telefony` | tak/nie | nie | `true` = także przyciski z pozostałymi numerami telefonów. |
 | `przycisk` | przycisk | nie | Drugi przycisk, np. „Dojazd i mapa” → strona kontaktu. |

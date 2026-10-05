@@ -1,13 +1,16 @@
 {{- /* Blok "cta": naglowek, tresc, przycisk {etykieta, strona, styl, kotwica_celu},
        wszystkie_telefony - pas div.cta-band makiety v1: przycisk z pierwszym
        numerem telefonu, (opcjonalnie) przyciski z pozostalymi numerami
-       i (opcjonalnie) przycisk do strony. */ -}}
+       i (opcjonalnie) przycisk do strony. Pusty naglowek: "Umow wizyte",
+       a w bloku dolaczonym do sekcji ("polacz") - bez naglowka. */ -}}
 {{- $b := .blok -}}
 {{- $gdzie := $.gdzie -}}
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
     <div class="cta-band">
       <div>
-        <h2>{{ $b.naglowek | default "Umów wizytę" }}</h2>
+        {{- with $b.naglowek | default (cond $.gora "Umów wizytę" "") }}
+        <h2>{{ . }}</h2>
+        {{- end }}
         {{- with $b.tresc }}
         {{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}
         {{- end }}

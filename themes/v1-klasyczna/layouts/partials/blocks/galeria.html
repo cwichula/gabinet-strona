@@ -1,12 +1,14 @@
 {{- /* Blok "galeria": naglowek, wstep, elementy [{plik, alt, podpis}].
        Siatka miniatur (4:3, WebP + JPEG/PNG) i powiekszenie w natywnym <dialog>
        (skrypt v1, okno raz na strone). Pierwsze 4 miniatury bez lazy - jak w v1.
-       Podpis zdjecia pokazuje sie w powiekszeniu (zamiast tekstu alternatywnego). */ -}}
+       Podpis zdjecia pokazuje sie w powiekszeniu (zamiast tekstu alternatywnego).
+       Pusty naglowek: ukryty h2 "Zdjecia gabinetu" dla czytnikow ekranu, a w bloku
+       dolaczonym do sekcji ("polacz") - bez naglowka. */ -}}
 {{- $b := .blok -}}
 {{- $gdzie := $.gdzie -}}
     {{- if $b.naglowek }}
     <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ $b.naglowek }}</h2>
-    {{- else }}
+    {{- else if $.gora }}
     <h2 class="visually-hidden">Zdjęcia gabinetu</h2>
     {{- end }}
     {{- with $b.wstep }}
