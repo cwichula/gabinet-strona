@@ -5,8 +5,13 @@
 # Nazwy pol (name) MUSZA zgadzac sie z szablonami Hugo i z docs/KONTRAKT-BLOKOW.md
 # (kontrakt blokow w wersji 3). Sprawdzone ze schematem JSON Sveltia CMS 0.227.3
 # (https://unpkg.com/@sveltia/cms@0.227.3/schema/sveltia-cms.json).
-# Typy blokow (types w polu "sekcje") sprawdza tools/sprawdz-kontrakt.py: kazdy
-# typ musi miec partial blocks/<typ>.html w kazdym szablonie w themes/.
+# Zgodnosc z szablonami i trescia sprawdza tools/sprawdz-kontrakt.py (lista kontroli
+# w opisie skryptu), m.in.: kazdy typ bloku (types w polu "sekcje") ma partial
+# blocks/<typ>.html w kazdym szablonie w themes/, a klucze w content/ i data/ sa
+# polami z tego pliku.
+# Kotwice YAML (&nazwa, potem *nazwa) tylko dla definicji pol identycznych co do
+# klucza (etykieta, podpowiedz, required) - pole rozniace sie czymkolwiek pisze
+# sie w calosci.
 #
 # Uzyte opcje - dokumentacja Sveltia CMS (sprawdzone 2026-10-03):
 #   backend github, repo, branch, base_url ...... https://sveltiacms.app/en/docs/backends/github
@@ -224,8 +229,7 @@ collections:
             widget: text
             maxlength: 200
             hint: 1–2 zdania na karcie w „Liście usług” i pod odnośnikiem w „Powiązanych stronach”.
-          - &cena_od
-            name: cena_od
+          - name: cena_od
             label: Cena „od” (pozycja cennika)
             widget: relation
             collection: cennik
@@ -238,7 +242,7 @@ collections:
       # label_singular to nazwa w przycisku „Dodaj …” (biernik) i w liczniku „1 …”
       # (mianownik) - gdzie się da, słowo o tej samej formie w obu („blok”, „link”).
       #
-      # Pola wspólne każdego bloku (docs/KONTRAKT-BLOKOW.md): wariant, polacz, kotwica.
+      # Pola wspólne każdego bloku (docs/KONTRAKT-BLOKOW.md): wariant, waska, polacz, kotwica.
       - &sekcje
         name: sekcje
         label: Sekcje strony
@@ -418,14 +422,7 @@ collections:
                 buttons: [bold, italic, link]
                 editor_components: []
                 hint: Krótki akapit pod nagłówkiem, większą czcionką. Opcjonalnie.
-              - name: tresc
-                label: Treść
-                widget: markdown
-                required: false
-                modes: [rich_text, raw]
-                buttons: [bold, italic, link, bulleted-list, numbered-list, heading-three]
-                editor_components: []
-                hint: Link do innej podstrony wpisz jako /adres-strony/, np. /cennik/.
+              - *tresc_opcjonalna
               - name: wypunktowanie
                 label: Wygląd wypunktowań w treści
                 widget: select
@@ -449,8 +446,7 @@ collections:
                       - { label: Informacja, value: info }
                       - { label: Ostrzeżenie, value: uwaga }
                       - { label: Potwierdzenie, value: ok }
-                  - &tresc_ramki
-                    name: tresc
+                  - name: tresc
                     label: Treść ramki
                     widget: markdown
                     modes: [rich_text, raw]
@@ -523,8 +519,7 @@ collections:
                     search_fields: ['pozycje.*.nazwa']
                     required: false
                     hint: Opcjonalnie — karta pokaże aktualną cenę tej pozycji z cennika.
-                  - &strona_opcjonalna
-                    name: strona
+                  - name: strona
                     label: Link do strony
                     widget: relation
                     collection: strony
