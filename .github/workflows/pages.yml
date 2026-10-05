@@ -1,20 +1,32 @@
 # Budowanie, kontrola i publikacja strony na GitHub Pages (Hugo).
 #
 # Kazdy commit na main - takze zapis w panelu /admin/ (Sveltia CMS commituje
-# przez API GitHuba jako zalogowana osoba, co uruchamia "on: push") - przechodzi:
-#   1. kontrole kontraktu blokow (tools/sprawdz-kontrakt.py: pusty layouts/,
-#      partial dla kazdego typu bloku w kazdym szablonie, pola zgodne z kontraktem),
-#   2. budowanie Hugo (wersja przypieta ponizej) - BLAD albo OSTRZEZENIE
+# przez API GitHuba w imieniu zalogowanej osoby, co uruchamia "on: push") - przechodzi:
+#   1. kontrole kontraktu blokow (tools/sprawdz-kontrakt.py - lista kontroli
+#      w opisie na poczatku skryptu),
+#   2. sumy kontrolne panelu Sveltia i archiwum starej strony,
+#   3. budowanie Hugo (wersja przypieta ponizej) - BLAD albo OSTRZEZENIE
 #      (np. nieznany typ bloku, menu wskazujace nieistniejaca strone, zdjecie
 #      bez alt) przerywa przebieg,
-#   3. kontrole kompletnosci wyniku (strona glowna, panel /admin/),
-#   4. kontrole jakosci i zgodnosci zbudowanego HTML (tools/kontrola-strony.py:
+#   4. kontrole kompletnosci wyniku (strona glowna, panel /admin/, noindex),
+#   5. kontrole jakosci i zgodnosci zbudowanego HTML (tools/kontrola-strony.py:
 #      jeden h1, alt/width/height zdjec, linki wewnetrzne z prefiksem adresu,
 #      zadnych zasobow z obcych serwerow ani ramek bez zgody, JSON-LD i FAQ,
 #      zwroty niedozwolone w materialach gabinetu - art. 14 ustawy
 #      o dzialalnosci leczniczej, rezerwacja online).
 # Dopiero wtedy publikacja. Blad = w sieci zostaje poprzednia wersja, a w
 # repozytorium powstaje zgloszenie (job "powiadomienie").
+#
+# Dwa buildy z tej samej tresci:
+#   - github.io (public/) - kopia robocza z panelem /admin/, ZAWSZE z
+#     HUGO_PARAMS_ROBOCZA=true, czyli noindex i "Disallow: /" (sprawdzane
+#     w kroku "Kontrola wyniku"),
+#   - wlasna domena (public-hosting/, tylko gdy ustawiona zmienna HOSTING_SERWER)
+#     - BEZ HUGO_PARAMS_ROBOCZA: o widocznosci w Google decyduje ustawienie
+#     w panelu ("Ukryj strone przed wyszukiwarkami"). Wysylka: job "hosting".
+# Przy zmianach budowania nie ujednolicac tych zmiennych - robocza na domenie
+# ukrylaby prawdziwa strone przed Google, a jej brak na github.io wystawilby
+# kopie robocza do wyszukiwarek.
 #
 # Wymaga w ustawieniach repozytorium: Settings -> Pages -> Source: GitHub Actions
 # (gh api -X POST repos/<wlasciciel>/<repo>/pages -f build_type=workflow).
@@ -47,6 +59,8 @@ env:
   HUGO_VERSION: "0.167.0"
   TZ: Europe/Warsaw
   PYTHONUTF8: "1"
+  # adres wersji na domene (zmienna HOSTING_ADRES nadpisuje domyslny)
+  ADRES_DOMENY: ${{ vars.HOSTING_ADRES || 'https://dobrydentysta.legnica.pl/' }}
 
 jobs:
   build:
@@ -90,18 +104,28 @@ jobs:
 
       - name: Budowanie strony (Hugo)
         env:
-          # kopia robocza na github.io: zawsze noindex (hugo.yaml: params.robocza)
-          HUGO_PARAMS_ROBOCZA: "true"
+          HOSTING_SERWER: ${{ vars.HOSTING_SERWER }}
         run: |
           hugo version
+          # buduj <adres bazowy> <katalog> [ZMIENNA=wartosc ...]
           # Ostrzezenia Hugo (warnf w szablonach, przestarzale opcje) traktujemy
           # jak bledy - ale wypisujemy wszystkie, a nie tylko pierwszy
           # (--panicOnWarning konczy na pierwszym, ze sladem stosu).
           # pipefail (defaults wyzej): blad Hugo (ERROR) konczy krok kodem != 0
-          hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/" 2>&1 | tee hugo.log
-          if grep -qE '^(WARN|ERROR)' hugo.log; then
-            echo "::error::Hugo zgłosił błędy lub ostrzeżenia (lista wyżej, wiersze ERROR/WARN). Strona nie zostanie opublikowana."
-            exit 1
+          buduj() {
+            local adres="$1" katalog="$2"
+            shift 2
+            env "$@" hugo --gc --minify --baseURL "$adres" -d "$katalog" 2>&1 | tee "hugo-$katalog.log"
+            if grep -qE '^(WARN|ERROR)' "hugo-$katalog.log"; then
+              echo "::error::Hugo zgłosił błędy lub ostrzeżenia przy budowaniu $adres (lista wyżej, wiersze ERROR/WARN). Strona nie zostanie opublikowana."
+              exit 1
+            fi
+          }
+          # kopia robocza na github.io: zawsze noindex (hugo.yaml: params.robocza)
+          buduj "${{ steps.pages.outputs.base_url }}/" public HUGO_PARAMS_ROBOCZA=true
+          # wersja na domene: BEZ params.robocza (opis w naglowku pliku)
+          if [ -n "$HOSTING_SERWER" ]; then
+            buduj "$ADRES_DOMENY" public-hosting
           fi
 
       - name: Kontrola wyniku
@@ -109,6 +133,11 @@ jobs:
           for plik in index.html 404.html sitemap.xml admin/index.html admin/config.yml admin/sveltia-cms.js; do
             test -s "public/$plik" || { echo "::error::Brak public/$plik"; exit 1; }
           done
+          # kopia robocza na github.io nie moze trafic do wyszukiwarek
+          grep -qE '<meta name="?robots"? content="?noindex' public/index.html \
+            || { echo "::error::Brak noindex w public/index.html (kopia robocza na github.io)."; exit 1; }
+          grep -qx 'Disallow: /' public/robots.txt \
+            || { echo "::error::Brak \"Disallow: /\" w public/robots.txt (kopia robocza na github.io)."; exit 1; }
           echo "Plików w public/: $(find public -type f | wc -l)"
 
       - name: Kontrola jakości i zgodności (zwroty niedozwolone, linki, zasoby)
@@ -123,22 +152,17 @@ jobs:
 
       # --- Wersja na wlasna domene (hosting) -------------------------------
       # Tylko gdy w Settings -> Secrets and variables -> Actions -> Variables
-      # jest HOSTING_SERWER (opis w docs/HOSTING.md).
-      # Ta sama tresc, inny adres bazowy; bez panelu /admin/ (panel zostaje
-      # na github.io - tam dziala logowanie), z .htaccess z katalogu hosting/.
-      # O widocznosci w Google decyduje ustawienie w panelu ("Ukryj strone
-      # przed wyszukiwarkami"), nie ten krok.
-      - name: Budowanie wersji na domenę
+      # jest HOSTING_SERWER (opis w docs/HOSTING.md). Zbudowana w kroku
+      # "Budowanie strony (Hugo)": ta sama tresc, inny adres bazowy, bez
+      # params.robocza; tu bez panelu /admin/ (panel zostaje na github.io -
+      # tam dziala logowanie) i z .htaccess z katalogu hosting/.
+      - name: Kontrola wersji na domenę
         if: vars.HOSTING_SERWER != ''
-        env:
-          ADRES: ${{ vars.HOSTING_ADRES || 'https://dobrydentysta.legnica.pl/' }}
+        run: python tools/kontrola-strony.py public-hosting --baseurl "$ADRES_DOMENY"
+
+      - name: Paczka wersji na domenę (bez panelu, z .htaccess)
+        if: vars.HOSTING_SERWER != ''
         run: |
-          hugo --gc --minify --baseURL "$ADRES" -d public-hosting 2>&1 | tee hugo-hosting.log
-          if grep -qE '^(WARN|ERROR)' hugo-hosting.log; then
-            echo "::error::Hugo zgłosił błędy lub ostrzeżenia przy wersji na domenę."
-            exit 1
-          fi
-          python tools/kontrola-strony.py public-hosting --baseurl "$ADRES"
           rm -rf public-hosting/admin
           cp hosting/.htaccess public-hosting/.htaccess
           # zaden adres kopii roboczej nie moze trafic na domene
@@ -183,7 +207,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: hosting
-      url: ${{ vars.HOSTING_ADRES || 'https://dobrydentysta.legnica.pl/' }}
+      url: ${{ env.ADRES_DOMENY }}
     steps:
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
