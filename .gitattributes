@@ -1,14 +1,19 @@
-# Konce linii LF wszedzie (tak zapisuje tez panel CMS); przypiety skrypt CMS bajt w bajt.
+# Konce linii LF wszedzie (tak zapisuje tez panel CMS).
 * text=auto eol=lf
+
+# Pliki binarne (zdjecia, ikony, PDF).
 *.jpg binary
 *.jpeg binary
 *.png binary
 *.webp binary
 *.avif binary
-static/admin/sveltia-cms.js -text
 *.gif binary
 *.bmp binary
 *.ico binary
 *.pdf binary
-# Archiwum starej strony: bajt w bajt jak pobrano (sumy w _meta/MANIFEST.sha256).
+
+# Bajt w bajt (bez zamiany koncow linii):
+# przypiety skrypt CMS (suma w static/admin/WERSJA-SVELTIA.txt),
+static/admin/sveltia-cms.js -text
+# archiwum starej strony jak pobrano (sumy w _meta/MANIFEST.sha256).
 archiwum/stara-strona/site/** -text

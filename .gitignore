@@ -1,4 +1,7 @@
 public/
+public-hosting/
 resources/_gen/
 .hugo_build.lock
+hugo*.log
+__pycache__/
 .idea/
