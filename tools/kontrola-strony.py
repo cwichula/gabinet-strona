@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Kontrola jakosci i zgodnosci zbudowanej strony (wynik Hugo w public/).
 
 Przeniesienie istoty tools/check-site.py z prototypu gamstom na wynik Hugo - dziala na
@@ -26,7 +25,9 @@ Sprawdza na kazdej stronie HTML (poza panelem admin/):
   - tytul, opis, adres kanoniczny, niepodstawione znaczniki, sitemap.xml.
 Na koncu zestawienie wagi stron (HTML, CSS, JS, zdjecia) - tylko uwagi.
 
-Tylko biblioteka standardowa Pythona. Kod wyjscia 1 = co najmniej jeden blad.
+Wymaga PyYAML (dane rezerwacji z data/gabinet.yaml). Kod wyjscia: 0 = bez bledow,
+1 = co najmniej jeden blad, 2 = blad konfiguracji (brak PyYAML, brak zbudowanej
+strony, brak bloku rezerwacja w data/gabinet.yaml, nieznany adres strony).
 
 Uzycie:
     python tools/kontrola-strony.py                  # katalog public/
@@ -49,10 +50,20 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urljoin, urlsplit
 
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+# polskie litery w konsoli Windows (bez PYTHONUTF8=1)
+for strumien in (sys.stdout, sys.stderr):
+    if hasattr(strumien, "reconfigure"):
+        strumien.reconfigure(encoding="utf-8", errors="replace")
+
+try:
+    import yaml
+except ImportError:  # pragma: no cover
+    print("BŁĄD: brak modułu PyYAML (pip install PyYAML)", file=sys.stderr)
+    sys.exit(2)
 
 REPO = Path(__file__).resolve().parent.parent
+GABINET = REPO / "data" / "gabinet.yaml"
+HUGO_YAML = REPO / "hugo.yaml"
 
 # Katalogi wyniku, ktorych nie sprawdzamy jak stron serwisu (panel CMS laczy
 # sie z GitHubem z definicji).
@@ -126,6 +137,12 @@ PROG_ZDJECIE = 250_000       # pojedynczy plik zdjecia
 PROG_HTML = 100_000
 PROG_CSS = 100_000
 PROG_JS = 60_000
+
+# Progi kontroli strony.
+TYTUL_MAX = 68                 # dluzszy <title> Google ucina (uwaga)
+OPIS_MIN, OPIS_MAX = 110, 170  # zalecana dlugosc meta description (uwaga)
+TOLERANCJA_PROPORCJI = 0.02    # width/height <img> a proporcje pliku (blad)
+MIN_CYFR_TELEFONU = 9          # krotszy numer w odnosniku tel: (blad)
 
 NAGLOWKI = ("h1", "h2", "h3", "h4", "h5", "h6")
 
@@ -212,41 +229,25 @@ def kb(n: int) -> str:
 
 # ------------------------------------------------------- dane gabinetu (YAML)
 
-def wczytaj_rezerwacje() -> dict:
-    """data/gabinet.yaml -> rezerwacja (bez PyYAML: plik ma prosty, plaski blok).
+class BladKonfiguracji(Exception):
+    """Kontrola nie moze ruszyc (kod wyjscia 2) - inaczej niz blad strony (kod 1)."""
 
-    Brak pliku albo bloku nie jest bledem - kontrole rezerwacji sie pomija."""
-    plik = REPO / "data" / "gabinet.yaml"
-    if not plik.is_file():
-        return {}
+
+def wczytaj_rezerwacje() -> dict:
+    """data/gabinet.yaml -> rezerwacja.
+
+    Brak pliku, niepoprawny YAML albo brak bloku to blad konfiguracji - kontrole
+    rezerwacji nie moga sie po cichu wylaczyc."""
+    if not GABINET.is_file():
+        raise BladKonfiguracji("brak pliku data/gabinet.yaml")
     try:
-        import yaml  # type: ignore
-        dane = yaml.safe_load(plik.read_text(encoding="utf-8")) or {}
-        rez = dane.get("rezerwacja")
-        return rez if isinstance(rez, dict) else {}
-    except ImportError:
-        pass
-    except Exception:
-        return {}
-    rez: dict = {}
-    w_bloku = False
-    for wiersz in plik.read_text(encoding="utf-8").splitlines():
-        if re.match(r"^rezerwacja:\s*$", wiersz):
-            w_bloku = True
-            continue
-        if w_bloku:
-            if wiersz and not wiersz.startswith((" ", "\t", "#")):
-                break
-            m = re.match(r"^\s+([A-Za-z_]+):\s*(.*?)\s*$", wiersz)
-            if not m:
-                continue
-            klucz, wartosc = m.groups()
-            if wartosc.startswith(("'", '"')) and wartosc.endswith(wartosc[0]) and len(wartosc) > 1:
-                wartosc = wartosc[1:-1]
-            if wartosc.lower() in ("true", "false"):
-                rez[klucz] = wartosc.lower() == "true"
-            else:
-                rez[klucz] = wartosc
+        dane = yaml.safe_load(GABINET.read_text(encoding="utf-8")) or {}
+    except yaml.YAMLError as exc:
+        raise BladKonfiguracji(f"niepoprawny YAML w data/gabinet.yaml: {exc}") from exc
+    rez = dane.get("rezerwacja") if isinstance(dane, dict) else None
+    if not isinstance(rez, dict) or not rez:
+        raise BladKonfiguracji("w data/gabinet.yaml brak bloku rezerwacja "
+                               "(wlaczona, url, dostawca, potwierdzona)")
     return rez
 
 
@@ -355,9 +356,9 @@ class Strona(HTMLParser):
         for atr in ("src", "poster", "data"):
             if a.get(atr) and not (tag == "source" and atr == "src"):
                 self.zasoby.append((a[atr], f"<{tag} {atr}>", "zasob"))
-        if tag in ("svg", "use", "image") or "use" in self._stos:
+        if tag in ("use", "image"):
             for atr in ("href", "xlink:href"):
-                if a.get(atr) and tag in ("use", "image"):
+                if a.get(atr):
                     self.zasoby.append((a[atr], f"<{tag} {atr}>", "zasob"))
         if tag == "iframe":
             self.ramki.append({"attrs": a, "linia": linia})
@@ -449,14 +450,14 @@ def adresy_css(css: str) -> list[str]:
 # ---------------------------------------------------------------- kontrola
 
 class Kontrola:
-    def __init__(self, katalog: Path, baseurl: str):
+    def __init__(self, katalog: Path, baseurl: str, rez: dict):
         self.katalog = katalog
         self.baseurl = baseurl if baseurl.endswith("/") else baseurl + "/"
         cz = urlsplit(self.baseurl)
         self.host = cz.hostname or ""
         self.schemat = cz.scheme
         self.prefiks = cz.path or "/"
-        self.rez = wczytaj_rezerwacje()
+        self.rez = rez
         self.strony: dict[Path, Strona] = {}
         self.html: dict[Path, str] = {}
         self.ids: dict[Path, set[str]] = {}
@@ -533,19 +534,36 @@ class Kontrola:
         return None
 
     def sprawdz_strone(self, plik: Path):
+        """Kontrole jednej strony. Kolejnosc wywolan = kolejnosc komunikatow w raporcie."""
         g = self.nazwa(plik)
         p = self.strony[plik]
         html = self.html[plik]
         baza = self.adres_strony(plik)
         jest_404 = plik.name == "404.html" and plik.parent == self.katalog
+        widoczny = tekst_widoczny(html)
 
-        # niepodstawione znaczniki szablonu / wypelniacze z danych
-        zostaly = sorted(set(re.findall(r"\{\{[^{}\n]{0,80}\}\}", tekst_widoczny(html))))
+        self.sprawdz_szablon(g, p, html, widoczny)
+        self.sprawdz_naglowki(g, p)
+        self.sprawdz_ids(g, p)
+        self.sprawdz_obrazki(g, p, baza)
+        self.sprawdz_odnosniki(g, p, baza)
+        self.sprawdz_zasoby(g, p, baza)
+        self.sprawdz_bramy(g, p, html)
+        faq_json = self.sprawdz_jsonld(g, p, baza, jest_404)
+        self.sprawdz_faq(g, p, faq_json, widoczny)
+        tytul, opis = self.sprawdz_meta(g, p, baza, jest_404)
+        self.sprawdz_zwroty(g, p, widoczny, tytul, opis)
+        self.sprawdz_rezerwacje(g, p, html, widoczny)
+        self.zestawienie.append(self.waga(plik, p, baza))
+
+    def sprawdz_szablon(self, g: str, p: Strona, html: str, widoczny: str):
+        """Niepodstawione znaczniki szablonu, wypelniacze z danych, <html lang>."""
+        zostaly = sorted(set(re.findall(r"\{\{[^{}\n]{0,80}\}\}", widoczny)))
         if zostaly:
             self.blad(g, "niepodstawione znaczniki szablonu: " + ", ".join(zostaly[:5]))
         # Wypelniacz z danych importu - uwaga, nie blad: dane rejestrowe uzupelnia
         # wlascicielka, a do tego czasu publikacja innych zmian nie moze stac.
-        if re.search(r"DO_UZUPE[LŁ]NIENIA", tekst_widoczny(html)):
+        if re.search(r"DO_UZUPE[LŁ]NIENIA", widoczny):
             self.uwaga(g, "na stronie widać wypełniacz „DO_UZUPEŁNIENIA” (uzupełnij dane w panelu: "
                           "Dane gabinetu → dane rejestrowe)")
         if re.search(r"ZgotypeZ|%!\w\(|<no value>", html):
@@ -554,7 +572,7 @@ class Kontrola:
         if (p.html_lang or "").lower()[:2] != "pl":
             self.blad(g, f"<html lang> = {p.html_lang!r}, oczekiwano „pl”")
 
-        # --- naglowki
+    def sprawdz_naglowki(self, g: str, p: Strona):
         h1 = [t for t, _ in p.naglowki if t == "h1"]
         if len(h1) != 1:
             self.blad(g, f"liczba <h1> = {len(h1)}, powinna być dokładnie 1")
@@ -571,21 +589,21 @@ class Kontrola:
             if b > a + 1:
                 self.uwaga(g, f"przeskok w hierarchii nagłówków: h{a} → h{b} („{tb[:50]}”)")
 
-        # --- id
+    def sprawdz_ids(self, g: str, p: Strona):
         widziane: set[str] = set()
         for i in p.ids:
             if i in widziane:
                 self.blad(g, f"powtórzone id=\"{i}\"")
             widziane.add(i)
 
-        # --- obrazki
+    def sprawdz_obrazki(self, g: str, p: Strona, baza: str):
         for o in p.obrazki:
             a = o["attrs"]
             src = a.get("src", "?")
             if "alt" not in a:
                 self.blad(g, f"<img> bez atrybutu alt: {src} (linia {o['linia']})")
-            elif not a["alt"].strip() and not any(k.startswith("data-lb") or "podglad" in k
-                                                  or "lupa" in k for k in a):
+            # obraz powiekszenia w galerii (data-lb-img): alt wstawia skrypt przy otwarciu
+            elif not a["alt"].strip() and not any(k.startswith("data-lb") for k in a):
                 if a.get("aria-hidden") != "true" and a.get("role") != "presentation":
                     self.uwaga(g, f"<img> z pustym alt (ozdobny?): {src}")
             w, h = a.get("width", ""), a.get("height", "")
@@ -601,16 +619,16 @@ class Kontrola:
                 if wym and int(h) and wym[1]:
                     r_atr = int(w) / int(h)
                     r_pl = wym[0] / wym[1]
-                    if abs(r_atr - r_pl) / r_pl > 0.02:
+                    if abs(r_atr - r_pl) / r_pl > TOLERANCJA_PROPORCJI:
                         self.blad(g, f"<img> width/height {w}×{h} nie zgadza się z proporcjami "
                                      f"pliku {wym[0]}×{wym[1]}: {src}")
 
-        # --- odnosniki
+    def sprawdz_odnosniki(self, g: str, p: Strona, baza: str):
         for o in p.odnosniki:
             href = o["href"]
             a = o["attrs"]
             if href.strip() in ("", "#"):
-                if href.strip() == "" :
+                if not href.strip():
                     self.blad(g, f"pusty href w <{o['tag']}> (linia {o['linia']})")
                 continue
             rodzaj, cel, kotwica = self.rozwiaz(href, baza)
@@ -628,10 +646,11 @@ class Kontrola:
                         self.blad(g, f"odnośnik target=_blank bez rel=noopener: {href}")
             elif rodzaj == "inny" and href.lower().startswith("tel:"):
                 numer = re.sub(r"[^\d+]", "", unquote(href[4:]))
-                if len(numer.lstrip("+")) < 9:
+                if len(numer.lstrip("+")) < MIN_CYFR_TELEFONU:
                     self.blad(g, f"podejrzanie krótki numer w odnośniku tel: {href}")
 
-        # --- zasoby (pobierane przy wejsciu)
+    def sprawdz_zasoby(self, g: str, p: Strona, baza: str):
+        """Zasoby pobierane przy wejsciu: obce serwery, prefiks, istniejace pliki."""
         for adres, skad, rodzaj_z in p.zasoby:
             if not adres or adres.startswith(NIE_ADRESY):
                 continue
@@ -646,10 +665,8 @@ class Kontrola:
             elif rodzaj == "poza":
                 self.blad(g, f"zasób poza prefiksem {self.prefiks} ({skad}): {adres}")
             elif rodzaj == "wewn":
-                if rodzaj_z == "link" and "canonical" in skad:
-                    self.sprawdz_cel(g, adres, cel, kotwica, "rel=canonical")
-                else:
-                    self.sprawdz_cel(g, adres, cel, kotwica, skad)
+                etykieta = "rel=canonical" if rodzaj_z == "link" and "canonical" in skad else skad
+                self.sprawdz_cel(g, adres, cel, kotwica, etykieta)
         for k, v, tag in p.obce_atrybuty:
             self.blad(g, f"atrybut {k} na <{tag}> z obcym adresem (skrypt pobierze go bez zgody): {v}")
         for css in p.style_atr + p.style_bloki:
@@ -660,7 +677,8 @@ class Kontrola:
                 elif rodzaj == "wewn" and cel and not cel.is_file():
                     self.blad(g, f"url() w stylu wskazuje nieistniejący plik: {adres}")
 
-        # --- ramki i bramy zgody
+    def sprawdz_bramy(self, g: str, p: Strona, html: str):
+        """Ramki i bramy zgody; serwis rezerwacji tylko jako zwykly odnosnik."""
         for r in p.ramki:
             self.blad(g, f"<iframe> osadzony w HTML (linia {r['linia']}, src={r['attrs'].get('src', '')}) — "
                          "ramka z obcego serwera ma powstawać dopiero po kliknięciu (brama zgody)")
@@ -675,7 +693,8 @@ class Kontrola:
                 self.blad(g, f"serwis rezerwacji osadzony jako <{m.group(1).lower()}> — do Booksy wolno "
                              "prowadzić wyłącznie zwykłym odnośnikiem")
 
-        # --- JSON-LD
+    def sprawdz_jsonld(self, g: str, p: Strona, baza: str, jest_404: bool) -> list[tuple[str, str]]:
+        """Poprawnosc JSON-LD i jego adresow; zwraca pary (pytanie, odpowiedz) z FAQPage."""
         faq_json: list[tuple[str, str]] = []
         for blob in p.jsonld:
             try:
@@ -706,8 +725,10 @@ class Kontrola:
                     self.blad(g, f"JSON-LD wskazuje adres poza prefiksem {self.prefiks}: {adres}")
         if not p.jsonld and not jest_404:
             self.blad(g, "brak danych strukturalnych JSON-LD")
+        return faq_json
 
-        widoczny = tekst_widoczny(html)
+    def sprawdz_faq(self, g: str, p: Strona, faq_json: list[tuple[str, str]], widoczny: str):
+        """FAQPage z JSON-LD a pytania widoczne na stronie (<details><summary>)."""
         if faq_json:
             widoczny_l = luzno(widoczny)
             for pyt, odp in faq_json:
@@ -722,33 +743,35 @@ class Kontrola:
             self.uwaga(g, f"na stronie są pytania ({sum(q.endswith('?') for q in p.podsumowania)}) "
                           "w <details>, ale brak FAQPage w JSON-LD")
 
-        # --- tytul, opis, kanoniczny
+    def sprawdz_meta(self, g: str, p: Strona, baza: str, jest_404: bool) -> tuple[str, str]:
+        """Tytul, opis, adres kanoniczny, robots, viewport; zwraca (tytul, opis)."""
         tytul = normalizuj(p.tytul)
         if not tytul:
             self.blad(g, "pusty <title>")
         else:
-            if len(tytul) > 68:
+            if len(tytul) > TYTUL_MAX:
                 self.uwaga(g, f"tytuł ma {len(tytul)} znaków — w wynikach Google zostanie ucięty: „{tytul}”")
             if "legnic" not in tytul.lower() and not jest_404:
                 self.uwaga(g, f"tytuł nie zawiera nazwy miasta (Legnica / w Legnicy): „{tytul}”")
         opis = normalizuj(p.meta.get("description", ""))
         if not opis:
             self.blad(g, "brak meta description")
-        elif not 110 <= len(opis) <= 170:
-            self.uwaga(g, f"opis (meta description) ma {len(opis)} znaków (zalecane 110–170)")
+        elif not OPIS_MIN <= len(opis) <= OPIS_MAX:
+            self.uwaga(g, f"opis (meta description) ma {len(opis)} znaków (zalecane {OPIS_MIN}–{OPIS_MAX})")
         kanon = [h for r, h in p.link_rel if "canonical" in r.lower().split()]
         if not kanon and not jest_404:
             self.blad(g, "brak rel=canonical")
         elif kanon and not jest_404:
-            oczekiwany = self.adres_strony(plik)
-            if html_mod.unescape(kanon[0]) != oczekiwany:
-                self.blad(g, f"rel=canonical = {kanon[0]}, oczekiwano {oczekiwany}")
+            if html_mod.unescape(kanon[0]) != baza:
+                self.blad(g, f"rel=canonical = {kanon[0]}, oczekiwano {baza}")
         if jest_404 and "noindex" not in p.meta.get("robots", ""):
             self.uwaga(g, "strona 404 bez <meta name=robots content=noindex>")
         if "viewport" not in p.meta:
             self.blad(g, "brak <meta name=viewport>")
+        return tytul, opis
 
-        # --- zakazane zwroty reklamowe (tekst widoczny + tytul/opis/alt)
+    def sprawdz_zwroty(self, g: str, p: Strona, widoczny: str, tytul: str, opis: str):
+        """Zakazane zwroty reklamowe (tekst widoczny + tytul/opis/alt)."""
         do_kontroli = " ".join([widoczny, tytul, opis, normalizuj(p.meta.get("og:description", "")),
                                 " ".join(o["attrs"].get("alt", "") for o in p.obrazki)])
         for wzor in ZAKAZANE:
@@ -777,7 +800,8 @@ class Kontrola:
                 else:
                     self.uwaga(g, f"treść o rezerwacji — obietnica terminu, której gabinet nie może dać: …{ctx}…")
 
-        # --- rezerwacja online
+    def sprawdz_rezerwacje(self, g: str, p: Strona, html: str, widoczny: str):
+        """Rezerwacja online wg data/gabinet.yaml -> rezerwacja."""
         rez = self.rez
         adres_danych = str(rez.get("url") or "").strip()
         host_rez = urlsplit(adres_danych).hostname if adres_danych else None
@@ -805,17 +829,14 @@ class Kontrola:
         if odnosniki_rez and not any(o["href"].lower().startswith("tel:") for o in p.odnosniki):
             self.blad(g, "strona z przyciskiem rezerwacji nie ma odnośnika tel: — telefon ma zostać "
                          "kanałem pierwszym")
-        if rez:
-            if not rez.get("potwierdzona") and "ReserveAction" in html:
-                self.blad(g, "ReserveAction w JSON-LD, a rezerwacja.potwierdzona = false")
-            if not rez.get("wlaczona"):
-                if odnosniki_rez:
-                    self.blad(g, "rezerwacja.wlaczona = false, a na stronie są odnośniki rezerwacji")
-                dostawca = str(rez.get("dostawca") or "").strip()
-                if dostawca and re.search(re.escape(dostawca), widoczny, re.I):
-                    self.blad(g, f"rezerwacja.wlaczona = false, a na stronie nadal jest „{dostawca}”")
-
-        self.zestawienie.append(self.waga(plik, p, baza))
+        if not rez.get("potwierdzona") and "ReserveAction" in html:
+            self.blad(g, "ReserveAction w JSON-LD, a rezerwacja.potwierdzona = false")
+        if not rez.get("wlaczona"):
+            if odnosniki_rez:
+                self.blad(g, "rezerwacja.wlaczona = false, a na stronie są odnośniki rezerwacji")
+            dostawca = str(rez.get("dostawca") or "").strip()
+            if dostawca and re.search(re.escape(dostawca), widoczny, re.I):
+                self.blad(g, f"rezerwacja.wlaczona = false, a na stronie nadal jest „{dostawca}”")
 
     def sprawdz_cel(self, g: str, adres: str, cel: Path | None, kotwica: str, skad: str):
         if cel is None:
@@ -887,11 +908,20 @@ class Kontrola:
 
     # --- pliki wspolne
     def sprawdz_wspolne(self):
+        self.sprawdz_pliki_serwisu()
+        self.sprawdz_css()
+        self.sprawdz_js()
+        if self.rez.get("wlaczona") and not self.rez.get("potwierdzona"):
+            self.uwaga("(serwis)", "rezerwacja.potwierdzona = false — sprawdź, czy data/gabinet.yaml → "
+                                   "rezerwacja.url wskazuje profil gabinetu, a nie wyszukiwarkę dostawcy; "
+                                   "bez profilu ustaw rezerwacja.wlaczona = false")
+
+    def sprawdz_pliki_serwisu(self):
+        """Pliki obowiazkowe, sitemap.xml, robots.txt, noindex calej strony."""
         g = "(serwis)"
         for nazwa in ("index.html", "404.html", "sitemap.xml", "robots.txt"):
             if not (self.katalog / nazwa).is_file():
                 self.blad(g, f"brak pliku {nazwa}")
-        # sitemap
         mapa_plik = self.katalog / "sitemap.xml"
         if mapa_plik.is_file():
             mapa = mapa_plik.read_text(encoding="utf-8")
@@ -918,61 +948,63 @@ class Kontrola:
         if glowna in self.strony and "noindex" in self.strony[glowna].meta.get("robots", ""):
             self.uwaga(g, "strona jest ukryta przed wyszukiwarkami (noindex) — po uruchomieniu "
                           "wyłącz „Ukryj stronę przed wyszukiwarkami” w panelu: Ustawienia")
-        # CSS i JS: obce adresy i nieistniejace pliki
+
+    def sprawdz_css(self):
+        """Arkusze: obce adresy, nieistniejace pliki, waga."""
         for plik in sorted(self.katalog.rglob("*.css")):
-            if self.nazwa(plik).startswith(POMIJANE):
+            g = self.nazwa(plik)
+            if g.startswith(POMIJANE):
                 continue
             css = plik.read_text(encoding="utf-8", errors="replace")
-            baza = self.baseurl + self.nazwa(plik)
+            baza = self.baseurl + g
             for adres in adresy_css(css):
                 if adres.startswith(NIE_ADRESY):
                     continue
                 rodzaj, cel, _ = self.rozwiaz(adres, baza)
                 if rodzaj == "obcy":
-                    self.blad(self.nazwa(plik), f"CSS pobiera zasób z obcego serwera: {adres}")
+                    self.blad(g, f"CSS pobiera zasób z obcego serwera: {adres}")
                 elif rodzaj == "wewn" and cel and not cel.is_file():
-                    self.blad(self.nazwa(plik), f"CSS wskazuje nieistniejący plik: {adres}")
-            if plik.stat().st_size > PROG_CSS:
-                self.uwaga(self.nazwa(plik), f"arkusz ma {kb(plik.stat().st_size)} (próg {kb(PROG_CSS)})")
+                    self.blad(g, f"CSS wskazuje nieistniejący plik: {adres}")
+            rozmiar = plik.stat().st_size
+            if rozmiar > PROG_CSS:
+                self.uwaga(g, f"arkusz ma {kb(rozmiar)} (próg {kb(PROG_CSS)})")
+
+    def sprawdz_js(self):
+        """Skrypty: obce adresy, ramki tylko z bramy zgody, waga."""
         for plik in sorted(self.katalog.rglob("*.js")):
-            if self.nazwa(plik).startswith(POMIJANE):
+            g = self.nazwa(plik)
+            if g.startswith(POMIJANE):
                 continue
             js = plik.read_text(encoding="utf-8", errors="replace")
             for adres in sorted(set(re.findall(r"""["'`]((?:https?:)?//[^"'`\s]+)""", js))):
                 if adres.startswith(NIE_ADRESY):
                     continue
-                self.blad(self.nazwa(plik), f"skrypt zawiera obcy adres (możliwe pobranie bez zgody): {adres}")
+                self.blad(g, f"skrypt zawiera obcy adres (możliwe pobranie bez zgody): {adres}")
             if re.search(r"""createElement\(\s*["']iframe["']\s*\)""", js):
                 if not re.search(r"getAttribute\(\s*[\"']data-[a-z-]+-src[\"']\s*\)", js):
-                    self.blad(self.nazwa(plik), "skrypt tworzy <iframe>, ale nie z adresu z bramy zgody (data-…-src)")
-            if plik.stat().st_size > PROG_JS:
-                self.uwaga(self.nazwa(plik), f"skrypt ma {kb(plik.stat().st_size)} (próg {kb(PROG_JS)})")
-        if self.rez.get("wlaczona") and not self.rez.get("potwierdzona"):
-            self.uwaga(g, "rezerwacja.potwierdzona = false — sprawdź, czy data/gabinet.yaml → rezerwacja.url "
-                          "wskazuje profil gabinetu, a nie wyszukiwarkę dostawcy; bez profilu ustaw "
-                          "rezerwacja.wlaczona = false")
+                    self.blad(g, "skrypt tworzy <iframe>, ale nie z adresu z bramy zgody (data-…-src)")
+            rozmiar = plik.stat().st_size
+            if rozmiar > PROG_JS:
+                self.uwaga(g, f"skrypt ma {kb(rozmiar)} (próg {kb(PROG_JS)})")
 
     # --- raport
+    def wypisz(self, g: str, naglowek: str):
+        print(naglowek)
+        for x in self.bledy.get(g, []):
+            print(f"       x {x}")
+        for x in self.uwagi.get(g, []):
+            print(f"       - {x}")
+
     def raport(self) -> int:
         print(f"Kontrola strony: {self.katalog} (adres {self.baseurl}, stron: {len(self.strony)})\n")
-        for plik in self.strony:
-            g = self.nazwa(plik)
+        nazwy_stron = [self.nazwa(p) for p in self.strony]
+        for g in nazwy_stron:
             b, u = self.bledy.get(g, []), self.uwagi.get(g, [])
             znak = "OK  " if not b else "BŁĄD"
-            print(f"{znak} {g:<44}" + (f" {len(b)} błędów" if b else "") + (f" {len(u)} uwag" if u else ""))
-            for x in b:
-                print(f"       x {x}")
-            for x in u:
-                print(f"       - {x}")
-        inne = [k for k in sorted(set(self.bledy) | set(self.uwagi))
-                if k not in {self.nazwa(p) for p in self.strony}]
-        for g in inne:
-            b, u = self.bledy.get(g, []), self.uwagi.get(g, [])
-            print(f"{'OK  ' if not b else 'BŁĄD'} {g}")
-            for x in b:
-                print(f"       x {x}")
-            for x in u:
-                print(f"       - {x}")
+            self.wypisz(g, f"{znak} {g:<44}" + (f" {len(b)} błędów" if b else "")
+                        + (f" {len(u)} uwag" if u else ""))
+        for g in sorted((set(self.bledy) | set(self.uwagi)) - set(nazwy_stron)):
+            self.wypisz(g, f"{'OK  ' if not self.bledy.get(g) else 'BŁĄD'} {g}")
 
         print("\nWaga stron (bajty z dysku, bez kompresji; zdjęcia: najmniejszy–największy wariant;"
               " „start” = bez loading=lazy):")
@@ -998,12 +1030,11 @@ def adres_bazowy(katalog: Path) -> str:
                       glowna.read_text(encoding="utf-8", errors="replace"))
         if m:
             return html_mod.unescape(m.group(1))
-    konf = REPO / "hugo.yaml"
-    if konf.is_file():
-        m = re.search(r"^baseURL:\s*['\"]?([^'\"\s]+)", konf.read_text(encoding="utf-8"), re.M)
+    if HUGO_YAML.is_file():
+        m = re.search(r"^baseURL:\s*['\"]?([^'\"\s]+)", HUGO_YAML.read_text(encoding="utf-8"), re.M)
         if m:
             return m.group(1)
-    sys.exit("BŁĄD: nie da się ustalić adresu strony — podaj --baseurl")
+    raise BladKonfiguracji("nie da się ustalić adresu strony — podaj --baseurl")
 
 
 def main() -> int:
@@ -1012,17 +1043,20 @@ def main() -> int:
     ap.add_argument("--baseurl", help="adres strony (domyślnie z rel=canonical strony głównej)")
     arg = ap.parse_args()
     katalog = Path(arg.katalog).resolve()
-    if not (katalog / "index.html").is_file():
-        print(f"BŁĄD: w {katalog} nie ma zbudowanej strony (index.html) — najpierw: hugo --gc --minify",
-              file=sys.stderr)
+    try:
+        if not (katalog / "index.html").is_file():
+            raise BladKonfiguracji(f"w {katalog} nie ma zbudowanej strony (index.html) — "
+                                   "najpierw: hugo --gc --minify")
+        k = Kontrola(katalog, arg.baseurl or adres_bazowy(katalog), wczytaj_rezerwacje())
+    except BladKonfiguracji as exc:
+        print(f"BŁĄD: {exc}", file=sys.stderr)
         return 2
-    k = Kontrola(katalog, arg.baseurl or adres_bazowy(katalog))
     k.wczytaj()
-    for plik in list(k.strony):
+    for plik in k.strony:
         k.sprawdz_strone(plik)
     k.sprawdz_wspolne()
     return k.raport()
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    sys.exit(main())
