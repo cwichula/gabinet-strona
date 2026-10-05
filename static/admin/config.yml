@@ -3,7 +3,7 @@
 # Konfiguracja panelu /admin/ - Sveltia CMS 0.227.3 (kopia w static/admin/sveltia-cms.js).
 #
 # Nazwy pol (name) MUSZA zgadzac sie z szablonami Hugo i z docs/KONTRAKT-BLOKOW.md
-# (kontrakt blokow w wersji 2). Sprawdzone ze schematem JSON Sveltia CMS 0.227.3
+# (kontrakt blokow w wersji 3). Sprawdzone ze schematem JSON Sveltia CMS 0.227.3
 # (https://unpkg.com/@sveltia/cms@0.227.3/schema/sveltia-cms.json).
 # Typy blokow (types w polu "sekcje") sprawdza tools/sprawdz-kontrakt.py: kazdy
 # typ musi miec partial blocks/<typ>.html w kazdym szablonie w themes/.
@@ -390,7 +390,7 @@ collections:
                 label: Kotwica (adres #)
                 widget: string
                 required: false
-                pattern: ['^(?!(tresc|menu-mobilne|lightbox|cennik-tabela|szukaj-ceny)$)(?!(grupa|podmenu)-)(?!f[0-9]+-)[a-z0-9]+(-[a-z0-9]+)*$', 'Tylko małe litery bez ogonków, cyfry i myślniki, np. ceny. Zajęte przez szablon: tresc, menu-mobilne, lightbox, cennik-tabela, szukaj-ceny, grupa-…, podmenu-…']
+                pattern: ['^(?!(tresc|menu-mobilne|lightbox|cennik-tabela|szukaj-ceny)$)(?!(grupa|podmenu)-)(?!f[0-9]+-)[a-z0-9]+(-[a-z0-9]+)*$', 'Tylko małe litery bez ogonków, cyfry i myślniki, np. ceny. Zajęte przez szablon: tresc, menu-mobilne, lightbox, cennik-tabela, szukaj-ceny, grupa-…, podmenu-…, f<liczba>-…']
                 hint: >-
                   Opcjonalnie. Np. „ceny” — wtedy odnośnik /adres-strony/#ceny przewinie
                   stronę do tego bloku.

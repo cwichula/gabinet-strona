@@ -9,7 +9,9 @@ Sprawdza (w tej kolejnosci):
   3. wszystkie pola "sekcje" w config.yml (Strony, Strona glowna) maja te same typy;
   4. pola kazdego typu w config.yml = pola z tabeli w docs/KONTRAKT-BLOKOW.md
      (+ pola wspolne), a typy w kontrakcie = typy w config.yml;
-  5. partial bloku czyta tylko pola ze swojego typu ($b.<pole>);
+  5. partial bloku - razem z partialami pomocniczymi, ktorym przekazuje caly
+     blok ($b := .blok, np. hero-akcje.html) - czyta tylko pola ze swojego
+     typu ($b.<pole>) i co najmniej jedno;
   6. nazwy katalogow stron w content/strony/ (= adresy) to tylko a-z, 0-9
      i "-" (Hugo nie zamienia "ł" w adresie; CMS zapisuje slugi poprawnie,
      ale katalog mozna tez utworzyc recznie);
@@ -18,7 +20,15 @@ Sprawdza (w tej kolejnosci):
      (bloki na stronach wskazuja pozycje po identyfikatorze);
   8. telefony ("699 904 989") i ceny ("800 zł", "250–400 zł") wpisane recznie
      w content/ i data/ustawienia.yaml wystepuja w data/gabinet.yaml (telefony)
-     i data/cennik.yaml (cena_od / cena_do).
+     i data/cennik.yaml (cena_od / cena_do);
+  9. klucze front matter w content/**/*.md (strony i ich bloki) i klucze
+     w data/*.yaml sa polami odpowiedniej kolekcji w config.yml (rekurencyjnie;
+     dla stron dodatkowo klucze Hugo z KLUCZE_HUGO, dla blokow "type");
+ 10. kotwice zarezerwowane przez szablon - ta sama lista w docs/KONTRAKT-BLOKOW.md,
+     we wzorze i komunikacie pola "kotwica" w config.yml i w sekcje.html szablonow;
+ 11. wersja kontraktu ta sama w hugo.yaml (params.kontraktBlokow), w komentarzu
+     config.yml i w docs/KONTRAKT-BLOKOW.md;
+ 12. strony z data/ustawienia.yaml -> strona_404.linki istnieja.
 
 Wymaga PyYAML (w CI: pip install PyYAML). Kod wyjscia: 0 = bez bledow,
 1 = co najmniej jeden blad kontraktu, 2 = blad konfiguracji (brak PyYAML,
@@ -49,7 +59,12 @@ CENNIK = REPO / "data/cennik.yaml"
 GABINET = REPO / "data/gabinet.yaml"
 USTAWIENIA = REPO / "data/ustawienia.yaml"
 KONTRAKT = REPO / "docs/KONTRAKT-BLOKOW.md"
+HUGO_YAML = REPO / "hugo.yaml"
 POLA_WSPOLNE = {"wariant", "waska", "polacz", "kotwica"}  # pola kazdego typu bloku
+# klucze front matter stron spoza pol panelu: weight (kolejnosc - reorder
+# w panelu), aliases (panel dopisuje stary adres po zmianie sluga), build
+# i cascade (content/strony/_index.md, sekcja-kontener tylko dla Hugo)
+KLUCZE_HUGO = {"weight", "aliases", "build", "cascade"}
 WZOR_SLUGA = re.compile(r"[a-z0-9]+(-[a-z0-9]+)*")
 WZOR_TELEFONU = re.compile(r"(?<![\d+])(?:\+48[  ]?)?\d{3}[  -]\d{3}[  -]\d{3}(?!\d)")
 WZOR_CENY = re.compile(r"(?<![\d.,])(\d[\d  ]*\d|\d)(?:[  ]?[–-][  ]?(\d[\d  ]*\d|\d))?[  ]?zł")
@@ -174,9 +189,13 @@ def sprawdz_kontrakt(typy_cms: dict[str, list[str]], kontrakt: dict[str, set[str
 
 
 def sprawdz_pola_partiali(typy_cms: dict[str, list[str]], szablony: list[Path]) -> list[str]:
-    """5. partial bloku czyta tylko pola swojego typu."""
+    """5. partial bloku - razem z partialami pomocniczymi, ktorym przekazuje
+    caly blok (np. hero-akcje.html) - czyta tylko pola swojego typu i czyta
+    co najmniej jedno (inaczej kontrola nic by nie widziala)."""
     bledy = []
     for szablon in szablony:
+        pomocnicze, bledy_pomocniczych = partiale_pomocnicze(szablon)
+        bledy += bledy_pomocniczych
         for k in katalogi_partiali(szablon):
             if not k.is_dir():
                 continue
@@ -185,11 +204,52 @@ def sprawdz_pola_partiali(typy_cms: dict[str, list[str]], szablony: list[Path]) 
                 if typ not in typy_cms:
                     print(f"uwaga: {sciezka_wzgledna(p)} - typu '{typ}' nie ma w config.yml")
                     continue
-                uzyte = set(re.findall(r"\$b\.([a-zA-Z0-9_]+)", p.read_text(encoding="utf-8")))
-                # "type" to klucz typu (typeKey), nie pole
-                for pole in sorted(uzyte - set(typy_cms[typ]) - {"type"}):
-                    bledy.append(f"{sciezka_wzgledna(p)}: pole '$b.{pole}' nie należy do typu '{typ}'")
+                tekst = p.read_text(encoding="utf-8")
+                zrodla = [(p, pola_b(tekst))] + [
+                    (h, pola) for h, pola in pomocnicze.items() if wywoluje_z_blokiem(tekst, h.name)
+                ]
+                for plik, uzyte in zrodla:
+                    # "type" to klucz typu (typeKey), nie pole
+                    for pole in sorted(uzyte - set(typy_cms[typ]) - {"type"}):
+                        bledy.append(f"{sciezka_wzgledna(plik)}: pole '$b.{pole}' nie należy do typu '{typ}'")
+                if set(typy_cms[typ]) - POLA_WSPOLNE and not set().union(*(u for _, u in zrodla)) - {"type"}:
+                    bledy.append(
+                        f"{sciezka_wzgledna(p)}: nie znaleziono odczytu żadnego pola typu '{typ}' ($b.<pole>) - "
+                        "partial czyta blok inaczej niż przez $b := .blok, więc kontrola pól go nie obejmuje"
+                    )
     return bledy
+
+
+def pola_b(tekst: str) -> set[str]:
+    return set(re.findall(r"\$b\.([a-zA-Z0-9_]+)", tekst))
+
+
+def wywoluje_z_blokiem(tekst: str, nazwa: str) -> bool:
+    """Czy partial bloku wywoluje partial pomocniczy `nazwa` z dict "blok" $b."""
+    return bool(re.search(rf'partial(?:Cached)?\s+"{re.escape(nazwa)}"\s*\(dict\b[^\n]*?"blok"\s+\$b\b', tekst))
+
+
+def partiale_pomocnicze(szablon: Path) -> tuple[dict[Path, set[str]], list[str]]:
+    """Partiale spoza blocks/, ktore dostaja caly blok ($b := .blok), z polami,
+    ktore czytaja. Taki partial musi wywolywac co najmniej jeden partial bloku -
+    inaczej nie wiadomo, pola ktorego typu sprawdzic."""
+    pomocnicze: dict[Path, set[str]] = {}
+    bledy = []
+    bloki = [p for k in katalogi_partiali(szablon) if k.is_dir() for p in k.glob("*.html")]
+    for katalog in (szablon / "layouts/partials", szablon / "layouts/_partials"):
+        if not katalog.is_dir():
+            continue
+        for p in sorted(katalog.glob("*.html")):
+            tekst = p.read_text(encoding="utf-8")
+            if not re.search(r"\$b\s*:=\s*\.blok\b", tekst):
+                continue
+            pomocnicze[p] = pola_b(tekst)
+            if not any(wywoluje_z_blokiem(b.read_text(encoding="utf-8"), p.name) for b in bloki):
+                bledy.append(
+                    f"{sciezka_wzgledna(p)}: partial czyta blok ($b := .blok), ale żaden partial "
+                    f'blocks/<typ>.html nie wywołuje go z (dict "blok" $b ...)'
+                )
+    return pomocnicze, bledy
 
 
 def sprawdz_slugi() -> list[str]:
@@ -254,13 +314,215 @@ def sprawdz_fakty_w_tresci(gabinet: dict, cennik: dict) -> list[str]:
     return bledy
 
 
+def pola_wg_nazwy(pola) -> dict[str, dict]:
+    return {f["name"]: f for f in pola or [] if isinstance(f, dict) and "name" in f}
+
+
+def dolacz(sciezka: str, dalej: str) -> str:
+    return f"{sciezka}.{dalej}" if sciezka else dalej
+
+
+def klucze_poza_polami(wartosc, pola: dict[str, dict], plik: str, sciezka: str = "", dodatkowe=frozenset()) -> list[str]:
+    """Klucze slownika `wartosc` musza byc polami panelu `pola` (rekurencyjnie
+    w obiektach i listach) - klucz spoza panelu panel po cichu gubi przy
+    zapisie, a szablon moze go czytac albo nie."""
+    if not isinstance(wartosc, dict):
+        return []
+    bledy = []
+    for klucz, w in wartosc.items():
+        if klucz in dodatkowe:
+            continue
+        if klucz not in pola:
+            gdzie = f" w {sciezka}" if sciezka else ""
+            bledy.append(f"{plik}: klucz '{klucz}'{gdzie} nie jest polem panelu (static/admin/config.yml)")
+            continue
+        bledy += klucze_wartosci(w, pola[klucz], plik, dolacz(sciezka, str(klucz)))
+    return bledy
+
+
+def klucze_wartosci(wartosc, pole: dict, plik: str, sciezka: str) -> list[str]:
+    widget = pole.get("widget")
+    if widget == "object":
+        return klucze_poza_polami(wartosc, pola_wg_nazwy(pole.get("fields")), plik, sciezka)
+    if widget != "list" or not isinstance(wartosc, list):
+        return []
+    bledy = []
+    for i, el in enumerate(wartosc):
+        miejsce = f"{sciezka}[{i + 1}]"
+        if "types" in pole:
+            klucz_typu = pole.get("typeKey", "type")
+            typy = {t["name"]: t for t in pole["types"]}
+            typ = el.get(klucz_typu) if isinstance(el, dict) else None
+            if typ not in typy:
+                bledy.append(f"{plik}: {miejsce}: nieznany typ {typ!r} (typy w panelu: {', '.join(typy)})")
+                continue
+            bledy += klucze_poza_polami(
+                el, pola_wg_nazwy(typy[typ].get("fields")), plik, f"{miejsce} ({typ})", {klucz_typu}
+            )
+        elif "fields" in pole:
+            bledy += klucze_poza_polami(el, pola_wg_nazwy(pole["fields"]), plik, miejsce)
+        elif "field" in pole:
+            bledy += klucze_wartosci(el, pole["field"], plik, miejsce)
+    return bledy
+
+
+def front_matter(plik: Path) -> dict | str:
+    """Front matter YAML pliku .md albo opis bledu (str)."""
+    m = re.match(r"---[ \t]*\r?\n(.*?)\r?\n---[ \t]*(\r?\n|$)", plik.read_text(encoding="utf-8"), flags=re.S)
+    if not m:
+        return "brak front matter (YAML między wierszami ---)"
+    try:
+        dane = yaml.safe_load(m[1])
+    except yaml.YAMLError as exc:
+        return f"niepoprawny YAML w front matter: {exc}"
+    return dane if isinstance(dane, dict) else "front matter nie jest mapą klucz: wartość"
+
+
+def sprawdz_klucze_tresci(config: dict) -> list[str]:
+    """9. klucze w content/**/*.md (front matter) i data/*.yaml = pola panelu."""
+    bledy = []
+    pliki: dict[Path, dict[str, dict]] = {}
+    foldery: list[tuple[Path, dict[str, dict]]] = []
+    for kol in lista_slownikow(config.get("collections")):
+        for f in lista_slownikow(kol.get("files")):
+            pliki[(REPO / f["file"]).resolve()] = pola_wg_nazwy(f.get("fields"))
+        if "folder" in kol:
+            foldery.append(((REPO / kol["folder"]).resolve(), pola_wg_nazwy(kol.get("fields"))))
+    for plik in sorted((REPO / "content").rglob("*.md")):
+        sciezka = sciezka_wzgledna(plik)
+        pola = pliki.get(plik.resolve())
+        if pola is None:
+            pola = next((p for folder, p in foldery if folder in plik.resolve().parents), None)
+        if pola is None:
+            bledy.append(f"{sciezka}: plik nie należy do żadnej kolekcji panelu (static/admin/config.yml)")
+            continue
+        dane = front_matter(plik)
+        if isinstance(dane, str):
+            bledy.append(f"{sciezka}: {dane}")
+            continue
+        bledy += klucze_poza_polami(dane, pola, sciezka, dodatkowe=KLUCZE_HUGO)
+    for plik in sorted((REPO / "data").glob("*.yaml")):
+        sciezka = sciezka_wzgledna(plik)
+        if plik.resolve() not in pliki:
+            bledy.append(f"{sciezka}: plik nie jest edytowany w panelu (brak w collections.files w config.yml)")
+            continue
+        try:
+            dane = wczytaj_yaml(plik)
+        except BladKonfiguracji as exc:
+            bledy.append(str(exc))
+            continue
+        bledy += klucze_poza_polami(dane, pliki[plik.resolve()], sciezka)
+    return bledy
+
+
+def prefiksy_z_wzoru(wzor: str) -> set[str]:
+    """'^(grupa|podmenu)-' -> {'grupa-', 'podmenu-'}; 'f[0-9]+-' -> {'f<liczba>-'}
+    (zapis z docs/KONTRAKT-BLOKOW.md)."""
+    wzor = wzor.lstrip("^").replace("[0-9]+", "<liczba>")
+    m = re.fullmatch(r"\(([^()]+)\)(.*)", wzor)
+    if m:
+        return {f"{w}{m[2]}" for w in m[1].split("|")}
+    return {wzor}
+
+
+def sprawdz_kotwice_zarezerwowane(config: dict, szablony: list[Path]) -> list[str]:
+    """10. kotwice zarezerwowane przez szablon: ta sama lista w docs, we wzorze
+    pola "kotwica" w panelu (wraz z komunikatem) i w sekcje.html kazdego szablonu."""
+    bledy = []
+    akapit = re.search(r"\*\*Kotwice zarezerwowane\*\*[^:]*:(.*?`)\.\s", KONTRAKT.read_text(encoding="utf-8"), flags=re.S)
+    if not akapit:
+        return ["docs/KONTRAKT-BLOKOW.md: brak akapitu „**Kotwice zarezerwowane**” z listą kotwic"]
+    lista = re.findall(r"`([^`]+)`", akapit[1])
+    nazwy = {k for k in lista if not k.endswith("-")}
+    prefiksy = {k for k in lista if k.endswith("-")}
+
+    def porownaj(skad: str, n: set[str], p: set[str]) -> None:
+        if n != nazwy:
+            bledy.append(f"{skad}: kotwice zarezerwowane {sorted(n)} różnią się od docs/KONTRAKT-BLOKOW.md {sorted(nazwy)}")
+        if p != prefiksy:
+            bledy.append(f"{skad}: początki kotwic zarezerwowanych {sorted(p)} różnią się od docs/KONTRAKT-BLOKOW.md {sorted(prefiksy)}")
+
+    def pola_kotwica(obj):
+        """pole wspolne "kotwica" w typach list "sekcje" (nie kotwica elementu spisu)"""
+        if isinstance(obj, dict):
+            if obj.get("name") == "sekcje" and "types" in obj:
+                for t in lista_slownikow(obj["types"]):
+                    yield from (f for f in lista_slownikow(t.get("fields")) if f.get("name") == "kotwica")
+            for v in obj.values():
+                yield from pola_kotwica(v)
+        elif isinstance(obj, list):
+            for v in obj:
+                yield from pola_kotwica(v)
+
+    wzory = {(tuple(f["pattern"]) if isinstance(f.get("pattern"), list) else None) for f in pola_kotwica(config)}
+    if not wzory or None in wzory or any(len(w) != 2 for w in wzory):
+        bledy.append("config.yml: pole 'kotwica' musi mieć pattern: [wzór, komunikat]")
+        wzory = {w for w in wzory if w and len(w) == 2}
+    for wzor, komunikat in sorted(wzory):
+        n = set().union(*(m.split("|") for m in re.findall(r"\(\?!\(([a-z|-]+)\)\$\)", wzor)))
+        p = set().union(*(prefiksy_z_wzoru(m) for m in re.findall(r"\(\?!(\([a-z|]+\)-|[a-z]+\[0-9\]\+-)\)", wzor)))
+        porownaj("config.yml (pattern pola 'kotwica')", n, p)
+        for k in sorted(nazwy | prefiksy):
+            if k not in komunikat:
+                bledy.append(f"config.yml: komunikat wzoru pola 'kotwica' nie wymienia kotwicy zarezerwowanej '{k}'")
+    for szablon in szablony:
+        plik = szablon / "layouts/partials/sekcje.html"
+        if not plik.is_file():
+            continue
+        tekst = plik.read_text(encoding="utf-8")
+        lista_szablonu = re.search(r"\$zarezerwowane\s*:=\s*slice((?:\s+\"[^\"]+\")+)", tekst)
+        wzor_szablonu = re.search(r"findRE\s+`([^`]+)`", tekst)
+        if not lista_szablonu or not wzor_szablonu:
+            bledy.append(f"{sciezka_wzgledna(plik)}: nie znaleziono listy $zarezerwowane albo wzoru findRE kotwic")
+            continue
+        n = set(re.findall(r"\"([^\"]+)\"", lista_szablonu[1]))
+        p = set().union(*(prefiksy_z_wzoru(m) for m in wzor_szablonu[1].split("|^")))
+        porownaj(sciezka_wzgledna(plik), n, p)
+    return bledy
+
+
+def sprawdz_wersje_kontraktu(hugo: dict) -> list[str]:
+    """11. wersja kontraktu ta sama w hugo.yaml, config.yml i docs."""
+    w_docs = re.search(r"Wersja kontraktu: \*\*(\d+)\*\*", KONTRAKT.read_text(encoding="utf-8"))
+    w_config = re.search(r"kontrakt blokow w wersji (\d+)", CONFIG.read_text(encoding="utf-8"))
+    w_hugo = (hugo.get("params") or {}).get("kontraktBlokow")
+    wersje = {
+        "docs/KONTRAKT-BLOKOW.md („Wersja kontraktu: **N**”)": w_docs and w_docs[1],
+        "static/admin/config.yml (komentarz „kontrakt blokow w wersji N”)": w_config and w_config[1],
+        "hugo.yaml (params.kontraktBlokow)": None if w_hugo is None else str(w_hugo),
+    }
+    bledy = [f"{skad}: brak numeru wersji kontraktu" for skad, w in wersje.items() if not w]
+    if not bledy and len(set(wersje.values())) > 1:
+        bledy.append("różne wersje kontraktu: " + ", ".join(f"{skad} = {w}" for skad, w in wersje.items()))
+    return bledy
+
+
+def sprawdz_linki_404(ustawienia: dict) -> list[str]:
+    """12. strony z data/ustawienia.yaml -> strona_404.linki istnieja (szablon
+    pomija brakujaca strone bez bledu, zeby 404 nie przerwala budowania)."""
+    aliasy = set()
+    for plik in (REPO / "content/strony").glob("*/index.md"):
+        dane = front_matter(plik)
+        if isinstance(dane, dict):
+            aliasy |= {str(a).strip("/") for a in dane.get("aliases") or []}
+    bledy = []
+    for i, el in enumerate(lista_slownikow((ustawienia.get("strona_404") or {}).get("linki")), 1):
+        slug = el.get("strona")
+        if slug and not (REPO / f"content/strony/{slug}/index.md").is_file() and str(slug) not in aliasy:
+            bledy.append(
+                f"data/ustawienia.yaml: strona_404.linki nr {i} wskazuje stronę {slug!r}, której nie ma "
+                f"(brak content/strony/{slug}/index.md) - popraw w panelu: Ustawienia, strona 404"
+            )
+    return bledy
+
+
 def main() -> int:
     try:
         config = wczytaj_yaml(CONFIG)
         cennik = wczytaj_yaml(CENNIK)
         gabinet = wczytaj_yaml(GABINET)
-        if not USTAWIENIA.is_file():
-            raise BladKonfiguracji(f"brak pliku {sciezka_wzgledna(USTAWIENIA)}")
+        ustawienia = wczytaj_yaml(USTAWIENIA)
+        hugo = wczytaj_yaml(HUGO_YAML)
         kontrakt = typy_z_kontraktu()
     except BladKonfiguracji as exc:
         print(f"BŁĄD: {exc}", file=sys.stderr)
@@ -281,6 +543,10 @@ def main() -> int:
     bledy += sprawdz_slugi()
     bledy += sprawdz_cennik(cennik)
     bledy += sprawdz_fakty_w_tresci(gabinet, cennik)
+    bledy += sprawdz_klucze_tresci(config)
+    bledy += sprawdz_kotwice_zarezerwowane(config, szablony)
+    bledy += sprawdz_wersje_kontraktu(hugo)
+    bledy += sprawdz_linki_404(ustawienia)
 
     for b in bledy:
         print(f"BŁĄD: {b}", file=sys.stderr)

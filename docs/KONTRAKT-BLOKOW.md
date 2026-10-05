@@ -10,14 +10,29 @@ i 2 — na końcu pliku („Zmiany w wersji 2”, „Zmiany w wersji 3”).
 
 Pilnuje tego `tools/sprawdz-kontrakt.py` (uruchamiany w CI przed budowaniem):
 
+- katalog `layouts/` w korzeniu repozytorium jest pusty,
 - każdy typ bloku z `config.yml` ma partial `layouts/partials/blocks/<typ>.html`
   w **każdym** szablonie w `themes/`,
+- pola `sekcje` w `config.yml` (Strony, Strona główna) mają te same typy,
 - pola każdego typu w `config.yml` są dokładnie takie jak w tabelach poniżej
   (+ pola wspólne),
-- partial bloku używa tylko pól ze swojej tabeli (`$b.<pole>`),
-- katalog `layouts/` w korzeniu repozytorium jest pusty,
+- partial bloku — razem z partialami pomocniczymi, którym przekazuje cały blok
+  (`$b := .blok`, np. `hero-akcje.html`) — używa tylko pól ze swojej tabeli
+  (`$b.<pole>`) i co najmniej jednego,
+- nazwy katalogów stron w `content/strony/` (adresy) to tylko `a-z`, `0-9` i `-`,
 - `data/cennik.yaml`: identyfikatory kategorii i pozycji są niepuste i niepowtarzalne,
-  a każda pozycja wskazuje istniejącą kategorię.
+  a każda pozycja wskazuje istniejącą kategorię,
+- telefony i ceny wpisane ręcznie w treść są w `data/gabinet.yaml` i `data/cennik.yaml`
+  (niżej, „Dane gabinetu w treści”),
+- klucze w front matter stron i bloków (`content/**/*.md`) oraz w `data/*.yaml` są
+  polami panelu (`config.yml`); poza nimi strona może mieć tylko klucze Hugo
+  `weight`, `aliases`, `build`, `cascade`,
+- lista kotwic zarezerwowanych (niżej) jest taka sama tutaj, we wzorze i komunikacie
+  pola `kotwica` w `config.yml` i w `sekcje.html` każdego szablonu,
+- wersja kontraktu jest taka sama tutaj, w `hugo.yaml` (`params.kontraktBlokow`)
+  i w komentarzu na początku `config.yml`,
+- strony z listy „Dokąd dalej” strony 404 (`data/ustawienia.yaml` → `strona_404.linki`)
+  istnieją.
 
 ## Zasady treści
 
