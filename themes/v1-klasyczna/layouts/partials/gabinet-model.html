@@ -2,7 +2,8 @@
        godziny w formacie skryptu v1 ("1:9:00-19:00;2:..."), napis o dniach
        przyjec, strona z mapa/dojazdem, rezerwacja online (gdy wlaczona i ma adres),
        dni tygodnia do tabeli godzin i stopki (dzien, nr: 1 = poniedzialek, od, do),
-       napis dla dnia bez godzin ("nieczynne"). Wynik: dict. */ -}}
+       napis dla dnia bez godzin ("nieczynne"), nazwa i nazwa krotka (pusta =
+       tytul serwisu), strona polityki prywatnosci (albo nil). Wynik: dict. */ -}}
 {{- $g := hugo.Data.gabinet -}}
 {{- $telefony := slice -}}
 {{- range $g.telefony }}{{ $telefony = $telefony | append (dict "etykieta" .etykieta "numer" .numer "tel" (partial "tel.html" .numer)) }}{{ end -}}
@@ -28,12 +29,13 @@
 {{- end -}}
 {{- /* strona "Dojazd": pierwsza strona z blokiem mapy, potem z blokiem kontaktu */ -}}
 {{- $dojazd := false -}}
+{{- $strony := partialCached "strony-tresci.html" site "strony" -}}
 {{- range $typ := slice "mapa" "kontakt" -}}
-  {{- range $p := (where site.RegularPages "Section" "strony").ByWeight -}}
+  {{- range $p := $strony -}}
     {{- if not $dojazd }}{{ range $p.Params.sekcje }}{{ if eq .type $typ }}{{ $dojazd = $p }}{{ end }}{{ end }}{{ end -}}
   {{- end -}}
 {{- end -}}
 {{- $rez := false -}}
 {{- with $g.rezerwacja }}{{ if and .wlaczona .url }}{{ $rez = dict "url" .url "etykieta" (.etykieta | default "Umów wizytę online") "dostawca" (.dostawca | default "") "potwierdzona" (.potwierdzona | default false) "nota" (.nota | default "") }}{{ end }}{{ end -}}
 {{- $telefon := false }}{{ with $telefony }}{{ $telefon = index . 0 }}{{ end -}}
-{{- return dict "telefony" $telefony "telefon" $telefon "godziny_dane" (delimit $czesci ";") "dni_przyjec" $dni "tydzien" $tydzien "nieczynne" "nieczynne" "dojazd" $dojazd "rezerwacja" $rez -}}
+{{- return dict "telefony" $telefony "telefon" $telefon "godziny_dane" (delimit $czesci ";") "dni_przyjec" $dni "tydzien" $tydzien "nieczynne" "nieczynne" "dojazd" $dojazd "rezerwacja" $rez "nazwa" ($g.nazwa | default site.Title) "nazwa_krotka" ($g.nazwa_krotka | default site.Title) "polityka" (site.GetPage "/strony/polityka-prywatnosci") -}}

@@ -3,9 +3,10 @@
        ustawiany przed pierwszym malowaniem, dane strukturalne. Zadnych
        zasobow z obcych serwerow. Wejscie: Page. */ -}}
 {{- $g := hugo.Data.gabinet -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
 {{- $u := hugo.Data.ustawienia | default dict -}}
-{{- $s404 := $u.strona_404 | default dict -}}
-{{- $nazwa := $g.nazwa_krotka | default site.Title -}}
+{{- $s404 := (partialCached "ustawienia-model.html" site "ustawienia").strona_404 -}}
+{{- $nazwa := $m.nazwa_krotka -}}
 {{- $tytul := "" -}}
 {{- /* tytul do wyszukiwarki (pole strony seo_tytul) - wtedy bez dopisku */ -}}
 {{- if .Params.seo_tytul }}{{ $tytul = .Params.seo_tytul }}

@@ -1,0 +1,4 @@
+{{- /* Strony z content/strony/ w kolejnosci stron (weight); strony ukryte
+       (draft) Hugo pomija sam. Jedno zrodlo dla gabinet-model, jsonld
+       i uslugi-strony. Wejscie: dowolne (partialCached). Wynik: lista stron. */ -}}
+{{- return (where site.RegularPages "Section" "strony").ByWeight -}}

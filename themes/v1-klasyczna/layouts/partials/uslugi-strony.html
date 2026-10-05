@@ -3,7 +3,7 @@
        Wejscie: dict "tylko_wyroznione" (bool). Wynik: lista stron (Page). */ -}}
 {{- $wynik := slice -}}
 {{- $tylko := .tylko_wyroznione | default false -}}
-{{- range $p := (where site.RegularPages "Section" "strony").ByWeight -}}
+{{- range $p := partialCached "strony-tresci.html" site "strony" -}}
   {{- with $p.Params.usluga -}}
     {{- if or (not $tylko) .wyrozniona }}{{ $wynik = $wynik | append $p }}{{ end -}}
   {{- end -}}

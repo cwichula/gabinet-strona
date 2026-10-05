@@ -1,0 +1,4 @@
+{{- /* Napisy z data/ustawienia.yaml (napisy, strona_404) z pustym dict, gdy ich
+       nie ma (partialCached). Wynik: dict "napisy", "strona_404". */ -}}
+{{- $u := hugo.Data.ustawienia | default dict -}}
+{{- return dict "napisy" ($u.napisy | default dict) "strona_404" ($u.strona_404 | default dict) -}}

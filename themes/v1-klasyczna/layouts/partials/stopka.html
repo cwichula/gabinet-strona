@@ -6,7 +6,7 @@
        Kolumna "Gabinet" = pozycje menu bez podmenu. */ -}}
 {{- $g := hugo.Data.gabinet -}}
 {{- $u := hugo.Data.ustawienia | default dict -}}
-{{- $n := $u.napisy | default dict -}}
+{{- $n := (partialCached "ustawienia-model.html" site "ustawienia").napisy -}}
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
 {{- $menu := partialCached "menu-model.html" site "menu" -}}
 {{- /* napis uslugi: etykieta z podmenu, gdy strona tam jest (np. "Licówki kompozytowe"), inaczej tytul strony */ -}}
@@ -23,12 +23,12 @@
 {{- if not $strony }}{{ range $menu }}{{ if and .href (not .dzieci) }}{{ $strony = $strony | append . }}{{ end }}{{ end }}{{ end -}}
 {{- /* dolna linia: lista "stopka_dolna", pusta = polityka prywatnosci (gdy jest) */ -}}
 {{- $dolna := partialCached "menu-lista.html" "stopka_dolna" "stopka_dolna" -}}
-{{- if not $dolna }}{{ with site.GetPage "/strony/polityka-prywatnosci" }}{{ $dolna = slice (dict "etykieta" .LinkTitle "href" .RelPermalink "zewnetrzny" false) }}{{ end }}{{ end -}}
+{{- if not $dolna }}{{ with $m.polityka }}{{ $dolna = slice (dict "etykieta" .LinkTitle "href" .RelPermalink "zewnetrzny" false) }}{{ end }}{{ end -}}
 <footer class="site-footer">
   <div class="container">
     <div class="footer__grid">
       <div class="footer__brand">
-        <strong style="color:#fff;font-size:1.05rem">{{ $g.nazwa_krotka | default site.Title }}</strong>
+        <strong style="color:#fff;font-size:1.05rem">{{ $m.nazwa_krotka }}</strong>
         {{- with $g.adres }}
         <p style="margin:0">
           {{ .ulica }}<br>
@@ -103,7 +103,7 @@
     {{- end }}
 
     <div class="footer__legal">
-      <span>&copy; {{ with $g.rok_zalozenia }}{{ if lt (int .) now.Year }}{{ . }}&ndash;{{ end }}{{ end }}<span data-rok>{{ now.Year }}</span> {{ $g.nazwa | default site.Title }}</span>
+      <span>&copy; {{ with $g.rok_zalozenia }}{{ if lt (int .) now.Year }}{{ . }}&ndash;{{ end }}{{ end }}<span data-rok>{{ now.Year }}</span> {{ $m.nazwa }}</span>
       {{- with $dolna }}
       <span class="cluster" style="gap:1rem">
         {{- range . }}

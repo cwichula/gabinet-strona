@@ -8,7 +8,7 @@
 {{ define "main" }}
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
 {{- $g := hugo.Data.gabinet -}}
-{{- $s := (hugo.Data.ustawienia | default dict).strona_404 | default dict -}}
+{{- $s := (partialCached "ustawienia-model.html" site "ustawienia").strona_404 -}}
 {{- $linki := partial "powiazane-linki.html" (dict "elementy" $s.linki "gdzie" "Strona 404" "scisle" false) -}}
 <section class="section">
   <div class="container container--narrow" style="text-align:center">

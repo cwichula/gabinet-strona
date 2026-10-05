@@ -11,7 +11,7 @@
 {{- $b := .blok -}}
 {{- $gdzie := $.gdzie -}}
 {{- $c := hugo.Data.cennik -}}
-{{- $n := (hugo.Data.ustawienia | default dict).napisy | default dict -}}
+{{- $n := (partialCached "ustawienia-model.html" site "ustawienia").napisy -}}
 {{- $wszystkie := $c.pozycje | default slice -}}
 {{- $grupy := slice -}}
 {{- with $b.pozycje -}}

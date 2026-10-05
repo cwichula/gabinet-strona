@@ -13,8 +13,7 @@
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
 {{- $tematy := $b.tematy | default (slice "Umówienie wizyty" "Pytanie o cenę" "Pytanie o leczenie" "Inne") -}}
 {{- $p := printf "f%d-" .nr -}}
-{{- $polityka := site.GetPage "/strony/polityka-prywatnosci" -}}
-{{- $n := (hugo.Data.ustawienia | default dict).napisy | default dict -}}
+{{- $n := (partialCached "ustawienia-model.html" site "ustawienia").napisy -}}
 {{- /* zdanie "W sprawach pilnych ... zadzwon" z telefonami */ -}}
 {{- $pilne := "" }}{{ with $m.telefony }}{{ $pilne = printf "W sprawach pilnych i przy bólu zadzwoń: %s." (partial "telefony-zdanie.html" .) }}{{ end -}}
     {{- partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" "Napisz do nas" "gora" $.gora) }}
@@ -66,7 +65,7 @@
           {{- with $n.formularz_zgoda }}
           {{ partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .) }} <span class="req">*</span>
           {{- else }}
-          Wyrażam zgodę na przetwarzanie podanych danych w celu udzielenia odpowiedzi na moje zapytanie i ustalenia terminu wizyty. Administratorem danych jest {{ $g.nazwa_krotka | default $g.nazwa }}{{ with $g.adres }}, {{ partial "adres.html" . }}{{ end }}. Podstawą przetwarzania jest art. 6 ust. 1 lit. a i b RODO — moja zgoda oraz działania podejmowane na moje żądanie przed zawarciem umowy. Zgodę mogę wycofać w każdej chwili, a wycofanie nie wpływa na zgodność z prawem przetwarzania, którego dokonano przed jej cofnięciem.{{ with $polityka }} Szczegóły opisuje <a href="{{ .RelPermalink }}">polityka prywatności</a>.{{ end }} <span class="req">*</span>
+          Wyrażam zgodę na przetwarzanie podanych danych w celu udzielenia odpowiedzi na moje zapytanie i ustalenia terminu wizyty. Administratorem danych jest {{ $g.nazwa_krotka | default $g.nazwa }}{{ with $g.adres }}, {{ partial "adres.html" . }}{{ end }}. Podstawą przetwarzania jest art. 6 ust. 1 lit. a i b RODO — moja zgoda oraz działania podejmowane na moje żądanie przed zawarciem umowy. Zgodę mogę wycofać w każdej chwili, a wycofanie nie wpływa na zgodność z prawem przetwarzania, którego dokonano przed jej cofnięciem.{{ with $m.polityka }} Szczegóły opisuje <a href="{{ .RelPermalink }}">polityka prywatności</a>.{{ end }} <span class="req">*</span>
           {{- end }}
         </label>
       </div>

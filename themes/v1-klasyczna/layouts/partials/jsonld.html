@@ -12,7 +12,7 @@
 {{- $graf := slice -}}
 
 {{- /* gabinet */ -}}
-{{- $gab := dict "@type" (slice "Dentist" "MedicalBusiness" "LocalBusiness") "@id" $idGabinet "name" ($g.nazwa | default site.Title) "url" $dom -}}
+{{- $gab := dict "@type" (slice "Dentist" "MedicalBusiness" "LocalBusiness") "@id" $idGabinet "name" $m.nazwa "url" $dom -}}
 {{- with $g.nazwa_krotka }}{{ $gab = merge $gab (dict "alternateName" .) }}{{ end -}}
 {{- with partial "og-zdjecie.html" site.Home }}{{ $gab = merge $gab (dict "image" .url) }}{{ end -}}
 {{- $gab = merge $gab (dict "logo" ("favicon.svg" | absURL)) -}}
@@ -64,7 +64,7 @@
 {{- with $uslugi }}{{ $gab = merge $gab (dict "availableService" .) }}{{ end -}}
 {{- /* strona z pelnym cennikiem: pierwsza strona z blokiem cennika z wyszukiwarka */ -}}
 {{- $stronaCennika := false -}}
-{{- range $p := slice site.Home | append (where site.RegularPages "Section" "strony").ByWeight -}}
+{{- range $p := slice site.Home | append (partialCached "strony-tresci.html" site "strony") -}}
   {{- if not $stronaCennika }}{{ range $p.Params.sekcje }}{{ if and (eq .type "cennik") .wyszukiwarka }}{{ $stronaCennika = $p }}{{ end }}{{ end }}{{ end -}}
 {{- end -}}
 {{- with $stronaCennika }}{{ $gab = merge $gab (dict "hasOfferCatalog" (dict "@id" (printf "%s#cennik" .Permalink))) }}{{ end -}}
@@ -72,7 +72,7 @@
 {{- with $lekarz }}{{ $graf = $graf | append . }}{{ end -}}
 
 {{- /* serwis i strona */ -}}
-{{- $graf = $graf | append (dict "@type" "WebSite" "@id" (printf "%s#serwis" $dom) "url" $dom "name" ($g.nazwa_krotka | default site.Title) "inLanguage" "pl-PL" "publisher" (dict "@id" $idGabinet)) -}}
+{{- $graf = $graf | append (dict "@type" "WebSite" "@id" (printf "%s#serwis" $dom) "url" $dom "name" $m.nazwa_krotka "inLanguage" "pl-PL" "publisher" (dict "@id" $idGabinet)) -}}
 {{- if ne .Kind "404" -}}
   {{- $typy := slice }}{{ range .Params.sekcje }}{{ $typy = $typy | append .type }}{{ end -}}
   {{- $typStrony := "WebPage" -}}

@@ -5,7 +5,7 @@
        adresu IP odwiedzajacego. Obok zawsze odnosnik do nawigacji w nowej karcie. */ -}}
 {{- $b := .blok -}}
 {{- $a := hugo.Data.gabinet.adres | default dict -}}
-{{- $n := (hugo.Data.ustawienia | default dict).napisy | default dict -}}
+{{- $n := (partialCached "ustawienia-model.html" site "ustawienia").napisy -}}
 {{- /* zapytanie do map: bez "ul." i bez numeru lokalu ("m. 10"), ktore myla wyszukiwarke */ -}}
 {{- $ulica := replaceRE `\s+m\.\s*\d+\s*$` "" ($a.ulica | default "") | replaceRE `^(?i)ul\.\s*` "" -}}
 {{- $zapytanie := printf "%s, %s %s" $ulica ($a.kod | default "") ($a.miasto | default "") | urlquery -}}
