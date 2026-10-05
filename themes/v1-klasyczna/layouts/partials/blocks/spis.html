@@ -7,7 +7,7 @@
 {{- $gdzie := $.gdzie -}}
 {{- $kotwice := slice }}{{ range $.strona.Params.sekcje }}{{ with .kotwica }}{{ $kotwice = $kotwice | append . }}{{ end }}{{ end -}}
 {{- with $b.elementy }}
-    <nav class="anchor-nav" aria-label="{{ $b.naglowek | default "Spis treści" }}">
+    <nav class="anchor-nav" aria-label="{{ $b.naglowek | default (T "tableOfContents") }}">
       {{- range . }}
       {{- if not (in $kotwice .kotwica) }}{{ errorf "%s: spis treści wskazuje kotwicę %q, której nie ma żaden blok tej strony. Wpisz kotwicę w bloku (pole „Kotwica”) albo popraw spis w panelu /admin/." $gdzie .kotwica }}{{ end }}
       <a href="#{{ .kotwica }}">{{ .etykieta }}</a>

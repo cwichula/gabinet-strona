@@ -8,7 +8,7 @@
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
     <div class="cta-band">
       <div>
-        {{- with $b.naglowek | default (cond $.gora "Umów wizytę" "") }}
+        {{- with $b.naglowek | default (cond $.gora (T "bookVisit") "") }}
         <h2>{{ . }}</h2>
         {{- end }}
         {{- with $b.tresc }}

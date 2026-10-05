@@ -11,7 +11,7 @@
 {{- /* tytul do wyszukiwarki (pole strony seo_tytul) - wtedy bez dopisku */ -}}
 {{- if .Params.seo_tytul }}{{ $tytul = .Params.seo_tytul }}
 {{- else if .IsHome }}{{ $tytul = printf "%s — %s" .Title $nazwa }}
-{{- else if eq .Kind "404" }}{{ $tytul = printf "%s | %s" ($s404.tytul | default "Nie znaleziono strony") $nazwa }}
+{{- else if eq .Kind "404" }}{{ $tytul = printf "%s | %s" ($s404.tytul | default (T "notFoundTitle")) $nazwa }}
 {{- else }}{{ $tytul = printf "%s | %s" .Title $nazwa }}{{ end -}}
 {{- $opis := .Description | default (cond (eq .Kind "404") ($s404.opis | default "") "") | default $u.seo_opis | default "" -}}
 <meta charset="utf-8">

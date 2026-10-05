@@ -6,7 +6,7 @@
        dolaczonym do sekcji ("polacz") - bez naglowka. */ -}}
 {{- $b := .blok -}}
 {{- $gdzie := $.gdzie -}}
-    {{- partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "domyslny" "Zdjęcia gabinetu" "ukryty_domyslny" true "wstep" $b.wstep "gora" $.gora "lede_styl" "max-width:60ch") }}
+    {{- partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "domyslny" (T "galleryHeading") "ukryty_domyslny" true "wstep" $b.wstep "gora" $.gora "lede_styl" "max-width:60ch") }}
     <div class="gallery odstep-6">
       {{- range $i, $z := $b.elementy }}
       {{- with partial "zdjecie-zasob.html" (dict "strona" $.strona "zdjecie" $z "gdzie" (printf "%s: galeria, zdjęcie nr %d" $gdzie (add $i 1))) }}
@@ -15,7 +15,7 @@
       {{- if eq .MediaType.SubType "svg" }}
       <button type="button" data-lightbox data-full="{{ .RelPermalink }}" data-alt="{{ $opis }}">
         <img src="{{ .RelPermalink }}" alt="{{ $alt }}"{{ if ge $i 4 }} loading="lazy"{{ end }} decoding="async">
-        <span class="visually-hidden">Powiększ zdjęcie</span>
+        <span class="visually-hidden">{{ T "enlargePhoto" }}</span>
       </button>
       {{- else }}
       {{- $duze := false }}{{ if gt .Width 1400 }}{{ $duze = .Resize "1400x webp" }}{{ else }}{{ $duze = .Process "webp" }}{{ end }}
@@ -34,28 +34,28 @@
                width="{{ $mZapas.Width }}" height="{{ $mZapas.Height }}"{{ if ge $i 4 }} loading="lazy"{{ end }} decoding="async">
           {{- end }}
         </picture>
-        <span class="visually-hidden">Powiększ zdjęcie</span>
+        <span class="visually-hidden">{{ T "enlargePhoto" }}</span>
       </button>
       {{- end }}
       {{- end }}
       {{- end }}
     </div>
     {{- if not ($.pamiec.Get "lightbox") }}{{ $.pamiec.Set "lightbox" true }}
-  <dialog class="lightbox" id="lightbox" aria-label="Powiększone zdjęcie">
+  <dialog class="lightbox" id="lightbox" aria-label="{{ T "enlargedPhoto" }}">
     <figure class="lightbox__fig">
       <img data-lb-img src="data:," alt="" width="1400" height="1050" decoding="async">
       <figcaption data-lb-cap></figcaption>
     </figure>
     <div class="lightbox__bar">
-      <button class="lightbox__btn" type="button" data-lb-close aria-label="Zamknij powiększenie">
+      <button class="lightbox__btn" type="button" data-lb-close aria-label="{{ T "closeEnlarged" }}">
         <svg class="ico" aria-hidden="true"><use href="#ico-close"></use></svg>
       </button>
     </div>
     <div class="lightbox__nav">
-      <button class="lightbox__btn" type="button" data-lb-prev aria-label="Poprzednie zdjęcie">
+      <button class="lightbox__btn" type="button" data-lb-prev aria-label="{{ T "previousPhoto" }}">
         <svg class="ico" aria-hidden="true" style="transform:rotate(180deg)"><use href="#ico-arrow"></use></svg>
       </button>
-      <button class="lightbox__btn" type="button" data-lb-next aria-label="Następne zdjęcie">
+      <button class="lightbox__btn" type="button" data-lb-next aria-label="{{ T "nextPhoto" }}">
         <svg class="ico" aria-hidden="true"><use href="#ico-arrow"></use></svg>
       </button>
     </div>

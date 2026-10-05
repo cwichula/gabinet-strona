@@ -20,7 +20,7 @@
 {{- $tel := cond $telefony $m.telefony slice -}}
 {{- if $przycisk }}{{ $tel = first 1 $tel }}{{ end -}}
     <aside class="sidebar-card">
-      <h2>{{ $b.naglowek | default (cond $godziny "Godziny przyjęć" (cond (gt (len $pozycje) 0) "Ceny z cennika" "Kontakt")) }}</h2>
+      <h2>{{ $b.naglowek | default (cond $godziny (T "openingHours") (cond (gt (len $pozycje) 0) (T "pricesFromList") (T "contact"))) }}</h2>
       {{- if $godziny }}
       {{ partial "godziny-tabela.html" . }}
       {{- end }}

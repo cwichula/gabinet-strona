@@ -30,7 +30,7 @@
     </span>
     {{- /* przelacznik poza grupa telefon/adres: na telefonie stoi w pierwszym
            wierszu obok godzin, zamiast spadac do osobnego wiersza */}}
-    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Ciemny motyw">
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="{{ T "darkTheme" }}">
       <svg class="ico ico-moon" aria-hidden="true"><use href="#ico-moon"></use></svg>
       <svg class="ico ico-sun" aria-hidden="true"><use href="#ico-sun"></use></svg>
     </button>
@@ -52,9 +52,9 @@
       </span>
     </a>
 
-    <nav class="nav" aria-label="Menu główne">
+    <nav class="nav" aria-label="{{ T "mainMenu" }}">
       <ul>
-        <li><a href="{{ site.Home.RelPermalink }}"{{ if .IsHome }} aria-current="page"{{ end }}>Start</a></li>
+        <li><a href="{{ site.Home.RelPermalink }}"{{ if .IsHome }} aria-current="page"{{ end }}>{{ T "home" }}</a></li>
         {{- range $i, $poz := $menu }}
         {{- $aktywna := and $poz.strona ($biezaca.Eq $poz.strona) }}
         {{- range $poz.dzieci }}{{ if and .strona ($biezaca.Eq .strona) }}{{ $aktywna = true }}{{ end }}{{ end }}
@@ -63,7 +63,7 @@
           {{ if $poz.href }}{{ partial "menu-link.html" (dict "pozycja" $poz "aktywna" $aktywna) }}{{ else }}<span>{{ $poz.etykieta }}</span>{{ end }}
           <button class="nav__toggle-sub" type="button" data-submenu-toggle
                   aria-expanded="false" aria-controls="podmenu-{{ add $i 1 }}"
-                  aria-label="Rozwiń listę: {{ $poz.etykieta }}">
+                  aria-label="{{ T "expandSubmenu" (dict "label" $poz.etykieta) }}">
             <svg class="chev" aria-hidden="true"><use href="#ico-chevron"></use></svg>
           </button>
           <div class="nav__sub" id="podmenu-{{ add $i 1 }}">
@@ -79,29 +79,29 @@
       </ul>
     </nav>
 
-    {{ partial "telefon-btn.html" (dict "klasa" "btn btn--primary header__cta" "napis" ((partialCached "ustawienia-model.html" site "ustawienia").napisy.przycisk_naglowka | default "Umów wizytę")) }}
+    {{ partial "telefon-btn.html" (dict "klasa" "btn btn--primary header__cta" "napis" ((partialCached "ustawienia-model.html" site "ustawienia").napisy.przycisk_naglowka | default (T "bookVisit"))) }}
 
     {{ partial "rezerwacja.html" (dict "miejsce" "naglowek") }}
 
     <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="menu-mobilne">
       <svg class="ico" aria-hidden="true"><use href="#ico-menu"></use></svg>
-      <span>Menu</span>
+      <span>{{ T "menu" }}</span>
     </button>
   </div>
 </header>
 
 <div class="drawer" id="menu-mobilne" data-open="false">
-  <button class="drawer__scrim" type="button" data-drawer-close tabindex="-1" aria-label="Zamknij menu"></button>
+  <button class="drawer__scrim" type="button" data-drawer-close tabindex="-1" aria-label="{{ T "closeMenu" }}"></button>
   <div class="drawer__panel">
     <div class="drawer__head">
-      <strong>Menu</strong>
-      <button class="drawer__close" type="button" data-drawer-close aria-label="Zamknij menu">
+      <strong>{{ T "menu" }}</strong>
+      <button class="drawer__close" type="button" data-drawer-close aria-label="{{ T "closeMenu" }}">
         <svg class="ico" aria-hidden="true"><use href="#ico-close"></use></svg>
       </button>
     </div>
-    <nav aria-label="Menu mobilne">
+    <nav aria-label="{{ T "mobileMenu" }}">
       <ul>
-        <li><a href="{{ site.Home.RelPermalink }}"{{ if .IsHome }} aria-current="page"{{ end }}>Start</a></li>
+        <li><a href="{{ site.Home.RelPermalink }}"{{ if .IsHome }} aria-current="page"{{ end }}>{{ T "home" }}</a></li>
         {{- range $menu }}
         {{- if .href }}
         <li>{{ partial "menu-link.html" (dict "pozycja" . "aktywna" (and .strona ($biezaca.Eq .strona))) }}</li>

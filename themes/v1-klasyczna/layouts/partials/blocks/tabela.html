@@ -20,7 +20,7 @@
             <th scope="col">{{ . }}</th>
             {{- end }}
             {{- if $zCena }}
-            <th scope="col">Cena</th>
+            <th scope="col">{{ T "price" }}</th>
             {{- end }}
           </tr>
         </thead>
@@ -33,7 +33,7 @@
             {{- end }}
             {{- if $zCena }}
             {{- $poz := partial "cennik-pozycja.html" (dict "id" $w.cena "gdzie" (printf "%s: tabela „%s”, wiersz %d" $gdzie ($b.naglowek | default "") (add $i 1))) }}
-            <td data-label="Cena">{{ with $poz }}{{ partial "cena.html" . }}{{ end }}</td>
+            <td data-label="{{ T "price" }}">{{ with $poz }}{{ partial "cena.html" . }}{{ end }}</td>
             {{- end }}
           </tr>
           {{- end }}

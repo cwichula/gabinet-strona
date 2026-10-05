@@ -3,7 +3,7 @@
        dolaczonym do sekcji ("polacz") - bez naglowka. Pytania trafiaja tez do danych FAQPage
        (partial jsonld.html). */ -}}
 {{- $b := .blok -}}
-    {{- partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" "Najczęstsze pytania" "gora" $.gora) }}
+    {{- partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" (T "faq") "gora" $.gora) }}
 
     <div class="faq{{ if or $b.naglowek $.gora }} odstep-6{{ end }}">
       {{- range $b.elementy }}

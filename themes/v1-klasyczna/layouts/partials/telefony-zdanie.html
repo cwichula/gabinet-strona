@@ -7,5 +7,5 @@
   {{- if eq $i 0 }}{{ $numer = printf "<strong>%s</strong>" $numer }}{{ end -}}
   {{- $linki = $linki | append (printf `<a href="%s">%s</a>` (htmlEscape (printf "tel:%s" $t.tel)) $numer) -}}
 {{- end -}}
-{{- $wynik := delimit $linki ", " " lub " | safeHTML -}}
+{{- $wynik := delimit $linki ", " (printf " %s " (T "or")) | safeHTML -}}
 {{- return $wynik -}}

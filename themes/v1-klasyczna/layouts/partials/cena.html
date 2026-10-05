@@ -23,6 +23,6 @@
     {{- if ge . 10000 }}{{ $n = replace (lang.FormatNumberCustom 0 . "- . ,") "," " " }}{{ end -}}
     {{- $napisy = $napisy | append $n -}}
   {{- end -}}
-  {{- $tekst = printf "%s zł" (delimit $napisy "–") -}}
+  {{- $tekst = T "priceAmount" (dict "amount" (delimit $napisy "–")) -}}
 {{- end -}}
 {{- return $tekst -}}

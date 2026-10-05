@@ -1,0 +1,150 @@
+# Stale napisy szablonu v1-klasyczna (funkcja T w szablonach). Klucze po
+# angielsku, wartosci po polsku. Napisy, ktore wlasciciel zmienia w panelu,
+# sa w data/ustawienia.yaml (napisy, strona_404) - tutaj tylko ich wartosci
+# domyslne (pole puste w panelu = napis stad). Komunikaty bledow budowania
+# dla redaktora zostaja w szablonach.
+# Wartosci z {{ .nazwa }} szablon uzupelnia przy wywolaniu (T "klucz" (dict ...)).
+
+# --- uklad strony, naglowek, menu
+skipToContent: "Przejdź do treści"
+darkTheme: "Ciemny motyw"
+mainMenu: "Menu główne"
+mobileMenu: "Menu mobilne"
+menu: "Menu"
+closeMenu: "Zamknij menu"
+expandSubmenu: "Rozwiń listę: {{ .label }}"
+home: "Start"
+homePage: "Strona główna"
+breadcrumbs: "Ścieżka nawigacji"
+bookVisit: "Umów wizytę"
+call: "Zadzwoń"
+or: "lub"
+
+# --- godziny przyjec (gabinet-model.html, tabela godzin, stopka)
+openingHours: "Godziny przyjęć"
+openingHoursCaption: "Godziny przyjęć gabinetu"
+openingHoursInFooter: "Godziny przyjęć w stopce strony"
+openOneDay: "Przyjmujemy jeden dzień w tygodniu"
+openFromTo: "Przyjmujemy od {{ .from }} do {{ .to }}"
+closed: "nieczynne"
+# dni tygodnia w dopelniaczu ("od poniedzialku do piatku")
+mondayGenitive: "poniedziałku"
+tuesdayGenitive: "wtorku"
+wednesdayGenitive: "środy"
+thursdayGenitive: "czwartku"
+fridayGenitive: "piątku"
+saturdayGenitive: "soboty"
+sundayGenitive: "niedzieli"
+
+# --- stopka
+footerServices: "Usługi"
+footerPractice: "Gabinet"
+directionsAndMap: "Dojazd i mapa →"
+directions: "Dojazd"
+registrationData: "Dane rejestrowe:"
+regNip: "NIP"
+regRegon: "REGON"
+regPwz: "nr prawa wykonywania zawodu"
+regRpwdl: "wpis do rejestru podmiotów wykonujących działalność leczniczą (RPWDL)"
+
+# --- strona 404 i jej tytul (head.html)
+notFoundTitle: "Nie znaleziono strony"
+notFoundEyebrow: "Błąd 404"
+notFoundHeading: "Tej strony nie ma pod tym adresem"
+notFoundText: "Strona, której szukasz, zmieniła adres albo już jej nie ma."
+notFoundBackHome: "Wróć na stronę główną"
+notFoundLinksHeading: "Dokąd dalej"
+notFoundCallText: "Jeśli nie możesz czegoś znaleźć albo chcesz umówić wizytę, zadzwoń do rejestracji:"
+notFoundAddress: "Adres gabinetu:"
+
+# --- rezerwacja online (rezerwacja.html, gabinet-model.html)
+onlineBooking: "Rezerwacja online"
+bookOnline: "Umów wizytę online"
+bookingInProvider: "w {{ .provider }}"
+bookingOnProviderSite: "w serwisie {{ .provider }}"
+bookingOnExternalSite: "w serwisie zewnętrznym"
+opensInNewTab: ", odnośnik otwiera się w nowej karcie"
+bookingSystemOfProvider: "— zewnętrzny system rezerwacji wizyt"
+bookingSystemExternal: "Zewnętrzny system rezerwacji wizyt"
+bookingPending: "Rezerwacja online jest w przygotowaniu — odnośnik prowadzi do serwisu {{ .provider }}."
+bookingPendingExternal: "zewnętrznego"
+bookingPhoneAlternative: "Wolisz ustalić termin w rozmowie? Rejestracja telefoniczna działa jak dotąd:"
+bookingPrintAddress: "Adres rezerwacji: {{ .url }}"
+bookingPrintPhone: "· telefon {{ .number }}"
+
+# --- cennik, ceny, karty
+priceList: "Cennik"
+priceGroups: "Grupy w cenniku"
+searchPrices: "Szukaj w cenniku"
+searchPricesPlaceholder: "Szukaj zabiegu, np. korona, szyna, piaskowanie"
+priceCountAll: "Wszystkich pozycji w cenniku: {{ .count }}"
+priceCountMatching: "Pasujące pozycje: {{ .count }}"
+service: "Usługa"
+price: "Cena"
+priceFrom: "od"
+# kwota z twarda spacja przed "zl" (cena.html)
+priceAmount: "{{ .amount }} zł"
+pricesFromList: "Ceny z cennika"
+seeDetails: "Zobacz szczegóły"
+
+# --- naglowki domyslne blokow
+contact: "Kontakt"
+faq: "Najczęstsze pytania"
+galleryHeading: "Zdjęcia gabinetu"
+howToGetHere: "Jak do nas trafić"
+trustHeading: "Atuty gabinetu"
+tableOfContents: "Spis treści"
+writeToUs: "Napisz do nas"
+
+# --- dane kontaktowe (blok kontakt, mapa)
+phone: "Telefon"
+email: "E-mail"
+practiceAddress: "Adres gabinetu"
+parking: "Parking"
+address: "Adres:"
+
+# --- galeria i powiekszenie zdjec
+enlargePhoto: "Powiększ zdjęcie"
+enlargedPhoto: "Powiększone zdjęcie"
+closeEnlarged: "Zamknij powiększenie"
+previousPhoto: "Poprzednie zdjęcie"
+nextPhoto: "Następne zdjęcie"
+
+# --- mapa
+mapHeading: "Mapa dojazdu"
+mapConsent: "Mapa pochodzi z serwisu Google. Jej wczytanie przekaże Google Twój adres IP, dlatego ładujemy ją dopiero po Twoim kliknięciu."
+showGoogleMap: "Pokaż mapę Google"
+openNavigation: "Albo otwórz nawigację w nowej karcie →"
+
+# --- formularz kontaktowy
+formTopicVisit: "Umówienie wizyty"
+formTopicPrice: "Pytanie o cenę"
+formTopicTreatment: "Pytanie o leczenie"
+formTopicOther: "Inne"
+formUrgent: "W sprawach pilnych i przy bólu zadzwoń: {{ .phones }}."
+formName: "Imię"
+formPhoneHint: "Na ten numer oddzwonimy, żeby ustalić termin."
+formOptional: "Pole nieobowiązkowe."
+formTopic: "Temat"
+formMessage: "Wiadomość"
+formMessageHint: "Napisz, czego dotyczy sprawa — bez opisywania stanu zdrowia."
+formHoneypot: "Nie wypełniaj tego pola"
+# {{ .admin }} = nazwa gabinetu i adres (HTML)
+formConsent: "Wyrażam zgodę na przetwarzanie podanych danych w celu udzielenia odpowiedzi na moje zapytanie i ustalenia terminu wizyty. Administratorem danych jest {{ .admin }}. Podstawą przetwarzania jest art. 6 ust. 1 lit. a i b RODO — moja zgoda oraz działania podejmowane na moje żądanie przed zawarciem umowy. Zgodę mogę wycofać w każdej chwili, a wycofanie nie wpływa na zgodność z prawem przetwarzania, którego dokonano przed jej cofnięciem."
+# {{ .link }} = odnosnik do polityki prywatnosci (HTML)
+formConsentPrivacy: "Szczegóły opisuje {{ .link }}."
+privacyPolicy: "polityka prywatności"
+formSubmit: "Wyślij wiadomość"
+formNote: "Pola oznaczone gwiazdką są obowiązkowe. Na tej stronie formularz sprawdza poprawność pól, ale jeszcze niczego nie wysyła — w sprawie wizyty zadzwoń."
+formFilled: "Formularz wypełniony poprawnie."
+formNotSent: "Wiadomość nie została wysłana — ta strona nie ma jeszcze obsługi formularza."
+formCallPlease: "Zadzwoń, proszę:"
+formHealthWarningStrong: "Formularz nie służy do przesyłania informacji o stanie zdrowia ani do konsultacji medycznych."
+formHealthWarning: "Nie wpisuj w nim objawów, rozpoznań, przyjmowanych leków ani wyników badań — to zwykła wiadomość elektroniczna, a nie dokumentacja medyczna."
+
+# --- dane strukturalne (jsonld.html): zawod lekarza wg tytulu ("lek. stom.")
+jobTitleStomatologist: "lekarz stomatolog"
+jobTitleDentist: "lekarz dentysta"
+
+# --- skrot {{% gabinet %}}: pusta wartosc w danych
+toBeCompleted: "DO UZUPEŁNIENIA"

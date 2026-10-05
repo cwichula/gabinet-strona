@@ -11,36 +11,36 @@
 {{- $b := .blok -}}
 {{- $g := hugo.Data.gabinet -}}
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
-{{- $tematy := $b.tematy | default (slice "Umówienie wizyty" "Pytanie o cenę" "Pytanie o leczenie" "Inne") -}}
+{{- $tematy := $b.tematy | default (slice (T "formTopicVisit") (T "formTopicPrice") (T "formTopicTreatment") (T "formTopicOther")) -}}
 {{- $p := printf "f%d-" .nr -}}
 {{- $n := (partialCached "ustawienia-model.html" site "ustawienia").napisy -}}
 {{- /* zdanie "W sprawach pilnych ... zadzwon" z telefonami */ -}}
-{{- $pilne := "" }}{{ with $m.telefony }}{{ $pilne = printf "W sprawach pilnych i przy bólu zadzwoń: %s." (partial "telefony-zdanie.html" .) }}{{ end -}}
-    {{- partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" "Napisz do nas" "gora" $.gora) }}
+{{- $pilne := "" }}{{ with $m.telefony }}{{ $pilne = T "formUrgent" (dict "phones" (partial "telefony-zdanie.html" .)) }}{{ end -}}
+    {{- partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" (T "writeToUs") "gora" $.gora) }}
     {{- with $b.wstep }}
     {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede") }}
     {{- end }}
 
     <form class="form odstep-6" data-demo-form method="post">
       <div class="field">
-        <label for="{{ $p }}imie">Imię <span class="req">*</span></label>
+        <label for="{{ $p }}imie">{{ T "formName" }} <span class="req">*</span></label>
         <input type="text" id="{{ $p }}imie" name="imie" autocomplete="given-name" required>
       </div>
 
       <div class="field">
-        <label for="{{ $p }}telefon">Telefon <span class="req">*</span></label>
+        <label for="{{ $p }}telefon">{{ T "phone" }} <span class="req">*</span></label>
         <input type="tel" id="{{ $p }}telefon" name="telefon" autocomplete="tel" required>
-        <span class="hint">Na ten numer oddzwonimy, żeby ustalić termin.</span>
+        <span class="hint">{{ T "formPhoneHint" }}</span>
       </div>
 
       <div class="field">
-        <label for="{{ $p }}email">E-mail</label>
+        <label for="{{ $p }}email">{{ T "email" }}</label>
         <input type="email" id="{{ $p }}email" name="email" autocomplete="email">
-        <span class="hint">Pole nieobowiązkowe.</span>
+        <span class="hint">{{ T "formOptional" }}</span>
       </div>
 
       <div class="field">
-        <label for="{{ $p }}temat">Temat</label>
+        <label for="{{ $p }}temat">{{ T "formTopic" }}</label>
         <select id="{{ $p }}temat" name="temat">
           {{- range $tematy }}
           <option>{{ . }}</option>
@@ -49,13 +49,13 @@
       </div>
 
       <div class="field">
-        <label for="{{ $p }}wiadomosc">Wiadomość <span class="req">*</span></label>
+        <label for="{{ $p }}wiadomosc">{{ T "formMessage" }} <span class="req">*</span></label>
         <textarea id="{{ $p }}wiadomosc" name="wiadomosc" rows="6" required></textarea>
-        <span class="hint">Napisz, czego dotyczy sprawa — bez opisywania stanu zdrowia.</span>
+        <span class="hint">{{ T "formMessageHint" }}</span>
       </div>
 
       <p class="visually-hidden">
-        <label for="{{ $p }}firma">Nie wypełniaj tego pola</label>
+        <label for="{{ $p }}firma">{{ T "formHoneypot" }}</label>
         <input type="text" id="{{ $p }}firma" name="firma" tabindex="-1" autocomplete="off" class="visually-hidden">
       </p>
 
@@ -65,7 +65,9 @@
           {{- with $n.formularz_zgoda }}
           {{ partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .) }} <span class="req">*</span>
           {{- else }}
-          Wyrażam zgodę na przetwarzanie podanych danych w celu udzielenia odpowiedzi na moje zapytanie i ustalenia terminu wizyty. Administratorem danych jest {{ $g.nazwa_krotka | default $g.nazwa }}{{ with $g.adres }}, {{ partial "adres.html" . }}{{ end }}. Podstawą przetwarzania jest art. 6 ust. 1 lit. a i b RODO — moja zgoda oraz działania podejmowane na moje żądanie przed zawarciem umowy. Zgodę mogę wycofać w każdej chwili, a wycofanie nie wpływa na zgodność z prawem przetwarzania, którego dokonano przed jej cofnięciem.{{ with $m.polityka }} Szczegóły opisuje <a href="{{ .RelPermalink }}">polityka prywatności</a>.{{ end }} <span class="req">*</span>
+          {{- /* administrator (nazwa i adres) i odnosnik do polityki jako HTML wstawiany w napis */}}
+          {{- $admin := $g.nazwa_krotka | default $g.nazwa | htmlEscape }}{{ with $g.adres }}{{ $admin = printf "%s, %s" $admin (partial "adres.html" .) }}{{ end }}
+          {{ T "formConsent" (dict "admin" $admin) | safeHTML }}{{ with $m.polityka }} {{ T "formConsentPrivacy" (dict "link" (printf `<a href="%s">%s</a>` .RelPermalink (T "privacyPolicy" | htmlEscape))) | safeHTML }}{{ end }} <span class="req">*</span>
           {{- end }}
         </label>
       </div>
@@ -73,21 +75,21 @@
       <div>
         <button class="btn btn--primary btn--lg" type="submit">
           <svg class="ico" aria-hidden="true"><use href="#ico-mail"></use></svg>
-          Wyślij wiadomość
+          {{ T "formSubmit" }}
         </button>
       </div>
 
       <p class="form__note">
-        {{ with $n.formularz_notka }}{{ partial "tekst-wiersze.html" . }}{{ else }}Pola oznaczone gwiazdką są obowiązkowe. Na tej stronie formularz sprawdza poprawność pól, ale jeszcze niczego nie wysyła — w sprawie wizyty zadzwoń.{{ end }}
+        {{ with $n.formularz_notka }}{{ partial "tekst-wiersze.html" . }}{{ else }}{{ T "formNote" }}{{ end }}
       </p>
     </form>
 
     <div class="callout callout--ok" data-form-result hidden tabindex="-1">
       <svg class="ico" aria-hidden="true"><use href="#ico-check"></use></svg>
       <div>
-        <p><strong>Formularz wypełniony poprawnie.</strong></p>
+        <p><strong>{{ T "formFilled" }}</strong></p>
         <p>
-          Wiadomość nie została wysłana — ta strona nie ma jeszcze obsługi formularza.{{ with $m.telefon }} Zadzwoń, proszę: <a href="{{ printf "tel:%s" .tel | safeURL }}">{{ .numer }}</a>.{{ end }}
+          {{ T "formNotSent" }}{{ with $m.telefon }} {{ T "formCallPlease" }} <a href="{{ printf "tel:%s" .tel | safeURL }}">{{ .numer }}</a>.{{ end }}
         </p>
       </div>
     </div>
@@ -102,7 +104,7 @@
         {{ $html | safeHTML }}
         {{- else }}
         <p>
-          <strong>Formularz nie służy do przesyłania informacji o stanie zdrowia ani do konsultacji medycznych.</strong> Nie wpisuj w nim objawów, rozpoznań, przyjmowanych leków ani wyników badań — to zwykła wiadomość elektroniczna, a nie dokumentacja medyczna.
+          <strong>{{ T "formHealthWarningStrong" }}</strong> {{ T "formHealthWarning" }}
         </p>
         {{- with $pilne }}
         <p>

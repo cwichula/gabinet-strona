@@ -37,10 +37,10 @@
 {{- /* wyszukiwarka: skrypt v1 obsluguje jedna tabele na strone (#cennik-tabela) */ -}}
 {{- $szukaj := false -}}
 {{- if and $b.wyszukiwarka (not ($.pamiec.Get "cennik-wyszukiwarka")) }}{{ $szukaj = true }}{{ $.pamiec.Set "cennik-wyszukiwarka" true }}{{ end -}}
-    {{- partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" "Cennik" "gora" $.gora) }}
+    {{- partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" (T "priceList") "gora" $.gora) }}
     {{- if and $szukaj $zGrupami }}
 
-    <nav class="anchor-nav" aria-label="Grupy w cenniku">
+    <nav class="anchor-nav" aria-label="{{ T "priceGroups" }}">
       {{- range $grupy }}
       <a href="#grupa-{{ .id }}">{{ .skrot }}</a>
       {{- end }}
@@ -50,10 +50,10 @@
 
     <div class="price-tools">
       <div class="price-search">
-        <label class="visually-hidden" for="szukaj-ceny">Szukaj w cenniku</label>
-        <input type="search" id="szukaj-ceny" data-price-search placeholder="{{ $n.cennik_podpowiedz | default "Szukaj zabiegu, np. korona, szyna, piaskowanie" }}">
+        <label class="visually-hidden" for="szukaj-ceny">{{ T "searchPrices" }}</label>
+        <input type="search" id="szukaj-ceny" data-price-search placeholder="{{ $n.cennik_podpowiedz | default (T "searchPricesPlaceholder") }}">
       </div>
-      <p data-price-count aria-live="polite" class="dopisek bez-marginesu">Wszystkich pozycji w cenniku: {{ $liczba }}</p>
+      <p data-price-count aria-live="polite" class="dopisek bez-marginesu">{{ T "priceCountAll" (dict "count" $liczba) }}</p>
     </div>
     {{- end }}
 
@@ -66,8 +66,8 @@
         {{- end }}{{ end }}
         <thead>
           <tr>
-            <th scope="col">{{ $b.kolumna | default "Usługa" }}</th>
-            <th scope="col">Cena</th>
+            <th scope="col">{{ $b.kolumna | default (T "service") }}</th>
+            <th scope="col">{{ T "price" }}</th>
           </tr>
         </thead>
         <tbody>
@@ -77,7 +77,7 @@
           <tr class="group"><th colspan="2" scope="colgroup"{{ if $nowa }} id="{{ $kot }}"{{ end }}>{{ .nazwa }}</th></tr>
           {{- end }}
           {{- range .pozycje }}
-          <tr><td>{{ .nazwa }}{{ with .uwagi }}<br><small>{{ . }}</small>{{ end }}</td><td data-label="Cena">{{ partial "cena.html" . }}</td></tr>
+          <tr><td>{{ .nazwa }}{{ with .uwagi }}<br><small>{{ . }}</small>{{ end }}</td><td data-label="{{ T "price" }}">{{ partial "cena.html" . }}</td></tr>
           {{- end }}
           {{- end }}
         </tbody>

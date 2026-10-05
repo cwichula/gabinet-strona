@@ -8,7 +8,7 @@
 {{- $telefony := slice -}}
 {{- range $g.telefony }}{{ $telefony = $telefony | append (dict "etykieta" .etykieta "numer" .numer "tel" (partial "tel.html" .numer)) }}{{ end -}}
 {{- $numery := dict "poniedziałek" 1 "wtorek" 2 "środa" 3 "czwartek" 4 "piątek" 5 "sobota" 6 "niedziela" 7 -}}
-{{- $dopelniacz := slice "" "poniedziałku" "wtorku" "środy" "czwartku" "piątku" "soboty" "niedzieli" -}}
+{{- $dopelniacz := slice "" (T "mondayGenitive") (T "tuesdayGenitive") (T "wednesdayGenitive") (T "thursdayGenitive") (T "fridayGenitive") (T "saturdayGenitive") (T "sundayGenitive") -}}
 {{- $czesci := slice }}{{ $otwarte := slice }}{{ $tydzien := slice -}}
 {{- range $i, $d := $g.godziny | default slice -}}
   {{- $nr := index $numery (lower $d.dzien) | default (add $i 1) -}}
@@ -18,13 +18,13 @@
     {{- $otwarte = $otwarte | append $nr -}}
   {{- end -}}
 {{- end -}}
-{{- $dni := "Godziny przyjęć w stopce strony" -}}
+{{- $dni := T "openingHoursInFooter" -}}
 {{- with $otwarte -}}
   {{- $pierwszy := index . 0 }}{{ $ostatni := index . (sub (len .) 1) -}}
   {{- if eq (len .) 1 -}}
-    {{- $dni = "Przyjmujemy jeden dzień w tygodniu" -}}
+    {{- $dni = T "openOneDay" -}}
   {{- else if eq (sub $ostatni $pierwszy) (sub (len .) 1) -}}
-    {{- $dni = printf "Przyjmujemy od %s do %s" (index $dopelniacz $pierwszy) (index $dopelniacz $ostatni) -}}
+    {{- $dni = T "openFromTo" (dict "from" (index $dopelniacz $pierwszy) "to" (index $dopelniacz $ostatni)) -}}
   {{- end -}}
 {{- end -}}
 {{- /* strona "Dojazd": pierwsza strona z blokiem mapy, potem z blokiem kontaktu */ -}}
@@ -36,6 +36,6 @@
   {{- end -}}
 {{- end -}}
 {{- $rez := false -}}
-{{- with $g.rezerwacja }}{{ if and .wlaczona .url }}{{ $rez = dict "url" .url "etykieta" (.etykieta | default "Umów wizytę online") "dostawca" (.dostawca | default "") "potwierdzona" (.potwierdzona | default false) "nota" (.nota | default "") }}{{ end }}{{ end -}}
+{{- with $g.rezerwacja }}{{ if and .wlaczona .url }}{{ $rez = dict "url" .url "etykieta" (.etykieta | default (T "bookOnline")) "dostawca" (.dostawca | default "") "potwierdzona" (.potwierdzona | default false) "nota" (.nota | default "") }}{{ end }}{{ end -}}
 {{- $telefon := false }}{{ with $telefony }}{{ $telefon = index . 0 }}{{ end -}}
-{{- return dict "telefony" $telefony "telefon" $telefon "godziny_dane" (delimit $czesci ";") "dni_przyjec" $dni "tydzien" $tydzien "nieczynne" "nieczynne" "dojazd" $dojazd "rezerwacja" $rez "nazwa" ($g.nazwa | default site.Title) "nazwa_krotka" ($g.nazwa_krotka | default site.Title) "polityka" (site.GetPage "/strony/polityka-prywatnosci") -}}
+{{- return dict "telefony" $telefony "telefon" $telefon "godziny_dane" (delimit $czesci ";") "dni_przyjec" $dni "tydzien" $tydzien "nieczynne" (T "closed") "dojazd" $dojazd "rezerwacja" $rez "nazwa" ($g.nazwa | default site.Title) "nazwa_krotka" ($g.nazwa_krotka | default site.Title) "polityka" (site.GetPage "/strony/polityka-prywatnosci") -}}

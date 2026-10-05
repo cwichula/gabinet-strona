@@ -5,7 +5,7 @@
 {{- $b := .blok -}}
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
 {{- if $m.rezerwacja }}
-    {{- partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" "Rezerwacja online" "gora" $.gora) }}
+    {{- partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" (T "onlineBooking") "gora" $.gora) }}
     {{- with $b.tresc }}
     {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede") }}
     {{- end }}

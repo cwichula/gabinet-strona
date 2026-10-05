@@ -23,9 +23,9 @@
         <p>{{ . }}</p>
         {{- end }}
         {{- with $poz }}
-        <p class="card__price">od <b>{{ partial "cena.html" (dict "nazwa" .nazwa "cena_od" .cena_od) }}</b></p>
+        <p class="card__price">{{ T "priceFrom" }} <b>{{ partial "cena.html" (dict "nazwa" .nazwa "cena_od" .cena_od) }}</b></p>
         {{- end }}
-        <span class="card__more" aria-hidden="true">Zobacz szczegóły</span>
+        <span class="card__more" aria-hidden="true">{{ T "seeDetails" }}</span>
       </article>
       {{- end }}
     </div>

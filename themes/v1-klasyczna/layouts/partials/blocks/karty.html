@@ -28,7 +28,7 @@
         <p class="card__price"><b>{{ partial "cena.html" . }}</b></p>
         {{- end }}
         {{- if $cel.href }}
-        <span class="card__more" aria-hidden="true">Zobacz szczegóły</span>
+        <span class="card__more" aria-hidden="true">{{ T "seeDetails" }}</span>
         {{- end }}
       {{ if $cel.href }}</article>{{ else }}</div>{{ end }}
       {{- end }}

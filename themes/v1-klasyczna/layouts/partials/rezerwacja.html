@@ -8,31 +8,31 @@
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
 {{- with $m.rezerwacja -}}
 {{- $r := . -}}
-{{- $w := cond (ne $r.dostawca "") (printf "w %s" $r.dostawca) "w serwisie zewnętrznym" -}}
-{{- $wSerwisie := cond (ne $r.dostawca "") (printf "w serwisie %s" $r.dostawca) "w serwisie zewnętrznym" -}}
-{{- $nowaKarta := `<span class="visually-hidden">, odnośnik otwiera się w nowej karcie</span>` | safeHTML -}}
+{{- $w := cond (ne $r.dostawca "") (T "bookingInProvider" (dict "provider" $r.dostawca)) (T "bookingOnExternalSite") -}}
+{{- $wSerwisie := cond (ne $r.dostawca "") (T "bookingOnProviderSite" (dict "provider" $r.dostawca)) (T "bookingOnExternalSite") -}}
+{{- $nowaKarta := printf `<span class="visually-hidden">%s</span>` (T "opensInNewTab" | htmlEscape) | safeHTML -}}
 {{- $kal := `<svg class="ico" aria-hidden="true"><use href="#ico-calendar"></use></svg>` | safeHTML -}}
-{{- $krotko := cond (ne $r.dostawca "") $r.dostawca "Rezerwacja online" -}}
+{{- $krotko := cond (ne $r.dostawca "") $r.dostawca (T "onlineBooking") -}}
 {{- if eq $.miejsce "naglowek" -}}
 <a class="btn btn--ghost header__booking" href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">
       {{ $kal }}
-      <span class="visually-hidden">Rezerwacja online {{ $wSerwisie }} </span>{{ $krotko }}{{ $nowaKarta }}
+      <span class="visually-hidden">{{ T "onlineBooking" }} {{ $wSerwisie }} </span>{{ $krotko }}{{ $nowaKarta }}
     </a>
 {{- else if eq $.miejsce "szuflada" -}}
 <a class="btn btn--ghost btn--block" href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">
       {{ $kal }}
-      Rezerwacja online {{ $w }}{{ $nowaKarta }}
+      {{ T "onlineBooking" }} {{ $w }}{{ $nowaKarta }}
     </a>
 {{- else if eq $.miejsce "pasek" -}}
 <a class="btn btn--ghost" href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">
     {{ $kal }}
-    <span class="visually-hidden">Rezerwacja online {{ $wSerwisie }} </span>{{ $krotko }}{{ $nowaKarta }}
+    <span class="visually-hidden">{{ T "onlineBooking" }} {{ $wSerwisie }} </span>{{ $krotko }}{{ $nowaKarta }}
   </a>
 {{- else if eq $.miejsce "stopka" -}}
 <p class="footer__booking">
           <a href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">
             {{ $kal }}
-            Rezerwacja online {{ $wSerwisie }}{{ $nowaKarta }}
+            {{ T "onlineBooking" }} {{ $wSerwisie }}{{ $nowaKarta }}
           </a>
         </p>
 {{- else if eq $.miejsce "karta" -}}
@@ -40,12 +40,12 @@
       <div class="card booking">
         <p class="booking__head">
           {{ $kal }}
-          {{ with $r.dostawca }}<strong>{{ . }}</strong> — zewnętrzny{{ else }}Zewnętrzny{{ end }} system rezerwacji wizyt
+          {{ with $r.dostawca }}<strong>{{ . }}</strong> {{ T "bookingSystemOfProvider" }}{{ else }}{{ T "bookingSystemExternal" }}{{ end }}
         </p>
         {{- if not $r.potwierdzona }}
         <div class="callout callout--warn">
           <svg class="ico" aria-hidden="true"><use href="#ico-warn"></use></svg>
-          <p>Rezerwacja online jest w przygotowaniu — odnośnik prowadzi do serwisu {{ $r.dostawca | default "zewnętrznego" }}.</p>
+          <p>{{ T "bookingPending" (dict "provider" ($r.dostawca | default (T "bookingPendingExternal"))) }}</p>
         </div>
         {{- end }}
         <a class="btn btn--primary btn--lg booking__cta" href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">
@@ -56,14 +56,14 @@
         <p class="booking__note">{{ partial "tekst-wiersze.html" . }}</p>
         {{- end }}
         {{- with $tel }}
-        <p class="booking__alt">Wolisz ustalić termin w rozmowie? Rejestracja telefoniczna działa jak dotąd:</p>
+        <p class="booking__alt">{{ T "bookingPhoneAlternative" }}</p>
         <div class="cluster">
           {{- range first 2 . }}
           {{ partial "telefon-btn.html" (dict "klasa" "btn btn--ghost" "telefon" .) }}
           {{- end }}
         </div>
         {{- end }}
-        <p class="booking__print">Adres rezerwacji: {{ $r.url }}{{ with $m.telefon }} · telefon {{ .numer }}{{ end }}</p>
+        <p class="booking__print">{{ T "bookingPrintAddress" (dict "url" $r.url) }}{{ with $m.telefon }} {{ T "bookingPrintPhone" (dict "number" .numer) }}{{ end }}</p>
       </div>
 {{- end -}}
 {{- end -}}

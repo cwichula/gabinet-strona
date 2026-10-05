@@ -3,7 +3,7 @@
        section--tight (partial sekcje.html). */ -}}
 {{- $b := .blok -}}
 {{- $gdzie := $.gdzie -}}
-    <h2 class="visually-hidden">{{ $b.naglowek | default "Atuty gabinetu" }}</h2>
+    <h2 class="visually-hidden">{{ $b.naglowek | default (T "trustHeading") }}</h2>
     <div class="trust">
       {{- range $b.elementy }}
       <div class="trust__item">

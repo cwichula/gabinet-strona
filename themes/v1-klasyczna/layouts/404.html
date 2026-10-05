@@ -14,19 +14,19 @@
   <div class="container container--narrow" style="text-align:center">
     <p class="eyebrow">
       <svg class="ico" aria-hidden="true" style="width:1em;height:1em"><use href="#ico-info"></use></svg>
-      {{ $s.nadtytul | default "Błąd 404" }}
+      {{ $s.nadtytul | default (T "notFoundEyebrow") }}
     </p>
 
-    <h1>{{ $s.naglowek | default "Tej strony nie ma pod tym adresem" }}</h1>
+    <h1>{{ $s.naglowek | default (T "notFoundHeading") }}</h1>
 
     <p class="lede" style="margin-left:auto;margin-right:auto;max-width:48ch">
-      {{ with $s.tresc }}{{ partial "tekst-wiersze.html" . }}{{ else }}Strona, której szukasz, zmieniła adres albo już jej nie ma.{{ end }}
+      {{ with $s.tresc }}{{ partial "tekst-wiersze.html" . }}{{ else }}{{ T "notFoundText" }}{{ end }}
     </p>
 
     <div class="cluster odstep-6" style="justify-content:center">
       {{ partial "telefon-btn.html" (dict "klasa" "btn btn--primary btn--lg") }}
       <a class="btn btn--ghost btn--lg" href="{{ site.Home.RelPermalink }}">
-        {{ $s.przycisk | default "Wróć na stronę główną" }}
+        {{ $s.przycisk | default (T "notFoundBackHome") }}
       </a>
     </div>
     {{- with $s.notka }}
@@ -40,7 +40,7 @@
 
 <section class="section section--surface">
   <div class="container container--narrow">
-    <h2 class="bez-odstepu">{{ $s.linki_naglowek | default "Dokąd dalej" }}</h2>
+    <h2 class="bez-odstepu">{{ $s.linki_naglowek | default (T "notFoundLinksHeading") }}</h2>
     {{- with $s.linki_wstep }}
     <p>
       {{ partial "tekst-wiersze.html" . }}
@@ -48,7 +48,7 @@
     {{- end }}
 
     <div class="related">
-      <a href="{{ site.Home.RelPermalink }}">Strona główna{{ with $s.opis_glownej }}<span>{{ . }}</span>{{ end }}</a>
+      <a href="{{ site.Home.RelPermalink }}">{{ T "homePage" }}{{ with $s.opis_glownej }}<span>{{ . }}</span>{{ end }}</a>
       {{- if $linki }}
       {{- range $linki }}
       <a href="{{ .href }}">{{ .tytul }}{{ with .opis }}<span>{{ . }}</span>{{ end }}</a>
@@ -67,12 +67,12 @@
       <svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg>
       <div>
         <p>
-          {{ with $s.ramka_telefon }}{{ partial "tekst-wiersze.html" . }}{{ else }}Jeśli nie możesz czegoś znaleźć albo chcesz umówić wizytę, zadzwoń do rejestracji:{{ end }}
+          {{ with $s.ramka_telefon }}{{ partial "tekst-wiersze.html" . }}{{ else }}{{ T "notFoundCallText" }}{{ end }}
           {{ partial "telefony-zdanie.html" . }}.
         </p>
         {{- with $g.adres }}{{ if .ulica }}
         <p>
-          {{ with $s.ramka_adres }}{{ partial "tekst-wiersze.html" . }}{{ else }}Adres gabinetu:{{ end }} {{ partial "adres.html" . }}.
+          {{ with $s.ramka_adres }}{{ partial "tekst-wiersze.html" . }}{{ else }}{{ T "notFoundAddress" }}{{ end }} {{ partial "adres.html" . }}.
         </p>
         {{- end }}{{ end }}
       </div>

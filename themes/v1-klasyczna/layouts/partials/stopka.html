@@ -53,7 +53,7 @@
 
       {{- with $uslugi }}
       <div>
-        <h2>{{ $n.stopka_uslugi | default "Usługi" }}</h2>
+        <h2>{{ $n.stopka_uslugi | default (T "footerServices") }}</h2>
         <ul>
           {{- range . }}
           <li>{{ partial "menu-link.html" (dict "pozycja" .) }}</li>
@@ -64,7 +64,7 @@
 
       {{- with $strony }}
       <div>
-        <h2>{{ $n.stopka_gabinet | default "Gabinet" }}</h2>
+        <h2>{{ $n.stopka_gabinet | default (T "footerPractice") }}</h2>
         <ul>
           {{- range . }}
           <li>{{ partial "menu-link.html" (dict "pozycja" .) }}</li>
@@ -75,7 +75,7 @@
 
       {{- with $m.tydzien }}
       <div>
-        <h2>{{ $n.stopka_godziny | default "Godziny przyjęć" }}</h2>
+        <h2>{{ $n.stopka_godziny | default (T "openingHours") }}</h2>
         <ul>
           {{- range . }}
           {{- if and .od .do }}
@@ -86,7 +86,7 @@
           {{- end }}
         </ul>
         {{- with $m.dojazd }}
-        <p class="odstep-3"><a href="{{ .RelPermalink }}">Dojazd i mapa →</a></p>
+        <p class="odstep-3"><a href="{{ .RelPermalink }}">{{ T "directionsAndMap" }}</a></p>
         {{- end }}
       </div>
       {{- end }}
@@ -95,10 +95,10 @@
     {{- /* dane rejestrowe tylko, gdy jest choc jeden numer (CMS zapisuje puste pola jako "") */}}
     {{- $rej := $g.rejestrowe | default dict }}
     {{- if or $rej.nip $rej.regon $rej.pwz $rej.rpwdl }}
-    {{- $etykiety := dict "nip" "NIP" "regon" "REGON" "pwz" "nr prawa wykonywania zawodu" "rpwdl" "wpis do rejestru podmiotów wykonujących działalność leczniczą (RPWDL)" }}
+    {{- $etykiety := dict "nip" (T "regNip") "regon" (T "regRegon") "pwz" (T "regPwz") "rpwdl" (T "regRpwdl") }}
     {{- $czesci := slice }}{{ range $k := slice "nip" "regon" "pwz" "rpwdl" }}{{ with index $rej $k }}{{ $czesci = $czesci | append (printf "%s %s" (index $etykiety $k) .) }}{{ end }}{{ end }}
     <p class="footer__reg">
-      <b>Dane rejestrowe:</b> {{ delimit $czesci " · " }}
+      <b>{{ T "registrationData" }}</b> {{ delimit $czesci " · " }}
     </p>
     {{- end }}
 
@@ -118,11 +118,11 @@
 {{- /* Na telefonie najwazniejsza akcja zostaje pod kciukiem przez caly czas:
        telefon pierwszy i jedyny wypelniony, potem dojazd i rezerwacja online. */}}
 <div class="callbar">
-  {{ partial "telefon-btn.html" (dict "klasa" "btn btn--primary" "napis" "Zadzwoń") }}
+  {{ partial "telefon-btn.html" (dict "klasa" "btn btn--primary" "napis" (T "call")) }}
   {{- with $m.dojazd }}
   <a class="btn btn--ghost" href="{{ .RelPermalink }}">
     <svg class="ico" aria-hidden="true"><use href="#ico-pin"></use></svg>
-    Dojazd
+    {{ T "directions" }}
   </a>
   {{- end }}
   {{ partial "rezerwacja.html" (dict "miejsce" "pasek") }}

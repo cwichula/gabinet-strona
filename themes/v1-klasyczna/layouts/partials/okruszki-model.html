@@ -4,7 +4,7 @@
        Wejscie: Page. Wynik: lista dict "nazwa", "href", "url" (pelny adres);
        ostatni element to biezaca strona. */ -}}
 {{- $strona := . -}}
-{{- $wynik := slice (dict "nazwa" "Start" "href" site.Home.RelPermalink "url" site.Home.Permalink) -}}
+{{- $wynik := slice (dict "nazwa" (T "home") "href" site.Home.RelPermalink "url" site.Home.Permalink) -}}
 {{- if not .IsHome -}}
   {{- $rodzic := false -}}
   {{- range partialCached "menu-model.html" "pozycje" "pozycje" -}}

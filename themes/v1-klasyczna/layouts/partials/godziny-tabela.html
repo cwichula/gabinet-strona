@@ -4,7 +4,7 @@
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
 {{- with $m.tydzien }}
       <table class="hours">
-        <caption class="visually-hidden">Godziny przyjęć gabinetu</caption>
+        <caption class="visually-hidden">{{ T "openingHoursCaption" }}</caption>
         <tbody>
         {{- range . }}
         {{- if and .od .do }}

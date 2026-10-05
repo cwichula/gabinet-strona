@@ -42,7 +42,7 @@
   {{- with findRESubmatch `^((?:lek\.|dr|prof\.|n\.|med\.|stom\.|dent\.|hab\.|\s)+)\s*(.+)$` . 1 }}{{ $tytulL = strings.TrimSpace (index . 0 1) }}{{ $imie = index . 0 2 }}{{ end -}}
   {{- $lekarz = dict "@type" "Person" "@id" $idLekarz "name" $imie "worksFor" (dict "@id" $idGabinet) -}}
   {{- with $tytulL }}{{ $lekarz = merge $lekarz (dict "honorificPrefix" .) }}{{ end -}}
-  {{- with index (dict "lek. stom." "lekarz stomatolog" "lek. dent." "lekarz dentysta") $tytulL }}{{ $lekarz = merge $lekarz (dict "jobTitle" .) }}{{ end -}}
+  {{- with index (dict "lek. stom." (T "jobTitleStomatologist") "lek. dent." (T "jobTitleDentist")) $tytulL }}{{ $lekarz = merge $lekarz (dict "jobTitle" .) }}{{ end -}}
   {{- $gab = merge $gab (dict "founder" (dict "@id" $idLekarz)) -}}
 {{- end -}}
 {{- $dni := dict "poniedziałek" "Monday" "wtorek" "Tuesday" "środa" "Wednesday" "czwartek" "Thursday" "piątek" "Friday" "sobota" "Saturday" "niedziela" "Sunday" -}}

@@ -9,7 +9,7 @@
 {{- /* zapytanie do map: bez "ul." i bez numeru lokalu ("m. 10"), ktore myla wyszukiwarke */ -}}
 {{- $ulica := replaceRE `\s+m\.\s*\d+\s*$` "" ($a.ulica | default "") | replaceRE `^(?i)ul\.\s*` "" -}}
 {{- $zapytanie := printf "%s, %s %s" $ulica ($a.kod | default "") ($a.miasto | default "") | urlquery -}}
-    {{- partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" "Jak do nas trafić" "gora" $.gora) }}
+    {{- partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" (T "howToGetHere") "gora" $.gora) }}
     {{- with $b.tresc }}
     {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede" "styl" "max-width:62ch") }}
     {{- end }}
@@ -19,7 +19,7 @@
     {{- $lista := and $a.ulica (not $zKontaktem) }}
     {{- if $lista }}
     <ul class="checklist">
-      <li>Adres: <strong>{{ $a.ulica }}</strong>, {{ $a.kod }} {{ $a.miasto }}</li>
+      <li>{{ T "address" }} <strong>{{ $a.ulica }}</strong>, {{ $a.kod }} {{ $a.miasto }}</li>
       {{- with $a.dojazd }}
       <li>{{ partial "tekst-wiersze.html" . }}</li>
       {{- end }}
@@ -29,10 +29,10 @@
            data-map-src="https://www.google.com/maps?q={{ $zapytanie | safeURL }}&output=embed&hl=pl&z=17">
         <div class="map-consent">
           <svg class="ico" aria-hidden="true" style="width:2rem;height:2rem;color:var(--brand-600)"><use href="#ico-map"></use></svg>
-          <strong>Mapa dojazdu</strong>
-          <p>{{ with $n.mapa_zgoda }}{{ partial "tekst-wiersze.html" . }}{{ else }}Mapa pochodzi z serwisu Google. Jej wczytanie przekaże Google Twój adres IP, dlatego ładujemy ją dopiero po Twoim kliknięciu.{{ end }}</p>
-          <button class="btn btn--primary" type="button" data-map-load>Pokaż mapę Google</button>
+          <strong>{{ T "mapHeading" }}</strong>
+          <p>{{ with $n.mapa_zgoda }}{{ partial "tekst-wiersze.html" . }}{{ else }}{{ T "mapConsent" }}{{ end }}</p>
+          <button class="btn btn--primary" type="button" data-map-load>{{ T "showGoogleMap" }}</button>
           <p><a href="https://www.google.com/maps/dir/?api=1&amp;destination={{ $zapytanie | safeURL }}"
-                target="_blank" rel="noopener">Albo otwórz nawigację w nowej karcie →</a></p>
+                target="_blank" rel="noopener">{{ T "openNavigation" }}</a></p>
         </div>
       </div>

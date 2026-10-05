@@ -5,4 +5,4 @@
        wynik przechodzi przez Markdown (==...== = <mark>). */ -}}
 {{- $w := hugo.Data.gabinet -}}
 {{- range split (.Get 0) "." }}{{ $w = index $w . }}{{ end -}}
-{{- with $w }}{{ . }}{{ else }}==DO UZUPEŁNIENIA=={{ end -}}
+{{- with $w }}{{ . }}{{ else }}=={{ T "toBeCompleted" }}=={{ end -}}

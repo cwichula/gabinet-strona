@@ -10,14 +10,14 @@
     <div class="split split--sidebar">
     <div>
 {{- end }}
-      {{- partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "domyslny" "Kontakt" "wstep" $b.tresc "gora" $.gora "bez_marginesu" true "lede_styl" "max-width:56ch") }}
+      {{- partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "domyslny" (T "contact") "wstep" $b.tresc "gora" $.gora "bez_marginesu" true "lede_styl" "max-width:56ch") }}
 
       <dl class="bez-marginesu odstep-6">
         {{- range $m.telefony }}
         <div class="contact-item">
           <dt>
             <svg class="ico" aria-hidden="true" style="{{ $ikona | safeCSS }}"><use href="#ico-phone"></use></svg>
-            {{ .etykieta | default "Telefon" }}
+            {{ .etykieta | default (T "phone") }}
           </dt>
           <dd><a href="{{ printf "tel:%s" .tel | safeURL }}">{{ .numer }}</a></dd>
         </div>
@@ -26,7 +26,7 @@
         <div class="contact-item">
           <dt>
             <svg class="ico" aria-hidden="true" style="{{ $ikona | safeCSS }}"><use href="#ico-mail"></use></svg>
-            E-mail
+            {{ T "email" }}
           </dt>
           <dd><a href="mailto:{{ . }}">{{ . }}</a></dd>
         </div>
@@ -35,7 +35,7 @@
         <div class="contact-item">
           <dt>
             <svg class="ico" aria-hidden="true" style="{{ $ikona | safeCSS }}"><use href="#ico-pin"></use></svg>
-            Adres gabinetu
+            {{ T "practiceAddress" }}
           </dt>
           <dd>{{ partial "adres.html" . }}</dd>
         </div>
@@ -44,7 +44,7 @@
         <div class="contact-item">
           <dt>
             <svg class="ico" aria-hidden="true" style="{{ $ikona | safeCSS }}"><use href="#ico-parking"></use></svg>
-            Parking
+            {{ T "parking" }}
           </dt>
           <dd>{{ .parking }}</dd>
         </div>
@@ -52,7 +52,7 @@
         <div class="contact-item">
           <dt>
             <svg class="ico" aria-hidden="true" style="{{ $ikona | safeCSS }}"><use href="#ico-parking"></use></svg>
-            Dojazd
+            {{ T "directions" }}
           </dt>
           <dd>{{ partial "tekst-wiersze.html" . }}</dd>
         </div>
