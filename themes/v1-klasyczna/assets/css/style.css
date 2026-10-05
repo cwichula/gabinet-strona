@@ -133,6 +133,7 @@
     --brand-600: #e06a7e;
     --accent-700: #f2f3f4;
     --ok-700: #86d8a4;
+    --warn-700: #e8b65a;
     --btn-fill-fg: #111316;
     color-scheme: dark;
   }
@@ -165,6 +166,7 @@
   --brand-600: #e06a7e;
   --accent-700: #f2f3f4;
   --ok-700: #86d8a4;
+  --warn-700: #e8b65a;
   --btn-fill-fg: #111316;
   color-scheme: dark;
 }
