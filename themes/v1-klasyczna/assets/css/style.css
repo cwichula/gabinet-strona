@@ -89,7 +89,7 @@
 /* Kolor pisma na przycisku WYPELNIONYM. W motywie jasnym tlo przycisku
    (--brand-700) jest ciemne, wiec napis jest bialy. W ciemnym ten sam token
    staje sie jasnym rozem - bo tam sluzy za kolor pisma na ciemnym tle -
-   wiec napis musi sciemniec. Bez tego bialy napis na jasnym cyjanie daje
+   wiec napis musi sciemniec. Bez tego bialy napis na jasnym rozu daje
    1,72:1 przy wymaganych 4,5:1. */
 :root {
   --btn-fill-fg: #ffffff;
@@ -319,7 +319,7 @@ hr {
 
 .btn {
   --btn-bg: var(--brand-700);
-  --btn-fg: #fff;
+  --btn-fg: var(--btn-fill-fg);
   --btn-bd: var(--brand-700);
   display: inline-flex;
   align-items: center;
@@ -347,7 +347,7 @@ hr {
 }
 .btn:active { transform: translateY(0); }
 
-.btn--primary { --btn-bg: var(--brand-700); --btn-bd: var(--brand-700); color: var(--btn-fill-fg); }
+.btn--primary { --btn-bg: var(--brand-700); --btn-bd: var(--brand-700); --btn-fg: var(--btn-fill-fg); }
 
 .btn--ghost {
   --btn-bg: transparent;
