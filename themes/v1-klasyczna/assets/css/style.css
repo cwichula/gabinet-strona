@@ -19,14 +19,12 @@
   --brand-800: #6a1222;
   --brand-700: #9b1c31;
   --brand-600: #b0283e;
-  --brand-500: #c4475b;
   --brand-200: #e8bcc4;
   --brand-100: #f5e9eb;
   --brand-50:  #fbf4f5;
 
   /* akcent - grafit: drugi przycisk, odznaki */
   --accent-700: #14171a;
-  --accent-600: #15181c;
   --accent-100: #e3e6e9;
 
   /* semantyka */
@@ -58,7 +56,6 @@
                "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-head: ui-sans-serif, system-ui, -apple-system, "Segoe UI Variable Display",
                "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
 
   /* skala plynna - clamp() zamiast progow @media */
   --step--1: clamp(.82rem, .79rem + .14vw, .9rem);
@@ -84,14 +81,12 @@
 
   --header-h: 4.5rem;
   --ease: cubic-bezier(.2, .7, .3, 1);
-}
 
-/* Kolor pisma na przycisku WYPELNIONYM. W motywie jasnym tlo przycisku
-   (--brand-700) jest ciemne, wiec napis jest bialy. W ciemnym ten sam token
-   staje sie jasnym rozem - bo tam sluzy za kolor pisma na ciemnym tle -
-   wiec napis musi sciemniec. Bez tego bialy napis na jasnym rozu daje
-   1,72:1 przy wymaganych 4,5:1. */
-:root {
+  /* Kolor pisma na przycisku WYPELNIONYM. W motywie jasnym tlo przycisku
+     (--brand-700) jest ciemne, wiec napis jest bialy. W ciemnym ten sam token
+     staje sie jasnym rozem - bo tam sluzy za kolor pisma na ciemnym tle -
+     wiec napis musi sciemniec. Bez tego bialy napis na jasnym rozu daje
+     1,72:1 przy wymaganych 4,5:1. */
   --btn-fill-fg: #ffffff;
 
   /* Pasma markowe (.cta-band, stopka) sa ciemne w OBU motywach,
@@ -131,6 +126,14 @@
     --shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
     --shadow-md: 0 6px 16px rgb(0 0 0 / 45%);
     --shadow-lg: 0 16px 48px rgb(0 0 0 / 55%);
+    /* teksty markowe musza sie rozjasnic, inaczej bordo na prawie czarnym
+       tle schodzi ponizej kontrastu 4.5:1 */
+    --brand-700: #f08a9b;
+    --brand-800: #f7b7c1;
+    --brand-600: #e06a7e;
+    --accent-700: #f2f3f4;
+    --ok-700: #86d8a4;
+    --btn-fill-fg: #111316;
     color-scheme: dark;
   }
 }
@@ -155,30 +158,15 @@
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
   --shadow-md: 0 6px 16px rgb(0 0 0 / 45%);
   --shadow-lg: 0 16px 48px rgb(0 0 0 / 55%);
-  color-scheme: dark;
-}
-
-/* W motywie ciemnym teksty markowe musza sie rozjasnic, inaczej bordo
-   na prawie czarnym tle schodzi ponizej kontrastu 4.5:1 */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --brand-700: #f08a9b;
-    --brand-800: #f7b7c1;
-    --brand-600: #e06a7e;
-    --accent-600: #e6e8eb;
-    --accent-700: #f2f3f4;
-    --ok-700: #86d8a4;
-    --btn-fill-fg: #111316;
-  }
-}
-:root[data-theme="dark"] {
+  /* teksty markowe musza sie rozjasnic, inaczej bordo na prawie czarnym
+     tle schodzi ponizej kontrastu 4.5:1 */
   --brand-700: #f08a9b;
   --brand-800: #f7b7c1;
   --brand-600: #e06a7e;
-  --accent-600: #e6e8eb;
   --accent-700: #f2f3f4;
   --ok-700: #86d8a4;
   --btn-fill-fg: #111316;
+  color-scheme: dark;
 }
 
 /* ------------------------------------------------------------- 2. Podstawa */
@@ -691,7 +679,8 @@ hr {
   letter-spacing: .01em;
 }
 
-.hero h1 { font-size: var(--step-5); margin-bottom: var(--sp-4); }
+/* baner w srodku strony ma h2 zamiast h1 - ten sam wyglad */
+.hero :is(h1, h2) { font-size: var(--step-5); margin-bottom: var(--sp-4); }
 .hero__lead {
   font-size: var(--step-1);
   color: var(--ink-soft);
@@ -1070,9 +1059,6 @@ hr {
   font-size: var(--step-0);
   font-weight: 700;
   border-bottom: 1px solid var(--brand-100);
-  position: static;
-  text-transform: none;
-  letter-spacing: 0;
 }
 .price-table [hidden] { display: none; }
 
@@ -1337,7 +1323,7 @@ dialog.lightbox::backdrop { background: rgb(20 23 26 / 80%); backdrop-filter: bl
 }
 /* Wezsze marginesy wewnetrzne niz w zwyklym przycisku: tu szerokosc kolumny
    wyznacza siatka, a padding decyduje tylko o tym, czy etykieta sie zmiesci. */
-.callbar .btn { min-height: 3rem; padding-inline: .45rem; font-size: .95rem; }
+.callbar .btn { padding-inline: .45rem; font-size: .95rem; }
 body { padding-bottom: 4.5rem; }
 
 @media (width >= 62rem) {

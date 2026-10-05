@@ -3,8 +3,7 @@
 
    style.css wywodzi sie z arkusza makiety v1. Tu to, czego makieta nie
    miala, a czego wymaga kontrakt blokow (docs/KONTRAKT-BLOKOW.md): lista
-   z minusami, odstep bloku dolaczonego do sekcji ("polacz"), naglowek
-   banera, gdy baner nie jest pierwszym blokiem strony, plakietki
+   z minusami, odstep bloku dolaczonego do sekcji ("polacz"), plakietki
    w tresci (==tekst==), klasy odstepow zamiast style= w szablonach. Kolory wylacznie
    z tokenow style.css, wiec motyw ciemny dziala bez dodatkowych regul.
    ========================================================================== */
@@ -23,9 +22,6 @@
 /* ...a w kolumnie tekstu obok zdjecia albo ramki z boku (kroki, karta
    rezerwacji, cytat, przycisk pod tekstem - jak w makiecie v1) ciasniej. */
 .split .blok-dalej { margin-top: var(--sp-5); }
-
-/* Baner w srodku strony ma h2 zamiast h1 - ten sam wyglad. */
-.hero h2 { font-size: var(--step-5); margin-bottom: var(--sp-4); }
 
 /* Baner podstrony ze zdjeciem: zdjecie obok naglowka w pasie page-head. */
 .page-head .split { align-items: center; }
