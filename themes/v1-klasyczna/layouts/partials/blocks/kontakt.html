@@ -10,12 +10,7 @@
     <div class="split split--sidebar">
     <div>
 {{- end }}
-      {{- with $b.naglowek | default (cond $.gora "Kontakt" "") }}
-      <h2 style="margin-top:0">{{ . }}</h2>
-      {{- end }}
-      {{- with $b.tresc }}
-      {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede" "styl" "max-width:56ch") }}
-      {{- end }}
+      {{- partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "domyslny" "Kontakt" "wstep" $b.tresc "gora" $.gora "bez_marginesu" true "lede_styl" "max-width:56ch") }}
 
       <dl style="margin:2rem 0 0">
         {{- range $m.telefony }}

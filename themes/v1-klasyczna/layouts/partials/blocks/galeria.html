@@ -6,14 +6,7 @@
        dolaczonym do sekcji ("polacz") - bez naglowka. */ -}}
 {{- $b := .blok -}}
 {{- $gdzie := $.gdzie -}}
-    {{- if $b.naglowek }}
-    <h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ $b.naglowek }}</h2>
-    {{- else if $.gora }}
-    <h2 class="visually-hidden">Zdjęcia gabinetu</h2>
-    {{- end }}
-    {{- with $b.wstep }}
-    {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede" "styl" "max-width:60ch") }}
-    {{- end }}
+    {{- partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "domyslny" "Zdjęcia gabinetu" "ukryty_domyslny" true "wstep" $b.wstep "gora" $.gora "lede_styl" "max-width:60ch") }}
     <div class="gallery" style="margin-top:2rem">
       {{- range $i, $z := $b.elementy }}
       {{- with partial "zdjecie-zasob.html" (dict "strona" $.strona "zdjecie" $z "gdzie" (printf "%s: galeria, zdjęcie nr %d" $gdzie (add $i 1))) }}

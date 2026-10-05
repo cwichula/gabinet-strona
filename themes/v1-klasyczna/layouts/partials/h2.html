@@ -2,9 +2,12 @@
        w makiecie v1) i opcjonalny wstep (p.lede).
        Wejscie: dict "strona", "naglowek", "domyslny" (naglowek, gdy pusty, ale
        tylko dla pierwszego bloku sekcji - blok dolaczony nie dostaje
-       domyslnego tytulu), "wstep", "gora" (bool), "lede_styl". */ -}}
+       domyslnego tytulu), "wstep", "gora" (bool), "lede_styl",
+       "bez_marginesu" (bool - margin-top:0 takze w bloku dolaczonym),
+       "ukryty_domyslny" (bool - domyslny naglowek tylko dla czytnikow ekranu). */ -}}
+{{- $ukryty := and .ukryty_domyslny (not .naglowek) -}}
 {{- with .naglowek | default (cond .gora (.domyslny | default "") "") }}
-<h2{{ if $.gora }} style="margin-top:0"{{ end }}>{{ . }}</h2>
+<h2{{ if $ukryty }} class="visually-hidden"{{ else if or $.gora $.bez_marginesu }} style="margin-top:0"{{ end }}>{{ . }}</h2>
 {{- end }}
 {{- with .wstep }}
 {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede" "styl" ($.lede_styl | default "max-width:62ch")) }}
