@@ -2,7 +2,7 @@
        Wejscie: dict "nazwa" (klucz z kontraktu, np. "zab", albo "ico-..." -
        nazwa symbolu w sprite'cie), "styl" (opcjonalny atrybut style),
        "gdzie" (opis do bledu). Klucze ikon w tresci sa niezalezne od szablonu
-       (docs/KONTRAKT-BLOKOW.md, "Ikony"); tu mapujemy je na symbole v1. */ -}}
+       (docs/KONTRAKT-BLOKOW.md, "Typy zlozone" -> "Ikona"); tu mapujemy je na symbole v1. */ -}}
 {{- $mapa := dict
   "zab" "ico-tooth" "iskra" "ico-sparkle" "iskry" "ico-sparkles" "korona" "ico-crown"
   "warstwy" "ico-layers" "ksiezyc" "ico-moon" "puls" "ico-activity" "rtg" "ico-xray"
@@ -16,7 +16,7 @@
 {{- $sym := "" -}}
 {{- if hasPrefix $n "ico-" }}{{ $sym = $n }}{{ else }}{{ $sym = index $mapa $n | default "" }}{{ end -}}
 {{- if and $n (not $sym) -}}
-  {{- errorf "%s: nieznana ikona %q. Wybierz ikonę z listy w panelu /admin/ (docs/KONTRAKT-BLOKOW.md, „Ikony”)." (.gdzie | default "Strona") $n -}}
+  {{- errorf "%s: nieznana ikona %q. Wybierz ikonę z listy w panelu /admin/ (docs/KONTRAKT-BLOKOW.md, „Typy złożone” → „Ikona”)." (.gdzie | default "Strona") $n -}}
 {{- end -}}
 {{- with $sym -}}
 <svg class="ico" aria-hidden="true"{{ with $.styl }} style="{{ . | safeCSS }}"{{ end }}><use href="#{{ . }}"></use></svg>
