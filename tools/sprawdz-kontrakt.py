@@ -206,7 +206,7 @@ def sprawdz_pola_partiali(typy_cms: dict[str, list[str]], szablony: list[Path]) 
                     continue
                 tekst = p.read_text(encoding="utf-8")
                 zrodla = [(p, pola_b(tekst))] + [
-                    (h, pola) for h, pola in pomocnicze.items() if wywoluje_z_blokiem(tekst, h.name)
+                    (h, pola) for h, (nazwa, pola) in pomocnicze.items() if wywoluje_z_blokiem(tekst, nazwa)
                 ]
                 for plik, uzyte in zrodla:
                     # "type" to klucz typu (typeKey), nie pole
@@ -225,29 +225,34 @@ def pola_b(tekst: str) -> set[str]:
 
 
 def wywoluje_z_blokiem(tekst: str, nazwa: str) -> bool:
-    """Czy partial bloku wywoluje partial pomocniczy `nazwa` z dict "blok" $b."""
-    return bool(re.search(rf'partial(?:Cached)?\s+"{re.escape(nazwa)}"\s*\(dict\b[^\n]*?"blok"\s+\$b\b', tekst))
+    """Czy partial bloku wywoluje partial pomocniczy `nazwa` z (dict "blok" $b ...)
+    wpisanym w samym wywolaniu (dict moze byc rozbity na wiersze, ale nie
+    przygotowany wczesniej w zmiennej)."""
+    return bool(re.search(rf'partial(?:Cached)?\s+"{re.escape(nazwa)}"\s*\(dict\b[^}}]*?"blok"\s+\$b\b', tekst))
 
 
 def partiale_pomocnicze(szablon: Path) -> tuple[dict[Path, set[str]], list[str]]:
-    """Partiale spoza blocks/, ktore dostaja caly blok ($b := .blok), z polami,
-    ktore czytaja. Taki partial musi wywolywac co najmniej jeden partial bloku -
+    """Partiale spoza blocks/ (takze w podkatalogach), ktore dostaja caly blok
+    ($b := .blok): sciezka -> (nazwa w wywolaniu partial, czytane pola). Taki partial musi wywolywac co najmniej jeden partial bloku -
     inaczej nie wiadomo, pola ktorego typu sprawdzic."""
-    pomocnicze: dict[Path, set[str]] = {}
+    pomocnicze: dict[Path, tuple[str, set[str]]] = {}
     bledy = []
     bloki = [p for k in katalogi_partiali(szablon) if k.is_dir() for p in k.glob("*.html")]
     for katalog in (szablon / "layouts/partials", szablon / "layouts/_partials"):
         if not katalog.is_dir():
             continue
-        for p in sorted(katalog.glob("*.html")):
+        for p in sorted(katalog.rglob("*.html")):
+            if any(k in p.parents for k in katalogi_partiali(szablon)):
+                continue
             tekst = p.read_text(encoding="utf-8")
             if not re.search(r"\$b\s*:=\s*\.blok\b", tekst):
                 continue
-            pomocnicze[p] = pola_b(tekst)
-            if not any(wywoluje_z_blokiem(b.read_text(encoding="utf-8"), p.name) for b in bloki):
+            nazwa = p.relative_to(katalog).as_posix()
+            pomocnicze[p] = (nazwa, pola_b(tekst))
+            if not any(wywoluje_z_blokiem(b.read_text(encoding="utf-8"), nazwa) for b in bloki):
                 bledy.append(
                     f"{sciezka_wzgledna(p)}: partial czyta blok ($b := .blok), ale żaden partial "
-                    f'blocks/<typ>.html nie wywołuje go z (dict "blok" $b ...)'
+                    f'blocks/<typ>.html nie wywołuje go z (dict "blok" $b ...) wpisanym w samo wywołanie partial'
                 )
     return pomocnicze, bledy
 
@@ -368,13 +373,16 @@ def klucze_wartosci(wartosc, pole: dict, plik: str, sciezka: str) -> list[str]:
 
 def front_matter(plik: Path) -> dict | str:
     """Front matter YAML pliku .md albo opis bledu (str)."""
-    m = re.match(r"---[ \t]*\r?\n(.*?)\r?\n---[ \t]*(\r?\n|$)", plik.read_text(encoding="utf-8"), flags=re.S)
+    m = re.match(r"---[ \t]*\r?\n(?:(.*?)\r?\n)?---[ \t]*(\r?\n|$)", plik.read_text(encoding="utf-8"), flags=re.S)
     if not m:
-        return "brak front matter (YAML między wierszami ---)"
+        return "brak front matter (YAML między wierszami ---; TOML +++ nie jest obsługiwany)"
     try:
-        dane = yaml.safe_load(m[1])
+        dane = yaml.safe_load(m[1] or "")
     except yaml.YAMLError as exc:
         return f"niepoprawny YAML w front matter: {exc}"
+    # pusty blok (---/---, same komentarze) Hugo przyjmuje jako brak kluczy
+    if dane is None:
+        return {}
     return dane if isinstance(dane, dict) else "front matter nie jest mapą klucz: wartość"
 
 
