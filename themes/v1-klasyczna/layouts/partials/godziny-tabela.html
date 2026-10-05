@@ -1,7 +1,8 @@
 {{- /* Tabela godzin przyjec (table.hours) z data/gabinet.yaml (przez
        gabinet-model.html); data-dzien = numer dnia (1 = poniedzialek), skrypt
        podswietla dzisiejszy wiersz. */ -}}
-{{- with (partialCached "gabinet-model.html" site "gabinet").tydzien }}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- with $m.tydzien }}
       <table class="hours">
         <caption class="visually-hidden">Godziny przyjęć gabinetu</caption>
         <tbody>
@@ -9,7 +10,7 @@
         {{- if and .od .do }}
         <tr data-dzien="{{ .nr }}"><th scope="row">{{ .dzien }}</th><td>{{ .od }}&ndash;{{ .do }}</td></tr>
         {{- else }}
-        <tr data-dzien="{{ .nr }}"><th scope="row">{{ .dzien }}</th><td class="closed">nieczynne</td></tr>
+        <tr data-dzien="{{ .nr }}"><th scope="row">{{ .dzien }}</th><td class="closed">{{ $m.nieczynne }}</td></tr>
         {{- end }}
         {{- end }}
         </tbody>

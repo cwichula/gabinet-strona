@@ -73,7 +73,7 @@
       </div>
       {{- end }}
 
-      {{- with $g.godziny }}
+      {{- with $m.tydzien }}
       <div>
         <h2>{{ $n.stopka_godziny | default "Godziny przyjęć" }}</h2>
         <ul>
@@ -81,7 +81,7 @@
           {{- if and .od .do }}
           <li>{{ .dzien }}: <strong style="color:#fff">{{ .od }}&ndash;{{ .do }}</strong></li>
           {{- else }}
-          <li>{{ .dzien }}: nieczynne</li>
+          <li>{{ .dzien }}: {{ $m.nieczynne }}</li>
           {{- end }}
           {{- end }}
         </ul>
