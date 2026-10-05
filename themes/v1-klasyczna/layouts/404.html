@@ -54,7 +54,7 @@
       <a href="{{ .href }}">{{ .tytul }}{{ with .opis }}<span>{{ . }}</span>{{ end }}</a>
       {{- end }}
       {{- else }}
-      {{- range partialCached "menu-model.html" site "menu" }}
+      {{- range partialCached "menu-model.html" "pozycje" "pozycje" }}
       {{- if .href }}
       <a href="{{ .href }}"{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ .etykieta }}{{ with .strona }}{{ with .Params.usluga }}{{ with .skrot }}<span>{{ . }}</span>{{ end }}{{ end }}{{ end }}</a>
       {{- end }}

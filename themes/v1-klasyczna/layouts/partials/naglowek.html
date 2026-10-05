@@ -4,7 +4,7 @@
 {{- $g := hugo.Data.gabinet -}}
 {{- $u := hugo.Data.ustawienia | default dict -}}
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
-{{- $menu := partialCached "menu-model.html" site "menu" -}}
+{{- $menu := partialCached "menu-model.html" "pozycje" "pozycje" -}}
 {{- $biezaca := . -}}
 {{- with $u.pasek_informacyjny }}
 <div class="notice-strip" role="note"><div class="container"><svg class="ico" aria-hidden="true" style="width:1em;height:1em;display:inline;vertical-align:-.1em"><use href="#ico-info"></use></svg> {{ . }}</div></div>
@@ -113,7 +113,7 @@
         {{- end }}
         {{- end }}
         {{- /* pozycje dodatkowe (data/menu.yaml "dodatkowe") - tylko w szufladzie, jak w v1 */}}
-        {{- range partialCached "menu-lista.html" "dodatkowe" "dodatkowe" }}
+        {{- range partialCached "menu-model.html" "dodatkowe" "dodatkowe" }}
         <li>{{ partial "menu-link.html" (dict "pozycja" . "aktywna" (and .strona ($biezaca.Eq .strona))) }}</li>
         {{- end }}
       </ul>

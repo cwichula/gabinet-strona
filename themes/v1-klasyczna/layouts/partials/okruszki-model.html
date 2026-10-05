@@ -7,7 +7,7 @@
 {{- $wynik := slice (dict "nazwa" "Start" "href" site.Home.RelPermalink "url" site.Home.Permalink) -}}
 {{- if not .IsHome -}}
   {{- $rodzic := false -}}
-  {{- range partialCached "menu-model.html" site "menu" -}}
+  {{- range partialCached "menu-model.html" "pozycje" "pozycje" -}}
     {{- $p := . -}}
     {{- range .dzieci -}}
       {{- if and .strona ($strona.Eq .strona) $p.strona (not ($strona.Eq $p.strona)) (not $rodzic) }}{{ $rodzic = $p }}{{ end -}}

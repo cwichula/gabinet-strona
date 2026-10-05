@@ -8,7 +8,7 @@
 {{- $u := hugo.Data.ustawienia | default dict -}}
 {{- $n := (partialCached "ustawienia-model.html" site "ustawienia").napisy -}}
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
-{{- $menu := partialCached "menu-model.html" site "menu" -}}
+{{- $menu := partialCached "menu-model.html" "pozycje" "pozycje" -}}
 {{- /* napis uslugi: etykieta z podmenu, gdy strona tam jest (np. "Licówki kompozytowe"), inaczej tytul strony */ -}}
 {{- $uslugi := slice -}}
 {{- range $p := partial "uslugi-strony.html" (dict) -}}
@@ -19,10 +19,10 @@
 {{- end -}}
 {{- if not $uslugi }}{{ range $menu }}{{ if and .dzieci (not $uslugi) }}{{ $uslugi = .dzieci }}{{ end }}{{ end }}{{ end -}}
 {{- /* kolumna "Gabinet": lista "stopka" z data/menu.yaml, pusta = pozycje menu bez podmenu */ -}}
-{{- $strony := partialCached "menu-lista.html" "stopka" "stopka" -}}
+{{- $strony := partialCached "menu-model.html" "stopka" "stopka" -}}
 {{- if not $strony }}{{ range $menu }}{{ if and .href (not .dzieci) }}{{ $strony = $strony | append . }}{{ end }}{{ end }}{{ end -}}
 {{- /* dolna linia: lista "stopka_dolna", pusta = polityka prywatnosci (gdy jest) */ -}}
-{{- $dolna := partialCached "menu-lista.html" "stopka_dolna" "stopka_dolna" -}}
+{{- $dolna := partialCached "menu-model.html" "stopka_dolna" "stopka_dolna" -}}
 {{- if not $dolna }}{{ with $m.polityka }}{{ $dolna = slice (dict "etykieta" .LinkTitle "href" .RelPermalink "zewnetrzny" false) }}{{ end }}{{ end -}}
 <footer class="site-footer">
   <div class="container">
