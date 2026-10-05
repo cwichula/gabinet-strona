@@ -1,6 +1,8 @@
 {{- /* Dokad prowadzi odnosnik z menu, karty albo przycisku.
        Wejscie: dict "strona" (slug z content/strony/<slug>/), "link_zewnetrzny",
-       "gdzie" (opis miejsca do komunikatu o bledzie).
+       "gdzie" (opis miejsca do komunikatu o bledzie), "scisle" (domyslnie tak;
+       false = strona, ktorej nie ma, nie przerywa budowania - wynik jak dla
+       strony ukrytej).
        Wynik: dict "href" (pusty = brak odnosnika), "ukryta" (strona istnieje,
        ale jest szkicem - draft), "strona" (Page albo nil).
        Slug, ktory jest starym adresem innej strony (aliases po zmianie nazwy),
@@ -23,7 +25,7 @@
     {{- else if $poAliasie -}}
       {{- $wynik = dict "href" $poAliasie.RelPermalink "ukryta" false "strona" $poAliasie -}}
     {{- else -}}
-      {{- errorf "%s wskazuje stronę %q, której nie ma (brak content/strony/%s/index.md). Popraw to miejsce w panelu /admin/ (wybierz istniejącą stronę) albo przywróć usuniętą stronę." $.gdzie $slug $slug -}}
+      {{- if ne $.scisle false }}{{ errorf "%s wskazuje stronę %q, której nie ma (brak content/strony/%s/index.md). Popraw to miejsce w panelu /admin/ (wybierz istniejącą stronę) albo przywróć usuniętą stronę." $.gdzie $slug $slug }}{{ end -}}
       {{- /* "ukryta", zeby menu nie zglaszalo tej samej pozycji drugi raz */ -}}
       {{- $wynik = dict "href" "" "ukryta" true "strona" false -}}
     {{- end -}}

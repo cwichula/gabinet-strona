@@ -2,21 +2,14 @@
        (strona_404, panel: Ustawienia), puste pole = napis domyslny ponizej.
        Telefony i adres z data/gabinet.yaml. Odnosniki: strona glowna + lista
        strona_404.linki (pusta = pozycje menu); strona ukryta albo usunieta jest
-       pomijana bez bledu - 404 nie moze przerwac budowania. Gdy z listy nie
-       zostanie zadna strona, tez ida pozycje menu. */ -}}
+       pomijana bez bledu - 404 nie moze przerwac budowania; stary slug strony
+       (aliases) prowadzi do tej strony. Gdy z listy nie zostanie zadna strona,
+       tez ida pozycje menu. */ -}}
 {{ define "main" }}
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
 {{- $g := hugo.Data.gabinet -}}
 {{- $s := (hugo.Data.ustawienia | default dict).strona_404 | default dict -}}
-{{- $linki := slice -}}
-{{- range $el := $s.linki -}}
-  {{- with $el.strona }}{{ with site.GetPage (printf "/strony/%s" .) -}}
-    {{- if not .Draft -}}
-      {{- $u := .Params.usluga | default dict -}}
-      {{- $linki = $linki | append (dict "href" .RelPermalink "tytul" .LinkTitle "opis" ($el.opis | default $u.skrot | default "")) -}}
-    {{- end -}}
-  {{- end }}{{ end -}}
-{{- end -}}
+{{- $linki := partial "powiazane-linki.html" (dict "elementy" $s.linki "gdzie" "Strona 404" "scisle" false) -}}
 <section class="section">
   <div class="container container--narrow" style="text-align:center">
     <p class="eyebrow">

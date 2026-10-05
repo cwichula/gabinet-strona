@@ -1,0 +1,18 @@
+{{- /* Odnosniki do stron z opisem (div.related): blok "powiazane" i lista
+       "Dokąd dalej" na stronie 404.
+       Wejscie: dict "elementy" ([{strona, etykieta, opis}]), "gdzie" (opis
+       miejsca do komunikatu o bledzie), "scisle" (domyslnie tak; false =
+       strona, ktorej nie ma, jest pomijana bez bledu - 404 nie moze przerwac
+       budowania). Pusta etykieta = tytul strony; pusty opis = usluga.skrot
+       wskazanej strony. Strona ukryta (szkic) = pominieta. Stary slug strony
+       (aliases po zmianie nazwy) prowadzi do tej strony (cel-linku.html).
+       Wynik: slice dict "href", "tytul", "opis". */ -}}
+{{- $linki := slice -}}
+{{- range $el := .elementy -}}
+  {{- $cel := partial "cel-linku.html" (dict "strona" $el.strona "gdzie" $.gdzie "scisle" $.scisle) -}}
+  {{- with $cel.strona }}{{ if not .Draft -}}
+    {{- $u := .Params.usluga | default dict -}}
+    {{- $linki = $linki | append (dict "href" .RelPermalink "tytul" ($el.etykieta | default .LinkTitle) "opis" ($el.opis | default $u.skrot | default "")) -}}
+  {{- end }}{{ end -}}
+{{- end -}}
+{{- return $linki -}}

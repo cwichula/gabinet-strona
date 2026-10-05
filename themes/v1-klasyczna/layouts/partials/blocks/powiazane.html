@@ -1,18 +1,9 @@
 {{- /* Blok "powiazane": naglowek (pusty = bez naglowka, jak w makiecie v1),
        elementy [{strona, etykieta, opis}] - div.related makiety v1.
        Pusta etykieta = tytul strony; pusty opis = usluga.skrot wskazanej strony.
-       Strona ukryta (szkic) = pominieta. */ -}}
+       Strona ukryta (szkic) = pominieta (powiazane-linki.html). */ -}}
 {{- $b := .blok -}}
-{{- $gdzie := $.gdzie -}}
-{{- $linki := slice -}}
-{{- range $el := $b.elementy -}}
-  {{- $cel := partial "cel-linku.html" (dict "strona" $el.strona "gdzie" (printf "%s: blok „Powiązane strony”" $gdzie)) -}}
-  {{- with $cel.strona -}}
-    {{- $u := .Params.usluga | default dict -}}
-    {{- $linki = $linki | append (dict "href" .RelPermalink "tytul" ($el.etykieta | default .LinkTitle) "opis" ($el.opis | default $u.skrot | default "")) -}}
-  {{- end -}}
-{{- end -}}
-{{- with $linki }}
+{{- with partial "powiazane-linki.html" (dict "elementy" $b.elementy "gdzie" (printf "%s: blok „Powiązane strony”" $.gdzie)) }}
     {{- partial "h2.html" (dict "naglowek" $b.naglowek "gora" $.gora) }}
     <div class="related">
       {{- range . }}
