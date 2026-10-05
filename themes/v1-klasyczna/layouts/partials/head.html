@@ -64,11 +64,14 @@
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 <script>
   /* Ustawia motyw PRZED pierwszym malowaniem - bez tego strona mrugnelaby
-     na bialo u kogos, kto wybral ciemny. Celowo male i synchroniczne. */
-  try {
-    var m = localStorage.getItem("motyw");
-    if (m) document.documentElement.setAttribute("data-theme", m);
-  } catch (e) {}
+     na bialo u kogos, kto wybral ciemny. Celowo male i synchroniczne,
+     w funkcji, zeby nie zostawiac zmiennej globalnej. */
+  (function () {
+    try {
+      var m = localStorage.getItem("motyw");
+      if (m === "light" || m === "dark") document.documentElement.setAttribute("data-theme", m);
+    } catch (e) {}
+  })();
 </script>
 {{- $js := resources.Get "js/app.js" | minify | fingerprint }}
 <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>

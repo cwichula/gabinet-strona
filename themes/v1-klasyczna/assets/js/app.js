@@ -18,20 +18,32 @@
   /* ------------------------------------------------------------ 1. Motyw */
   /* Wybor uzytkownika wygrywa z ustawieniem systemu i przezywa przeladowanie.
      Skrypt ustawiajacy atrybut data-theme siedzi w <head> kazdej podstrony,
-     zeby strona nie mrugnela jasnym tlem przed wczytaniem tego pliku. */
+     zeby strona nie mrugnela jasnym tlem przed wczytaniem tego pliku.
+     Przycisk ma stala etykiete ("Ciemny motyw"), a stan podaje aria-pressed -
+     ustawiane od razu po wczytaniu, po kliknieciu i po zmianie motywu systemu. */
 
-  $$("[data-theme-toggle]").forEach(function (btn) {
+  var root = document.documentElement;
+  var systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+  var themeToggles = $$("[data-theme-toggle]");
+  var isDark = function () {
+    var theme = root.getAttribute("data-theme");
+    return theme ? theme === "dark" : systemDark.matches;
+  };
+  var syncThemeToggles = function () {
+    var pressed = String(isDark());
+    themeToggles.forEach(function (btn) { btn.setAttribute("aria-pressed", pressed); });
+  };
+
+  themeToggles.forEach(function (btn) {
     btn.addEventListener("click", function () {
-      var root = document.documentElement;
-      var dark = root.getAttribute("data-theme")
-        ? root.getAttribute("data-theme") === "dark"
-        : window.matchMedia("(prefers-color-scheme: dark)").matches;
-      var next = dark ? "light" : "dark";
+      var next = isDark() ? "light" : "dark";
       root.setAttribute("data-theme", next);
-      btn.setAttribute("aria-label", next === "dark" ? "Włącz jasny motyw" : "Włącz ciemny motyw");
+      syncThemeToggles();
       try { localStorage.setItem("motyw", next); } catch (e) { /* tryb prywatny */ }
     });
   });
+  syncThemeToggles();
+  if (systemDark.addEventListener) systemDark.addEventListener("change", syncThemeToggles);
 
   /* --------------------------------------------------- 2. Menu na telefonie */
 
