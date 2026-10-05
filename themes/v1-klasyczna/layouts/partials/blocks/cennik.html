@@ -53,11 +53,11 @@
         <label class="visually-hidden" for="szukaj-ceny">Szukaj w cenniku</label>
         <input type="search" id="szukaj-ceny" data-price-search placeholder="{{ $n.cennik_podpowiedz | default "Szukaj zabiegu, np. korona, szyna, piaskowanie" }}">
       </div>
-      <p data-price-count aria-live="polite" style="margin:0;color:var(--muted);font-size:var(--step--1)">Wszystkich pozycji w cenniku: {{ $liczba }}</p>
+      <p data-price-count aria-live="polite" class="dopisek bez-marginesu">Wszystkich pozycji w cenniku: {{ $liczba }}</p>
     </div>
     {{- end }}
 
-    <div class="table-wrap"{{ if not $szukaj }} style="margin-top:1.5rem"{{ end }}>
+    <div class="table-wrap{{ if not $szukaj }} odstep-5{{ end }}">
       <table class="price-table"{{ if $szukaj }} id="cennik-tabela"{{ end }}>
         {{- with $b.wstep }}
         <caption>{{ partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .) }}</caption>
@@ -86,13 +86,13 @@
     {{- with $c.informacja }}
     {{- if $szukaj }}
 
-    <div class="callout" style="margin-top:2rem">
+    <div class="callout odstep-6">
       <svg class="ico" aria-hidden="true"><use href="#ico-info"></use></svg>
       <div>
         <p>{{ partial "tekst-wiersze.html" . }}</p>
       </div>
     </div>
     {{- else }}
-    <p style="margin-top:1rem;font-size:var(--step--1);color:var(--muted)">{{ partial "tekst-wiersze.html" . }}</p>
+    <p class="odstep-4 dopisek">{{ partial "tekst-wiersze.html" . }}</p>
     {{- end }}
     {{- end }}

@@ -3,7 +3,7 @@
 {{- $b := .blok -}}
 {{ partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "wstep" $b.wstep "gora" $.gora) }}
 
-      <ol class="steps"{{ if or $b.naglowek $b.wstep }} style="margin-top:2rem"{{ end }}>
+      <ol class="steps{{ if or $b.naglowek $b.wstep }} odstep-6{{ end }}">
         {{- range $b.elementy }}
         <li>
           <b>{{ .tytul }}</b> {{ with .tresc }}{{ partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .) }}{{ end }}

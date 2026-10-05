@@ -6,7 +6,7 @@
     <div class="split split--sidebar">
       <div>
         {{- with $b.naglowek }}
-        <h2 style="margin-top:0">{{ . }}</h2>
+        <h2 class="bez-odstepu">{{ . }}</h2>
         {{- end }}
         {{- with $b.wstep }}
         {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede") }}

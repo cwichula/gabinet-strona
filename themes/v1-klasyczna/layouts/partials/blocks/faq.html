@@ -5,7 +5,7 @@
 {{- $b := .blok -}}
     {{- partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" "Najczęstsze pytania" "gora" $.gora) }}
 
-    <div class="faq"{{ if or $b.naglowek $.gora }} style="margin-top:2rem"{{ end }}>
+    <div class="faq{{ if or $b.naglowek $.gora }} odstep-6{{ end }}">
       {{- range $b.elementy }}
       <details>
         <summary>{{ .pytanie }}</summary>

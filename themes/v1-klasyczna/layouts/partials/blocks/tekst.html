@@ -26,7 +26,7 @@
         {{ . | safeHTML }}
         {{- end }}
         {{- with $b.naglowek }}
-        <h2 style="margin-top:0">{{ . }}</h2>
+        <h2 class="bez-odstepu">{{ . }}</h2>
         {{- end }}
         {{- with $b.wstep }}
         {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede") }}
@@ -39,7 +39,7 @@
         {{ . | safeHTML }}
         {{- end }}
         {{- with strings.TrimSpace $przycisk }}
-        <p style="margin-top:1.5rem">
+        <p class="odstep-5">
           {{ $przycisk }}
         </p>
         {{- end }}
@@ -55,7 +55,7 @@
     {{- end }}
     {{- partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "wstep" $b.wstep "gora" $.gora) }}
     {{- with $tresc }}
-    <div class="prose"{{ if or $b.wstep (hasPrefix (strings.TrimSpace ($b.tresc | default "")) "#") }} style="margin-top:2rem"{{ end }}>
+    <div class="prose{{ if or $b.wstep (hasPrefix (strings.TrimSpace ($b.tresc | default "")) "#") }} odstep-6{{ end }}">
       {{ . | safeHTML }}
     </div>
     {{- end }}

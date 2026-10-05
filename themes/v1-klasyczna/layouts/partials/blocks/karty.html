@@ -8,7 +8,7 @@
 {{- $kol := printf "%v" ($b.kolumny | default 3) -}}
 {{- if not (in (slice "2" "3" "4") $kol) }}{{ $kol = "3" }}{{ end -}}
 {{ partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "wstep" $b.wstep "gora" $.gora) }}
-    <div class="grid grid--{{ $kol }}"{{ if or $b.naglowek $b.wstep }} style="margin-top:2rem"{{ end }}>
+    <div class="grid grid--{{ $kol }}{{ if or $b.naglowek $b.wstep }} odstep-6{{ end }}">
       {{- range $k := $b.elementy }}
       {{- $gdzieKarty := printf "%s: karta „%s” (blok karty)" $gdzie $k.tytul }}
       {{- $cel := partial "cel-linku.html" (dict "strona" $k.strona "gdzie" $gdzieKarty) }}

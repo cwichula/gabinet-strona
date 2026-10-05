@@ -30,13 +30,13 @@
       <div class="footer__brand">
         <strong style="color:#fff;font-size:1.05rem">{{ $m.nazwa_krotka }}</strong>
         {{- with $g.adres }}
-        <p style="margin:0">
+        <p class="bez-marginesu">
           {{ .ulica }}<br>
           {{ .kod }} {{ .miasto }}
         </p>
         {{- end }}
         {{- if or $m.telefony $g.email }}
-        <p style="margin:0">
+        <p class="bez-marginesu">
           {{- range $m.telefony }}
           <a href="{{ printf "tel:%s" .tel | safeURL }}">{{ .numer }}</a><br>
           {{- end }}
@@ -46,7 +46,7 @@
         </p>
         {{- end }}
         {{- with $u.stopka_tekst }}
-        <p style="margin:0">{{ partial "tekst-wiersze.html" . }}</p>
+        <p class="bez-marginesu">{{ partial "tekst-wiersze.html" . }}</p>
         {{- end }}
         {{ partial "rezerwacja.html" (dict "miejsce" "stopka") }}
       </div>
@@ -86,7 +86,7 @@
           {{- end }}
         </ul>
         {{- with $m.dojazd }}
-        <p style="margin-top:.75rem"><a href="{{ .RelPermalink }}">Dojazd i mapa →</a></p>
+        <p class="odstep-3"><a href="{{ .RelPermalink }}">Dojazd i mapa →</a></p>
         {{- end }}
       </div>
       {{- end }}

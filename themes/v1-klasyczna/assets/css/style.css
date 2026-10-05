@@ -650,6 +650,7 @@ hr {
   color: var(--ink);
   cursor: pointer;
 }
+.drawer__close .ico { width: 1.3rem; height: 1.3rem; }
 .drawer nav ul { list-style: none; margin: 0; padding: 0; }
 .drawer nav a {
   display: block;
@@ -1161,6 +1162,7 @@ dialog.lightbox::backdrop { background: rgb(20 23 26 / 80%); backdrop-filter: bl
   cursor: pointer;
 }
 .lightbox__btn:hover { background: var(--brand-900); }
+.lightbox__btn .ico { width: 1.2rem; height: 1.2rem; }
 .lightbox__nav {
   position: absolute;
   inset: 50% var(--sp-3) auto;

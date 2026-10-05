@@ -5,7 +5,7 @@
    miala, a czego wymaga kontrakt blokow (docs/KONTRAKT-BLOKOW.md): lista
    z minusami, odstep bloku dolaczonego do sekcji ("polacz"), naglowek
    banera, gdy baner nie jest pierwszym blokiem strony, plakietki
-   w tresci (==tekst==). Kolory wylacznie
+   w tresci (==tekst==), klasy odstepow zamiast style= w szablonach. Kolory wylacznie
    z tokenow style.css, wiec motyw ciemny dziala bez dodatkowych regul.
    ========================================================================== */
 
@@ -48,3 +48,16 @@ mark {
 
 /* Spis tresci (pigulki) dolaczony pod tekstem - bez dodatkowego odstepu, jak w v1. */
 .blok-dalej:has(> .anchor-nav:first-child) { margin-top: var(--sp-2); }
+
+/* Odstepy i drobny tekst zamiast atrybutow style= w szablonach. Z !important,
+   bo zastapily style inline i musza wygrywac tak jak one (np. z
+   .blok-dalej > :first-child). Odstepy (margin-top) stoja po .bez-marginesu,
+   wiec "bez-marginesu odstep-6" daje margin: 2rem 0 0. */
+.bez-marginesu { margin: 0 !important; }
+.bez-odstepu { margin-top: 0 !important; }
+.odstep-3 { margin-top: var(--sp-3) !important; }
+.odstep-4 { margin-top: var(--sp-4) !important; }
+.odstep-5 { margin-top: var(--sp-5) !important; }
+.odstep-6 { margin-top: var(--sp-6) !important; }
+/* drobny, przygaszony dopisek (licznik cennika, notki w ramkach) */
+.dopisek { color: var(--muted) !important; font-size: var(--step--1) !important; }

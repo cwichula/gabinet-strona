@@ -16,7 +16,6 @@
 {{- $telefony := ne $b.telefony false -}}
 {{- $pozycje := slice -}}
 {{- range $b.pozycje }}{{ with partial "cennik-pozycja.html" (dict "id" . "gdzie" (printf "%s: ramka z boku" $gdzie)) }}{{ $pozycje = $pozycje | append . }}{{ end }}{{ end -}}
-{{- $muted := "margin:0;font-size:var(--step--1);color:var(--muted)" -}}
 {{- $przycisk := partial "przycisk.html" (dict "przycisk" $b.przycisk "gdzie" (printf "%s: przycisk w ramce z boku" $gdzie) "domyslny" (cond (gt (len $pozycje) 0) "glowny" "obrysowy") "glowny" "btn btn--primary btn--block" "obrysowy" "btn btn--ghost btn--block") | strings.TrimSpace -}}
 {{- $tel := cond $telefony $m.telefony slice -}}
 {{- if $przycisk }}{{ $tel = first 1 $tel }}{{ end -}}
@@ -26,19 +25,19 @@
       {{ partial "godziny-tabela.html" . }}
       {{- end }}
       {{- with $pozycje }}
-      <ul class="checklist" style="margin:0">
+      <ul class="checklist bez-marginesu">
         {{- range . }}
         <li>{{ .nazwa }} — <strong>{{ partial "cena.html" . }}</strong></li>
         {{- end }}
       </ul>
       {{- with hugo.Data.cennik.informacja }}
-      <p style="{{ $muted | safeCSS }}">
+      <p class="dopisek bez-marginesu">
         {{ partial "tekst-wiersze.html" . }}
       </p>
       {{- end }}
       {{- end }}
       {{- with $b.notka }}
-      <p style="{{ $muted | safeCSS }}">
+      <p class="dopisek bez-marginesu">
         {{ partial "tekst-wiersze.html" . }}
       </p>
       {{- end }}
@@ -54,12 +53,12 @@
       {{ $przycisk | safeHTML }}
       {{- end }}
       {{- if $b.adres }}{{ with $g.adres }}
-      <p style="{{ $muted | safeCSS }}">
+      <p class="dopisek bez-marginesu">
         {{ partial "adres.html" . }}
       </p>
       {{- end }}{{ end }}
       {{- with $b.notka_dol }}
-      <p style="{{ $muted | safeCSS }}">
+      <p class="dopisek bez-marginesu">
         {{ partial "tekst-wiersze.html" . }}
       </p>
       {{- end }}

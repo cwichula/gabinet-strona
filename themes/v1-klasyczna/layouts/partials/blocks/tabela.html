@@ -9,7 +9,7 @@
 {{- $zCena := false }}{{ range $b.wiersze }}{{ if .cena }}{{ $zCena = true }}{{ end }}{{ end -}}
 {{ partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "wstep" $b.wstep "gora" $.gora) }}
 
-    <div class="table-wrap" style="margin-top:1.5rem">
+    <div class="table-wrap odstep-5">
       <table class="price-table">
         {{- with $b.podpis }}
         <caption>{{ . }}</caption>

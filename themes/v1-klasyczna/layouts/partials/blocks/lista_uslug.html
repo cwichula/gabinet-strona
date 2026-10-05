@@ -9,7 +9,7 @@
 {{- with $uslugi }}
 {{ partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "wstep" $b.wstep "gora" $.gora) }}
 
-    <div class="grid grid--{{ $kol }}"{{ if or $b.naglowek $b.wstep }} style="margin-top:2rem"{{ end }}>
+    <div class="grid grid--{{ $kol }}{{ if or $b.naglowek $b.wstep }} odstep-6{{ end }}">
       {{- range . }}
       {{- $u := .Params.usluga }}
       {{- $gdzieKarty := printf "%s: pole „Strona usługi”" .File.Path }}

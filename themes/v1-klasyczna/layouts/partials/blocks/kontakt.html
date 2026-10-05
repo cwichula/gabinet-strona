@@ -12,7 +12,7 @@
 {{- end }}
       {{- partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "domyslny" "Kontakt" "wstep" $b.tresc "gora" $.gora "bez_marginesu" true "lede_styl" "max-width:56ch") }}
 
-      <dl style="margin:2rem 0 0">
+      <dl class="bez-marginesu odstep-6">
         {{- range $m.telefony }}
         <div class="contact-item">
           <dt>

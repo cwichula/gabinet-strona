@@ -21,7 +21,7 @@
     {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede") }}
     {{- end }}
 
-    <form class="form" data-demo-form method="post" style="margin-top:2rem">
+    <form class="form odstep-6" data-demo-form method="post">
       <div class="field">
         <label for="{{ $p }}imie">Imię <span class="req">*</span></label>
         <input type="text" id="{{ $p }}imie" name="imie" autocomplete="given-name" required>
@@ -92,7 +92,7 @@
       </div>
     </div>
 
-    <div class="callout callout--warn" style="margin-top:2rem">
+    <div class="callout callout--warn odstep-6">
       <svg class="ico" aria-hidden="true"><use href="#ico-warn"></use></svg>
       <div>
         {{- with $n.formularz_uwaga }}

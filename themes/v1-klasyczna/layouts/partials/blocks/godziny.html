@@ -5,6 +5,6 @@
     <div class="sidebar-card" style="position:static;max-width:30rem;margin-top:1.5rem">
       {{ partial "godziny-tabela.html" . }}
       {{- with $b.tresc }}
-      {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "" "styl" "margin:0;font-size:var(--step--1);color:var(--muted)") }}
+      {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "dopisek bez-marginesu") }}
       {{- end }}
     </div>

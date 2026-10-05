@@ -5,7 +5,7 @@
 {{- $img := partial "zdjecie-zasob.html" . -}}
 {{- with $img -}}
 {{- $styl := "" }}{{ if and (ne .MediaType.SubType "svg") (gt .Height .Width) }}{{ $styl = "--figure-w:24rem" }}{{ end }}
-<figure class="figure" style="margin:0">
+<figure class="figure bez-marginesu">
   {{ partial "image.html" (merge $ (dict "styl" $styl)) }}
   {{- with $.zdjecie.podpis }}
   <figcaption>{{ partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .) }}</figcaption>

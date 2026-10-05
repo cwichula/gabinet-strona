@@ -23,7 +23,7 @@
       {{ with $s.tresc }}{{ partial "tekst-wiersze.html" . }}{{ else }}Strona, której szukasz, zmieniła adres albo już jej nie ma.{{ end }}
     </p>
 
-    <div class="cluster" style="justify-content:center;margin-top:2rem">
+    <div class="cluster odstep-6" style="justify-content:center">
       {{ partial "telefon-btn.html" (dict "klasa" "btn btn--primary btn--lg") }}
       <a class="btn btn--ghost btn--lg" href="{{ site.Home.RelPermalink }}">
         {{ $s.przycisk | default "Wróć na stronę główną" }}
@@ -31,7 +31,7 @@
     </div>
     {{- with $s.notka }}
 
-    <p style="margin-top:2rem;color:var(--muted);font-size:var(--step--1)">
+    <p class="odstep-6 dopisek">
       {{ partial "tekst-wiersze.html" . }}
     </p>
     {{- end }}
@@ -40,7 +40,7 @@
 
 <section class="section section--surface">
   <div class="container container--narrow">
-    <h2 style="margin-top:0">{{ $s.linki_naglowek | default "Dokąd dalej" }}</h2>
+    <h2 class="bez-odstepu">{{ $s.linki_naglowek | default "Dokąd dalej" }}</h2>
     {{- with $s.linki_wstep }}
     <p>
       {{ partial "tekst-wiersze.html" . }}

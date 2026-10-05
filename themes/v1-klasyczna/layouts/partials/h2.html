@@ -7,7 +7,7 @@
        "ukryty_domyslny" (bool - domyslny naglowek tylko dla czytnikow ekranu). */ -}}
 {{- $ukryty := and .ukryty_domyslny (not .naglowek) -}}
 {{- with .naglowek | default (cond .gora (.domyslny | default "") "") }}
-<h2{{ if $ukryty }} class="visually-hidden"{{ else if or $.gora $.bez_marginesu }} style="margin-top:0"{{ end }}>{{ . }}</h2>
+<h2{{ if $ukryty }} class="visually-hidden"{{ else if or $.gora $.bez_marginesu }} class="bez-odstepu"{{ end }}>{{ . }}</h2>
 {{- end }}
 {{- with .wstep }}
 {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede" "styl" ($.lede_styl | default "max-width:62ch")) }}

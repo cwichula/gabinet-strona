@@ -7,7 +7,7 @@
 {{- $b := .blok -}}
 {{- $gdzie := $.gdzie -}}
     {{- partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "domyslny" "Zdjęcia gabinetu" "ukryty_domyslny" true "wstep" $b.wstep "gora" $.gora "lede_styl" "max-width:60ch") }}
-    <div class="gallery" style="margin-top:2rem">
+    <div class="gallery odstep-6">
       {{- range $i, $z := $b.elementy }}
       {{- with partial "zdjecie-zasob.html" (dict "strona" $.strona "zdjecie" $z "gdzie" (printf "%s: galeria, zdjęcie nr %d" $gdzie (add $i 1))) }}
       {{- $alt := $z.alt | strings.TrimSpace }}
@@ -48,15 +48,15 @@
     </figure>
     <div class="lightbox__bar">
       <button class="lightbox__btn" type="button" data-lb-close aria-label="Zamknij powiększenie">
-        <svg class="ico" aria-hidden="true" style="width:1.2rem;height:1.2rem"><use href="#ico-close"></use></svg>
+        <svg class="ico" aria-hidden="true"><use href="#ico-close"></use></svg>
       </button>
     </div>
     <div class="lightbox__nav">
       <button class="lightbox__btn" type="button" data-lb-prev aria-label="Poprzednie zdjęcie">
-        <svg class="ico" aria-hidden="true" style="width:1.2rem;height:1.2rem;transform:rotate(180deg)"><use href="#ico-arrow"></use></svg>
+        <svg class="ico" aria-hidden="true" style="transform:rotate(180deg)"><use href="#ico-arrow"></use></svg>
       </button>
       <button class="lightbox__btn" type="button" data-lb-next aria-label="Następne zdjęcie">
-        <svg class="ico" aria-hidden="true" style="width:1.2rem;height:1.2rem"><use href="#ico-arrow"></use></svg>
+        <svg class="ico" aria-hidden="true"><use href="#ico-arrow"></use></svg>
       </button>
     </div>
   </dialog>
