@@ -38,6 +38,7 @@ data/gabinet.yaml                dane gabinetu, godziny, rezerwacja, dane rejest
 data/ustawienia.yaml             domyślny opis SEO, tekst stopki, napisy szablonu, ukrycie przed wyszukiwarkami
 assets/images/                   biblioteka zdjęć (wszystkie strony; pole „plik”: /images/x.jpg)
 themes/v1-klasyczna/             szablon v1 „Klasyczna” (używany, theme w hugo.yaml)
+themes/v1-klasyczna/i18n/pl.yaml stałe napisy szablonu (klucze po angielsku, tekst po polsku)
 layouts/                         PUSTY (nadpisałby każdy szablon) - pilnuje CI
 static/admin/                    panel: index.html, config.yml, sveltia-cms.js
 docs/KONTRAKT-BLOKOW.md          typy bloków i ich pola
@@ -45,6 +46,7 @@ docs/LOGOWANIE.md                logowanie do panelu (OAuth, token)
 docs/HOSTING.md                  wysyłka na własną domenę (SFTP/FTPS, .htaccess)
 tools/sprawdz-kontrakt.py        kontrola kontraktu (CI)
 tools/kontrola-strony.py         kontrola zbudowanej strony: struktura, linki, zasoby, art. 14 (CI)
+tools/requirements.txt           zależności narzędzi (PyYAML; wersję podbija Dependabot)
 archiwum/stara-strona/          kopia starej strony (stan „przed”, źródło przekierowań 301) - build jej nie widzi
 ```
 
@@ -71,7 +73,8 @@ repozytorium”** i wskaż katalog repozytorium. Zmiany trafiają wtedy do plik�
 Przed commitem w kodzie (szablony, konfiguracja):
 
 ```
-python tools/sprawdz-kontrakt.py      # wymaga PyYAML: pip install -r tools/requirements.txt
+pip install -r tools/requirements.txt # raz: PyYAML dla obu skryptów
+python tools/sprawdz-kontrakt.py      # OK
 hugo --gc --minify                    # bez ERROR i bez WARN
 python tools/kontrola-strony.py       # na public/, 0 błędów (uwagi do przeczytania)
 ```
@@ -111,7 +114,7 @@ Zasady, które chronią stronę:
   zatrzymuje się z komunikatem, że pozycja menu nie ma celu — w sieci zostaje poprzednia
   wersja, a w repozytorium powstaje zgłoszenie. Popraw menu i zapisz.
 - **Zdjęcia** są zmniejszane i zamieniane na WebP w przeglądarce przed zapisem
-  (maks. 2048 px, limit 1 MB po konwersji), a Hugo robi z nich wersje do 1600 px.
+  (maks. 2048 px, limit 1 MB po konwersji), a Hugo robi z nich wersje 480, 800 i 1200 px.
   Opis zdjęcia (alt) jest wymagany.
 - **Ceny** są tylko w cenniku; bloki na stronach wskazują kategorie albo pozycje
   cennika (po identyfikatorze). Identyfikatora istniejącej pozycji nie zmieniaj.
@@ -134,18 +137,21 @@ Zasady, które chronią stronę:
 
 Każdy commit na `main` uruchamia `.github/workflows/pages.yml`:
 
-1. `tools/sprawdz-kontrakt.py` — kontrakt bloków i pusty `layouts/`,
-2. Hugo 0.167.0 Extended (pobrany z wydania na GitHubie, suma SHA-256 sprawdzana) —
+1. `tools/sprawdz-kontrakt.py` — kontrakt bloków, pusty `layouts/`, klucze treści
+   i danych zgodne z panelem, cennik, telefony i ceny w treści (pełna lista
+   w [`docs/KONTRAKT-BLOKOW.md`](docs/KONTRAKT-BLOKOW.md)),
+2. sumy kontrolne przypiętego panelu Sveltia i archiwum starej strony,
+3. Hugo 0.167.0 Extended (pobrany z wydania na GitHubie, suma SHA-256 sprawdzana) —
    każdy **ERROR** i każde **WARN** przerywa przebieg,
-3. kontrola wyniku (strona główna, panel),
-4. `tools/kontrola-strony.py` na zbudowanym HTML — dokładnie jeden `h1`, kolejność
+4. kontrola wyniku (strona główna, panel, `noindex` kopii na github.io),
+5. `tools/kontrola-strony.py` na zbudowanym HTML — dokładnie jeden `h1`, kolejność
    nagłówków, `alt`/`width`/`height` zdjęć, działające linki wewnętrzne (z prefiksem
    `/gabinet-strona/`), żadnych zasobów z obcych serwerów i żadnej ramki bez zgody,
    poprawny JSON-LD i FAQ zgodne z widocznymi pytaniami, zwroty niedozwolone
    w materiałach gabinetu (art. 14 ustawy o działalności leczniczej), odnośniki
    rezerwacji online; na końcu waga każdej strony. Błąd przerywa przebieg, uwagi
    zostają w logu,
-5. publikacja na GitHub Pages.
+6. publikacja na GitHub Pages.
 
 Błąd na dowolnym kroku = w sieci zostaje poprzednia wersja, a w repozytorium powstaje
 zgłoszenie (issue) „Strona nie została opublikowana…” z linkiem do logu. Zmiana jest
@@ -155,8 +161,9 @@ Jednorazowo w ustawieniach repozytorium: Settings → Pages → Source: **GitHub
 
 Kopia na GitHub Pages jest **zawsze ukryta przed wyszukiwarkami** (`noindex`,
 `Disallow: /`) — niezależnie od ustawienia w panelu (`params.robocza` w `hugo.yaml`,
-włączane w workflow zmienną `HUGO_PARAMS_ROBOCZA=true`). Inaczej po uruchomieniu
-domeny Google widziałby dwie kopie tej samej strony.
+włączane w workflow zmienną `HUGO_PARAMS_ROBOCZA=true`; CI sprawdza to w wyniku).
+Inaczej po uruchomieniu domeny Google widziałby dwie kopie tej samej strony. Wersja
+na domenę jest budowana bez tej zmiennej — tam decyduje ustawienie w panelu.
 
 ## Hosting na własnej domenie (dobrydentysta.legnica.pl)
 
@@ -182,6 +189,7 @@ themes/<nazwa>/layouts/_default/_markup/render-link.html   (odnośniki /slug/ w 
 themes/<nazwa>/layouts/partials/naglowek.html, stopka.html, image.html, sekcje.html ...
 themes/<nazwa>/layouts/partials/blocks/<typ>.html          (po jednym na typ bloku)
 themes/<nazwa>/layouts/robots.txt                          (Sitemap, ukrycie przed wyszukiwarkami)
+themes/<nazwa>/i18n/pl.yaml                                (stałe napisy szablonu)
 themes/<nazwa>/assets/css/...
 ```
 
@@ -192,11 +200,12 @@ Katalog `layouts/` w korzeniu musi zostać pusty — inaczej nadpisałby każdy 
 Makieta v1 z zakończonego prototypu `gamstom` (szablon strony, strony v1 i markup
 z jego generatora) pocięta na szablon Hugo:
 
-- `assets/css/style.css` i `assets/js/app.js` — kopie z makiety **bez zmian**
-  (łączone i z odciskiem w nazwie pliku przez Hugo Pipes); `assets/css/hugo.css` —
-  kilka reguł dla rzeczy, których makieta nie miała (lista z minusami, blok
-  dołączony do sekcji i do kolumny tekstu, pogrubienie w faktach banera, plakietka
-  z `==tekst==`);
+- `assets/css/style.css` i `assets/js/app.js` — z makiety, uporządkowane (jeden zestaw
+  kolorów na motyw, bez nieużywanych reguł, napisy skryptu z szablonu przez atrybuty
+  `data-napis-*`); łączone i z odciskiem w nazwie pliku przez Hugo Pipes;
+  `assets/css/hugo.css` — kilka reguł dla rzeczy, których makieta nie miała (lista
+  z minusami, blok dołączony do sekcji i do kolumny tekstu, pogrubienie w faktach
+  banera, plakietka z `==tekst==`);
 - `partials/naglowek.html` (pasek z godzinami, telefon, motyw, menu z rozwijanym
   podmenu, szuflada na telefon), `stopka.html` (usługi, strony, godziny, dane
   rejestrowe, pasek „Zadzwoń / Dojazd” na telefonie), `head.html` (meta, Open Graph,
@@ -223,12 +232,28 @@ sekcji nad nim. Pola każdego typu opisuje [`docs/KONTRAKT-BLOKOW.md`](docs/KONT
 Nowy typ bloku = wpis w kontrakcie + typ w `config.yml` + partial we **wszystkich**
 szablonach; `tools/sprawdz-kontrakt.py` nie przepuści niekompletnej zmiany.
 
+## Język nazw
+
+- **Zostają po polsku na stałe** — to części publicznych adresów: adresy stron (slugi,
+  `aliases`), kotwice (`kotwica`, `grupa-<id>`), identyfikatory kategorii i pozycji
+  cennika, nazwy plików zdjęć. Zmiana = nowe adresy i przekierowania.
+- **Tekst dla ludzi po polsku**: stałe napisy szablonu w `themes/<nazwa>/i18n/pl.yaml`
+  (klucze po angielsku), napisy zmieniane w panelu w `data/ustawienia.yaml`, etykiety
+  i podpowiedzi panelu w `config.yml`, komunikaty CI i błędów budowania.
+- **Identyfikatory w kodzie** (zmienne i partiale szablonów, klucze pól w treści
+  i danych, typy bloków, narzędzia w `tools/`) są dziś po polsku; docelowo przejdą
+  na angielski w osobnym etapie — klucze treści i danych tylko razem z migracją
+  `content/`, `data/`, `config.yml` i kontraktu w jednym commicie. Do tego czasu nowe
+  nazwy w kodzie trzymają się polskiego stylu (poza kluczami w `i18n/`). Klasy CSS
+  z makiety (`hero__media`, `btn--primary`) są po angielsku już teraz.
+
 ## Etapy
 
 1. **Etap 1 — instalacja i test panelu** (szablon testowy `v0-test`, usunięty po etapie 2): repozytorium, publikacja,
    kontrakt bloków, panel z kolekcjami, treść startowa, cennik i dane z `gamstom`.
-   Pozostaje: OAuth App + Worker + `base_url`, konto właścicielki (Write, 2FA), lista
-   testów z planu — etap zamknięty, gdy przejdzie ją właścicielka na swoim koncie.
+   Logowanie przez GitHub (OAuth App + Cloudflare Worker, `base_url`) działa
+   ([`docs/LOGOWANIE.md`](docs/LOGOWANIE.md)). Pozostaje: konto właścicielki (Write, 2FA)
+   i lista testów z planu — etap zamknięty, gdy przejdzie ją właścicielka na swoim koncie.
 2. **Etap 2 — szablon v1 „Klasyczna”** (zrobione): makieta v1 jako szablon
    `themes/v1-klasyczna`, kontrakt bloków rozszerzony do wersji 2 (12 nowych typów,
    pole strony „usluga”, cennik z pozycjami na jednej liście), a po porównaniu z makietą

@@ -172,7 +172,9 @@ ją pomija). Dozwolone klucze: `zab`, `iskra`, `iskry`, `korona`, `warstwy`, `ks
 `puls`, `rtg`, `dziecko`, `tarcza`, `serce`, `gwiazdka`, `aparat`, `sms`, `karta`,
 `telefon`, `zegar`, `kalendarz`, `pinezka`, `mapa`, `parking`, `poczta`, `dokument`,
 `dostepnosc`, `platek`, `ptaszek`, `info`, `uwaga`. Nieznany klucz = błąd budowania
-w szablonie, który rysuje ikony.
+w szablonie, który rysuje ikony. (`v1-klasyczna` przyjmuje też wprost nazwę symbolu
+ze swojej grafiki, `ico-…` — w treści używaj tylko kluczy z listy, bo inny szablon
+takiej nazwy nie zna.)
 
 **Markdown** (`tresc`, `wstep`, `odpowiedz`, `ramka.tresc`, opisy kart i kroków):
 renderowany jako blok (`.RenderString (dict "display" "block")` — jak `markdownify`,
@@ -231,7 +233,7 @@ na stronie głównej to baner ze zdjęciem, na podstronie nagłówek z okruszkam
 
 | Pole | Typ | Wymagane | Opis |
 |---|---|---|---|
-| `naglowek` | tekst | tak | Nagłówek (`h1`, gdy blok jest pierwszy; inaczej `h2`). Pusty = tytuł strony. |
+| `naglowek` | tekst | tak | Nagłówek (`h1`, gdy blok jest pierwszy; inaczej `h2`). Panel go wymaga; w pliku wpisanym ręcznie brak nagłówka = tytuł strony. |
 | `nadtytul` | tekst | nie | Krótki napis nad nagłówkiem. |
 | `ikona` | ikona | nie | Ikona przy nadtytule. Szablon może pominąć. |
 | `tresc` | Markdown | nie | Krótki wstęp. |
@@ -531,7 +533,7 @@ wskazują pojedyncze pozycje (`cena`, `cena_od`, `pozycje`).
 
 | Szablon | Pomija |
 |---|---|
-| `v1-klasyczna` | podpis zdjęcia w banerze (`hero`), `wariant` banera (baner ma własne tło); formy płatności (`platnosci`) tylko w danych dla wyszukiwarek, bez wiersza w stopce (stopka v1 ich nie ma). |
+| `v1-klasyczna` | podpis zdjęcia w banerze (`hero`), `wariant` banera (baner ma własne tło), `fakty` banera na początku podstrony (nagłówek podstrony ich nie ma — tylko baner na stronie głównej i w środku strony); formy płatności (`platnosci`) tylko w danych dla wyszukiwarek, bez wiersza w stopce (stopka v1 ich nie ma). |
 
 ## Zmiany w wersji 2
 
