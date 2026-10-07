@@ -7,7 +7,7 @@ sekcje:
     naglowek: Zdrowy i ładny uśmiech pacjenta — to moja dewiza i satysfakcja . Twoja Dentystka :)
     nadtytul: Od 1995 roku w centrum Legnicy
     ikona: tarcza
-    tresc: Prywatny gabinet lek. stom. Doroty Rożdżestwieńskiej przy ul. Złotoryjskiej 16/18 m.10   Leczymy  — dorosłych i dzieci — a od lat specjalizujemy się w leczeniu zębów  , wykonywaniu estetycznych i trwałych wypełnień w zębach , a także robimy szyny relaksacyjne  Michigan na zgrzytanie zębów i napięciowe bóle głowy .
+    tresc: Prywatny gabinet lek. stom. Doroty Rożdżestwieńskiej przy ul. Złotoryjskiej 16/18 m.10   Leczymy  — dorosłych i dzieci — a od lat specjalizujemy się w leczeniu zębów  , wykonywaniu estetycznych i trwałych wypełnień w zębach , a także robimy szyny relaksacyjne  Michigan na zgrzytanie zębów i napięciowe bóle głowy .BOISZ  SIĘ  DENTYSTY I IGIEŁ ?? Od 30 lat pomagam pacjentom zmniejszyć lęk i napięcie podczas leczenia. Przy prostych ubytkach, za zgodą pacjenta, stosuję znieczulenie powierzchowne bez igły. Spokojna atmosfera, muzyka pomagają przejść wizytę bez niepotrzebnego stresu:)
     zdjecie:
       plik: /images/hero-gabinet.jpg
       alt: 'Gabinet zabiegowy: unit stomatologiczny z fotelem i lampą przy dużym oknie z widokiem na legnicką Katedrę'
