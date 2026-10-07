@@ -105,7 +105,7 @@ sekcje:
         etykieta: Ceny leczenia stawów
         opis: 'Ceny leczenia stawów: szyna, rejestracja łukiem twarzowym, badania czynnościowe'
   - type: tekst
-    naglowek: 'Protetyka: protezy, korony i mosty'
+    naglowek: 'Protetyka: protezy i mosty'
     nadtytul: ''
     ikona: ''
     tresc: |-
