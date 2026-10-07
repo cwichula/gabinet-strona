@@ -62,7 +62,7 @@ sekcje:
     tylko_wyroznione: false
   - type: tekst
     naglowek: Zgrzytasz zębami w nocy? To nie jest nawyk, który przejdzie sam
-    nadtytul: Nasza specjalizacja
+    nadtytul: Doświadczenie i wiedza
     ikona: ksiezyc
     tresc: |-
       Bruksizm to mimowolne, bardzo silne napięcie mięśni żwaczy. Ściera powierzchnie zębów, uszkadza wypełnienia i korony, potrafi doprowadzić do pęknięcia zęba. Budzisz się zmęczony, boli Cię głowa, kark albo okolica ucha.
