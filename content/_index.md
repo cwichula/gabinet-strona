@@ -7,7 +7,7 @@ sekcje:
     naglowek: Twoja Dentystka w Legnicy ,to ja ! Śmiało, czekam na Ciebie :)
     nadtytul: Od 1995 roku w centrum Legnicy
     ikona: tarcza
-    tresc: Prywatny gabinet lek. stom. Doroty Rożdżestwieńskiej przy ul. Złotoryjskiej. Leczymy całe rodziny — dorosłych i dzieci — a od lat specjalizujemy się w bruksizmie i dysfunkcjach stawów skroniowo-żuchwowych.
+    tresc: Prywatny gabinet lek. stom. Doroty Rożdżestwieńskiej przy ul. Złotoryjskiej 16/18 m.10   Leczymy  — dorosłych i dzieci — a od lat specjalizujemy się w leczeniu zębów  , wykonywaniu estetycznych i trwałych wypełnień w zębach , a także robimy szyny relaksacyjne na zgrzytanie zębów i napięciowe bóle głowy .
     zdjecie:
       plik: /images/hero-gabinet.jpg
       alt: 'Gabinet zabiegowy: unit stomatologiczny z fotelem i lampą przy dużym oknie'
