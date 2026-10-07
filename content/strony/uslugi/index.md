@@ -135,7 +135,7 @@ sekcje:
         opis: Elastyczne, akronowe, szkieletowe i akrylowe — jak wybrać
       - strona: korony-i-mosty
         etykieta: ''
-        opis: Odbudowa zniszczonego zęba, most bez szlifowania sąsiadów
+        opis: Uzupełnienie brakującego jednego   zęba- most na włóknie szklanym  bez szlifowania sąsiadów
       - strona: cennik
         etykieta: Ceny protetyki
         opis: 'Ceny protetyki: korony, mosty i protezy — zestawienie kosztów'
