@@ -111,7 +111,7 @@ sekcje:
     tresc: |-
       Brak zęba nie jest tylko kwestią wyglądu. Zęby sąsiednie przechylają się w stronę luki, zmienia się zgryz, druga strona zostaje przeciążona, a w miejscu usuniętego zęba zanika kość. Dlatego luki warto uzupełniać wcześnie.
 
-      Wykonujemy cztery rodzaje protez — elastyczne, akronowe, szkieletowe i akrylowe — a także korony porcelanowe i pełnoceramiczne oraz mosty z włókna szklanego przy braku jednego zęba. Rozwiązanie dobieramy do liczby braków, stanu zębów sąsiednich i tego, ile czasu chcesz poświęcić na leczenie.
+      Wykonujemy cztery rodzaje protez — elastyczne, akronowe, szkieletowe i akrylowe — a także  mosty z włókna szklanego przy braku jednego zęba. Rozwiązanie dobieramy do liczby braków, stanu zębów sąsiednich i tego, ile czasu chcesz poświęcić na leczenie.
     zdjecie: null
     przycisk: null
     wariant: wyrozniony
