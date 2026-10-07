@@ -1,7 +1,7 @@
 ---
-title: Dentysta Legnica1
-seo_tytul: Dentysta Legnica — Gabinet Stomatologiczny Dorota Rożdżestwieńska1
-description: Gabinet stomatologiczny w centrum Legnicy, ul. Złotoryjska 16/18. Praktyka od 1995 roku, RTG z pantomografem na miejscu, szyna Michigan. Tel. 699 904 989.1
+title: Dentysta Legnica
+seo_tytul: Dentysta Legnica — Gabinet Stomatologiczny Dorota Rożdżestwieńska
+description: Gabinet stomatologiczny w centrum Legnicy, ul. Złotoryjska 16/18. Praktyka od 1995 roku, RTG z pantomografem na miejscu, szyna Michigan. Tel. 699 904 989.
 sekcje:
   - type: hero
     naglowek: Zdrowy i ładny uśmiech pacjenta — to moja dewiza i satysfakcja . Twoja Dentystka :)
