@@ -2,7 +2,7 @@
 weight: 1
 title: Usługi
 seo_tytul: Usługi stomatologiczne Legnica | Gabinet Rożdżestwieńska
-description: 'Zakres usług gabinetu stomatologicznego w Legnicy: leczenie próchnicy, higienizacja, protezy, licówki, RTG i szyna Michigan. Tel. 699 904 989.'
+description: 'Zakres usług gabinetu stomatologicznego w Legnicy: leczenie próchnicy, higienizacja , protezy, mosty  ,licówki, RTG i szyna relaksacyjna  Michigan  . Tel. 699 904 989.'
 draft: false
 usluga: null
 sekcje:
