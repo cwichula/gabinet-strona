@@ -259,6 +259,7 @@ sekcje:
       - ortodoncji z aparatami stałymi,
       - chirurgii stomatologicznej, w tym zabiegowego usuwania zębów zatrzymanych,
       - leczenia kanałowego pod mikroskopem (endodoncji mikroskopowej).
+      - koron i mostów porcelanowych 
 
       Jeśli badanie pokaże, że potrzebujesz jednego z tych zabiegów, powiemy Ci to na pierwszej wizycie i wskażemy kierunek — jaki to rodzaj leczenia, czego się spodziewać i w jakiej kolejności to zaplanować. Zdjęcie RTG i dokumentację dostaniesz ze sobą, żeby nie trzeba było powtarzać diagnostyki.
 
@@ -279,7 +280,7 @@ sekcje:
     nadtytul: ''
     ikona: ''
     tresc: |-
-      Zakres usług to jedno, a sprzęt, którym pracujemy — drugie. W gabinecie jest RTG z pantomografem, aparat do zdjęć punktowych z radiowizjografią, kamera wewnątrzustna, klimatyzacja i terminal płatniczy. Przypomnienie o wizycie przychodzi SMS-em.
+      Zakres usług to jedno, a sprzęt, którym pracujemy — drugie. W gabinecie jest RTG z pantomografem, aparat do zdjęć punktowych z radiowizjografią, kamera wewnątrzustna ,  skaler ultradźwiękowy  EMS i piaskarka EMS .Dla wygody i komfortu pacjenta mamy klimatyzację  i terminal płatniczy. Przypomnienie o wizycie przychodzi SMS-em.
 
       - Zdjęcia RTG bez wychodzenia z gabinetu, omawiane od razu na monitorze
       - Kamera wewnątrzustna — widzisz dokładnie to samo, co lekarz
