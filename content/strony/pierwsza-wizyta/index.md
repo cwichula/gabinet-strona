@@ -131,7 +131,7 @@ sekcje:
     naglowek: "Najczęstsze pytania o pierwszą wizytę"
     elementy:
       - pytanie: "Ile kosztuje pierwsza wizyta u dentysty w Legnicy?"
-        odpowiedz: "Badanie stomatologiczne z konsultacją kosztuje 100 zł. W tej cenie jest rozmowa, przegląd zębów i dziąseł oraz plan leczenia z podanym kosztem. Zdjęcie RTG punktowe to dodatkowo 50 zł, a pantomogram cyfrowy 120 zł."
+        odpowiedz: "Badanie stomatologiczne z konsultacją kosztuje 100 zł. W tej cenie jest rozmowa, przegląd zębów i dziąseł oraz plan leczenia z podanym kosztem. Zdjęcie RTG punktowe to dodatkowo 50 zł, a pantomogram cyfrowy 150 zł."
       - pytanie: "Jak umówić się do dentysty w Legnicy?"
         odpowiedz: "Telefonicznie, pod numerem [699 904 989](tel:+48699904989) — tą drogą termin ustalamy od razu w rozmowie. Gabinet przyjmuje od poniedziałku do czwartku. Przy umawianiu powiedz, co Cię sprowadza — pilne przypadki staramy się przyjąć tego samego dnia."
       - pytanie: "Co zabrać na pierwszą wizytę u dentysty?"

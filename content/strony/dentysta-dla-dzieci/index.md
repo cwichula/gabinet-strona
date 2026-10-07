@@ -129,7 +129,7 @@ sekcje:
       - pytanie: "W jakim wieku pierwsza wizyta dziecka u dentysty?"
         odpowiedz: "Przyjmuje się, że pierwszy przegląd warto zrobić wtedy, gdy wyrosną pierwsze zęby mleczne — zwykle w okolicach pierwszego roku życia. Taka wizyta nie służy leczeniu: lekarz sprawdza, czy zęby wyrzynają się prawidłowo, i pokazuje rodzicowi, jak je czyścić. Jeśli ten moment już minął, nie ma sensu czekać dalej."
       - pytanie: "Ile kosztuje lakowanie zębów u dziecka?"
-        odpowiedz: "Cennik gabinetu podaje za lak 150 zł, a za lakierowanie zębów preparatem fluorowym również 150 zł. Koszt całego zabiegu zależy od liczby zębów, które trzeba zabezpieczyć, dlatego dokładną kwotę podajemy po przeglądzie, przed rozpoczęciem leczenia. Wypełnienie w zębie mlecznym kosztuje 250 zł."
+        odpowiedz: "Cennik gabinetu podaje za lak 150 zł, a za lakierowanie zębów preparatem fluorowym również 150 zł. Koszt całego zabiegu zależy od liczby zębów, które trzeba zabezpieczyć, dlatego dokładną kwotę podajemy po przeglądzie, przed rozpoczęciem leczenia. Wypełnienie w zębie mlecznym kosztuje 300 zł."
       - pytanie: "Czy warto leczyć zęby mleczne, skoro i tak wypadną?"
         odpowiedz: "Tak, i to z kilku powodów. Próchnica w zębie mlecznym to czynne zakażenie, które boli, może przejść w stan ropny i uszkodzić zawiązek rosnącego pod nim zęba stałego. Ząb mleczny trzyma też miejsce w łuku: usunięty za wcześnie pozwala sąsiednim zębom przesunąć się w lukę, a zębowi stałemu brakuje potem miejsca na prawidłowe wyrośnięcie. Usunięcie jest ostatnim wyjściem, nie pierwszym."
       - pytanie: "Co powiedzieć dziecku przed pierwszą wizytą u dentysty?"

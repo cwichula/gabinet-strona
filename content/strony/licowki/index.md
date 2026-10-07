@@ -93,7 +93,7 @@ sekcje:
       - tytul: xxxx
         tresc: ''
         ikona: ''
-        cena: licowka-emax
+        cena: ''
         strona: ''
   - type: tekst
     naglowek: ''

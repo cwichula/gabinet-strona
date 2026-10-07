@@ -1,7 +1,7 @@
 ---
 title: "RTG i pantomogram"
 seo_tytul: "Pantomogram Legnica | Gabinet Dorota Rożdżestwieńska"
-description: "Pantomogram cyfrowy 120 zł, zdjęcie RTG punktowe z radiowizjografią 50 zł. Aparat rentgenowski z pantomografem stoi w gabinecie w Legnicy. Tel. 699 904 989."
+description: "Pantomogram cyfrowy 150 zł, zdjęcie RTG punktowe z radiowizjografią 50 zł. Aparat rentgenowski z pantomografem stoi w gabinecie w Legnicy. Tel. 699 904 989."
 draft: false
 weight: 9
 usluga:
@@ -45,7 +45,7 @@ sekcje:
 
       Dzięki temu jedno badanie odpowiada na kilka pytań naraz: czy jest miejsce na protezę, czy ósemka zagraża sąsiednim zębom, czy ubytek kości wokół zębów nie jest większy, niż wynikało z samego przeglądu.
 
-      Zdjęcie pantomograficzne cyfrowe kosztuje **120 zł** — pozycja z [cennika](/cennik/).
+      Zdjęcie pantomograficzne cyfrowe kosztuje **150 zł** — pozycja z [cennika](/cennik/).
     wypunktowanie: ptaszki
     zdjecie:
       plik: "/images/gabinet-08.jpg"
@@ -119,7 +119,7 @@ sekcje:
     naglowek: "Najczęstsze pytania o RTG zębów"
     elementy:
       - pytanie: "Ile kosztuje pantomogram w Legnicy?"
-        odpowiedz: "Zdjęcie pantomograficzne cyfrowe kosztuje 120 zł, zdjęcie RTG punktowe z radiowizjografią 50 zł, a zdjęcie RTG czynnościowe stawów skroniowo-żuchwowych 100 zł. Ceny pochodzą z cennika gabinetu, który ma charakter informacyjny i nie stanowi oferty handlowej w rozumieniu art. 66 § 1 Kodeksu cywilnego."
+        odpowiedz: "Zdjęcie pantomograficzne cyfrowe kosztuje 150 zł, zdjęcie RTG punktowe z radiowizjografią 50 zł, a zdjęcie RTG czynnościowe stawów skroniowo-żuchwowych 100 zł. Ceny pochodzą z cennika gabinetu, który ma charakter informacyjny i nie stanowi oferty handlowej w rozumieniu art. 66 § 1 Kodeksu cywilnego."
       - pytanie: "Czym różni się pantomogram od zdjęcia punktowego zęba?"
         odpowiedz: "Pantomogram to jedno duże zdjęcie panoramiczne, na którym widać wszystkie zęby górne i dolne razem z kośćmi szczęki i żuchwy. Zdjęcie punktowe obejmuje jeden ząb albo kilka sąsiednich, ale pokazuje je w znacznie większym powiększeniu i z większą liczbą szczegółów. Pantomogram służy do oceny całości, zdjęcie punktowe do rozstrzygnięcia konkretnego problemu w jednym zębie."
       - pytanie: "Czy zdjęcie RTG zębów jest bezpieczne?"

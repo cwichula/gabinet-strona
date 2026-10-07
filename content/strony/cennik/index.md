@@ -1,7 +1,7 @@
 ---
 title: "Cennik"
 seo_tytul: "Cennik stomatologiczny Legnica | Gabinet Rożdżestwieńska"
-description: "Cennik gabinetu stomatologicznego w Legnicy: badanie 100 zł, wypełnienie 250–400 zł, szyna Michigan 800 zł. 30 pozycji. Pytania i wizyty: 699 904 989."
+description: "Cennik gabinetu stomatologicznego w Legnicy: badanie 100 zł, wypełnienie 300–400 zł, szyna Michigan 800 zł. 30 pozycji. Pytania i wizyty: 699 904 989."
 draft: false
 weight: 11
 sekcje:
@@ -79,7 +79,7 @@ sekcje:
           [Jak wygląda pierwsza wizyta →](/pierwsza-wizyta/)
       - pytanie: "Ile kosztuje wypełnienie zęba w Legnicy?"
         odpowiedz: |-
-          Wypełnienie zęba materiałem światłoutwardzalnym kosztuje od 250 do 400 zł. W zębie mlecznym jest to 250 zł. Jeśli ubytek sięga kilku ścian zęba i trzeba go odbudować, pozycja nazywa się odbudowa zęba i kosztuje od 400 do 500 zł.
+          Wypełnienie zęba materiałem światłoutwardzalnym kosztuje od 300 do 400 zł. W zębie mlecznym jest to 300 zł. Jeśli ubytek sięga kilku ścian zęba i trzeba go odbudować, pozycja nazywa się odbudowa zęba i kosztuje od 400 do 500 zł.
 
           [Leczenie próchnicy i ubytków →](/stomatologia-zachowawcza/)
       - pytanie: "Dlaczego przy niektórych pozycjach są widełki, a nie jedna cena?"
@@ -90,7 +90,7 @@ sekcje:
         odpowiedz: "Gabinet jest prywatny, więc wizyty są pełnopłatne według cennika na tej stronie. Fakturę lub rachunek wystawiamy na życzenie, na przykład do rozliczenia z ubezpieczycielem albo z pracodawcą."
       - pytanie: "Czy cena zabiegu obejmuje zdjęcie RTG?"
         odpowiedz: |-
-          Nie, RTG jest liczone osobno: zdjęcie punktowe z radiowizjografią 50 zł, zdjęcie pantomograficzne cyfrowe 120 zł. Oba wykonujemy na miejscu, w gabinecie, więc nie trzeba jechać po nie do innej pracowni.
+          Nie, RTG jest liczone osobno: zdjęcie punktowe z radiowizjografią 50 zł, zdjęcie pantomograficzne cyfrowe 150 zł. Oba wykonujemy na miejscu, w gabinecie, więc nie trzeba jechać po nie do innej pracowni.
 
           [RTG i pantomogram na miejscu →](/rtg-pantomogram/)
     wariant: wyrozniony

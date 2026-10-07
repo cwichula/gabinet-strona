@@ -90,7 +90,7 @@ sekcje:
       - tytul: "Kontrola zgryzu i polerowanie"
         tresc: "Sprawdzamy, czy wypełnienie nie jest za wysokie i czy nitka przechodzi swobodnie, a potem je polerujemy."
       - tytul: "Gdy ubytek sięga głęboko"
-        tresc: "Czasem potrzebny jest opatrunek w zębie (170 zł) albo zatrucie zęba (200 zł) jako etap pośredni. Dalszy zakres lekarz omawia z Tobą po badaniu i po zdjęciu RTG — nie w trakcie zabiegu."
+        tresc: "Czasem potrzebny jest opatrunek w zębie (200 zł) albo zatrucie zęba (300 zł) jako etap pośredni. Dalszy zakres lekarz omawia z Tobą po badaniu i po zdjęciu RTG — nie w trakcie zabiegu."
     polacz: true
   - type: tekst
     naglowek: "Dlaczego raz 250, a raz 400 zł"
@@ -113,7 +113,7 @@ sekcje:
     naglowek: "Najczęstsze pytania o leczenie próchnicy"
     elementy:
       - pytanie: "Ile kosztuje wypełnienie zęba w Legnicy?"
-        odpowiedz: "Wypełnienie zęba materiałem światłoutwardzalnym kosztuje od 250 do 400 zł, wypełnienie w zębie mlecznym 250 zł, a odbudowa zęba materiałem światłoutwardzalnym od 400 do 500 zł. Badanie stomatologiczne z konsultacją to 100 zł. Kwotę za konkretny ząb podajemy po badaniu, przed rozpoczęciem leczenia."
+        odpowiedz: "Wypełnienie zęba materiałem światłoutwardzalnym kosztuje od 300 do 400 zł, wypełnienie w zębie mlecznym 300 zł, a odbudowa zęba materiałem światłoutwardzalnym od 400 do 500 zł. Badanie stomatologiczne z konsultacją to 100 zł. Kwotę za konkretny ząb podajemy po badaniu, przed rozpoczęciem leczenia."
       - pytanie: "Od czego zależy, czy wypełnienie kosztuje 250 czy 400 zł?"
         odpowiedz: "Przede wszystkim od wielkości ubytku i liczby ścian zęba, które trzeba odtworzyć. Mały ubytek na jednej powierzchni to inna praca niż ubytek obejmujący powierzchnię żującą i dwie styczne, odbudowywany warstwami i wymagający odtworzenia kształtu guzków oraz kontaktu z zębem obok. Znaczenie ma też miejsce w jamie ustnej i dobór koloru przy zębach przednich."
       - pytanie: "Czy leczenie próchnicy boli?"
@@ -123,7 +123,7 @@ sekcje:
       - pytanie: "Dlaczego zęby bolą mnie od zimnego powietrza i kwaśnych potraw?"
         odpowiedz: "Najczęściej dlatego, że przy dziąsłach odsłoniła się szyjka zęba albo powstał tam ubytek klinowy. W odsłoniętej zębinie biegną kanaliki, które przenoszą bodziec termiczny i chemiczny wprost w stronę miazgi, dlatego reakcja na zimne powietrze i słodko-kwaśne pokarmy jest tak gwałtowna. Duże ubytki wypełniamy, niewielkie lakierujemy."
       - pytanie: "Czy trzeba leczyć próchnicę zębów mlecznych?"
-        odpowiedz: "Tak. Ząb mleczny z próchnicą boli tak samo jak stały, utrudnia dziecku jedzenie, a zakażenie może sięgnąć zawiązka zęba stałego, który rośnie pod nim. Wypełnienie w zębie mlecznym kosztuje 250 zł."
+        odpowiedz: "Tak. Ząb mleczny z próchnicą boli tak samo jak stały, utrudnia dziecku jedzenie, a zakażenie może sięgnąć zawiązka zęba stałego, który rośnie pod nim. Wypełnienie w zębie mlecznym kosztuje 300 zł."
     wariant: domyslny
   - type: powiazane
     naglowek: "Powiązane strony"

@@ -60,19 +60,19 @@ sekcje:
       - tytul: Korona porcelanowa na podbudowie metalowej
         tresc: 'Metalowy rdzeń pokryty napalaną porcelaną. Konstrukcja wytrzymała i sprawdzona od dziesięcioleci, dobrze znosi obciążenie zębów trzonowych. Minus: metal nie przepuszcza światła, a przy brzegu dziąsła po latach może się zaznaczyć ciemniejsza linia.'
         ikona: ''
-        cena: korona-porcelanowa
+        cena: ''
         strona: ''
       - tytul: Korona pełnoceramiczna E-MAX
         tresc: Bez podbudowy metalowej. Ceramika przepuszcza światło podobnie jak naturalne szkliwo, dzięki czemu korona w strefie widocznej wygląda bardziej naturalnie. Wybór dla zębów przednich oraz dla pacjentów, którzy nie chcą metalu w jamie ustnej.
         ikona: ''
-        cena: korona-emax
+        cena: ''
         strona: ''
   - type: ramka
     ikona: ''
     tresc: |-
       W praktyce wygląda to prosto: ząb trzonowy, którego zadaniem jest przenieść obciążenie, częściej dostaje koronę porcelanową. Ząb w strefie widocznej — pełnoceramiczną.
 
-      Na czas, gdy pracownia wykonuje pracę, zakładamy **koronę tymczasową (150 zł)**. Chroni opracowany ząb i pozwala normalnie jeść oraz mówić.
+      Na czas, gdy pracownia wykonuje pracę, zakładamy **koronę tymczasową**. Chroni opracowany ząb i pozwala normalnie jeść oraz mówić.
     wariant: domyslny
     waska: false
     polacz: true
@@ -190,9 +190,6 @@ sekcje:
     wstep: Protetyka — korony i mosty. Ceny dotyczą jednego zęba.
     kategorie: []
     pozycje:
-      - korona-tymczasowa
-      - korona-porcelanowa
-      - korona-emax
       - most-wlokno
     wyszukiwarka: false
     kolumna: Zabieg
@@ -221,7 +218,7 @@ sekcje:
     elementy:
       - pytanie: Ile kosztuje korona na ząb w Legnicy?
         odpowiedz: |-
-          Korona porcelanowa na podbudowie metalowej kosztuje **1000 zł**, korona pełnoceramiczna E-MAX **1700 zł**, a korona tymczasowa zakładana na czas wykonania pracy **150 zł**. Most z włókna szklanego przy jednym brakującym zębie to **850 zł**. Osobno płatne jest badanie z konsultacją — 100 zł.
+          Cenę korony porcelanowej i pełnoceramicznej E-MAX podajemy po badaniu, przed rozpoczęciem leczenia. Most z włókna szklanego przy jednym brakującym zębie to **850 zł**. Osobno płatne jest badanie z konsultacją — 100 zł.
 
           [Pełny cennik →](/cennik/)
       - pytanie: Czym różni się korona porcelanowa od pełnoceramicznej E-MAX?

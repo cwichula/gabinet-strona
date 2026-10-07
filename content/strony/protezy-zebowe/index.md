@@ -9,7 +9,7 @@ usluga:
   nazwa: ''
   ikona: warstwy
   skrot: Cztery rodzaje protez dobierane do zakresu braków — od uzupełnienia kilku zębów po protezę całkowitą.
-  cena_od: proteza-czesciowa
+  cena_od: proteza-akronowa
 sekcje:
   - type: hero
     naglowek: Protezy zębowe w Legnicy
@@ -135,7 +135,7 @@ sekcje:
           - Proteza częściowa
           - Część braków w łuku
           - Zależnie od wybranego rodzaju
-        cena: proteza-czesciowa
+        cena: ''
   - type: tekst
     naglowek: Wykonanie protezy krok po kroku
     nadtytul: ''
@@ -278,7 +278,7 @@ sekcje:
       - tytul: Proteza częściowa
         tresc: ''
         ikona: ''
-        cena: proteza-czesciowa
+        cena: ''
         strona: ''
       - tytul: Proteza elastyczna, akronowa, szkieletowa lub akrylowa całkowita
         tresc: ''

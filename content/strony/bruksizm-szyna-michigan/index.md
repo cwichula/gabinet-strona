@@ -261,7 +261,7 @@ sekcje:
       - pytanie: Jak sprawdzić, czy zgrzytam zębami w nocy?
         odpowiedz: 'Sam zgrzyt słyszy zwykle ktoś inny, ale ciało zostawia ślady: zmęczona szczęka po przebudzeniu, poranny ból skroni lub karku, starte brzegi przednich zębów i biała linia na wewnętrznej stronie policzka.'
       - pytanie: Ile kosztuje szyna Michigan w Legnicy?
-        odpowiedz: Szyna relaksacyjna Michigan kosztuje 800 zł, a szyna tymczasowa 250 zł. Do tego dochodzi badanie z konsultacją za 100 zł, a gdy leczenie tego wymaga — rejestracja łukiem twarzowym za 250 zł.
+        odpowiedz: Szyna relaksacyjna Michigan kosztuje 800 zł, a szyna tymczasowa 300 zł. Do tego dochodzi badanie z konsultacją za 100 zł, a gdy leczenie tego wymaga — rejestracja łukiem twarzowym za 250 zł.
       - pytanie: Czy nakładka na zęby z apteki wystarczy zamiast szyny Michigan?
         odpowiedz: Gotowa nakładka osłania zęby mechanicznie, ale nie porządkuje zwarcia. Szyna Michigan powstaje na modelach Twoich zębów, ma opracowaną powierzchnię zwarciową i jest korygowana przez lekarza na wizytach kontrolnych.
       - pytanie: Jak długo trzeba nosić szynę relaksacyjną?

@@ -125,7 +125,7 @@ sekcje:
           [Więcej o zdjęciach RTG →](/rtg-pantomogram/)
       - pytanie: "Ile kosztuje zdjęcie pantomograficzne w Legnicy?"
         odpowiedz: |-
-          Zdjęcie pantomograficzne cyfrowe kosztuje 120 zł, a zdjęcie RTG punktowe z radiowizjografią 50 zł. O tym, które zdjęcie jest potrzebne, decyduje lekarz po badaniu.
+          Zdjęcie pantomograficzne cyfrowe kosztuje 150 zł, a zdjęcie RTG punktowe z radiowizjografią 50 zł. O tym, które zdjęcie jest potrzebne, decyduje lekarz po badaniu.
 
           [Pełny cennik →](/cennik/)
       - pytanie: "Czym radiowizjografia różni się od zdjęcia na kliszy?"
