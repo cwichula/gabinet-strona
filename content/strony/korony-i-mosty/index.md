@@ -1,15 +1,10 @@
 ---
 weight: 5
-title: Korony i mosty
+title: Mosty zębowe
 seo_tytul: Mosty Legnica | Gabinet Dorota Rożdżestwieńska
 description: 'Most z włókna szklanego bez mocnego szlifowania zębów obok. Legnica, ul. Złotoryjska 16/18 m.10. Zadzwoń: 699 904 989.'
 draft: false
-usluga:
-  wyrozniona: true
-  nazwa: ''
-  ikona: korona
-  skrot: Odbudowa mocno zniszczonego zęba i uzupełnienie pojedynczego braku bez szlifowania zdrowych sąsiadów.
-  cena_od: most-wlokno
+usluga: null
 sekcje:
   - type: hero
     naglowek: Korony i mosty zębowe w Legnicy
@@ -47,38 +42,6 @@ sekcje:
     ramka: null
     strona_zdjecia: prawa
     pokaz_telefony: false
-  - type: karty
-    naglowek: Korona porcelanowa czy pełnoceramiczna E-MAX
-    wariant: wyrozniony
-    waska: false
-    polacz: false
-    kotwica: ''
-    wstep: Obie odbudowują ten sam ząb i obie wykonuje pracownia protetyczna. Różnią się tym, co jest w środku — i to decyduje, którą wybrać na dany ząb.
-    wypunktowanie: zwykle
-    kolumny: 2
-    elementy:
-      - tytul: Korona porcelanowa na podbudowie metalowej
-        tresc: 'Metalowy rdzeń pokryty napalaną porcelaną. Konstrukcja wytrzymała i sprawdzona od dziesięcioleci, dobrze znosi obciążenie zębów trzonowych. Minus: metal nie przepuszcza światła, a przy brzegu dziąsła po latach może się zaznaczyć ciemniejsza linia.'
-        ikona: ''
-        cena: ''
-        strona: ''
-      - tytul: Korona pełnoceramiczna E-MAX
-        tresc: Bez podbudowy metalowej. Ceramika przepuszcza światło podobnie jak naturalne szkliwo, dzięki czemu korona w strefie widocznej wygląda bardziej naturalnie. Wybór dla zębów przednich oraz dla pacjentów, którzy nie chcą metalu w jamie ustnej.
-        ikona: ''
-        cena: ''
-        strona: ''
-  - type: ramka
-    ikona: ''
-    tresc: |-
-      W praktyce wygląda to prosto: ząb trzonowy, którego zadaniem jest przenieść obciążenie, częściej dostaje koronę porcelanową. Ząb w strefie widocznej — pełnoceramiczną.
-
-      Na czas, gdy pracownia wykonuje pracę, zakładamy **koronę tymczasową**. Chroni opracowany ząb i pozwala normalnie jeść oraz mówić.
-    wariant: domyslny
-    waska: false
-    polacz: true
-    kotwica: ''
-    wypunktowanie: zwykle
-    rodzaj: info
   - type: tekst
     naglowek: Most z włókna szklanego — gdy brakuje jednego zęba
     nadtytul: ''
@@ -157,14 +120,6 @@ sekcje:
     elementy:
       - tytul: Badanie i plan
         tresc: Oceniamy stan zęba, dziąseł i zgryzu. Jeśli trzeba, od razu wykonujemy [zdjęcie RTG na miejscu](/rtg-pantomogram/) — bez odsyłania do innej pracowni. Badanie z konsultacją to 100 zł.
-      - tytul: Przygotowanie zęba
-        tresc: Ząb pod koronę opracowujemy w znieczuleniu, po czym pobieramy wycisk, na podstawie którego pracownia wykonuje pracę.
-      - tytul: Korona tymczasowa
-        tresc: Opracowany ząb zabezpieczamy koroną tymczasową na czas oczekiwania.
-      - tytul: Przymiarka i osadzenie
-        tresc: Sprawdzamy dopasowanie, kolor i zgryz, a następnie osadzamy pracę na stałe.
-      - tytul: Kontrola
-        tresc: Po osadzeniu sprawdzamy, jak praca zachowuje się w zgryzie. Dalej liczy się [higienizacja](/higienizacja/) — pod brzegiem korony osad odkłada się tak samo jak na zębie.
   - type: tekst
     naglowek: ''
     nadtytul: ''
@@ -187,7 +142,7 @@ sekcje:
     waska: true
     polacz: false
     kotwica: ceny
-    wstep: Protetyka — korony i mosty. Ceny dotyczą jednego zęba.
+    wstep: Protetyka — mosty. Ceny dotyczą uzupełnienia jednego zęba.
     kategorie: []
     pozycje:
       - most-wlokno
@@ -216,23 +171,9 @@ sekcje:
     polacz: false
     kotwica: ''
     elementy:
-      - pytanie: Ile kosztuje korona na ząb w Legnicy?
-        odpowiedz: |-
-          Cenę korony porcelanowej i pełnoceramicznej E-MAX podajemy po badaniu, przed rozpoczęciem leczenia. Most z włókna szklanego przy jednym brakującym zębie to **850 zł**. Osobno płatne jest badanie z konsultacją — 100 zł.
-
-          [Pełny cennik →](/cennik/)
-      - pytanie: Czym różni się korona porcelanowa od pełnoceramicznej E-MAX?
-        odpowiedz: Korona porcelanowa ma metalową podbudowę pokrytą porcelaną — jest wytrzymała i sprawdzona, ale przy brzegu dziąsła z czasem może się zaznaczyć ciemniejsza linia. Korona pełnoceramiczna E-MAX nie ma metalu, więc lepiej przepuszcza światło i w strefie widocznej wygląda naturalniej. Na zęby trzonowe częściej wybieramy porcelanową, na przednie pełnoceramiczną.
-      - pytanie: Czy pod koronę trzeba zeszlifować cały ząb?
-        odpowiedz: |-
-          Pod koronę ząb opracowuje się na całym obwodzie, żeby korona mogła go objąć i przejąć obciążenie przy żuciu. Jeśli zmiana dotyczy tylko wyglądu powierzchni licowej przedniego zęba, mniej inwazyjnym rozwiązaniem jest licówka — tam usuwa się jedynie cienką warstwę powierzchni licowej.
-
-          [Więcej o licówkach →](/licowki/)
       - pytanie: Czy most z włókna szklanego wymaga szlifowania zębów obok?
         odpowiedz: 'Nie wymaga mocnego szlifowania, w odróżnieniu od mostu porcelanowego, w którym oba zęby sąsiednie opracowuje się pod korony. To jego główna zaleta: luka po jednym zębie zostaje uzupełniona, a zdrowe zęby obok zostają w dużej mierze nienaruszone.'
-      - pytanie: Ile wizyt zajmuje założenie korony?
-        odpowiedz: Korona powstaje w pracowni protetycznej, więc potrzebna jest wizyta na opracowanie zęba i wycisk oraz kolejna na przymiarkę i osadzenie. Dokładną liczbę wizyt i odstępy między nimi ustalamy na konsultacji, bo zależą od stanu zęba i zakresu pracy.
-      - pytanie: Jak długo wytrzymuje korona albo most?
+      - pytanie: Jak długo wytrzymuje  most?
         odpowiedz: |-
           Nie da się podać jednej liczby lat. Trwałość zależy od higieny, siły zgryzu, stanu zęba filarowego i od tego, czy pacjent zaciska albo zgrzyta zębami. Przy bruksizmie uzupełnienia protetyczne ścierają się i pękają szybciej, dlatego warto najpierw zająć się przyczyną.
 
@@ -255,7 +196,7 @@ sekcje:
         opis: Wypełnienia i odbudowa zęba materiałem światłoutwardzalnym
   - type: cta
     naglowek: Umów konsultację protetyczną
-    tresc: Na konsultacji oceniamy, czy ząb da się jeszcze odbudować koroną, i podajemy koszt całej pracy. Rejestracja wyłącznie telefoniczna.
+    tresc: Na konsultacji oceniamy, czy ząb da się jeszcze odbudować oraz koszt całej pracy. Rejestracja wyłącznie telefoniczna.
     przycisk:
       etykieta: Dojazd i mapa
       strona: kontakt
