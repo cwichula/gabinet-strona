@@ -25,7 +25,7 @@ sekcje:
     nadtytul: ''
     ikona: ''
     tresc: |-
-      Gabinet działa przy ul. Złotoryjskiej 16/18 m. 10 od 1995 roku, a prowadzi go lek. stom. Dorota Rożdżestwieńska. Przyjmujemy całe rodziny — dorosłych i dzieci. Zakres usług jest świadomie wąski: robimy to, co da się zrobić dobrze w jednym gabinecie, z diagnostyką RTG na miejscu i bez odsyłania pacjenta w kilka miejsc.
+      Gabinet działa przy ul. Złotoryjskiej 16/18 m. 10 od 1995 roku, a prowadzi go lek. stom. Dorota Rożdżestwieńska. Przyjmujemy  dorosłych i dzieci. Zakres usług jest świadomie wąski: robimy to, co da się zrobić dobrze w jednym gabinecie, z diagnostyką RTG na miejscu i bez odsyłania pacjenta w kilka miejsc.
 
       Poniżej znajdziesz wszystkie dziewięć obszarów leczenia, pogrupowanych tematycznie. Jeśli nie wiesz, do której grupy należy Twój problem — zadzwoń pod [699 904 989](tel:+48699904989) albo po prostu przyjdź na [pierwszą wizytę](/pierwsza-wizyta/): badanie z konsultacją kosztuje 100 zł i kończy się planem leczenia razem z kosztem.
     zdjecie: null
