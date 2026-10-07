@@ -10,7 +10,7 @@ sekcje:
     tresc: Prywatny gabinet lek. stom. Doroty Rożdżestwieńskiej przy ul. Złotoryjskiej 16/18 m.10   Leczymy  — dorosłych i dzieci — a od lat specjalizujemy się w leczeniu zębów  , wykonywaniu estetycznych i trwałych wypełnień w zębach , a także robimy szyny relaksacyjne  Michigan na zgrzytanie zębów i napięciowe bóle głowy .
     zdjecie:
       plik: /images/hero-gabinet.jpg
-      alt: 'Gabinet zabiegowy: unit stomatologiczny z fotelem i lampą przy dużym oknie'
+      alt: 'Gabinet zabiegowy: unit stomatologiczny z fotelem i lampą przy dużym oknie z widokiem na legnicką Katedrę'
       podpis: ''
     przycisk:
       etykieta: Jak wygląda pierwsza wizyta
