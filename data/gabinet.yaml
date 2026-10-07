@@ -1,61 +1,56 @@
-# Plik edytowany w panelu /admin/ (Sveltia CMS, "Dane gabinetu"); komentarze
-# w tym pliku znikna przy pierwszym zapisie z CMS.
-nazwa: "Prywatny Gabinet Stomatologiczny lek. stom. Dorota Rożdżestwieńska"
-nazwa_krotka: "Gabinet stomatologiczny Dorota Rożdżestwieńska"
-lekarz: "lek. stom. Dorota Rożdżestwieńska"
+nazwa: Prywatny Gabinet Stomatologiczny lek. stom. Dorota Rożdżestwieńska
+nazwa_krotka: Gabinet stomatologiczny Dorota Rożdżestwieńska
+lekarz: lek. stom. Dorota Rożdżestwieńska
 rok_zalozenia: 1995
 adres:
-  ulica: "ul. Złotoryjska 16/18 m. 10"
-  kod: "59-220"
-  miasto: "Legnica"
-  region: "dolnośląskie"
-  dojazd: "Wejście od ul. Złotoryjskiej, od strony Optyka i Katedry. Parking w Galerii Gwarnej tuż obok."
-  parking: "Galeria Gwarna tuż obok"
-  wspolrzedne: "51.207798, 16.158593"
+  ulica: ul. Złotoryjska 16/18 m. 10
+  kod: 59-220
+  miasto: Legnica
+  region: dolnośląskie
+  dojazd: Wejście od ul. Złotoryjskiej, od strony Optyka i Katedry. Parking w Galerii Gwarnej tuż obok.
+  parking: Galeria Gwarna tuż obok
+  wspolrzedne: 51.207798, 16.158593
 telefony:
-  - etykieta: "Telefon do rejestracji"
-    numer: "699 904 989"
-email: ""
+  - etykieta: Telefon do rejestracji
+    numer: 699 904 989
+email: ''
 obszar:
-  - "powiat legnicki"
+  - powiat legnicki
 godziny:
-  - dzien: "Poniedziałek"
-    od: "9:00"
-    do: "19:00"
-  - dzien: "Wtorek"
-    od: "9:00"
-    do: "19:00"
-  - dzien: "Środa"
-    od: "9:00"
-    do: "19:00"
-  - dzien: "Czwartek"
-    od: "9:00"
-    do: "19:00"
-  - dzien: "Piątek"
-    od: ""
-    do: ""
-  - dzien: "Sobota"
-    od: ""
-    do: ""
-  - dzien: "Niedziela"
-    od: ""
-    do: ""
+  - dzien: Poniedziałek
+    od: 9:00
+    do: 15:00
+  - dzien: Wtorek
+    od: 15:00
+    do: 19:00
+  - dzien: Środa
+    od: 9:00
+    do: 15:00
+  - dzien: Czwartek
+    od: 9:00
+    do: 15:00
+  - dzien: Piątek
+    od: ''
+    do: ''
+  - dzien: Sobota
+    od: ''
+    do: ''
+  - dzien: Niedziela
+    od: ''
+    do: ''
 rezerwacja:
   wlaczona: false
-  url: ""
-  etykieta: "Umów wizytę online"
-  dostawca: ""
+  url: ''
+  etykieta: Umów wizytę online
+  dostawca: ''
   potwierdzona: false
-  nota: ""
-# Dane rejestrowe: do uzupelnienia przez gabinet (NIP, REGON, nr prawa
-# wykonywania zawodu, nr ksiegi RPWDL). Puste = wiersz w stopce sie nie pokazuje,
-# a w polityce prywatnosci (shortcode gabinet) jest "DO UZUPELNIENIA".
+  nota: ''
 rejestrowe:
-  nip: ""
-  regon: ""
-  pwz: ""
-  rpwdl: ""
+  nip: ''
+  regon: ''
+  pwz: ''
+  rpwdl: ''
 platnosci:
-  - "gotówka"
-  - "karta płatnicza"
-  - "BLIK"
+  - gotówka
+  - karta płatnicza
+  - BLIK
