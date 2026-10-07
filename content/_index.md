@@ -26,7 +26,7 @@ sekcje:
       - ikona: karta
         tekst: Karta i **BLIK**
     plakietka:
-      wyroznienie: od 1995
+      wyroznienie: od 1995 roku
       tekst: ten sam lekarz, ten sam adres
     wariant: domyslny
     waska: false
