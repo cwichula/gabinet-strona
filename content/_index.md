@@ -22,12 +22,12 @@ sekcje:
       - ikona: pinezka
         tekst: '**ul. Złotoryjska 16/18 m. 10**, 59-220 Legnica'
       - ikona: parking
-        tekst: Parking w **Galerii Gwarnej** obok
+        tekst: Parking w **Galerii Gwarnej** lub ul .Bankowa obok
       - ikona: karta
         tekst: Karta i **BLIK**
     plakietka:
       wyroznienie: od 1995
-      tekst: ten sam lekarz, ten sam gabinet
+      tekst: ten sam lekarz, ten sam adres
     wariant: domyslny
     waska: false
     polacz: false
@@ -197,7 +197,7 @@ sekcje:
       Każdego pacjenta traktujemy indywidualnie. Zapewniamy sympatyczną i ciepłą atmosferę, pełną zrozumienia i zaufania.
     zdjecie:
       plik: /images/dorota-rozdzestwienska.jpg
-      alt: Lek. stom. Dorota Rożdżestwieńska, prowadząca gabinet przy ul. Złotoryjskiej w Legnicy
+      alt: Lek. stom. Dorota Rożdżestwieńska, prowadząca gabinet przy ul. Złotoryjskiej  16/18 m.10 w Legnicy
       podpis: ''
     przycisk: null
     wariant: domyslny
@@ -234,7 +234,7 @@ sekcje:
     elementy:
       - pytanie: Gdzie dokładnie znajduje się gabinet w Legnicy?
         odpowiedz: |-
-          Przy **ul. Złotoryjskiej 16/18 m. 10** w centrum Legnicy. Wejście jest od ul. Złotoryjskiej, od strony Optyka i Katedry. Zaparkować można na parkingu Galerii Gwarnej tuż obok.
+          Przy **ul. Złotoryjskiej 16/18 m. 10** w centrum Legnicy. Wejście jest od ul. Złotoryjskiej, od strony Optyka i Katedry. Zaparkować można na parkingu Galerii Gwarnej lub na parkingu ul.Bankowa tuż obok.
 
           [Zobacz zdjęcie wejścia i mapę dojazdu →](/kontakt/)
       - pytanie: Czy w gabinecie można zapłacić kartą lub BLIKIEM?
