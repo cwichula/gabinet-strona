@@ -10,7 +10,7 @@ sekcje:
     naglowek: Usługi stomatologiczne w Legnicy
     nadtytul: ''
     ikona: ''
-    tresc: Leczenia w gabinecie w centrum Legnicy — od leczenia próchnicy i higienizacji po ,korony, protezy i szynę relaksacyjną Michigan. Każda usługa ma własną stronę z opisem przebiegu zabiegu i ceną.
+    tresc: Leczenia w gabinecie w centrum Legnicy — od leczenia próchnicy i higienizacji po korony, protezy i szynę relaksacyjną Michigan. Każda usługa ma własną stronę z opisem przebiegu zabiegu i ceną.
     zdjecie: null
     przycisk: null
     pokaz_telefon: false
