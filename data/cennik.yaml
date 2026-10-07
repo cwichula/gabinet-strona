@@ -3,15 +3,15 @@ kategorie:
   - id: zachowawcza
     nazwa: Stomatologia zachowawcza, profilaktyka
     skrot: Zachowawcza i profilaktyka
-  - id: stawy
-    nazwa: Leczenie dysfunkcji stawów skroniowo-żuchwowych
-    skrot: Stawy skroniowo-żuchwowe
   - id: estetyczna
     nazwa: Stomatologia estetyczna
     skrot: Stomatologia estetyczna
   - id: protetyka
     nazwa: Protetyka
     skrot: Protetyka
+  - id: stawy
+    nazwa: Leczenie dysfunkcji stawów skroniowo-żuchwowych
+    skrot: Stawy skroniowo-żuchwowe
   - id: pozostale
     nazwa: Pozostałe usługi
     skrot: Pozostałe usługi
@@ -124,30 +124,6 @@ pozycje:
     cena_do: null
     uwagi: ''
     id: licowka-kompozyt
-  - nazwa: ggggg
-    kategoria: estetyczna
-    cena_od: 0
-    cena_do: null
-    uwagi: ''
-    id: yyyyyy
-  - nazwa: llllllll
-    kategoria: protetyka
-    cena_od: 0
-    cena_do: null
-    uwagi: ''
-    id: aaaaa
-  - nazwa: rrrrrrr
-    kategoria: protetyka
-    cena_od: 0
-    cena_do: null
-    uwagi: ''
-    id: bbbbb
-  - nazwa: tttt
-    kategoria: protetyka
-    cena_od: 0
-    cena_do: null
-    uwagi: ''
-    id: ddddd
   - nazwa: Most z włókna szklanego (brakujący jeden ząb)
     kategoria: protetyka
     cena_od: 850
@@ -178,12 +154,6 @@ pozycje:
     cena_do: null
     uwagi: ''
     id: proteza-akrylowa
-  - nazwa: hhhh
-    kategoria: protetyka
-    cena_od: 0
-    cena_do: 0
-    uwagi: ''
-    id: eeeeee
   - nazwa: Zdjęcie pantomograficzne cyfrowe
     kategoria: pozostale
     cena_od: 150
