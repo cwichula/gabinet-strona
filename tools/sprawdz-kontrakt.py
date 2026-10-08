@@ -28,7 +28,11 @@ Sprawdza (w tej kolejnosci):
      we wzorze i komunikacie pola "kotwica" w config.yml i w sekcje.html szablonow;
  11. wersja kontraktu ta sama w hugo.yaml (params.kontraktBlokow), w komentarzu
      config.yml i w docs/KONTRAKT-BLOKOW.md;
- 12. strony z data/ustawienia.yaml -> strona_404.linki istnieja.
+ 12. strony z data/ustawienia.yaml -> strona_404.linki istnieja;
+ 13. kazda paleta z pola "paleta" (Ustawienia) w config.yml ma w kazdym
+     szablonie blok [data-paleta="x"] w assets/css/style.css (poza bordo -
+     palety domyslnej bez atrybutu) i kolor w layouts/partials/paleta.html,
+     a wartosc w data/ustawienia.yaml jest na liscie.
 
 Wymaga PyYAML (w CI: pip install PyYAML). Kod wyjscia: 0 = bez bledow,
 1 = co najmniej jeden blad kontraktu, 2 = blad konfiguracji (brak PyYAML,
@@ -524,6 +528,40 @@ def sprawdz_linki_404(ustawienia: dict) -> list[str]:
     return bledy
 
 
+def opcje_palety(config: dict) -> list[str]:
+    """Wartosci pola "paleta" z kolekcji Ustawienia w config.yml."""
+    for kolekcja in lista_slownikow(config.get("collections")):
+        for plik in lista_slownikow(kolekcja.get("files")):
+            for pole in lista_slownikow(plik.get("fields")):
+                if pole.get("name") == "paleta":
+                    return [str(o.get("value") if isinstance(o, dict) else o) for o in pole.get("options") or []]
+    return []
+
+
+def sprawdz_palety(config: dict, ustawienia: dict, szablony: list[Path]) -> list[str]:
+    """13. palety z panelu maja kolory w kazdym szablonie."""
+    opcje = opcje_palety(config)
+    if not opcje:
+        return []
+    bledy = []
+    wybrana = ustawienia.get("paleta")
+    if wybrana not in (None, "") and str(wybrana) not in opcje:
+        bledy.append(f"data/ustawienia.yaml: paleta {wybrana!r} nie jest na liście pola „paleta” w config.yml ({', '.join(opcje)})")
+    for szablon in szablony:
+        css = szablon / "assets/css/style.css"
+        partial = szablon / "layouts/partials/paleta.html"
+        tekst_css = css.read_text(encoding="utf-8") if css.is_file() else ""
+        tekst_partiala = partial.read_text(encoding="utf-8") if partial.is_file() else ""
+        if not tekst_partiala:
+            bledy.append(f"{sciezka_wzgledna(partial)}: brak pliku (lista palet szablonu)")
+        for p in opcje:
+            if p != "bordo" and f'[data-paleta="{p}"]' not in tekst_css:
+                bledy.append(f'{sciezka_wzgledna(css)}: brak kolorów palety {p!r} (blok :root[data-paleta="{p}"])')
+            if tekst_partiala and f'"{p}"' not in tekst_partiala:
+                bledy.append(f"{sciezka_wzgledna(partial)}: brak palety {p!r} na liście akcentów")
+    return bledy
+
+
 def main() -> int:
     try:
         config = wczytaj_yaml(CONFIG)
@@ -555,6 +593,7 @@ def main() -> int:
     bledy += sprawdz_kotwice_zarezerwowane(config, szablony)
     bledy += sprawdz_wersje_kontraktu(hugo)
     bledy += sprawdz_linki_404(ustawienia)
+    bledy += sprawdz_palety(config, ustawienia, szablony)
 
     for b in bledy:
         print(f"BŁĄD: {b}", file=sys.stderr)

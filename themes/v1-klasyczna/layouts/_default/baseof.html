@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ site.Language.Locale | default "pl" }}" prefix="og: https://ogp.me/ns#">
+<html lang="{{ site.Language.Locale | default "pl" }}" prefix="og: https://ogp.me/ns#"{{ with (partialCached "paleta.html" site "paleta").nazwa }} data-paleta="{{ . }}"{{ end }}>
 <head>
 {{ partial "head.html" . }}
 </head>

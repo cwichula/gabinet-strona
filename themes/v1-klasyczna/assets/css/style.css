@@ -171,6 +171,105 @@
   color-scheme: dark;
 }
 
+/* --------------------------------------------------------- 1b. Palety
+
+   Palety wybierane w panelu (data/ustawienia.yaml -> paleta; atrybut
+   data-paleta na <html>, bordo = brak atrybutu). Kazdy kolor ma te sama
+   luminancje co odpowiadajacy mu kolor bordo, wiec kontrasty WCAG sa takie
+   jak w bordo (sprawdzone dla obu motywow). Blok jasny ma ta sama
+   specyficznosc co domyslny blok ciemny i stoi po nim, wiec KAZDA paleta
+   musi miec wartosci ciemne dla kazdego tokenu z bloku jasnego (poza
+   --akcent-pasma, wspolnym dla obu motywow). Lista palet: config.yml (pole
+   "paleta"), _default/baseof.html, partials/paleta.html - kontrola 13
+   w tools/sprawdz-kontrakt.py. */
+
+/* morska zielen */
+:root[data-paleta="morska"] {
+  --brand-800: #0f3b3e;
+  --brand-700: #18585d;
+  --brand-600: #21676c;
+  --brand-200: #99d1d5;
+  --brand-100: #e1eeef;
+  --brand-50:  #eff7f8;
+  --akcent-pasma: #18585d;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-paleta="morska"]:not([data-theme="light"]) {
+    --brand-100: #152728;
+    --brand-200: #1e3c3f;
+    --brand-50:  #14191a;
+    --brand-700: #28b9c3;
+    --brand-800: #62d9e1;
+    --brand-600: #2f9ea6;
+  }
+}
+:root[data-paleta="morska"][data-theme="dark"] {
+  --brand-100: #152728;
+  --brand-200: #1e3c3f;
+  --brand-50:  #14191a;
+  --brand-700: #28b9c3;
+  --brand-800: #62d9e1;
+  --brand-600: #2f9ea6;
+}
+
+/* granat */
+:root[data-paleta="granat"] {
+  --brand-800: #1d355e;
+  --brand-700: #2c4f8c;
+  --brand-600: #385d9d;
+  --brand-200: #bac8df;
+  --brand-100: #e8ecf2;
+  --brand-50:  #f4f6fa;
+  --akcent-pasma: #2c4f8c;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-paleta="granat"]:not([data-theme="light"]) {
+    --brand-100: #1c2432;
+    --brand-200: #2a3850;
+    --brand-50:  #16181c;
+    --brand-700: #89a9e0;
+    --brand-800: #b4c9ec;
+    --brand-600: #6d90cd;
+  }
+}
+:root[data-paleta="granat"][data-theme="dark"] {
+  --brand-100: #1c2432;
+  --brand-200: #2a3850;
+  --brand-50:  #16181c;
+  --brand-700: #89a9e0;
+  --brand-800: #b4c9ec;
+  --brand-600: #6d90cd;
+}
+
+/* zielen szalwiowa */
+:root[data-paleta="szalwia"] {
+  --brand-800: #203b2d;
+  --brand-700: #305844;
+  --brand-600: #3b6651;
+  --brand-200: #b3cdc0;
+  --brand-100: #e7edea;
+  --brand-50:  #f2f7f5;
+  --akcent-pasma: #305844;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-paleta="szalwia"]:not([data-theme="light"]) {
+    --brand-100: #1c2621;
+    --brand-200: #2a3b33;
+    --brand-50:  #161917;
+    --brand-700: #70b693;
+    --brand-800: #a4d2bb;
+    --brand-600: #599d7b;
+  }
+}
+:root[data-paleta="szalwia"][data-theme="dark"] {
+  --brand-100: #1c2621;
+  --brand-200: #2a3b33;
+  --brand-50:  #161917;
+  --brand-700: #70b693;
+  --brand-800: #a4d2bb;
+  --brand-600: #599d7b;
+}
+
 /* ------------------------------------------------------------- 2. Podstawa */
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -448,7 +547,7 @@ hr {
   margin-right: auto;
   min-height: 2.75rem;
 }
-.brand__mark { width: 2.4rem; height: 2.4rem; flex: none; }
+.brand__mark { width: 2.4rem; height: 2.4rem; flex: none; color: var(--akcent-pasma); }
 .brand__text { display: grid; line-height: 1.2; }
 .brand__name {
   font-family: var(--font-head);

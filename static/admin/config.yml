@@ -1436,6 +1436,20 @@ collections:
             widget: string
             required: false
             hint: Krótki komunikat na górze każdej strony (np. o urlopie). Puste = brak paska.
+          - name: paleta
+            label: Kolory strony
+            widget: select
+            default: bordo
+            required: false
+            options:
+              - { label: Bordo (obecne), value: bordo }
+              - { label: Morska zieleń, value: morska }
+              - { label: Granat, value: granat }
+              - { label: Zieleń szałwiowa, value: szalwia }
+            hint: >-
+              Kolor przycisków, linków, wyróżnień i ikony strony. Każda paleta jest
+              sprawdzona pod czytelność w trybie jasnym i ciemnym. Ikona na ekranie telefonu
+              zmieni kolor dopiero po wgraniu własnej ikony.
           - name: strona_dojazdu
             label: Strona „Dojazd i mapa”
             widget: relation

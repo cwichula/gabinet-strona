@@ -10,7 +10,7 @@
   "background_color" $kolory.jasny
   "theme_color" $kolory.jasny
   "icons" (slice
-    (dict "src" ("favicon.svg" | relURL) "sizes" "any" "type" "image/svg+xml" "purpose" "any")
+    (dict "src" (partialCached "favicon.html" site "favicon") "sizes" "any" "type" "image/svg+xml" "purpose" "any")
     (dict "src" ("apple-touch-icon.png" | relURL) "sizes" "180x180" "type" "image/png"))
 -}}
 {{- $m | jsonify (dict "indent" "  ") -}}

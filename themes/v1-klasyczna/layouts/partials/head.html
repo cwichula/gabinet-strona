@@ -56,7 +56,7 @@
 {{- end }}
 <meta name="twitter:card" content="summary_large_image">
 
-<link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml">
+<link rel="icon" href="{{ partialCached "favicon.html" site "favicon" }}" type="image/svg+xml">
 <link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}">
 {{- with resources.Get "meta/site.webmanifest" | resources.ExecuteAsTemplate "site.webmanifest" . }}
 <link rel="manifest" href="{{ .RelPermalink }}">
