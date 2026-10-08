@@ -76,7 +76,7 @@ sekcje:
     nadtytul: ''
     ikona: ''
     tresc: |-
-      Dzwonisz i pytasz, ile kosztuje wypełnienie. Uczciwa odpowiedź to „od 250 do 400 zł”, bo dopóki nikt nie zajrzał Ci do ust, nie wiadomo, o jakim ubytku mówimy.
+      Dzwonisz i pytasz, ile kosztuje wypełnienie. Uczciwa odpowiedź to „od 300 do 400 zł”, bo dopóki nikt nie zajrzał Ci do ust, nie wiadomo, o jakim ubytku mówimy.
 
       Mały ubytek na jednej powierzchni zęba to zupełnie inny nakład pracy niż ubytek obejmujący trzy ściany i brzeg sieczny. Przy tym drugim trzeba odtworzyć kształt zęba warstwami i ustawić punkt styczny z sąsiadem, żeby nie zalegało tam jedzenie.
 
