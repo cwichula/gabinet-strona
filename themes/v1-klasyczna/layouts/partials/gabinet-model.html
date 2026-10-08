@@ -3,7 +3,8 @@
        przyjec, strona z mapa/dojazdem, rezerwacja online (gdy wlaczona i ma adres),
        dni tygodnia do tabeli godzin i stopki (dzien, nr: 1 = poniedzialek, od, do),
        napis dla dnia bez godzin ("nieczynne"), nazwa i nazwa krotka (pusta =
-       tytul serwisu), strona polityki prywatnosci (albo nil). Wynik: dict. */ -}}
+       tytul serwisu), strona polityki prywatnosci (albo nil), profile w serwisach
+       (lista dict "url", "napis", "ikona"). Wynik: dict. */ -}}
 {{- $g := hugo.Data.gabinet -}}
 {{- $telefony := slice -}}
 {{- range $g.telefony }}{{ $telefony = $telefony | append (dict "etykieta" .etykieta "numer" .numer "tel" (partial "tel.html" .numer)) }}{{ end -}}
@@ -44,5 +45,18 @@
 {{- end -}}
 {{- $rez := false -}}
 {{- with $g.rezerwacja }}{{ if and .wlaczona .url }}{{ $rez = dict "url" .url "etykieta" (.etykieta | default (T "bookOnline")) "dostawca" (.dostawca | default "") "potwierdzona" (.potwierdzona | default false) "nota" (.nota | default "") }}{{ end }}{{ end -}}
+{{- /* profile w serwisach (facebook, instagram, ...): tylko adresy https://;
+       napis = nazwa z panelu albo nazwa serwisu, ikona wg rodzaju */ -}}
+{{- $ikonyProfili := dict "facebook" "ico-facebook" "instagram" "ico-instagram" "youtube" "ico-youtube" "google" "ico-google" "znanylekarz" "ico-star" -}}
+{{- $napisyProfili := dict "facebook" (T "socialFacebook") "instagram" (T "socialInstagram") "youtube" (T "socialYoutube") "google" (T "socialGoogle") "znanylekarz" (T "socialZnanyLekarz") -}}
+{{- $profile := slice -}}
+{{- range $g.profile | default slice -}}
+  {{- $url := strings.TrimSpace (.url | default "") -}}
+  {{- if hasPrefix $url "https://" -}}
+    {{- $rodzaj := .rodzaj | default "inny" -}}
+    {{- $napis := .nazwa | default (index $napisyProfili $rodzaj) | default (urls.Parse $url).Host -}}
+    {{- $profile = $profile | append (dict "url" $url "napis" $napis "ikona" (index $ikonyProfili $rodzaj | default "ico-link")) -}}
+  {{- end -}}
+{{- end -}}
 {{- $telefon := false }}{{ with $telefony }}{{ $telefon = index . 0 }}{{ end -}}
-{{- return dict "telefony" $telefony "telefon" $telefon "godziny_dane" (delimit $czesci ";") "dni_przyjec" $dni "tydzien" $tydzien "nieczynne" (T "closed") "dojazd" $dojazd "rezerwacja" $rez "nazwa" ($g.nazwa | default site.Title) "nazwa_krotka" ($g.nazwa_krotka | default site.Title) "polityka" (site.GetPage "/strony/polityka-prywatnosci") -}}
+{{- return dict "telefony" $telefony "telefon" $telefon "godziny_dane" (delimit $czesci ";") "dni_przyjec" $dni "tydzien" $tydzien "nieczynne" (T "closed") "dojazd" $dojazd "rezerwacja" $rez "nazwa" ($g.nazwa | default site.Title) "nazwa_krotka" ($g.nazwa_krotka | default site.Title) "polityka" (site.GetPage "/strony/polityka-prywatnosci") "profile" $profile -}}

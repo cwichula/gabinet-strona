@@ -77,6 +77,12 @@ DOZWOLONE_SERWERY = {
     "goo.gl", "maps.app.goo.gl",
     "www.gov.pl", "gov.pl", "rpwdl.ezdrowie.gov.pl", "nil.org.pl",
     "uodo.gov.pl", "www.uodo.gov.pl",
+    # profile gabinetu (data/gabinet.yaml -> profile)
+    "facebook.com", "www.facebook.com", "m.facebook.com", "fb.com",
+    "instagram.com", "www.instagram.com",
+    "youtube.com", "www.youtube.com", "youtu.be",
+    "znanylekarz.pl", "www.znanylekarz.pl",
+    "g.page", "business.google.com", "maps.google.pl", "www.google.pl", "g.co",
 }
 
 # Atrybut z obcym adresem, ktory skrypt laduje dopiero po zgodzie (klik).

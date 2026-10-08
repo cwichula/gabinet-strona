@@ -1344,6 +1344,39 @@ collections:
             widget: list
             required: false
             hint: Np. gotówka, karta płatnicza, BLIK — w danych dla wyszukiwarek (szablon może je też pokazać na stronie).
+          - name: profile
+            label: Gabinet w internecie (Facebook, Instagram, Google…)
+            label_singular: profil
+            widget: list
+            required: false
+            collapsed: true
+            summary: '{{rodzaj}}: {{url}}'
+            hint: >-
+              Linki do profili gabinetu — w stopce każdej strony (ikona i nazwa) i w danych
+              dla Google. Kolejność zmienisz przeciągając. Pusta lista = brak linków.
+            fields:
+              - name: rodzaj
+                label: Serwis
+                widget: select
+                default: facebook
+                options:
+                  - { label: Facebook, value: facebook }
+                  - { label: Instagram, value: instagram }
+                  - { label: Wizytówka Google, value: google }
+                  - { label: ZnanyLekarz, value: znanylekarz }
+                  - { label: YouTube, value: youtube }
+                  - { label: Inny, value: inny }
+              - name: url
+                label: Adres profilu
+                widget: string
+                type: url
+                pattern: ['^https://\S+$', 'Pełny adres zaczynający się od https://']
+                hint: Skopiuj adres z paska przeglądarki na stronie profilu.
+              - name: nazwa
+                label: Napis w stopce
+                widget: string
+                required: false
+                hint: Puste = nazwa serwisu (np. „Facebook”). Przy „Inny” wpisz nazwę.
 
   # ------------------------------------------------------------- Ustawienia
   - name: ustawienia

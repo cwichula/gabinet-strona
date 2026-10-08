@@ -1284,6 +1284,10 @@ dialog.lightbox::backdrop { background: rgb(20 23 26 / 80%); backdrop-filter: bl
 .footer__legal a { display: inline-flex; align-items: center; min-height: 2.75rem; }
 .site-footer ul { list-style: none; margin: 0; padding: 0; }
 .site-footer li { padding: .22rem 0; }
+/* profile gabinetu (data/gabinet.yaml -> profile): ikona + nazwa serwisu */
+.footer__profile { display: flex; flex-wrap: wrap; gap: 0 1.1rem; }
+.footer__profile a { display: inline-flex; align-items: center; gap: .45em; min-height: 2.75rem; }
+.footer__profile .ico { width: 1.15em; height: 1.15em; flex: none; }
 .footer__grid {
   display: grid;
   gap: var(--sp-5) var(--sp-6);

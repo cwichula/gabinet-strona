@@ -18,6 +18,7 @@
 {{- $gab = merge $gab (dict "logo" ("favicon.svg" | absURL)) -}}
 {{- with $m.telefon }}{{ $gab = merge $gab (dict "telephone" .tel) }}{{ end -}}
 {{- with $g.email }}{{ $gab = merge $gab (dict "email" .) }}{{ end -}}
+{{- with $m.profile }}{{ $adresy := slice }}{{ range . }}{{ $adresy = $adresy | append .url }}{{ end }}{{ $gab = merge $gab (dict "sameAs" $adresy) }}{{ end -}}
 {{- with $g.rok_zalozenia }}{{ $gab = merge $gab (dict "foundingDate" (string .)) }}{{ end -}}
 {{- $adres := false -}}
 {{- with $g.adres -}}

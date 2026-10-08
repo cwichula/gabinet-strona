@@ -55,6 +55,13 @@
         {{- with $u.stopka_tekst }}
         <p class="bez-marginesu">{{ partial "tekst-wiersze.html" . }}</p>
         {{- end }}
+        {{- with $m.profile }}
+        <ul class="footer__profile" aria-label="{{ T "socialProfiles" }}">
+          {{- range . }}
+          <li><a href="{{ .url }}" rel="me noopener"><svg class="ico" aria-hidden="true"><use href="#{{ .ikona }}"></use></svg>{{ .napis }}</a></li>
+          {{- end }}
+        </ul>
+        {{- end }}
         {{ partial "rezerwacja.html" (dict "miejsce" "stopka") }}
       </div>
 
