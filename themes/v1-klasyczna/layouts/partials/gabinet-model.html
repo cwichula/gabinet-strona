@@ -27,8 +27,15 @@
     {{- $dni = T "openFromTo" (dict "from" (index $dopelniacz $pierwszy) "to" (index $dopelniacz $ostatni)) -}}
   {{- end -}}
 {{- end -}}
-{{- /* strona "Dojazd": pierwsza strona z blokiem mapy, potem z blokiem kontaktu */ -}}
+{{- /* strona "Dojazd": wybrana w ustawieniach (strona_dojazdu; usunieta albo
+       ukryta = wybor automatyczny), inaczej pierwsza strona z blokiem mapy,
+       potem z blokiem kontaktu */ -}}
 {{- $dojazd := false -}}
+{{- with (hugo.Data.ustawienia | default dict).strona_dojazdu -}}
+  {{- with (partial "cel-linku.html" (dict "strona" . "gdzie" "Ustawienia, strona z dojazdem" "scisle" false)).strona -}}
+    {{- if not .Draft }}{{ $dojazd = . }}{{ end -}}
+  {{- end -}}
+{{- end -}}
 {{- $strony := partialCached "strony-tresci.html" site "strony" -}}
 {{- range $typ := slice "mapa" "kontakt" -}}
   {{- range $p := $strony -}}

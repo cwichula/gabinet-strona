@@ -1139,6 +1139,29 @@ collections:
               Lista stron w stopce (obok listy usług). Pusta = pozycje menu głównego
               bez podmenu.
             fields: *pola_linku
+          - name: stopka_uslugi
+            label: Usługi w stopce
+            label_singular: usługę
+            widget: list
+            required: false
+            collapsed: true
+            summary: '{{strona}}'
+            hint: >-
+              Kolumna „Usługi” w stopce, w tej kolejności (przeciąganie). Pusta = wszystkie
+              usługi w kolejności z „Kolejność usług”. Strona usunięta albo ukryta jest pomijana.
+            fields:
+              - name: strona
+                label: Strona
+                widget: relation
+                collection: strony
+                value_field: '{{slug}}'
+                display_fields: [title]
+                search_fields: [title]
+              - name: etykieta
+                label: Napis w stopce
+                widget: string
+                required: false
+                hint: Puste = napis z podmenu „Usługi” albo tytuł strony.
           - name: stopka_dolna
             label: Odnośniki na dole stopki
             label_singular: link
@@ -1353,6 +1376,17 @@ collections:
             widget: string
             required: false
             hint: Krótki komunikat na górze każdej strony (np. o urlopie). Puste = brak paska.
+          - name: strona_dojazdu
+            label: Strona „Dojazd i mapa”
+            widget: relation
+            collection: strony
+            value_field: '{{slug}}'
+            display_fields: [title]
+            search_fields: [title]
+            required: false
+            hint: >-
+              Dokąd prowadzi „Dojazd i mapa →” w stopce, na pasku na telefonie i na stronie 404.
+              Puste = pierwsza strona z blokiem mapy, potem z blokiem kontaktu.
           - name: naglowek_strony
             label: Elementy nagłówka
             widget: object

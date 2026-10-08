@@ -75,6 +75,7 @@ stopka:
   - etykieta: Kontakt i dojazd
     strona: kontakt
     link_zewnetrzny: ''
+stopka_uslugi: []
 stopka_dolna:
   - etykieta: Polityka prywatności i cookies
     strona: polityka-prywatnosci

@@ -1,21 +1,28 @@
 {{- /* Stopka i pasek dolny na telefonie (makieta v1 z prototypu gamstom).
        Naglowki kolumn - data/ustawienia.yaml (napisy.stopka_*).
        Formy platnosci (data/gabinet.yaml) ten szablon pokazuje tylko w danych
-       dla wyszukiwarek - stopka v1 ich nie wymienia. Kolumna "Usługi" = strony uslug (pole "usluga"),
-       a gdy zadnej nie ma - podmenu pierwszej pozycji menu z podmenu.
+       dla wyszukiwarek - stopka v1 ich nie wymienia. Kolumna "Usługi" = lista
+       "stopka_uslugi" z data/menu.yaml (strona usunieta albo ukryta pominieta bez
+       bledu), pusta = strony uslug (pole "usluga"), a gdy zadnej nie ma - podmenu
+       pierwszej pozycji menu z podmenu.
        Kolumna "Gabinet" = pozycje menu bez podmenu. */ -}}
 {{- $g := hugo.Data.gabinet -}}
 {{- $u := hugo.Data.ustawienia | default dict -}}
 {{- $n := (partialCached "ustawienia-model.html" site "ustawienia").napisy -}}
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
 {{- $menu := partialCached "menu-model.html" "pozycje" "pozycje" -}}
-{{- /* napis uslugi: etykieta z podmenu, gdy strona tam jest (np. "Licówki kompozytowe"), inaczej tytul strony */ -}}
 {{- $uslugi := slice -}}
-{{- range $p := partial "uslugi-strony.html" (dict) -}}
-  {{- $etykieta := $p.LinkTitle -}}
-  {{- $znaleziona := false -}}
-  {{- range $menu }}{{ range .dzieci }}{{ if and .strona (not $znaleziona) ($p.Eq .strona) }}{{ $etykieta = .etykieta }}{{ $znaleziona = true }}{{ end }}{{ end }}{{ end -}}
-  {{- $uslugi = $uslugi | append (dict "etykieta" $etykieta "href" $p.RelPermalink "zewnetrzny" false) -}}
+{{- range $el := hugo.Data.menu.stopka_uslugi -}}
+  {{- with (partial "cel-linku.html" (dict "strona" $el.strona "gdzie" "Menu, usługi w stopce" "scisle" false)).strona -}}
+    {{- if not .Draft -}}
+      {{- $uslugi = $uslugi | append (dict "etykieta" ($el.etykieta | default (partial "inline/etykieta-uslugi.html" (dict "strona" . "menu" $menu))) "href" .RelPermalink "zewnetrzny" false) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if not $uslugi -}}
+  {{- range $p := partial "uslugi-strony.html" (dict) -}}
+    {{- $uslugi = $uslugi | append (dict "etykieta" (partial "inline/etykieta-uslugi.html" (dict "strona" $p "menu" $menu)) "href" $p.RelPermalink "zewnetrzny" false) -}}
+  {{- end -}}
 {{- end -}}
 {{- if not $uslugi }}{{ range $menu }}{{ if and .dzieci (not $uslugi) }}{{ $uslugi = .dzieci }}{{ end }}{{ end }}{{ end -}}
 {{- /* kolumna "Gabinet": lista "stopka" z data/menu.yaml, pusta = pozycje menu bez podmenu */ -}}
@@ -127,3 +134,13 @@
   {{- end }}
   {{ partial "rezerwacja.html" (dict "miejsce" "pasek") }}
 </div>
+
+{{- /* napis uslugi: etykieta z podmenu, gdy strona tam jest (np. "Licówki
+       kompozytowe"), inaczej tytul strony. Wejscie: dict "strona", "menu". */ -}}
+{{- define "partials/inline/etykieta-uslugi.html" -}}
+  {{- $p := .strona -}}
+  {{- $etykieta := $p.LinkTitle -}}
+  {{- $znaleziona := false -}}
+  {{- range .menu }}{{ range .dzieci }}{{ if and .strona (not $znaleziona) ($p.Eq .strona) }}{{ $etykieta = .etykieta }}{{ $znaleziona = true }}{{ end }}{{ end }}{{ end -}}
+  {{- return $etykieta -}}
+{{- end -}}
