@@ -31,7 +31,7 @@
           <svg class="ico" aria-hidden="true" style="width:2rem;height:2rem;color:var(--brand-600)"><use href="#ico-map"></use></svg>
           <strong>{{ T "mapHeading" }}</strong>
           <p>{{ with $n.mapa_zgoda }}{{ partial "tekst-wiersze.html" . }}{{ else }}{{ T "mapConsent" }}{{ end }}</p>
-          <button class="btn btn--primary" type="button" data-map-load>{{ T "showGoogleMap" }}</button>
+          <button class="btn btn--primary" type="button" data-map-load>{{ $n.mapa_przycisk | default (T "showGoogleMap") }}</button>
           <p><a href="https://www.google.com/maps/dir/?api=1&amp;destination={{ $zapytanie | safeURL }}"
                 target="_blank" rel="noopener">{{ T "openNavigation" }}</a></p>
         </div>

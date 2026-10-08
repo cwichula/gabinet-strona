@@ -64,6 +64,7 @@
 
 {{- $css := slice (resources.Get "css/style.css") (resources.Get "css/hugo.css") | resources.Concat "css/v1.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+{{- if (partialCached "ustawienia-model.html" site "ustawienia").naglowek.motyw }}
 <script>
   /* Ustawia motyw PRZED pierwszym malowaniem - bez tego strona mrugnelaby
      na bialo u kogos, kto wybral ciemny. Celowo male i synchroniczne,
@@ -75,6 +76,9 @@
     } catch (e) {}
   })();
 </script>
+{{- /* bez przelacznika (ustawienia: naglowek_strony) zapamietany wybor jest
+       pomijany - inaczej nie daloby sie wrocic z ciemnego motywu */}}
+{{- end }}
 {{- $js := resources.Get "js/app.js" | minify | fingerprint }}
 <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
 

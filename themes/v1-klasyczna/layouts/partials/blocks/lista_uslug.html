@@ -3,6 +3,7 @@
        z polem "usluga": ikona, usluga.nazwa (pusta = tytul strony), usluga.skrot, "od" + cena pozycji
        usluga.cena_od z cennika, "Zobacz szczegóły". */ -}}
 {{- $b := .blok -}}
+{{- $n := (partialCached "ustawienia-model.html" site "ustawienia").napisy -}}
 {{- $kol := printf "%v" ($b.kolumny | default 3) -}}
 {{- if not (in (slice "2" "3" "4") $kol) }}{{ $kol = "3" }}{{ end -}}
 {{- $uslugi := partial "uslugi-strony.html" (dict "tylko_wyroznione" $b.tylko_wyroznione) -}}
@@ -23,9 +24,9 @@
         <p>{{ . }}</p>
         {{- end }}
         {{- with $poz }}
-        <p class="card__price">{{ T "priceFrom" }} <b>{{ partial "cena.html" (dict "nazwa" .nazwa "cena_od" .cena_od) }}</b></p>
+        <p class="card__price">{{ $n.karta_cena_od | default (T "priceFrom") }} <b>{{ partial "cena.html" (dict "nazwa" .nazwa "cena_od" .cena_od) }}</b></p>
         {{- end }}
-        <span class="card__more" aria-hidden="true">{{ T "seeDetails" }}</span>
+        <span class="card__more" aria-hidden="true">{{ $n.karta_szczegoly | default (T "seeDetails") }}</span>
       </article>
       {{- end }}
     </div>

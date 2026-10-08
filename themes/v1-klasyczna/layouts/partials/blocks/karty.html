@@ -4,6 +4,7 @@
        karta ze strona = article.card.card--link (cala karta klikalna),
        karta z sama cena = mala karta ceny (strona glowna v1, "Ile to kosztuje"). */ -}}
 {{- $b := .blok -}}
+{{- $n := (partialCached "ustawienia-model.html" site "ustawienia").napisy -}}
 {{- $gdzie := $.gdzie -}}
 {{- $kol := printf "%v" ($b.kolumny | default 3) -}}
 {{- if not (in (slice "2" "3" "4") $kol) }}{{ $kol = "3" }}{{ end -}}
@@ -28,7 +29,7 @@
         <p class="card__price"><b>{{ partial "cena.html" . }}</b></p>
         {{- end }}
         {{- if $cel.href }}
-        <span class="card__more" aria-hidden="true">{{ T "seeDetails" }}</span>
+        <span class="card__more" aria-hidden="true">{{ $n.karta_szczegoly | default (T "seeDetails") }}</span>
         {{- end }}
       {{ if $cel.href }}</article>{{ else }}</div>{{ end }}
       {{- end }}

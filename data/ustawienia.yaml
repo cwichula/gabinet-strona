@@ -7,19 +7,33 @@ ukryj_przed_wyszukiwarkami: true
 logo_nazwa: "Gabinet stomatologiczny"
 logo_podpis: "lek. stom. Dorota Rożdżestwieńska · Legnica"
 pasek_informacyjny: ""
+naglowek_strony:
+  pokaz_start: true
+  pokaz_przelacznik_motywu: true
+  pasek_godziny: true
+  pasek_telefon: true
+  pasek_adres: true
 napisy:
   przycisk_naglowka: ""
+  menu_start: ""
   stopka_uslugi: ""
   stopka_gabinet: ""
   stopka_godziny: ""
+  stopka_dojazd: ""
   cennik_podpowiedz: "Szukaj zabiegu, np. korona, szyna, piaskowanie"
+  karta_szczegoly: ""
+  karta_cena_od: ""
   formularz_zgoda: ""
   formularz_uwaga: |-
     **Formularz nie służy do przesyłania informacji o stanie zdrowia ani do konsultacji medycznych.** Nie wpisuj w nim objawów, rozpoznań, przyjmowanych leków ani wyników badań — to zwykła wiadomość elektroniczna, a nie dokumentacja medyczna.
 
     Tego, co dzieje się w jamie ustnej, nie da się ocenić zdalnie: potrzebne jest badanie, a często także zdjęcie [RTG](/rtg-pantomogram/).
   formularz_notka: ""
+  formularz_przycisk: ""
+  formularz_telefon_podpowiedz: ""
+  formularz_wiadomosc_podpowiedz: ""
   mapa_zgoda: ""
+  mapa_przycisk: ""
 strona_404:
   tytul: "Nie znaleziono strony"
   opis: "Tej strony nie ma pod tym adresem. Wróć na stronę główną gabinetu stomatologicznego w Legnicy lub zadzwoń do rejestracji."

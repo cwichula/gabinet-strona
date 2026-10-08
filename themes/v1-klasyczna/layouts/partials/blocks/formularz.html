@@ -30,7 +30,7 @@
       <div class="field">
         <label for="{{ $p }}telefon">{{ T "phone" }} <span class="req">*</span></label>
         <input type="tel" id="{{ $p }}telefon" name="telefon" autocomplete="tel" required>
-        <span class="hint">{{ T "formPhoneHint" }}</span>
+        <span class="hint">{{ $n.formularz_telefon_podpowiedz | default (T "formPhoneHint") }}</span>
       </div>
 
       <div class="field">
@@ -51,7 +51,7 @@
       <div class="field">
         <label for="{{ $p }}wiadomosc">{{ T "formMessage" }} <span class="req">*</span></label>
         <textarea id="{{ $p }}wiadomosc" name="wiadomosc" rows="6" required></textarea>
-        <span class="hint">{{ T "formMessageHint" }}</span>
+        <span class="hint">{{ $n.formularz_wiadomosc_podpowiedz | default (T "formMessageHint") }}</span>
       </div>
 
       <p class="visually-hidden">
@@ -75,7 +75,7 @@
       <div>
         <button class="btn btn--primary btn--lg" type="submit">
           <svg class="ico" aria-hidden="true"><use href="#ico-mail"></use></svg>
-          {{ T "formSubmit" }}
+          {{ $n.formularz_przycisk | default (T "formSubmit") }}
         </button>
       </div>
 

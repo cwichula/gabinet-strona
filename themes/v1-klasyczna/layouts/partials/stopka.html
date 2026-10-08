@@ -86,7 +86,7 @@
           {{- end }}
         </ul>
         {{- with $m.dojazd }}
-        <p class="odstep-3"><a href="{{ .RelPermalink }}">{{ T "directionsAndMap" }}</a></p>
+        <p class="odstep-3"><a href="{{ .RelPermalink }}">{{ $n.stopka_dojazd | default (T "directionsAndMap") }}</a></p>
         {{- end }}
       </div>
       {{- end }}

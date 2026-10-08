@@ -1,4 +1,13 @@
 {{- /* Napisy z data/ustawienia.yaml (napisy, strona_404) z pustym dict, gdy ich
-       nie ma (partialCached). Wynik: dict "napisy", "strona_404". */ -}}
+       nie ma, i przelaczniki naglowka (naglowek_strony; brak klucza = pokaz)
+       (partialCached). Wynik: dict "napisy", "strona_404", "naglowek" (dict
+       "start", "motyw", "godziny", "telefon", "adres" - bool). */ -}}
 {{- $u := hugo.Data.ustawienia | default dict -}}
-{{- return dict "napisy" ($u.napisy | default dict) "strona_404" ($u.strona_404 | default dict) -}}
+{{- $ns := $u.naglowek_strony | default dict -}}
+{{- $naglowek := dict
+      "start" (ne $ns.pokaz_start false)
+      "motyw" (ne $ns.pokaz_przelacznik_motywu false)
+      "godziny" (ne $ns.pasek_godziny false)
+      "telefon" (ne $ns.pasek_telefon false)
+      "adres" (ne $ns.pasek_adres false) -}}
+{{- return dict "napisy" ($u.napisy | default dict) "strona_404" ($u.strona_404 | default dict) "naglowek" $naglowek -}}

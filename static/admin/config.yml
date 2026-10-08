@@ -1353,6 +1353,18 @@ collections:
             widget: string
             required: false
             hint: Krótki komunikat na górze każdej strony (np. o urlopie). Puste = brak paska.
+          - name: naglowek_strony
+            label: Elementy nagłówka
+            widget: object
+            collapsed: true
+            required: false
+            hint: Co pokazuje górny pasek i menu. Wyłączony element znika ze wszystkich stron.
+            fields:
+              - { name: pokaz_start, label: Pozycja „Start” w menu, widget: boolean, default: true, required: false, hint: 'Napis zmienisz w „Napisy na stronie”.' }
+              - { name: pokaz_przelacznik_motywu, label: Przycisk trybu ciemnego, widget: boolean, default: true, required: false, hint: 'Wyłączony = strona jasna albo ciemna według ustawień urządzenia odwiedzającego.' }
+              - { name: pasek_godziny, label: Górny pasek — godziny („Otwarte teraz”), widget: boolean, default: true, required: false }
+              - { name: pasek_telefon, label: Górny pasek — telefon, widget: boolean, default: true, required: false }
+              - { name: pasek_adres, label: Górny pasek — adres, widget: boolean, default: true, required: false }
           - name: napisy
             label: Napisy na stronie
             widget: object
@@ -1363,10 +1375,14 @@ collections:
               szablonu. Teksty prawne i medyczne zmieniaj w porozumieniu z gabinetem.
             fields:
               - { name: przycisk_naglowka, label: Przycisk w nagłówku strony, widget: string, required: false, hint: 'Domyślnie „Umów wizytę” (dzwoni pod pierwszy numer).' }
+              - { name: menu_start, label: Menu — pozycja strony głównej, widget: string, required: false, hint: 'Domyślnie „Start”. Także w ścieżce nawigacji nad tytułem podstrony.' }
               - { name: stopka_uslugi, label: Stopka — nagłówek listy usług, widget: string, required: false, hint: 'Domyślnie „Usługi”.' }
               - { name: stopka_gabinet, label: Stopka — nagłówek listy stron, widget: string, required: false, hint: 'Domyślnie „Gabinet”.' }
               - { name: stopka_godziny, label: Stopka — nagłówek godzin, widget: string, required: false, hint: 'Domyślnie „Godziny przyjęć”.' }
+              - { name: stopka_dojazd, label: Stopka — link do strony z dojazdem, widget: string, required: false, hint: 'Domyślnie „Dojazd i mapa →”.' }
               - { name: cennik_podpowiedz, label: Podpowiedź w polu „Szukaj zabiegu”, widget: string, required: false, hint: 'Np. „Szukaj zabiegu, np. korona, szyna, piaskowanie” — przykłady powinny być w cenniku.' }
+              - { name: karta_szczegoly, label: Karty — napis „Zobacz szczegóły”, widget: string, required: false, hint: 'Na kartach usług i kartach z linkiem. Domyślnie „Zobacz szczegóły”.' }
+              - { name: karta_cena_od, label: Karty usług — słowo przed ceną, widget: string, required: false, hint: 'Domyślnie „od” (np. „od 300 zł”).' }
               - name: formularz_zgoda
                 label: Formularz — tekst zgody na przetwarzanie danych
                 widget: text
@@ -1384,7 +1400,11 @@ collections:
                 editor_components: []
                 hint: Ramka pod formularzem. Szablon dopisuje zdanie z numerami telefonów na pilne sprawy.
               - { name: formularz_notka, label: Formularz — notka pod przyciskiem, widget: text, required: false }
+              - { name: formularz_przycisk, label: Formularz — napis na przycisku, widget: string, required: false, hint: 'Domyślnie „Wyślij wiadomość”.' }
+              - { name: formularz_telefon_podpowiedz, label: Formularz — podpowiedź pod telefonem, widget: string, required: false, hint: 'Domyślnie „Na ten numer oddzwonimy, żeby ustalić termin.”' }
+              - { name: formularz_wiadomosc_podpowiedz, label: Formularz — podpowiedź pod wiadomością, widget: string, required: false, hint: 'Domyślnie „Napisz, czego dotyczy sprawa — bez opisywania stanu zdrowia.”' }
               - { name: mapa_zgoda, label: Mapa — tekst przed wczytaniem mapy Google, widget: text, required: false }
+              - { name: mapa_przycisk, label: Mapa — napis na przycisku wczytania mapy, widget: string, required: false, hint: 'Domyślnie „Pokaż mapę Google”.' }
           - name: strona_404
             label: Napisy strony „Nie znaleziono” (błąd 404)
             widget: object

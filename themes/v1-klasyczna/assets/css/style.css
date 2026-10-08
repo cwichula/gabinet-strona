@@ -403,6 +403,9 @@ hr {
   }
   .topbar__inner > .theme-toggle { grid-column: 2; grid-row: 1; }
   .topbar__kontakt { grid-column: 1 / -1; grid-row: 2; margin-left: 0; gap: 0 .6rem; }
+  /* godziny wylaczone w ustawieniach (naglowek_strony): telefon i adres
+     wchodza w pierwszy wiersz obok przelacznika */
+  .topbar__inner:not(:has([data-status])) > .topbar__kontakt { grid-column: 1; grid-row: 1; }
 }
 
 /* Wskaznik "otwarte teraz" wyliczany w JS; bez JS zostaje sam tekst godzin */

@@ -6,12 +6,19 @@
 {{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
 {{- $menu := partialCached "menu-model.html" "pozycje" "pozycje" -}}
 {{- $biezaca := . -}}
+{{- $um := partialCached "ustawienia-model.html" site "ustawienia" -}}
+{{- $pokaz := $um.naglowek -}}
+{{- $start := $um.napisy.menu_start | default (T "home") -}}
+{{- $telefonPaska := and $pokaz.telefon $m.telefon -}}
+{{- $adresPaska := and $pokaz.adres $g.adres -}}
 {{- with $u.pasek_informacyjny }}
 <div class="notice-strip" role="note"><div class="container"><svg class="ico" aria-hidden="true" style="width:1em;height:1em;display:inline;vertical-align:-.1em"><use href="#ico-info"></use></svg> {{ . }}</div></div>
 {{- end }}
 
+{{- if or $pokaz.godziny $telefonPaska $adresPaska $pokaz.motyw }}
 <div class="topbar">
   <div class="container topbar__inner">
+    {{- if $pokaz.godziny }}
     {{- /* napisy dla skryptu (app.js, "Otwarte teraz"): {godzina} i {dzien}
            wstawia skrypt; dni z przyimkiem rozdzielone "|" (1 = poniedzialek) */}}
     {{- $godzina := dict "time" "{godzina}" }}
@@ -25,26 +32,32 @@
       <span class="status-dot"></span>
       <span data-status-label>{{ $m.dni_przyjec }}</span>
     </span>
+    {{- end }}
+    {{- if or $telefonPaska $adresPaska }}
     <span class="cluster topbar__kontakt">
-      {{- with $m.telefon }}
+      {{- if $telefonPaska }}{{ with $m.telefon }}
       <a class="topbar__item" href="{{ printf "tel:%s" .tel | safeURL }}">
         <svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg>{{ .numer }}
       </a>
-      {{- end }}
-      {{- with $g.adres }}
+      {{- end }}{{ end }}
+      {{- if $adresPaska }}{{ with $g.adres }}
       <span class="topbar__item">
         <svg class="ico" aria-hidden="true"><use href="#ico-pin"></use></svg>{{ .ulica }}, {{ .miasto }}
       </span>
-      {{- end }}
+      {{- end }}{{ end }}
     </span>
+    {{- end }}
     {{- /* przelacznik poza grupa telefon/adres: na telefonie stoi w pierwszym
            wierszu obok godzin, zamiast spadac do osobnego wiersza */}}
+    {{- if $pokaz.motyw }}
     <button class="theme-toggle" type="button" data-theme-toggle aria-label="{{ T "darkTheme" }}">
       <svg class="ico ico-moon" aria-hidden="true"><use href="#ico-moon"></use></svg>
       <svg class="ico ico-sun" aria-hidden="true"><use href="#ico-sun"></use></svg>
     </button>
+    {{- end }}
   </div>
 </div>
+{{- end }}
 
 <header class="site-header">
   <div class="container site-header__inner">
@@ -63,7 +76,9 @@
 
     <nav class="nav" aria-label="{{ T "mainMenu" }}">
       <ul>
-        <li><a href="{{ site.Home.RelPermalink }}"{{ if .IsHome }} aria-current="page"{{ end }}>{{ T "home" }}</a></li>
+        {{- if $pokaz.start }}
+        <li><a href="{{ site.Home.RelPermalink }}"{{ if .IsHome }} aria-current="page"{{ end }}>{{ $start }}</a></li>
+        {{- end }}
         {{- range $i, $poz := $menu }}
         {{- $aktywna := and $poz.strona ($biezaca.Eq $poz.strona) }}
         {{- range $poz.dzieci }}{{ if and .strona ($biezaca.Eq .strona) }}{{ $aktywna = true }}{{ end }}{{ end }}
@@ -88,7 +103,7 @@
       </ul>
     </nav>
 
-    {{ partial "telefon-btn.html" (dict "klasa" "btn btn--primary header__cta" "napis" ((partialCached "ustawienia-model.html" site "ustawienia").napisy.przycisk_naglowka | default (T "bookVisit"))) }}
+    {{ partial "telefon-btn.html" (dict "klasa" "btn btn--primary header__cta" "napis" ($um.napisy.przycisk_naglowka | default (T "bookVisit"))) }}
 
     {{ partial "rezerwacja.html" (dict "miejsce" "naglowek") }}
 
@@ -110,7 +125,9 @@
     </div>
     <nav aria-label="{{ T "mobileMenu" }}">
       <ul>
-        <li><a href="{{ site.Home.RelPermalink }}"{{ if .IsHome }} aria-current="page"{{ end }}>{{ T "home" }}</a></li>
+        {{- if $pokaz.start }}
+        <li><a href="{{ site.Home.RelPermalink }}"{{ if .IsHome }} aria-current="page"{{ end }}>{{ $start }}</a></li>
+        {{- end }}
         {{- range $menu }}
         {{- if .href }}
         <li>{{ partial "menu-link.html" (dict "pozycja" . "aktywna" (and .strona ($biezaca.Eq .strona))) }}</li>

@@ -96,7 +96,7 @@ Cloudflare Worker) i zapasowe logowanie tokenem: [`docs/LOGOWANIE.md`](docs/LOGO
 | Menu | `data/menu.yaml` | pozycje, podmenu, kolejność; pozycje dodatkowe (menu na telefonie), strony w stopce, odnośniki na dole stopki; strona wybierana z listy |
 | Cennik | `data/cennik.yaml` | kategorie (z krótką nazwą do spisu nad cennikiem) i pozycje (każda z identyfikatorem i kategorią); zmiana ceny widoczna wszędzie, gdzie strona wskazuje tę pozycję (cennik, karty, tabela, karta usługi, ramka z cenami z boku) |
 | Dane gabinetu | `data/gabinet.yaml` | adres (z parkingiem i współrzędnymi dla wyszukiwarek), telefony, e-mail, obszar przyjmowania pacjentów, godziny, rezerwacja online, dane rejestrowe |
-| Ustawienia | `data/ustawienia.yaml` | domyślny opis SEO, ukrycie strony przed wyszukiwarkami, tekst stopki, napisy przy logo, pasek informacyjny nad stroną, napisy szablonu (przycisk w nagłówku, nagłówki stopki, podpowiedź w cenniku, teksty formularza i mapy), napisy strony 404 |
+| Ustawienia | `data/ustawienia.yaml` | domyślny opis SEO, ukrycie strony przed wyszukiwarkami, tekst stopki, napisy przy logo, pasek informacyjny nad stroną, elementy nagłówka (Start, przycisk motywu, godziny, telefon, adres), napisy szablonu (przycisk w nagłówku, „Start”, nagłówki stopki, „Zobacz szczegóły” i „od” na kartach, podpowiedź w cenniku, teksty formularza i mapy), napisy strony 404 |
 
 Zasady, które chronią stronę:
 
