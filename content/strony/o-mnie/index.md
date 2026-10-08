@@ -107,7 +107,7 @@ sekcje:
     wariant: domyslny
   - type: ramka
     rodzaj: uwaga
-    tresc: "Godziny obok potwierdź przy zapisie telefonicznym — konkretną porę ustalamy w rozmowie. Dane rejestrowe praktyki (NIP, REGON, numer prawa wykonywania zawodu, numer wpisu do RPWDL) znajdziesz w stopce każdej strony."
+    tresc: "Godziny obok potwierdź przy zapisie telefonicznym — konkretną porę ustalamy w rozmowie."
     polacz: true
   - type: cytat
     waska: true

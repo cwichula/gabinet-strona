@@ -130,7 +130,7 @@ sekcje:
       - pytanie: Czy w gabinecie można zapłacić kartą lub BLIKIEM?
         odpowiedz: Tak. W gabinecie jest terminal płatniczy, więc zapłacisz kartą, BLIKIEM albo gotówką. Płatność następuje po wizycie, za to, co zostało na niej zrobione.
       - pytanie: Czy wizyty są refundowane?
-        odpowiedz: Gabinet jest prywatny, więc wizyty są pełnopłatne według cennika na tej stronie. Fakturę lub rachunek wystawiamy na życzenie, na przykład do rozliczenia z ubezpieczycielem albo z pracodawcą.
+        odpowiedz: Gabinet jest prywatny, więc wizyty są pełnopłatne według cennika na tej stronie.
       - pytanie: Czy cena zabiegu obejmuje zdjęcie RTG?
         odpowiedz: |-
           Nie, RTG jest liczone osobno: zdjęcie punktowe z radiowizjografią 50 zł, zdjęcie pantomograficzne cyfrowe 150 zł. Oba wykonujemy na miejscu, w gabinecie, więc nie trzeba jechać po nie do innej pracowni.
