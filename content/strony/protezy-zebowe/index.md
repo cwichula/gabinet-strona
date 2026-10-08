@@ -34,10 +34,10 @@ sekcje:
 
       Proteza to ruchome uzupełnienie, które zdejmujesz do czyszczenia. Rodzaj dobieramy do tego, ile zębów brakuje i w jakim stanie są te pozostałe.
 
-      - Luka jest widoczna przy mówieniu
-      - Braki są zbyt rozległe dla pojedynczej korony albo mostu
-      - Stara proteza osiadła, chodzi i obciera dziąsło
-      - Nie decydujesz się na rozwiązanie wymagające zabiegu chirurgicznego
+      - Luka jest widoczna przy mówieniu.
+      - Braki są zbyt rozległe dla pojedynczej korony albo mostu.
+      - Stara proteza osiadła, chodzi i obciera dziąsło.
+      - Nie decydujesz się na rozwiązanie wymagające zabiegu chirurgicznego.
 
       Przy jednym braku warto najpierw rozważyć [most z włókna szklanego albo koronę](/korony-i-mosty/) — wtedy nie nosi się nic ruchomego.
     zdjecie:
@@ -198,12 +198,12 @@ sekcje:
     wstep: ''
     styl: ptaszki
     elementy:
-      - Myj protezę po każdym posiłku — szczoteczką i preparatem do protez, nie pastą ze ścierniwem
-      - Rób to nad miską z wodą; akryl pęka przy upadku na twardą posadzkę
-      - Na noc wyjmuj protezę, chyba że lekarz zaleci inaczej — dziąsło potrzebuje przerwy od ucisku
-      - Przechowuj ją w wodzie lub w roztworze do protez, nigdy w gorącej wodzie
-      - Czyść też własne zęby, dziąsła i podniebienie — pod płytą osadza się płytka nazębna
-      - Przyjdź na przegląd raz w roku, nawet gdy nic nie boli
+      - Myj protezę po każdym posiłku — szczoteczką i preparatem do protez, nie pastą ze ścierniwem.
+      - Rób to nad miską z wodą; akryl pęka przy upadku na twardą posadzkę.
+      - Na noc wyjmuj protezę, chyba że lekarz zaleci inaczej — dziąsło potrzebuje przerwy od ucisku.
+      - Przechowuj ją w wodzie lub w roztworze do protez, nigdy w gorącej wodzie.
+      - Czyść też własne zęby, dziąsła i podniebienie — pod płytą osadza się płytka nazębna.
+      - Przyjdź na przegląd raz w roku, nawet gdy nic nie boli.
   - type: tekst
     naglowek: ''
     nadtytul: ''
@@ -327,7 +327,7 @@ sekcje:
     kotwica: ''
     elementy:
       - pytanie: Ile kosztuje proteza zębowa w Legnicy?
-        odpowiedz: Proteza elastyczna, akronowa, szkieletowa i akrylowa całkowita kosztują 2000 zł.  Osobno płatne jest badanie z konsultacją — 100 zł. Aktualne kwoty są w [cenniku](/cennik/).
+        odpowiedz: Proteza elastyczna, akronowa, szkieletowa i akrylowa całkowita kosztują 2000 zł. Osobno płatne jest badanie z konsultacją — 100 zł. Aktualne kwoty są w [cenniku](/cennik/).
       - pytanie: Ile czeka się na wykonanie protezy?
         odpowiedz: 'Zwykle trzy do czterech wizyt rozłożone na kilka tygodni: wycisk, przymiarka, oddanie protezy i korekta. Termin zależy od rodzaju protezy i od pracowni protetycznej.'
       - pytanie: Czym różni się proteza elastyczna od akrylowej?

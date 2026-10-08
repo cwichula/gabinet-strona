@@ -2,7 +2,7 @@
 weight: 5
 title: Mosty zębowe
 seo_tytul: Mosty Legnica | Gabinet Dorota Rożdżestwieńska
-description: 'Most z włókna szklanego bez mocnego szlifowania zębów obok. Legnica, ul. Złotoryjska 16/18 m.10. Zadzwoń: 699 904 989.'
+description: 'Most z włókna szklanego bez mocnego szlifowania zębów obok. Legnica, ul. Złotoryjska 16/18 m. 10. Zadzwoń: 699 904 989.'
 draft: false
 usluga: null
 sekcje:
@@ -124,7 +124,7 @@ sekcje:
     naglowek: ''
     nadtytul: ''
     ikona: ''
-    tresc: Liczba wizyt zależy od rodzaju pracy i stanu zęba, dlatego ustalamy ją na konsultacji. Jeśli to Twoja pierwsza wizyta w gabinecie, zobacz [jak ona wygląda krok po kroku](/pierwsza-wizyta/).
+    tresc: Liczba wizyt zależy od rodzaju pracy i stanu zęba, dlatego ustalamy ją na konsultacji. Jeśli to Twoja pierwsza wizyta w gabinecie, zobacz, [jak ona wygląda krok po kroku](/pierwsza-wizyta/).
     zdjecie: null
     przycisk: null
     wariant: domyslny
@@ -196,7 +196,7 @@ sekcje:
         opis: Wypełnienia i odbudowa zęba materiałem światłoutwardzalnym
   - type: cta
     naglowek: Umów konsultację protetyczną
-    tresc: Na konsultacji oceniamy, czy ząb da się jeszcze odbudować oraz koszt całej pracy. Rejestracja wyłącznie telefoniczna.
+    tresc: Na konsultacji oceniamy, czy ząb da się jeszcze odbudować, oraz koszt całej pracy. Rejestracja wyłącznie telefoniczna.
     przycisk:
       etykieta: Dojazd i mapa
       strona: kontakt

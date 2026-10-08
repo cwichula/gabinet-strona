@@ -60,13 +60,13 @@ sekcje:
     tresc: |-
       Trudno zdecydować się na leczenie zęba, którego nigdy się nie widziało. Kamera pokazuje go na monitorze w bardzo dużym powiększeniu.
 
-      Widzisz pęknięcie szkliwa, próchnicę pod starym wypełnieniem, cofnięte dziąsło albo osad w miejscu, do którego szczoteczka nie dociera. Zamiast słuchać opisu, patrzysz na ten sam obraz, co lekarz — i łatwiej Ci zapytać, co z tego wynika.
+      Widzisz pęknięcie szkliwa, próchnicę pod starym wypełnieniem, cofnięte dziąsło albo osad w miejscu, do którego szczoteczka nie dociera. Zamiast słuchać opisu, patrzysz na ten sam obraz co lekarz — i łatwiej Ci zapytać, co z tego wynika.
 
       Obraz z kamery wykorzystujemy też przy instruktażu higieny: pokazujemy konkretne miejsca, które wymagają poprawy przy szczotkowaniu.
     zdjecie:
       plik: "/images/gabinet-06.jpg"
       alt: "Omawianie z pacjentem zdjęcia rentgenowskiego wyświetlonego na monitorze przy fotelu"
-      podpis: "Monitor przy fotelu jest ustawiony tak, żeby pacjent widział to samo, co lekarz."
+      podpis: "Monitor przy fotelu jest ustawiony tak, żeby pacjent widział to samo co lekarz."
     strona_zdjecia: prawa
     przycisk:
       etykieta: "Jak wygląda pierwsza wizyta"

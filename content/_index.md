@@ -4,10 +4,10 @@ seo_tytul: Dentysta Legnica — Gabinet Stomatologiczny Dorota Rożdżestwieńsk
 description: Gabinet stomatologiczny w centrum Legnicy, ul. Złotoryjska 16/18. Praktyka od 1995 roku, RTG z pantomografem na miejscu, szyna Michigan. Tel. 699 904 989.
 sekcje:
   - type: hero
-    naglowek: Zdrowy i ładny uśmiech pacjenta — to moja dewiza i satysfakcja . Twoja Dentystka :)
+    naglowek: Zdrowy i ładny uśmiech pacjenta — to moja dewiza i satysfakcja. Twoja Dentystka :)
     nadtytul: Od 1995 roku w centrum Legnicy
     ikona: tarcza
-    tresc: Prywatny gabinet lek. stom. Doroty Rożdżestwieńskiej przy ul. Złotoryjskiej 16/18 m.10   Leczymy  — dorosłych i dzieci — a od lat specjalizujemy się w leczeniu zębów  , wykonywaniu estetycznych i trwałych wypełnień w zębach , a także robimy licówki ,protezy  zębowe i szyny relaksacyjne  Michigan na zgrzytanie zębów i napięciowe bóle głowy .                                   BOISZ  SIĘ  DENTYSTY I IGIEŁ ?? Od 30 lat pomagam pacjentom zmniejszyć lęk i napięcie podczas leczenia. Przy prostych ubytkach, za zgodą pacjenta, stosuję znieczulenie powierzchowne bez igły. Spokojna atmosfera, muzyka pomagają przejść wizytę bez niepotrzebnego stresu:)
+    tresc: Prywatny gabinet lek. stom. Doroty Rożdżestwieńskiej przy ul. Złotoryjskiej 16/18 m. 10. Leczymy  — dorosłych i dzieci — a od lat specjalizujemy się w leczeniu zębów, wykonywaniu estetycznych i trwałych wypełnień w zębach, a także robimy licówki, protezy  zębowe i szyny relaksacyjne  Michigan na zgrzytanie zębów i napięciowe bóle głowy. BOISZ  SIĘ  DENTYSTY I IGIEŁ ?? Od 30 lat pomagam pacjentom zmniejszyć lęk i napięcie podczas leczenia. Przy prostych ubytkach, za zgodą pacjenta, stosuję znieczulenie powierzchowne bez igły. Spokojna atmosfera, muzyka pomagają przejść wizytę bez niepotrzebnego stresu:)
     zdjecie:
       plik: /images/hero-gabinet.jpg
       alt: 'Gabinet zabiegowy: unit stomatologiczny z fotelem i lampą przy dużym oknie z widokiem na legnicką Katedrę'
@@ -22,7 +22,7 @@ sekcje:
       - ikona: pinezka
         tekst: '**ul. Złotoryjska 16/18 m. 10**, 59-220 Legnica'
       - ikona: parking
-        tekst: Parking w **Galerii Gwarnej** lub ul .Bankowa obok
+        tekst: Parking w **Galerii Gwarnej** lub ul. Bankowa obok
       - ikona: karta
         tekst: Karta i **BLIK**
     plakietka:
@@ -197,7 +197,7 @@ sekcje:
       Każdego pacjenta traktujemy indywidualnie. Zapewniamy sympatyczną i ciepłą atmosferę, pełną zrozumienia i zaufania.
     zdjecie:
       plik: /images/dorota-rozdzestwienska.jpg
-      alt: Lek. stom. Dorota Rożdżestwieńska, prowadząca gabinet przy ul. Złotoryjskiej  16/18 m.10 w Legnicy
+      alt: Lek. stom. Dorota Rożdżestwieńska, prowadząca gabinet przy ul. Złotoryjskiej  16/18 m. 10 w Legnicy
       podpis: ''
     przycisk: null
     wariant: domyslny
@@ -234,7 +234,7 @@ sekcje:
     elementy:
       - pytanie: Gdzie dokładnie znajduje się gabinet w Legnicy?
         odpowiedz: |-
-          Przy **ul. Złotoryjskiej 16/18 m. 10** w centrum Legnicy. Wejście jest od ul. Złotoryjskiej, od strony Optyka i Katedry. Zaparkować można na parkingu Galerii Gwarnej lub na parkingu ul.Bankowa tuż obok.
+          Przy **ul. Złotoryjskiej 16/18 m. 10** w centrum Legnicy. Wejście jest od ul. Złotoryjskiej, od strony Optyka i Katedry. Zaparkować można na parkingu Galerii Gwarnej lub na parkingu ul. Bankowa tuż obok.
 
           [Zobacz zdjęcie wejścia i mapę dojazdu →](/kontakt/)
       - pytanie: Czy w gabinecie można zapłacić kartą lub BLIKIEM?

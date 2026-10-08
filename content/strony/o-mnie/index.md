@@ -15,7 +15,7 @@ sekcje:
     tresc: |-
       Jeśli szukasz dentysty w Legnicy i zależy Ci na tym, żeby za rok przyjęła Cię ta sama osoba — to jest ten adres. Gabinet pracuje od 1995 roku i przez cały ten czas nie zmienił ani lokalu, ani lekarza.
 
-      Długotrwałe doświadczenie praktyczne, a także ciągłe pogłębianie wiedzy na konferencjach i szkoleniach pozwalają trafniej ocenić, kiedy ząb da się jeszcze uratować, a kiedy lepiej nie przeciągać leczenia. Stosujemy nowoczesne materiały i rozwiązania.
+      Długotrwałe doświadczenie praktyczne, a także ciągłe pogłębianie wiedzy na konferencjach i szkoleniach, pozwalają trafniej ocenić, kiedy ząb da się jeszcze uratować, a kiedy lepiej nie przeciągać leczenia. Stosujemy nowoczesne materiały i rozwiązania.
 
       Nasza oferta skierowana jest do całej rodziny — do pacjentów dorosłych, a także do dzieci. Jedna lekarka zna historię leczenia całego domu, co bywa pomocne przy planowaniu wizyt.
 
@@ -76,7 +76,7 @@ sekcje:
     tresc: |-
       W gabinecie stoi aparat rentgenowski z pantomografem oraz aparat do zdjęć punktowych z radiowizjografią. Zdjęcie wykonujemy na miejscu, więc nie odsyłamy nikogo do innej pracowni, a radiowizjografia pozwala wyraźnie zmniejszyć dawkę promieniowania.
 
-      Kamera wewnątrzustna pokazuje ząb w dużym powiększeniu na monitorze — widzisz dokładnie to samo, co lekarka, i łatwiej rozmawiać o tym, co wymaga leczenia.
+      Kamera wewnątrzustna pokazuje ząb w dużym powiększeniu na monitorze — widzisz dokładnie to samo co lekarka i łatwiej rozmawiać o tym, co wymaga leczenia.
 
       Za wizytę zapłacisz gotówką, kartą lub BLIKIEM; terminal jest w gabinecie. Dla komfortu pacjentów pomieszczenia są klimatyzowane.
     zdjecie:

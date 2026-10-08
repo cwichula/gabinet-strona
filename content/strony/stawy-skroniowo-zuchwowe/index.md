@@ -2,7 +2,7 @@
 weight: 3
 title: Stawy skroniowo-żuchwowe
 seo_tytul: Stawy skroniowo-żuchwowe Legnica | Gabinet Rożdżestwieńska
-description: Trzeszczenie w żuchwie, ból przy gryzieniu, ograniczone otwieranie ust. Diagnostyka czynnościowa i szynoterapia —  Legnica, ul. Złotoryjska 16/18 m.10. Tel. 699 904 989.
+description: Trzeszczenie w żuchwie, ból przy gryzieniu, ograniczone otwieranie ust. Diagnostyka czynnościowa i szynoterapia —  Legnica, ul. Złotoryjska 16/18 m. 10. Tel. 699 904 989.
 draft: false
 usluga:
   wyrozniona: true

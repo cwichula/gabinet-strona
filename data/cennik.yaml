@@ -26,25 +26,25 @@ pozycje:
     kategoria: zachowawcza
     cena_od: 200
     cena_do: null
-    uwagi: Cena dotyczy jednego łuku zębowego
+    uwagi: Cena dotyczy jednego łuku zębowego.
     id: kamien-ultradzwieki
   - nazwa: Piaskowanie
     kategoria: zachowawcza
     cena_od: 200
     cena_do: null
-    uwagi: Przed wizytą zdejmij szkła kontaktowe i poinformuj lekarza ze nosisz szkła kontaktowe
+    uwagi: Przed wizytą zdejmij szkła kontaktowe i poinformuj lekarza, ze nosisz szkła kontaktowe.
     id: piaskowanie
   - nazwa: Lakierowanie zębów
     kategoria: zachowawcza
     cena_od: 150
     cena_do: null
-    uwagi: Cena dotyczy wszystkich zębów
+    uwagi: Cena dotyczy wszystkich zębów.
     id: lakierowanie
   - nazwa: Lak szczelinowy
     kategoria: zachowawcza
     cena_od: 150
     cena_do: null
-    uwagi: Cena dotyczy jednego zęba
+    uwagi: Cena dotyczy jednego zęba.
     id: lak
   - nazwa: Wypełnienie zęba materiałem światłoutwardzalnym
     kategoria: zachowawcza

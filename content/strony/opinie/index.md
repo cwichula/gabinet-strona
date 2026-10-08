@@ -88,7 +88,7 @@ sekcje:
     wariant: wyrozniony
   - type: cta
     naglowek: "Wolisz zapytać, zamiast czytać opinie?"
-    tresc: "Zadzwoń i opisz swój problem. Powiemy, czy to sprawa na jedną wizytę, i ile będzie kosztować, zanim na cokolwiek się zdecydujesz."
+    tresc: "Zadzwoń i opisz swój problem. Powiemy, czy to sprawa na jedną wizytę i ile będzie kosztować, zanim na cokolwiek się zdecydujesz."
     przycisk:
       etykieta: "Jak wygląda pierwsza wizyta"
       strona: "pierwsza-wizyta"

@@ -34,10 +34,10 @@ sekcje:
 
       Właśnie w takich sytuacjach sięgamy po licówkę. Uzupełniamy brakującą tkankę zęba tak, żeby odtworzyć jego naturalny kształt i kolor — ząb ma wyglądać jak reszta uzębienia, a nie jak naprawione miejsce.
 
-      - Ząb jest ciemniejszy od pozostałych i odstaje kolorem
-      - Ząb jest za krótki, za długi albo lekko skrzywiony
-      - Między zębami są nieestetyczne przerwy
-      - Brzeg sieczny jest starty lub odłamany
+      - Ząb jest ciemniejszy od pozostałych i odstaje kolorem.
+      - Ząb jest za krótki, za długi albo lekko skrzywiony.
+      - Między zębami są nieestetyczne przerwy.
+      - Brzeg sieczny jest starty lub odłamany.
 
       Zabieg dotyczy zębów widocznych w uśmiechu, więc kolor dobieramy do zębów sąsiednich. Licówka zmienia wygląd tylko tego zęba, na którym ją wykonujemy — nie rozjaśnia pozostałych.
     zdjecie:
@@ -204,7 +204,7 @@ sekcje:
     elementy:
       - pytanie: Ile kosztuje licówka w Legnicy?
         odpowiedz: |-
-          Licówka światłoutwardzalna, czyli kompozytowa, kosztuje 700 **zł**,  cena dotyczy jednego zęba. Osobno płatne jest badanie z konsultacją — 100 zł — na którym ustalamy zakres pracy i jej pełny koszt.
+          Licówka światłoutwardzalna, czyli kompozytowa, kosztuje 700 **zł**, cena dotyczy jednego zęba. Osobno płatne jest badanie z konsultacją — 100 zł — na którym ustalamy zakres pracy i jej pełny koszt.
 
           [Pełny cennik →](/cennik/)
       - pytanie: Czy pod licówkę trzeba szlifować zęby?

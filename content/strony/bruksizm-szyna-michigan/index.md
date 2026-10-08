@@ -34,14 +34,14 @@ sekcje:
 
       Im więcej punktów z tej listy do Ciebie pasuje, tym więcej jest do sprawdzenia:
 
-      - Ktoś słyszy w nocy Twoje zgrzytanie
-      - Rano szczęka jest zmęczona i sztywna
-      - Budzisz się z tępym bólem skroni, karku lub okolicy ucha
-      - Przednie zęby tracą ostre brzegi i wydają się coraz krótsze
-      - Wypełnienia, licówki i korony wykruszają się częściej, niż powinny
-      - Zęby bolą od zimna, choć nie ma w nich próchnicy
-      - Na wewnętrznej stronie policzka widać białą linię
-      - Łapiesz się na zaciskaniu zębów w ciągu dnia: przy biurku, w korku
+      - Ktoś słyszy w nocy Twoje zgrzytanie.
+      - Rano szczęka jest zmęczona i sztywna.
+      - Budzisz się z tępym bólem skroni, karku lub okolicy ucha.
+      - Przednie zęby tracą ostre brzegi i wydają się coraz krótsze.
+      - Wypełnienia, licówki i korony wykruszają się częściej, niż powinny.
+      - Zęby bolą od zimna, choć nie ma w nich próchnicy.
+      - Na wewnętrznej stronie policzka widać białą linię.
+      - Łapiesz się na zaciskaniu zębów w ciągu dnia: przy biurku, w korku.
     zdjecie:
       plik: /images/gabinet-06.jpg
       alt: Omawianie z pacjentem zdjęcia rentgenowskiego wyświetlonego na monitorze przy fotelu

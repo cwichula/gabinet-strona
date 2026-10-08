@@ -2,7 +2,7 @@
 weight: 7
 title: Higienizacja
 seo_tytul: Higienizacja zębów Legnica | Gabinet Dorota Rożdżestwieńska
-description: Usuwanie kamienia nazębnego- skaling, usuwanie osadu nazębnego -piaskowanie, polerowanie zębów-polishing Gabinet stomatologiczny Legnica. Tel. 699 904 989.
+description: Usuwanie kamienia nazębnego- skaling, usuwanie osadu nazębnego -piaskowanie, polerowanie zębów-polishing. Gabinet stomatologiczny Legnica. Tel. 699 904 989.
 draft: false
 usluga:
   wyrozniona: false
@@ -15,7 +15,7 @@ sekcje:
     naglowek: 'Higienizacja zębów w Legnicy: skaling, piaskowanie, fluoryzacja'
     nadtytul: ''
     ikona: ''
-    tresc: 'Higienizacja z profilaktyką przedpróchnicową : usunięcie kamienia i osadu, wypolerowanie zębów, lakierowanie lakierem z fluorem i lakowanie bruzd zębowych .To nie zabiegi kosmetyczne — od nich zależy, czy zapalenie dziąseł zatrzyma się na dziąsłach, czy sięgnie kości.'
+    tresc: 'Higienizacja z profilaktyką przedpróchnicową : usunięcie kamienia i osadu, wypolerowanie zębów, lakierowanie lakierem z fluorem i lakowanie bruzd zębowych. To nie zabiegi kosmetyczne — od nich zależy, czy zapalenie dziąseł zatrzyma się na dziąsłach, czy sięgnie kości.'
     zdjecie: null
     przycisk: null
     pokaz_telefon: false
@@ -128,7 +128,7 @@ sekcje:
     tresc: |-
       Higienizacja działa wtedy, gdy się powtarza. Jednorazowe usunięcie kamienia porządkuje sytuację na kilka miesięcy, ale nie zmienia tego, co sprawia, że kamień się odkłada.
 
-      - **Lakierowanie fluorem u dzieci** — raz na kwartał, chyba ,że lekarz zaleci inaczej
+      - **Lakierowanie fluorem u dzieci** — raz na kwartał, chyba że lekarz zaleci inaczej.
       - **Lakierowanie fluorem u dorosłych** — dwa razy w roku.
       - **Wizyty kontrolne** — co 3–6 miesięcy, z oceną dziąseł i stanu wypełnień.
 
