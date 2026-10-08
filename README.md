@@ -35,6 +35,7 @@ content/strony/<slug>/index.md   podstrona (zdjęcia ze wspólnej biblioteki ass
 data/menu.yaml                   menu (dwa poziomy) i listy odnośników stopki
 data/cennik.yaml                 cennik: kategorie + pozycje (pozycja wskazuje kategorię)
 data/gabinet.yaml                dane gabinetu, godziny, rezerwacja, dane rejestrowe
+data/uslugi.yaml                 kolejność kart usług (strona główna, „Usługi”, stopka)
 data/ustawienia.yaml             domyślny opis SEO, tekst stopki, napisy szablonu, ukrycie przed wyszukiwarkami
 assets/images/                   biblioteka zdjęć (wszystkie strony; pole „plik”: /images/x.jpg)
 themes/v1-klasyczna/             szablon v1 „Klasyczna” (używany, theme w hugo.yaml)
@@ -91,6 +92,7 @@ Cloudflare Worker) i zapasowe logowanie tokenem: [`docs/LOGOWANIE.md`](docs/LOGO
 |---|---|---|
 | Strony | `content/strony/<slug>/index.md` | dodawanie, usuwanie, ukrywanie (szkic), kolejność (przeciąganie), bloki treści, zdjęcia |
 | Strona główna | `content/_index.md` | bloki treści strony głównej |
+| Kolejność usług | `data/uslugi.yaml` | kolejność kart usług (przeciąganie), też w stopce; usługa spoza listy na końcu |
 | Menu | `data/menu.yaml` | pozycje, podmenu, kolejność; pozycje dodatkowe (menu na telefonie), strony w stopce, odnośniki na dole stopki; strona wybierana z listy |
 | Cennik | `data/cennik.yaml` | kategorie (z krótką nazwą do spisu nad cennikiem) i pozycje (każda z identyfikatorem i kategorią); zmiana ceny widoczna wszędzie, gdzie strona wskazuje tę pozycję (cennik, karty, tabela, karta usługi, ramka z cenami z boku) |
 | Dane gabinetu | `data/gabinet.yaml` | adres (z parkingiem i współrzędnymi dla wyszukiwarek), telefony, e-mail, obszar przyjmowania pacjentów, godziny, rezerwacja online, dane rejestrowe |

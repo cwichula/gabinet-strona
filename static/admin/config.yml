@@ -821,7 +821,7 @@ collections:
                 widget: boolean
                 default: false
                 required: false
-                hint: Karty powstają same ze stron oznaczonych jako „Strona usługi”, w kolejności stron.
+                hint: Karty powstają same ze stron oznaczonych jako „Strona usługi”, w kolejności z panelu „Kolejność usług”.
               - *kolumny
               - *wariant
               - *waska
@@ -1033,6 +1033,38 @@ collections:
             required: false
             maxlength: 170
           - *sekcje
+
+  # ------------------------------------------------------- Kolejność usług
+  - name: kolejnosc_uslug
+    label: Kolejność usług
+    icon: swap_vert
+    description: >-
+      Kolejność kart usług na stronie głównej i na stronie „Usługi”, w stopce
+      i w danych dla Google.
+    files:
+      - name: uslugi
+        label: Kolejność usług
+        icon: swap_vert
+        file: data/uslugi.yaml
+        fields:
+          - name: kolejnosc
+            label: Usługi w kolejności wyświetlania
+            label_singular: usługę
+            widget: list
+            required: false
+            summary: '{{strona}}'
+            hint: >-
+              Kolejność zmienisz przeciągając. Usługa spoza listy (np. nowa strona usługi)
+              pojawia się na końcu. Strona ukryta, usunięta albo bez sekcji „Strona usługi”
+              jest pomijana.
+            fields:
+              - name: strona
+                label: Strona usługi
+                widget: relation
+                collection: strony
+                value_field: '{{slug}}'
+                display_fields: [title]
+                search_fields: [title]
 
   # ------------------------------------------------------------------ Menu
   - name: menu

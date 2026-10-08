@@ -1,11 +1,29 @@
-{{- /* Strony uslug: podstrony z polem "usluga" (front matter), w kolejnosci
-       stron (weight). Strony ukryte (draft) Hugo pomija sam.
+{{- /* Strony uslug: podstrony z polem "usluga" (front matter). Kolejnosc:
+       najpierw strony z data/uslugi.yaml (kolejnosc[].strona, panel: "Kolejność
+       usług"), potem pozostale uslugi w kolejnosci stron (weight). Strona z listy,
+       ktorej nie ma, ktora nie jest usluga albo jest ukryta - pominieta bez bledu
+       (usuniecie strony nie moze przerwac budowania); stary slug (aliases)
+       prowadzi do strony po zmianie nazwy. Strony ukryte (draft) Hugo pomija sam.
        Wejscie: dict "tylko_wyroznione" (bool). Wynik: lista stron (Page). */ -}}
-{{- $wynik := slice -}}
+{{- $uslugi := slice -}}
 {{- $tylko := .tylko_wyroznione | default false -}}
 {{- range $p := partialCached "strony-tresci.html" site "strony" -}}
   {{- with $p.Params.usluga -}}
-    {{- if or (not $tylko) .wyrozniona }}{{ $wynik = $wynik | append $p }}{{ end -}}
+    {{- if or (not $tylko) .wyrozniona }}{{ $uslugi = $uslugi | append $p }}{{ end -}}
   {{- end -}}
 {{- end -}}
+{{- $adresy := slice -}}
+{{- range $uslugi }}{{ $adresy = $adresy | append .RelPermalink }}{{ end -}}
+{{- $wynik := slice -}}
+{{- $uzyte := slice -}}
+{{- range $el := hugo.Data.uslugi.kolejnosc -}}
+  {{- $cel := partial "cel-linku.html" (dict "strona" $el.strona "gdzie" "Kolejność usług (data/uslugi.yaml)" "scisle" false) -}}
+  {{- with $cel.strona -}}
+    {{- if and (in $adresy .RelPermalink) (not (in $uzyte .RelPermalink)) -}}
+      {{- $wynik = $wynik | append . -}}
+      {{- $uzyte = $uzyte | append .RelPermalink -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- range $uslugi }}{{ if not (in $uzyte .RelPermalink) }}{{ $wynik = $wynik | append . }}{{ end }}{{ end -}}
 {{- return $wynik -}}

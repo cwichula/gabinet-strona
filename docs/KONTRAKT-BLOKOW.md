@@ -424,7 +424,8 @@ wiersz wskazuje pozycję cennika, a szablon dokłada ostatnią kolumnę „Cena�
 
 ### `lista_uslug` — lista usług (automatyczna)
 
-Karty powstają same ze stron z polem `usluga` (w kolejności stron): tytuł strony,
+Karty powstają same ze stron z polem `usluga` (w kolejności z `data/uslugi.yaml`, dalej
+w kolejności stron): tytuł strony,
 `usluga.skrot`, „od” + cena pozycji `usluga.cena_od`, odnośnik do strony.
 
 | Pole | Typ | Wymagane | Opis |
@@ -520,6 +521,7 @@ nie ma żaden blok tej strony, przerywa budowanie.
 | `menu.yaml` | `pozycje[]`: `etykieta`, `strona` (slug), `link_zewnetrzny`, `podmenu[]` (te same pola, bez dalszego zagnieżdżania). Pozycja bez strony, linku i podmenu = błąd budowania. Hierarchia stron (okruszki) jest tylko tutaj: strona pozycji z podmenu jest „rodzicem” stron z podmenu. Listy płaskie (`etykieta`, `strona`, `link_zewnetrzny`, bez podmenu): `dodatkowe` (mniej ważne strony dopisywane za menu głównym tam, gdzie motyw ma miejsce), `stopka` (strony w stopce; pusta = pozycje menu bez podmenu), `stopka_dolna` (odnośniki w ostatniej linii stopki; pusta = polityka prywatności). Odnośnik „Start” do strony głównej dodaje szablon. |
 | `cennik.yaml` | `informacja`, `kategorie[]`: `id`, `nazwa`, `skrot` (krótka nazwa do spisu kategorii, opcjonalnie); `pozycje[]`: `id` (wymagany, niepowtarzalny), `kategoria` (id kategorii), `nazwa`, `cena_od`, `cena_do` (opcjonalnie), `uwagi` (opcjonalnie). Kolejność pozycji = kolejność w tabeli w obrębie kategorii. |
 | `gabinet.yaml` | `nazwa`, `nazwa_krotka`, `lekarz` (np. „lek. stom. Imię Nazwisko” — tytuł szablon oddziela w danych dla wyszukiwarek), `rok_zalozenia`, `adres` {`ulica`, `kod`, `miasto`, `region`, `dojazd`, `parking`, `wspolrzedne` („51.207798, 16.158593”)}, `telefony[]` {`etykieta`, `numer`}, `email`, `obszar[]` (obszar przyjmowania pacjentów dla wyszukiwarek, np. „powiat legnicki”; miasto z adresu dochodzi samo), `godziny[]` {`dzien`, `od`, `do`}, `rezerwacja` {`wlaczona`, `url`, `etykieta`, `dostawca`, `potwierdzona`, `nota`}, `rejestrowe` {`nip`, `regon`, `pwz`, `rpwdl`} (puste = wiersz w stopce znika), `platnosci[]`. |
+| `uslugi.yaml` | `kolejnosc[]`: `strona` (slug strony usługi). Kolejność kart usług (blok `lista_uslug`), usług w stopce i w danych strukturalnych; usługi spoza listy na końcu w kolejności stron; strona, której nie ma, ukryta albo bez pola `usluga` jest pomijana bez błędu. |
 | `ustawienia.yaml` | `seo_opis` (domyślny opis SEO), `stopka_tekst`, `ukryj_przed_wyszukiwarkami` (tak/nie: `noindex` na każdej stronie i `Disallow: /` w `robots.txt`), `logo_nazwa` i `logo_podpis` (napisy przy logo; puste = nazwa krótka, lekarz i miasto), `pasek_informacyjny` (krótki komunikat nad stroną; pusty = brak paska), `napisy` {`przycisk_naglowka`, `stopka_uslugi`, `stopka_gabinet`, `stopka_godziny`, `cennik_podpowiedz`, `formularz_zgoda` (Markdown w wierszu), `formularz_uwaga` (Markdown), `formularz_notka`, `mapa_zgoda`} (stałe napisy szablonu; puste = napis domyślny szablonu), `strona_404` {`tytul`, `opis`, `nadtytul`, `naglowek`, `tresc`, `przycisk`, `notka`, `linki_naglowek`, `linki_wstep`, `opis_glownej`, `linki[]` {`strona`, `opis`}, `ramka_telefon`, `ramka_adres`} (napisy strony 404; puste pole = napis domyślny szablonu, pusta lista `linki` = pozycje menu, telefony i adres z `gabinet.yaml`). |
 
 Odnośnik `tel:` szablon wylicza z `numer`: same cyfry, `+48` dla numeru 9-cyfrowego.
