@@ -163,6 +163,15 @@ collections:
         required: false
         maxlength: 170
         hint: 1–2 zdania widoczne w wynikach Google. Puste = opis domyślny z „Ustawień”.
+      - name: zdjecie_udostepniania
+        label: Obrazek do udostępniania (opcjonalnie)
+        widget: image
+        choose_url: false
+        required: false
+        hint: >-
+          Obrazek widoczny po wklejeniu linku do tej strony na Facebooku albo w komunikatorze.
+          Najlepiej poziomy, min. 1200×630 (szablon przytnie). Puste = pierwsze duże zdjęcie
+          strony, potem obrazek domyślny z „Ustawień”.
       - name: draft
         label: Ukryta (szkic)
         widget: boolean
@@ -1032,6 +1041,15 @@ collections:
             widget: text
             required: false
             maxlength: 170
+          - name: zdjecie_udostepniania
+            label: Obrazek do udostępniania (opcjonalnie)
+            widget: image
+            choose_url: false
+            required: false
+            hint: >-
+              Obrazek widoczny po wklejeniu linku do strony głównej na Facebooku albo
+              w komunikatorze, także w danych dla Google. Najlepiej poziomy, min. 1200×630.
+              Puste = pierwsze duże zdjęcie strony głównej.
           - *sekcje
 
   # ------------------------------------------------------- Kolejność usług
@@ -1393,6 +1411,15 @@ collections:
             widget: text
             maxlength: 170
             hint: Używany na stronach, które nie mają własnego opisu.
+          - name: zdjecie_udostepniania
+            label: Domyślny obrazek do udostępniania
+            widget: image
+            choose_url: false
+            required: false
+            hint: >-
+              Obrazek po wklejeniu linku na Facebooku albo w komunikatorze dla stron bez
+              własnego obrazka i bez dużego zdjęcia. Najlepiej poziomy, min. 1200×630.
+              Puste = zdjęcie ze strony głównej.
           - { name: stopka_tekst, label: Tekst w stopce, widget: text, required: false, hint: 'Krótki tekst pod danymi gabinetu w stopce. Puste = brak. Złamania wiersza zostają.' }
           - name: ukryj_przed_wyszukiwarkami
             label: Ukryj stronę przed wyszukiwarkami

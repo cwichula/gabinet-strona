@@ -1,19 +1,31 @@
-{{- /* Zdjecie do podgladu linku (Open Graph) i danych strukturalnych:
-       pierwsze zdjecie z sekcji strony (baner, tekst, galeria) o szerokosci
-       co najmniej 600 px, a gdy strona takiego nie ma - pierwsze takie zdjecie
-       strony glownej. JPEG do 1200 px.
+{{- /* Zdjecie do podgladu linku (Open Graph) i danych strukturalnych, w kolejnosci:
+       1. pole strony "zdjecie_udostepniania" (panel: Strony / Strona glowna),
+       2. pierwsze zdjecie z sekcji strony (baner, tekst, galeria),
+       3. data/ustawienia.yaml -> zdjecie_udostepniania (domyslne dla serwisu),
+       4. to samo dla strony glownej (pole, potem zdjecia z sekcji).
+       Liczy sie zdjecie rastrowe o szerokosci co najmniej 600 px - mniejsze
+       da nieczytelny podglad. Zdjecie z pola, ktorego nie ma albo ktore sie
+       nie nadaje, jest pomijane bez bledu (plik mogl zostac usuniety w panelu).
+       JPEG do 1200 px; zdjecie z pola co najmniej 1200x630 - przyciete do 1200x630.
        Wejscie: Page. Wynik: dict "url" (pelny adres), "width", "height", "alt" albo false. */ -}}
 {{- $wynik := false -}}
-{{- $strony := slice . -}}
-{{- if not .IsHome }}{{ $strony = $strony | append site.Home }}{{ end -}}
-{{- range $p := $strony -}}
-  {{- if not $wynik -}}
+{{- $ustawienia := hugo.Data.ustawienia | default dict -}}
+{{- $kroki := slice (dict "strona" . "pole" true "sekcje" true) (dict "strona" . "domyslne" true) -}}
+{{- if not .IsHome }}{{ $kroki = $kroki | append (dict "strona" site.Home "pole" true "sekcje" true) }}{{ end -}}
+{{- range $k := $kroki -}}
+  {{- $p := $k.strona -}}
+  {{- if and (not $wynik) $k.pole -}}
+    {{- $wynik = partial "inline/og-z-pola.html" (dict "strona" $p "plik" $p.Params.zdjecie_udostepniania) -}}
+  {{- end -}}
+  {{- if and (not $wynik) $k.domyslne -}}
+    {{- $wynik = partial "inline/og-z-pola.html" (dict "strona" $p "plik" $ustawienia.zdjecie_udostepniania "alt" site.Home.Title) -}}
+  {{- end -}}
+  {{- if and (not $wynik) $k.sekcje -}}
     {{- range $p.Params.sekcje -}}
       {{- if not $wynik -}}
         {{- $z := false -}}
         {{- if .zdjecie }}{{ $z = .zdjecie }}{{ else if and (eq .type "galeria") .elementy }}{{ $z = index .elementy 0 }}{{ end -}}
         {{- with $z -}}{{- with partial "zdjecie-zasob.html" (dict "strona" $p "zdjecie" .) -}}
-          {{- /* zbyt male zdjecie (< 600 px) da nieczytelny podglad - szukamy dalej */ -}}
           {{- if and (ne .MediaType.SubType "svg") (ge .Width 600) -}}
             {{- $j := false }}{{ if gt .Width 1200 }}{{ $j = .Resize "1200x jpg" }}{{ else }}{{ $j = .Process "jpg" }}{{ end -}}
             {{- $wynik = dict "url" $j.Permalink "width" $j.Width "height" $j.Height "alt" $z.alt -}}
@@ -24,3 +36,22 @@
   {{- end -}}
 {{- end -}}
 {{- return $wynik -}}
+
+{{- /* Zdjecie z pola (sciezka "/images/x.webp" albo plik w paczce strony).
+       Wejscie: dict "strona", "plik", "alt" (pusty = tytul strony). Wynik: dict albo false. */ -}}
+{{- define "partials/inline/og-z-pola.html" -}}
+  {{- $wynik := false -}}
+  {{- with .plik -}}
+    {{- $plik := . -}}
+    {{- $img := $.strona.Resources.Get $plik -}}
+    {{- if not $img }}{{ $img = resources.Get (strings.TrimPrefix "/" $plik) }}{{ end -}}
+    {{- with $img -}}
+      {{- if and (eq .ResourceType "image") (ne .MediaType.SubType "svg") (ge .Width 600) -}}
+        {{- $j := false -}}
+        {{- if and (ge .Width 1200) (ge .Height 630) }}{{ $j = .Fill "1200x630 Center jpg" }}{{ else if gt .Width 1200 }}{{ $j = .Resize "1200x jpg" }}{{ else }}{{ $j = .Process "jpg" }}{{ end -}}
+        {{- $wynik = dict "url" $j.Permalink "width" $j.Width "height" $j.Height "alt" ($.alt | default $.strona.Title) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- return $wynik -}}
+{{- end -}}
