@@ -1,13 +1,10 @@
-# Kolejnosc kart uslug - edytowana w panelu /admin/ (kolekcja "Kolejność usług").
-# Uslugi spoza listy sa na koncu, w kolejnosci stron. Komentarze znikna przy
-# pierwszym zapisie z CMS.
 kolejnosc:
-  - strona: bruksizm-szyna-michigan
-  - strona: stawy-skroniowo-zuchwowe
+  - strona: stomatologia-zachowawcza
+  - strona: higienizacja
+  - strona: licowki
   - strona: protezy-zebowe
   - strona: korony-i-mosty
-  - strona: licowki
-  - strona: higienizacja
-  - strona: stomatologia-zachowawcza
-  - strona: rtg-pantomogram
   - strona: dentysta-dla-dzieci
+  - strona: bruksizm-szyna-michigan
+  - strona: stawy-skroniowo-zuchwowe
+  - strona: rtg-pantomogram
