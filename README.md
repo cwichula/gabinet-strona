@@ -205,6 +205,10 @@ z jego generatora) pocięta na szablon Hugo:
 - `assets/css/style.css` i `assets/js/app.js` — z makiety, uporządkowane (jeden zestaw
   kolorów na motyw, bez nieużywanych reguł, napisy skryptu z szablonu przez atrybuty
   `data-napis-*`); łączone i z odciskiem w nazwie pliku przez Hugo Pipes;
+  animacje wejścia sekcji przy przewijaniu (`app.js`, „9. Animacje wejścia”, klasa
+  `ruch` z `head.html`): jednorazowe, tylko `opacity` i `transform`, bez banera;
+  wyłączone bez JS, w druku i przy „ogranicz ruch” w systemie, a gdy `app.js`
+  nie ruszy w 4 s, cała treść jest widoczna;
   `assets/css/hugo.css` — kilka reguł dla rzeczy, których makieta nie miała (lista
   z minusami, blok dołączony do sekcji i do kolumny tekstu, pogrubienie w faktach
   banera, plakietka z `==tekst==`);

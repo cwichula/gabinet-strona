@@ -1569,6 +1569,29 @@ body { padding-bottom: 4.5rem; }
   @view-transition { navigation: none; }
 }
 
+/* Animacje wejscia sekcji (app.js, "9. Animacje wejscia"). Tylko przy klasie
+   "ruch" na <html> (skrypt w head.html) - bez JS, w druku i przy "ogranicz
+   ruch" nic nie jest ukryte. Same opacity i transform: bez przeliczania
+   ukladu i bez przesuniec tresci (CLS). Z boku tylko na szerokim ekranie. */
+.ruch main { overflow-x: clip; }
+.ruch [data-ruch] {
+  transition: opacity .6s var(--ease), transform .65s var(--ease);
+  transition-delay: var(--ruch-opoznienie, 0s);
+}
+.ruch [data-ruch]:not([data-ruch-widoczny]) { opacity: 0; will-change: opacity, transform; }
+.ruch :is([data-ruch="gora"], [data-ruch="lewo"], [data-ruch="prawo"]):not([data-ruch-widoczny]) { transform: translateY(20px); }
+.ruch [data-ruch="skala"]:not([data-ruch-widoczny]) { transform: scale(.96); }
+@media (width >= 50rem) {
+  .ruch [data-ruch="lewo"]:not([data-ruch-widoczny]) { transform: translateX(-32px); }
+  .ruch [data-ruch="prawo"]:not([data-ruch-widoczny]) { transform: translateX(32px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ruch [data-ruch]:not([data-ruch-widoczny]) { opacity: 1; transform: none; }
+}
+@media print {
+  .ruch [data-ruch]:not([data-ruch-widoczny]) { opacity: 1 !important; transform: none !important; }
+}
+
 /* ------------------------------------------------- 19. Rezerwacja online */
 
 /* Rezerwacja jest czescia strony, a nie wtyczka doklejona z boku: karta ma te

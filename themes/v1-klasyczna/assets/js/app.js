@@ -314,4 +314,119 @@
   /* -------------------------------------------------- 8. Rok w stopce */
 
   $$("[data-rok]").forEach(function (el) { el.textContent = String(new Date().getFullYear()); });
+
+  /* --------------------------------------------- 9. Animacje wejscia */
+  /* Bloki sekcji (main .section) pojawiaja sie przy pierwszym wejsciu w widok:
+     z dolu, kolumny tekstu ze zdjeciem z lewej i z prawej, karty i kroki po
+     kolei (opoznienie liczone z tego, co wchodzi w widok naraz - na telefonie
+     karta w jednej kolumnie nie czeka na poprzednie). Klase "ruch" na <html>
+     ustawia skrypt w head.html (tylko gdy przegladarka ma IntersectionObserver
+     i nie ma "ogranicz ruch"); bez niej nic nie jest ukryte. Baner i naglowek podstrony nie sa animowane (LCP).
+     To, co jest w widoku przy wejsciu na strone, pokazuje sie od razu - bez
+     mrugniecia. Fokus klawiatury, kotwica w adresie i druk odslaniaja tresc. */
+
+  var html = document.documentElement;
+  if (html.classList.contains("ruch")) {
+    var cele = [];
+    var oznacz = function (el, kierunek) {
+      el.setAttribute("data-ruch", kierunek);
+      cele.push(el);
+    };
+    var kolejno = function (lista, kierunek) {
+      lista.forEach(function (el) { oznacz(el, kierunek); });
+    };
+    var przejdz = function (kontener) {
+      Array.prototype.slice.call(kontener.children).forEach(function (el) {
+        var c = el.classList;
+        if (el.tagName === "DIALOG" || el.tagName === "SCRIPT" || c.contains("visually-hidden")) return;
+        if (c.contains("blok-dalej")) { przejdz(el); return; }
+        if (c.contains("split")) {
+          var kol = Array.prototype.slice.call(el.children);
+          if (kol[0]) oznacz(kol[0], "lewo");
+          if (kol[1]) oznacz(kol[1], "prawo");
+        } else if (c.contains("grid") || c.contains("trust") || c.contains("related")) {
+          kolejno(Array.prototype.slice.call(el.children), "gora");
+        } else if (c.contains("gallery")) {
+          kolejno(Array.prototype.slice.call(el.children), "skala");
+        } else if (c.contains("steps")) {
+          kolejno($$(":scope > li", el), "lewo");
+        } else if (c.contains("faq")) {
+          kolejno($$(":scope > details", el), "gora");
+        } else if (c.contains("table-wrap") || c.contains("map-embed") || el.tagName === "FORM") {
+          oznacz(el, "pojaw");
+        } else {
+          oznacz(el, "gora");   /* naglowek, wstep, tekst, ramka */
+        }
+      });
+    };
+    $$("main .section > .container").forEach(przejdz);
+
+    /* po wjezdzie element wraca do zwyklych przejsc (np. uniesienie karty
+       pod kursorem) - bez znacznikow animacji i opoznienia */
+    var sprzataj = function (el) {
+      el.removeAttribute("data-ruch");
+      el.removeAttribute("data-ruch-widoczny");
+      el.style.removeProperty("--ruch-opoznienie");
+    };
+    var pokaz = function (el) {
+      if (!el.hasAttribute("data-ruch") || el.hasAttribute("data-ruch-widoczny")) return;
+      el.setAttribute("data-ruch-widoczny", "");
+      var raz = function (e) {
+        if (e && e.target !== el) return;   /* przejscia elementow w srodku */
+        el.removeEventListener("transitionend", raz);
+        sprzataj(el);
+      };
+      el.addEventListener("transitionend", raz);
+      setTimeout(raz, 1600);   /* gdy transitionend nie przyjdzie (np. element ukryty) */
+    };
+    var wysokosc = window.innerHeight || html.clientHeight;
+    var obserwator = new IntersectionObserver(function (wpisy) {
+      /* co wchodzi naraz, wjezdza po kolei (w kolejnosci dokumentu), co 80 ms,
+         najwyzej 6 krokow */
+      wpisy.filter(function (w) { return w.isIntersecting; })
+        .map(function (w) { return w.target; })
+        .sort(function (a, b) { return a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1; })
+        .forEach(function (el, i) {
+          el.style.setProperty("--ruch-opoznienie", (Math.min(i, 6) * 0.08).toFixed(2) + "s");
+          pokaz(el);
+          obserwator.unobserve(el);
+        });
+    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+
+    cele.forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < wysokosc && r.bottom > 0) {
+        /* w widoku od poczatku: bez animacji, zeby nic nie zniknelo na chwile */
+        el.style.transition = "none";
+        pokaz(el);
+        requestAnimationFrame(function () { el.style.transition = ""; });
+      } else {
+        obserwator.observe(el);
+      }
+    });
+
+    /* odslania cel i wszystko, co stoi przed nim w dokumencie (kotwica, fokus) */
+    var odslonDo = function (cel) {
+      if (!cel) return;
+      cele.forEach(function (el) {
+        if (el === cel || el.contains(cel) || cel.contains(el) ||
+            (el.compareDocumentPosition(cel) & Node.DOCUMENT_POSITION_FOLLOWING)) {
+          pokaz(el); obserwator.unobserve(el);
+        }
+      });
+    };
+    var zKotwicy = function () {
+      var id = decodeURIComponent((location.hash || "").slice(1));
+      if (id) odslonDo(document.getElementById(id));
+    };
+    zKotwicy();
+    window.addEventListener("hashchange", zKotwicy);
+    document.addEventListener("focusin", function (e) {
+      var el = e.target.closest && e.target.closest("[data-ruch]:not([data-ruch-widoczny])");
+      if (el) odslonDo(el);
+    });
+    window.addEventListener("beforeprint", function () { cele.forEach(pokaz); });
+
+    html.classList.add("ruch-gotowy");
+  }
 })();

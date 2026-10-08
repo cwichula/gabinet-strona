@@ -63,6 +63,19 @@
 <link rel="manifest" href="{{ .RelPermalink }}">
 {{- end }}
 
+<script>
+  /* Animacje wejscia sekcji (app.js, "9. Animacje wejscia"): klasa "ruch"
+     przed pierwszym malowaniem, tylko gdy przegladarka to obsluzy i nikt nie
+     wybral "ogranicz ruch". Bezpiecznik: gdy app.js nie ruszy w 4 s (blad,
+     blokada), klasa znika i cala tresc jest widoczna. */
+  (function () {
+    var h = document.documentElement;
+    if (!("IntersectionObserver" in window) || !window.matchMedia ||
+        matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    h.classList.add("ruch");
+    setTimeout(function () { if (!h.classList.contains("ruch-gotowy")) h.classList.remove("ruch"); }, 4000);
+  })();
+</script>
 {{- $css := slice (resources.Get "css/style.css") (resources.Get "css/hugo.css") | resources.Concat "css/v1.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 {{- if (partialCached "ustawienia-model.html" site "ustawienia").naglowek.motyw }}
