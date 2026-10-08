@@ -5,6 +5,9 @@ stopka_tekst: ""
 # Do czasu uzupelnienia danych rejestrowych, godzin i adresu rezerwacji online
 # strona jest ukryta przed wyszukiwarkami (jak makieta v1). Po uruchomieniu: false.
 ukryj_przed_wyszukiwarkami: true
+logo: ""
+logo_bez_napisow: false
+ikona: ""
 logo_nazwa: "Gabinet stomatologiczny"
 logo_podpis: "lek. stom. Dorota Rożdżestwieńska · Legnica"
 pasek_informacyjny: ""

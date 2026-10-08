@@ -548,6 +548,15 @@ hr {
   min-height: 2.75rem;
 }
 .brand__mark { width: 2.4rem; height: 2.4rem; flex: none; color: var(--akcent-pasma); }
+/* logo z panelu (ustawienia: logo) zamiast znaku; "duze" = logo z nazwa,
+   bez napisow obok. W motywie ciemnym jasne podloze - ciemne logo na
+   przezroczystym tle inaczej by znikalo. */
+.brand__logo { height: 2.4rem; width: auto; max-width: 9rem; flex: none; object-fit: contain; }
+.brand__logo--duze { height: 3rem; max-width: min(16rem, 60vw); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .brand__logo { background: #fff; border-radius: var(--radius-sm); padding: .2rem; }
+}
+:root[data-theme="dark"] .brand__logo { background: #fff; border-radius: var(--radius-sm); padding: .2rem; }
 .brand__text { display: grid; line-height: 1.2; }
 .brand__name {
   font-family: var(--font-head);

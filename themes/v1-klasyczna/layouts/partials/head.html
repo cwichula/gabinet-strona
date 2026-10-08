@@ -56,8 +56,9 @@
 {{- end }}
 <meta name="twitter:card" content="summary_large_image">
 
-<link rel="icon" href="{{ partialCached "favicon.html" site "favicon" }}" type="image/svg+xml">
-<link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}">
+{{- $ikony := partialCached "ikony-strony.html" site "ikony-strony" }}
+<link rel="icon" href="{{ $ikony.favicon.url }}" type="{{ $ikony.favicon.typ }}">
+<link rel="apple-touch-icon" href="{{ $ikony.apple }}">
 {{- with resources.Get "meta/site.webmanifest" | resources.ExecuteAsTemplate "site.webmanifest" . }}
 <link rel="manifest" href="{{ .RelPermalink }}">
 {{- end }}

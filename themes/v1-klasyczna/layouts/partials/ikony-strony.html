@@ -1,0 +1,76 @@
+{{- /* Logo w naglowku i ikony strony z data/ustawienia.yaml (logo, ikona) -
+       partialCached. Pliki z panelu: "/images/x.webp" -> assets/images/x.webp.
+       Plik, ktorego nie ma, albo nie-obraz = jak bez pliku (bez bledu - plik mogl
+       zostac usuniety w panelu).
+       - logo rastrowe: wysokosc 96 px (WebP), SVG: wymiary z viewBox (inaczej 48x48);
+         brak = znak zeba w naglowku (naglowek.html);
+       - ikona rastrowa: favicon PNG 48x48, ikona na ekran telefonu PNG 180x180,
+         ikony manifestu PNG 192 (i 512, gdy plik ma co najmniej 512x512) - przyciete
+         do kwadratu; ikona SVG: tylko favicon (PNG zostaja domyslne);
+         brak = favicon w kolorze palety (favicon.html) i static/apple-touch-icon.png;
+       - logo dla danych strukturalnych (JSON-LD): logo rastrowe (PNG), potem ikona
+         rastrowa, potem apple-touch-icon.png (SVG Google nie przyjmuje).
+       Wynik: dict "logo" (dict "url", "w", "h" albo false), "bez_napisow" (bool),
+       "favicon" (dict "url", "typ"), "apple" (url), "manifest" (lista ikon
+       manifestu), "logo_jsonld" (pelny adres). */ -}}
+{{- $u := hugo.Data.ustawienia | default dict -}}
+{{- $logoPlik := partial "inline/obraz-z-pola.html" $u.logo -}}
+{{- $ikonaPlik := partial "inline/obraz-z-pola.html" $u.ikona -}}
+
+{{- $logo := false -}}
+{{- $logoJsonld := "apple-touch-icon.png" | absURL -}}
+{{- $logoJsonldZLogo := false -}}
+{{- with $logoPlik -}}
+  {{- if eq .MediaType.SubType "svg" -}}
+    {{- $w := 48 }}{{ $h := 48 -}}
+    {{- with findRESubmatch `viewBox\s*=\s*["']\s*[-0-9.]+[\s,]+[-0-9.]+[\s,]+([0-9.]+)[\s,]+([0-9.]+)` .Content 1 -}}
+      {{- $vw := float (index . 0 1) }}{{ $vh := float (index . 0 2) -}}
+      {{- if and (gt $vw 0) (gt $vh 0) }}{{ $h = 48 }}{{ $w = int (math.Round (div (mul $vw 48) $vh)) }}{{ end -}}
+    {{- end -}}
+    {{- $logo = dict "url" .RelPermalink "w" $w "h" $h -}}
+  {{- else -}}
+    {{- $r := . }}{{ if gt .Height 96 }}{{ $r = .Resize "x96 webp" }}{{ else }}{{ $r = .Process "webp" }}{{ end -}}
+    {{- $logo = dict "url" $r.RelPermalink "w" $r.Width "h" $r.Height -}}
+    {{- $j := . }}{{ if gt .Height 240 }}{{ $j = .Resize "x240 png" }}{{ else }}{{ $j = .Process "png" }}{{ end -}}
+    {{- if ge $j.Height 112 }}{{ $logoJsonld = $j.Permalink }}{{ $logoJsonldZLogo = true }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $favicon := dict "url" (partialCached "favicon.html" site "favicon") "typ" "image/svg+xml" -}}
+{{- $apple := "apple-touch-icon.png" | relURL -}}
+{{- $manifest := slice
+      (dict "src" $favicon.url "sizes" "any" "type" "image/svg+xml" "purpose" "any")
+      (dict "src" $apple "sizes" "180x180" "type" "image/png") -}}
+{{- with $ikonaPlik -}}
+  {{- if eq .MediaType.SubType "svg" -}}
+    {{- $favicon = dict "url" .RelPermalink "typ" "image/svg+xml" -}}
+    {{- $manifest = slice (dict "src" .RelPermalink "sizes" "any" "type" "image/svg+xml" "purpose" "any") (dict "src" $apple "sizes" "180x180" "type" "image/png") -}}
+  {{- else -}}
+    {{- $f := .Fill "48x48 Center png" -}}
+    {{- $a := .Fill "180x180 Center png" -}}
+    {{- $favicon = dict "url" $f.RelPermalink "typ" "image/png" -}}
+    {{- $apple = $a.RelPermalink -}}
+    {{- $m192 := .Fill "192x192 Center png" -}}
+    {{- $manifest = slice (dict "src" $m192.RelPermalink "sizes" "192x192" "type" "image/png" "purpose" "any") -}}
+    {{- if and (ge .Width 512) (ge .Height 512) -}}
+      {{- $m512 := .Fill "512x512 Center png" -}}
+      {{- $manifest = $manifest | append (dict "src" $m512.RelPermalink "sizes" "512x512" "type" "image/png" "purpose" "any") -}}
+      {{- if not $logoJsonldZLogo }}{{ $logoJsonld = $m512.Permalink }}{{ end -}}
+    {{- else if not $logoJsonldZLogo -}}
+      {{- $logoJsonld = $a.Permalink -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return dict "logo" $logo "bez_napisow" (and $logo (eq $u.logo_bez_napisow true)) "favicon" $favicon "apple" $apple "manifest" $manifest "logo_jsonld" $logoJsonld -}}
+
+{{- /* Obraz z pola panelu ("/images/x.webp") jako zasob z assets/ albo false. */ -}}
+{{- define "partials/inline/obraz-z-pola.html" -}}
+  {{- $wynik := false -}}
+  {{- with . -}}
+    {{- with resources.Get (strings.TrimPrefix "/" .) -}}
+      {{- if eq .ResourceType "image" }}{{ $wynik = . }}{{ end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- return $wynik -}}
+{{- end -}}

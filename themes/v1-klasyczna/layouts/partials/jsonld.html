@@ -15,7 +15,7 @@
 {{- $gab := dict "@type" (slice "Dentist" "MedicalBusiness" "LocalBusiness") "@id" $idGabinet "name" $m.nazwa "url" $dom -}}
 {{- with $g.nazwa_krotka }}{{ $gab = merge $gab (dict "alternateName" .) }}{{ end -}}
 {{- with partial "og-zdjecie.html" site.Home }}{{ $gab = merge $gab (dict "image" .url) }}{{ end -}}
-{{- $gab = merge $gab (dict "logo" ("favicon.svg" | absURL)) -}}
+{{- $gab = merge $gab (dict "logo" (partialCached "ikony-strony.html" site "ikony-strony").logo_jsonld) -}}
 {{- with $m.telefon }}{{ $gab = merge $gab (dict "telephone" .tel) }}{{ end -}}
 {{- with $g.email }}{{ $gab = merge $gab (dict "email" .) }}{{ end -}}
 {{- with $m.profile }}{{ $adresy := slice }}{{ range . }}{{ $adresy = $adresy | append .url }}{{ end }}{{ $gab = merge $gab (dict "sameAs" $adresy) }}{{ end -}}

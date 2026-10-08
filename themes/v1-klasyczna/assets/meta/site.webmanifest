@@ -9,8 +9,6 @@
   "display" "standalone"
   "background_color" $kolory.jasny
   "theme_color" $kolory.jasny
-  "icons" (slice
-    (dict "src" (partialCached "favicon.html" site "favicon") "sizes" "any" "type" "image/svg+xml" "purpose" "any")
-    (dict "src" ("apple-touch-icon.png" | relURL) "sizes" "180x180" "type" "image/png"))
+  "icons" (partialCached "ikony-strony.html" site "ikony-strony").manifest
 -}}
 {{- $m | jsonify (dict "indent" "  ") -}}

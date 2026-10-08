@@ -1429,6 +1429,29 @@ collections:
             hint: >-
               Włączone = Google i inne wyszukiwarki nie pokazują strony (noindex). Na czas
               uzupełniania danych; po uruchomieniu strony wyłącz.
+          - name: logo
+            label: Logo (opcjonalnie)
+            widget: image
+            choose_url: false
+            required: false
+            hint: >-
+              Zastępuje znak zęba w nagłówku. PNG albo SVG, najlepiej na przezroczystym tle,
+              min. 240 px wysokości. W trybie ciemnym logo dostaje jasne tło. Puste = znak zęba.
+          - name: logo_bez_napisow
+            label: Logo zawiera nazwę gabinetu — ukryj napisy obok logo
+            widget: boolean
+            default: false
+            required: false
+            hint: Włącz, gdy na obrazku logo jest już nazwa. Działa tylko z wgranym logo.
+          - name: ikona
+            label: Ikona strony (opcjonalnie)
+            widget: image
+            choose_url: false
+            required: false
+            hint: >-
+              Mały obrazek w karcie przeglądarki i na ekranie telefonu. Kwadrat PNG/JPG,
+              min. 512×512, bez przezroczystości (albo SVG — wtedy tylko w karcie przeglądarki).
+              Puste = znak zęba w kolorze strony.
           - { name: logo_nazwa, label: Nazwa w nagłówku strony, widget: string, required: false, hint: 'Duży napis obok logo. Puste = nazwa krótka z „Danych gabinetu”.' }
           - { name: logo_podpis, label: Podpis pod nazwą w nagłówku, widget: string, required: false, hint: 'Np. lekarz i miasto.' }
           - name: pasek_informacyjny
