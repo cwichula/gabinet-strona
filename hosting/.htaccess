@@ -24,14 +24,19 @@ RewriteEngine On
 # Certyfikat (Let's Encrypt w panelu hostingu) musi byc wydany, zanim domena
 # zacznie wskazywac na ten serwer - inaczej przegladarka pokaze blad
 # certyfikatu. .well-known/ zostaje bez przekierowan (weryfikacja certyfikatu).
-  RewriteCond %{REQUEST_URI} !^/\.well-known/
-  RewriteCond %{HTTPS} !=on
-  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
-  RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+#
+# CERTYFIKATU JESZCZE NIE MA (OVH wyda go dopiero po zmianie DNS na OVH),
+# wiec wymuszenie HTTPS jest wylaczone, a "www." prowadzi na http://.
+# Po wydaniu certyfikatu: odkomentowac blok HTTPS i w regule "www."
+# zamienic http:// na https:// (docs/HOSTING.md, "OVHcloud").
+#  RewriteCond %{REQUEST_URI} !^/\.well-known/
+#  RewriteCond %{HTTPS} !=on
+#  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+#  RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
 
   RewriteCond %{REQUEST_URI} !^/\.well-known/
   RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-  RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+  RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
 
 # --- 4. Przekierowania ze starej strony ------------------------------------
 # Stara strona (2011-2026) miala adresy .php. Sa w wynikach Google, w zakladkach

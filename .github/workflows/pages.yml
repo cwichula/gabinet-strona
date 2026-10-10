@@ -193,7 +193,7 @@ jobs:
 
   # Wysylka wersji na domene na hosting przez SFTP albo FTPS (lftp mirror).
   # Zmienne (Variables): HOSTING_SERWER, HOSTING_PROTOKOL (sftp|ftps),
-  # HOSTING_KATALOG (np. public_html), opcjonalnie HOSTING_PORT, HOSTING_ADRES,
+  # HOSTING_KATALOG (np. public_html; OVHcloud: www), opcjonalnie HOSTING_PORT, HOSTING_ADRES,
   # HOSTING_SSH_KNOWN_HOSTS (wiersz known_hosts serwera SFTP).
   # Sekrety (Secrets): HOSTING_UZYTKOWNIK, HOSTING_HASLO.
   #
@@ -268,6 +268,7 @@ jobs:
           lftp -c "$polacz; mirror --reverse $usun --verbose --parallel=4 \
             --exclude-glob .well-known/ --exclude-glob cgi-bin/ \
             --exclude-glob .gabinet-strona --exclude-glob .user.ini --exclude-glob .ftpquota \
+            --exclude-glob .ovhconfig \
             public-hosting/ \"$KATALOG\""
 
           printf 'Katalog strony zarządzany przez GitHub Actions (repozytorium gabinet-strona).\n' > .gabinet-strona
