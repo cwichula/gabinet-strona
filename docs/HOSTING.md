@@ -78,6 +78,11 @@ Wartości w panelu OVH (Web Cloud → Hosting):
    - strona w przeglądarce: zdjęcia, menu, cennik.
 4. Usuń wpisy z `hosts`.
 
+Bez pliku `hosts` (tylko `curl`, bez przeglądarki): `--resolve` kieruje jedno zapytanie
+na podany adres, np.
+`curl -I --resolve dobrydentysta.legnica.pl:80:<IP klastra> http://dobrydentysta.legnica.pl/cennik.php`
+(dla `www.` osobno: `--resolve www.dobrydentysta.legnica.pl:80:<IP klastra>`).
+
 Pętla przekierowań na HTTPS (OVH stoi za serwerem pośredniczącym): w `hosting/.htaccess`
 zamienić warunki `%{HTTPS}` / `X-Forwarded-Proto` na `RewriteCond %{SERVER_PORT} ^80$`
 i powtórzyć test.
@@ -86,6 +91,13 @@ i powtórzyć test.
 
 Do uruchomienia strony wystarczy **zmiana rekordów A/AAAA** domeny i `www` na adres OVH.
 Transfer domeny (zmiana rejestratora) to osobna, nieobowiązkowa sprawa.
+
+**Stan (2026-10):** DNS domeny prowadzi **ehost.pl** (`ns1.ehost.pl`, `ns2.ehost.pl`),
+stara strona: A `193.143.77.30`, `www` to alias domeny. Wybrany wariant A — domena zostaje
+w ehost, zmienia się tylko rekord A (domena i `www`). MX wskazuje na samą domenę, więc
+po zmianie A poczta szłaby na OVH — nie przeszkadza, bo skrzynki w domenie nikt nie używa.
+Gdyby poczta była potrzebna: przed zmianą A dodać `mail` A `193.143.77.30` i ustawić MX
+na `mail.dobrydentysta.legnica.pl`.
 
 1. Rejestrator: WHOIS dla `dobrydentysta.legnica.pl` na <https://dns.pl/whois> (domena
    regionalna, rejestr NASK) — kto ją prowadzi i kto ma dostęp do panelu.
