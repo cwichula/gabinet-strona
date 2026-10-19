@@ -66,15 +66,17 @@ sekcje:
     naglowek: "Mapa dojazdu"
     tresc: "Mapę wczytujemy dopiero po Twoim kliknięciu. Zanim to zrobisz, Google nie dostaje informacji o tym, że odwiedziłeś tę stronę."
     wariant: wyrozniony
-  - type: formularz
-    naglowek: "Napisz do nas"
-    wstep: "Jeśli nie możesz teraz rozmawiać, zostaw wiadomość. Odpowiadamy w dni przyjęć, od poniedziałku do czwartku. Termin wizyty i tak potwierdzamy telefonicznie."
-    tematy:
-      - "Umówienie wizyty"
-      - "Pytanie o cenę"
-      - "Pytanie o leczenie"
-      - "Inne"
-    wariant: domyslny
+  # Formularz tymczasowo schowany - nie ma jeszcze adresu e-mail na wiadomosci.
+  # Zeby wrocil: odkomentowac blok ponizej.
+  # - type: formularz
+  #   naglowek: "Napisz do nas"
+  #   wstep: "Jeśli nie możesz teraz rozmawiać, zostaw wiadomość. Odpowiadamy w dni przyjęć, od poniedziałku do czwartku. Termin wizyty i tak potwierdzamy telefonicznie."
+  #   tematy:
+  #     - "Umówienie wizyty"
+  #     - "Pytanie o cenę"
+  #     - "Pytanie o leczenie"
+  #     - "Inne"
+  #   wariant: domyslny
   - type: cta
     naglowek: "Umów wizytę telefonicznie"
     tresc: "Rejestracja działa w dni przyjęć, od poniedziałku do czwartku. Powiedz, co Cię boli — pilne przypadki staramy się przyjąć tego samego dnia."

@@ -55,7 +55,6 @@ sekcje:
       ul. Złotoryjska 16/18 m. 10, 59-220 Legnica
 
       - telefon: [699 904 989](tel:+48699904989)
-      - e-mail: {{% gabinet "email" %}}
     ramka:
       rodzaj: info
       tresc: |-
@@ -65,25 +64,19 @@ sekcje:
   - type: tekst
     waska: true
     naglowek: "2. Jakie dane zbieramy i w jakim celu"
-    wstep: "Cztery sytuacje, w których gabinet dowiaduje się czegoś o Tobie."
+    wstep: "Trzy sytuacje, w których gabinet dowiaduje się czegoś o Tobie."
     tresc: |-
       ### a) Rejestracja telefoniczna i przypomnienia SMS
 
       Przy umawianiu wizyty zapisujemy imię i nazwisko, numer telefonu i termin. Numer służy do kontaktu w sprawie wizyty i do przypomnienia SMS. Przypomnienie wysyłamy tylko za Twoją zgodą; zgodę możesz wycofać jednym telefonem do rejestracji.
 
-      ### b) Formularz kontaktowy
-
-      W [formularzu kontaktowym](/kontakt/) wymagane są trzy pola: imię, numer telefonu i treść wiadomości. Adres e-mail możesz pominąć, a temat sprawy wybierasz z krótkiej listy.
-
-      Tych danych używamy wyłącznie po to, żeby odpowiedzieć i ustalić termin. Sam formularz niczego nie rezerwuje — po wiadomości oddzwaniamy, a wizytę umawiamy telefonicznie. Nie prosimy w nim o opis dolegliwości.
-
-      ### c) Dokumentacja medyczna pacjenta
+      ### b) Dokumentacja medyczna pacjenta
 
       Gdy zostaniesz pacjentem, prowadzimy dokumentację: dane identyfikujące (imię, nazwisko, PESEL, data urodzenia, adres), wywiad o stanie zdrowia i lekach, opis badania, rozpoznanie, wykonane zabiegi, zdjęcia RTG i pantomogramy oraz zgody na leczenie.
 
       Informacje o zdrowiu są w świetle RODO **szczególną kategorią danych** i podlegają mocniejszej ochronie. Zakres dokumentacji określają przepisy, nie my.
 
-      ### d) Dane zbierane automatycznie przez serwer
+      ### c) Dane zbierane automatycznie przez serwer
 
       Każde wejście na stronę zapisuje się w logach serwera: adres IP, data i godzina, adres podstrony, nazwa przeglądarki i systemu.
 
@@ -96,8 +89,8 @@ sekcje:
     tresc: |-
       RODO wymaga, żeby każde przetwarzanie miało swoją podstawę prawną.
 
-      - **Art. 6 ust. 1 lit. a — zgoda.** Przypomnienia SMS oraz zgoda, którą zaznaczasz pod formularzem kontaktowym. Możesz ją wycofać w każdej chwili.
-      - **Art. 6 ust. 1 lit. b — umowa i działania przed jej zawarciem.** Odpowiedź na wiadomość z formularza, umówienie i przeprowadzenie wizyty oraz rozliczenie za usługę.
+      - **Art. 6 ust. 1 lit. a — zgoda.** Przypomnienia SMS. Zgodę możesz wycofać w każdej chwili.
+      - **Art. 6 ust. 1 lit. b — umowa i działania przed jej zawarciem.** Umówienie i przeprowadzenie wizyty oraz rozliczenie za usługę.
       - **Art. 6 ust. 1 lit. c — obowiązek prawny.** Prowadzenie dokumentacji medycznej i archiwizowanie dokumentów księgowych.
       - **Art. 6 ust. 1 lit. f — uzasadniony interes.** Logi serwera, czyli bezpieczeństwo serwisu, oraz obrona przed roszczeniami.
       - **Art. 9 ust. 2 lit. h — profilaktyka zdrowotna, diagnoza i leczenie.** To podstawa przetwarzania danych o zdrowiu, czyli całej dokumentacji medycznej. Uzupełnia ją ustawa o prawach pacjenta i Rzeczniku Praw Pacjenta.
@@ -174,7 +167,7 @@ sekcje:
     kotwica: prawa
   - type: tekst
     tresc: |-
-      Żądanie składasz telefonicznie, e-mailem albo osobiście w gabinecie. Odpowiadamy bez zbędnej zwłoki, najpóźniej w ciągu miesiąca.
+      Żądanie składasz telefonicznie albo osobiście w gabinecie. Odpowiadamy bez zbędnej zwłoki, najpóźniej w ciągu miesiąca.
 
       Masz też prawo wnieść **skargę do organu nadzorczego**:
 
@@ -209,7 +202,6 @@ sekcje:
       - **Imię i numer telefonu przy rejestracji** — bez nich nie umówimy wizyty.
       - **Dane do dokumentacji i wywiad o stanie zdrowia** — wynikają z przepisów. Odmowa oznacza w praktyce, że leczenia nie można rozpocząć: bez wiedzy o lekach, alergiach i chorobach przewlekłych zabieg byłby dla Ciebie niebezpieczny.
       - **Zgoda na SMS** — w pełni dobrowolna. Jej brak nie wpływa na leczenie, po prostu nie dostaniesz przypomnienia.
-      - **Dane w formularzu** — dobrowolne, ale imię, numer telefonu i treść wiadomości trzeba wpisać, żeby wiadomość dała się wysłać i żeby było jak odpowiedzieć. E-mail możesz pominąć.
 
       Nie podejmujemy decyzji automatycznie i nie profilujemy Cię. Zobacz też, [jak wygląda pierwsza wizyta](/pierwsza-wizyta/).
     wariant: domyslny
