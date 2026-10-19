@@ -6,9 +6,14 @@
 {{- $b := .blok -}}
 {{- $a := hugo.Data.gabinet.adres | default dict -}}
 {{- $n := (partialCached "ustawienia-model.html" site "ustawienia").napisy -}}
-{{- /* zapytanie do map: bez "ul." i bez numeru lokalu ("m. 10"), ktore myla wyszukiwarke */ -}}
+{{- /* zapytanie do map: nazwa gabinetu + adres bez "ul." i bez numeru lokalu ("m. 10"),
+       ktore myla wyszukiwarke; z nazwa mapa pokazuje wizytowke gabinetu (z opiniami),
+       a nie sam punkt adresowy */ -}}
 {{- $ulica := replaceRE `\s+m\.\s*\d+\s*$` "" ($a.ulica | default "") | replaceRE `^(?i)ul\.\s*` "" -}}
-{{- $zapytanie := printf "%s, %s %s" $ulica ($a.kod | default "") ($a.miasto | default "") | urlquery -}}
+{{- $nazwa := hugo.Data.gabinet.nazwa_krotka | default "" -}}
+{{- $zapytanie := printf "%s, %s %s" $ulica ($a.kod | default "") ($a.miasto | default "") -}}
+{{- with $nazwa }}{{ $zapytanie = printf "%s, %s" . $zapytanie }}{{ end -}}
+{{- $zapytanie = $zapytanie | urlquery -}}
     {{- partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" (T "howToGetHere") "gora" $.gora) }}
     {{- with $b.tresc }}
     {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "lede" "styl" "max-width:62ch") }}

@@ -1,21 +1,24 @@
 ---
 title: "Opinie pacjentów"
 seo_tytul: "Opinie o gabinecie Legnica | lek. stom. D. Rożdżestwieńska"
-description: "Gabinet stomatologiczny Legnica: gdzie zostawić opinię, dlaczego nie publikujemy wymyślonych ocen i jak odpowiadamy na opinie pacjentów. Tel. 699 904 989."
+description: "Gabinet stomatologiczny Legnica: gdzie przeczytać i zostawić opinię (Google Maps, ZnanyLekarz), dlaczego nie publikujemy ocen u siebie i jak odpowiadamy pacjentom. Tel. 699 904 989."
 draft: false
 weight: 17
 sekcje:
   - type: hero
     naglowek: "Opinie o gabinecie stomatologicznym w Legnicy"
-    tresc: "Nie mamy jeszcze zebranych opinii i nie zamierzamy ich kupować ani wymyślać. Zamiast ocen w gwiazdkach piszemy, gdzie opinię zostawić, o co nigdy nie prosimy i jak odpowiadamy na to, co pacjenci napiszą."
+    tresc: "Opinie pacjentów o gabinecie znajdziesz w Google Maps i w serwisie ZnanyLekarz — tam, gdzie pisze je każdy, a my nie możemy ich zmienić ani usunąć. Tutaj piszemy, gdzie je przeczytać i zostawić, o co nigdy nie prosimy i jak odpowiadamy na to, co pacjenci napiszą."
     wariant: domyslny
   - type: tekst
     waska: true
-    naglowek: "Dlaczego nie widzisz tu ani jednej opinii"
+    naglowek: "Gdzie przeczytać opinie o gabinecie"
     tresc: |-
-      Szukasz opinii o dentyście w Legnicy, więc powiemy wprost: na tej stronie ich nie ma. Gabinet nie zbierał dotąd opinii w żadnym serwisie, a opinii, których nie ma, nie da się uczciwie pokazać.
+      Szukasz opinii o dentyście w Legnicy, więc odsyłamy tam, gdzie piszą je sami pacjenci:
 
-      Nie publikujemy wymyślonych ani kupionych rekomendacji. Nie pokazujemy też średniej oceny w gwiazdkach — ani na stronie, ani w danych, które czyta wyszukiwarka. Gwiazdki, za którymi nie stoją prawdziwe wypowiedzi, wprowadzałyby Cię w błąd.
+      - [Google Maps](https://www.google.com/maps/search/?api=1&query=Prywatny+Gabinet+Stomatologiczny+Dorota+Ro%C5%BCd%C5%BCestwie%C5%84ska+Legnica) — opinie przy wizytówce gabinetu. Widać je też na [mapie dojazdu](/kontakt/) na stronie kontaktowej, po jej wczytaniu.
+      - [ZnanyLekarz](https://www.znanylekarz.pl/dorota-rozdzestwienska/stomatolog/legnica) — opinie na profilu lek. dent. Doroty Rożdżestwieńskiej.
+
+      Nie przepisujemy ich na tę stronę i nie pokazujemy średniej oceny w gwiazdkach — ani tu, ani w danych, które czyta wyszukiwarka. Wybrane przez nas cytaty byłyby z natury wybiórcze; w tamtych serwisach widzisz wszystkie opinie, także te krytyczne, w ich oryginalnym brzmieniu.
     wariant: domyslny
   - type: ramka
     rodzaj: info
@@ -26,14 +29,8 @@ sekcje:
   - type: tekst
     waska: true
     naglowek: "Gdzie możesz zostawić opinię"
-    tresc: "Jeśli byłeś u nas i chcesz opisać, jak to wyglądało, służy do tego Profil Firmy w Google. Opinia zostaje przy wizytówce gabinetu, widzą ją osoby szukające dentysty w Legnicy, a my nie możemy jej usunąć ani zmienić."
+    tresc: "Jeśli byłeś u nas i chcesz opisać, jak to wyglądało, zrób to w [Google Maps](https://www.google.com/maps/search/?api=1&query=Prywatny+Gabinet+Stomatologiczny+Dorota+Ro%C5%BCd%C5%BCestwie%C5%84ska+Legnica) albo na [ZnanyLekarz](https://www.znanylekarz.pl/dorota-rozdzestwienska/stomatolog/legnica). Opinia zostaje przy wizytówce gabinetu, widzą ją osoby szukające dentysty w Legnicy, a my nie możemy jej usunąć ani zmienić."
     wariant: wyrozniony
-  - type: ramka
-    rodzaj: info
-    tresc: "Wizytówka gabinetu czeka na weryfikację w Google. Gdy weryfikacja się zakończy, w tym miejscu pojawi się odnośnik prowadzący wprost do formularza opinii. Na razie nie ma dokąd kierować — i wolimy napisać to wprost, niż dać przycisk, który nic nie robi."
-    ikona: gwiazdka
-    wariant: wyrozniony
-    polacz: true
   - type: lista
     waska: true
     naglowek: "O opinię prosimy po leczeniu i nigdy nic nie dajemy w zamian"
@@ -71,7 +68,7 @@ sekcje:
     naglowek: "Czego u nas nie znajdziesz"
     tresc: |-
       - Kupionych i wymyślonych opinii, w tym pochwał napisanych przez osoby, które nigdy nie były w tym gabinecie.
-      - Średniej oceny w gwiazdkach — dopóki nie ma prawdziwych opinii, nie ma z czego jej policzyć.
+      - Średniej oceny w gwiazdkach ani wybranych przez nas cytatów — prawdziwe opinie są w Google Maps i na ZnanyLekarz.
       - Wymyślonych liczb: ilu pacjentów przyjęliśmy, jaki procent leczeń się udaje, ile osób poleca gabinet.
       - Certyfikatów, nagród i wyróżnień, których gabinet nie ma.
       - Zdjęć z banku zdjęć. Każda fotografia na tej stronie pokazuje ten gabinet, ten sprzęt i tę poczekalnię.

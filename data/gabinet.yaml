@@ -54,4 +54,10 @@ platnosci:
   - gotówka
   - karta płatnicza
   - BLIK
-profile: []
+profile:
+  - rodzaj: google
+    url: https://www.google.com/maps/search/?api=1&query=Prywatny+Gabinet+Stomatologiczny+Dorota+Ro%C5%BCd%C5%BCestwie%C5%84ska+Legnica
+    nazwa: ''
+  - rodzaj: znanylekarz
+    url: https://www.znanylekarz.pl/dorota-rozdzestwienska/stomatolog/legnica
+    nazwa: ''
