@@ -1,0 +1,2 @@
+design-taste-frontend: github.com/Leonxlnx/taste-skill @ b9ca2fd (skills/taste-skill)
+impeccable: github.com/pbakaus/impeccable @ 0665bd8 (.claude/skills/impeccable, .claude/agents) - bez hookow z .claude/settings.json
