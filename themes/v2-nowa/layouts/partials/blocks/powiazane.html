@@ -1,0 +1,14 @@
+{{- /* Blok "powiazane": naglowek (pusty = bez naglowka), elementy [{strona,
+       etykieta, opis}] - wiersze-odnosniki od osi (4+ - dwie kolumny).
+       Pusta etykieta = tytul strony; pusty opis = usluga.skrot wskazanej strony.
+       Strona ukryta (szkic) = pominieta (powiazane-linki.html). */ -}}
+{{- $b := .blok -}}
+{{- with partial "powiazane-linki.html" (dict "elementy" $b.elementy "gdzie" (printf "%s: blok „Powiązane strony”" $.gdzie)) }}
+{{- $naglowek := partial "h2.html" (dict "naglowek" $b.naglowek "gora" $.gora) | strings.TrimSpace }}
+    <div class="blok powiazane-blok">
+      {{- with $naglowek }}
+      <div class="{{ if $.waska }}os{{ else }}lewa{{ end }}" data-wejscie>{{ . | safeHTML }}</div>
+      {{- end }}
+      {{ partial "powiazane-lista.html" (dict "linki" . "klasa" "os") }}
+    </div>
+{{- end -}}

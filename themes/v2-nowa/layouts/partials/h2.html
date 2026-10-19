@@ -1,0 +1,23 @@
+{{- /* Naglowek sekcji: h2 zawsze w stopniu naglowka (--st-naglowek; stopien
+       wystawowy zostaje dla h1 i liczb), zeby h2 nigdy nie byl wiekszy niz h1
+       strony; na stronie z h1 "zdanie" h2 dostaje stopien h1 (CSS). Dluzszy
+       niz 60 znakow - naglowek z waska miara. Ponad 50 znakow - klasa h2--szeroki: w lewej
+       strefie taki naglowek dostaje caly wiersz siatki (inaczej 4+ wiersze). Pod nim nadtytul jako zdanie (nigdy etykieta nad
+       naglowkiem) i opcjonalny wstep.
+       Wejscie: dict "strona", "naglowek", "domyslny" (naglowek, gdy pusty, ale
+       tylko dla pierwszego bloku sekcji - blok dolaczony nie dostaje
+       domyslnego tytulu), "nadtytul", "wstep", "gora" (bool),
+       "ukryty_domyslny" (bool - domyslny naglowek tylko dla czytnikow ekranu),
+       "klasa" (dodatkowa klasa h2), "stopien" (wymuszony: wystawa | naglowek). */ -}}
+{{- $ukryty := and .ukryty_domyslny (not .naglowek) -}}
+{{- with .naglowek | default (cond .gora (.domyslny | default "") "") }}
+{{- $n := strings.RuneCount . }}
+{{- $st := $.stopien | default "naglowek" }}
+<h2 class="h2 h2--{{ $st }}{{ if gt $n 50 }} h2--szeroki{{ end }}{{ if gt $n 60 }} h2--dlugi{{ end }}{{ with $.klasa }} {{ . }}{{ end }}{{ if $ukryty }} visually-hidden{{ end }}">{{ . }}</h2>
+{{- end }}
+{{- with .nadtytul }}
+<p class="nadtytul">{{ . }}</p>
+{{- end }}
+{{- with .wstep }}
+{{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "wstep") }}
+{{- end -}}

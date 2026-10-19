@@ -1,0 +1,9 @@
+{{- /* Naglowek strony h1 w stopniu zaleznym od dlugosci (naglowki pisze
+       klientka): do 44 znakow - stopien wystawowy, 45-60 - stopien
+       naglowka, dluzszy - "zdanie".
+       Bez animacji wejscia: h1 jest elementem LCP i stoi od pierwszego
+       malowania (runda 1 przegladu).
+       Wejscie: dict "tekst", "klasa". */ -}}
+{{- $n := strings.RuneCount .tekst -}}
+{{- $st := "zdanie" }}{{ if le $n 44 }}{{ $st = "wystawa" }}{{ else if le $n 60 }}{{ $st = "naglowek" }}{{ end -}}
+<h1 class="h1 h1--{{ $st }}{{ if and (eq $st "wystawa") (gt $n 24) }} h1--dlugi{{ end }}{{ with .klasa }} {{ . }}{{ end }}">{{ .tekst }}</h1>

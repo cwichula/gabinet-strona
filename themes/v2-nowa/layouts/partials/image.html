@@ -1,0 +1,75 @@
+{{- /* Zdjecie jako <picture>: WebP w kilku szerokosciach + zapasowy oryginalny
+       format (JPEG/PNG), atrybuty width/height (bez skakania ukladu).
+       Hugo nie koduje AVIF, wiec - inaczej niz w makiecie v1 - bez zrodla AVIF.
+       Wejscie: dict
+         "strona"      Page, do ktorej nalezy blok,
+         "zdjecie"     dict plik, alt,
+         "szerokosci"  lista szerokosci w px (domyslnie 480, 800, 1200),
+         "sizes"       atrybut sizes (domyslnie pol ekranu od 52rem),
+         "priorytet"   true = pierwsze zdjecie strony: bez lazy, fetchpriority=high,
+         "styl"        atrybut style dla <img> (np. --figure-w),
+         "gdzie"       opis miejsca do komunikatu o bledzie,
+         "kadr"        opcjonalnie proporcja kadru "szer:wys" (np. "1:1", "4:5", "3:2") -
+                       Hugo przycina oryginal (Fill), nigdy nie powieksza,
+         "kotwica"     kotwica kadru (domyslnie Smart; np. "Top"),
+         "klasa"       klasa <img>,
+         "bez_alt"     true = alt="" i aria-hidden (ozdobna miniatura obok nazwy,
+                       ktora ja opisuje),
+         "telefon_bez_kadru" true = ponizej 900 px poziomy oryginal bez przyciecia
+                       do "kadr" (osobne <source media>; pole na telefonie jest
+                       poziome, a kadr 4:5 z poziomego zdjecia ucina ludzi). */ -}}
+{{- $img := partial "zdjecie-zasob.html" . -}}
+{{- $oryg := $img -}}
+{{- if and $img $.kadr (ne $img.MediaType.SubType "svg") -}}
+  {{- with findRESubmatch `^([0-9]+):([0-9]+)$` $.kadr 1 -}}
+    {{- $kw := float (index . 0 1) }}{{ $kh := float (index . 0 2) -}}
+    {{- $w := float $img.Width }}{{ $h := float $img.Height -}}
+    {{- $tw := math.Min $w (div (mul $h $kw) $kh) -}}
+    {{- $th := div (mul $tw $kh) $kw -}}
+    {{- $img = $img.Fill (printf "%dx%d %s" (int (math.Floor $tw)) (int (math.Floor $th)) ($.kotwica | default "Smart")) -}}
+  {{- end -}}
+{{- end -}}
+{{- with $img -}}
+{{- $alt := $.zdjecie.alt | strings.TrimSpace -}}
+{{- if $.bez_alt }}{{ $alt = "" }}{{ end -}}
+{{- $ladowanie := cond ($.priorytet | default false) `fetchpriority="high"` `loading="lazy"` -}}
+{{- if eq .MediaType.SubType "svg" -}}
+<img src="{{ .RelPermalink }}" alt="{{ $alt }}" {{ safeHTMLAttr $ladowanie }} decoding="async">
+{{- else -}}
+  {{- $szer := $.szerokosci | default (slice 480 800 1200) -}}
+  {{- $max := 0 }}{{ range $szer }}{{ if gt . $max }}{{ $max = . }}{{ end }}{{ end -}}
+  {{- $lista := slice -}}
+  {{- range sort $szer }}{{ if lt . $img.Width }}{{ $lista = $lista | append . }}{{ end }}{{ end -}}
+  {{- if le $img.Width $max }}{{ $lista = $lista | append $img.Width }}{{ end -}}
+  {{- $lista = uniq $lista -}}
+  {{- $format := .MediaType.SubType -}}
+  {{- $zapas := cond (eq $format "png") "png" "jpg" -}}
+  {{- $webp := slice }}{{ $inne := slice }}{{ $najw := false -}}
+  {{- range $lista -}}
+    {{- $w := . -}}
+    {{- $v := false }}{{ if lt $w $img.Width }}{{ $v = $img.Resize (printf "%dx webp" $w) }}{{ else }}{{ $v = $img.Process "webp" }}{{ end -}}
+    {{- $webp = $webp | append (printf "%s %dw" $v.RelPermalink $v.Width) -}}
+    {{- if ne $format "webp" -}}
+      {{- $o := false }}{{ if lt $w $img.Width }}{{ $o = $img.Resize (printf "%dx %s" $w $zapas) }}{{ else }}{{ $o = $img.Process $zapas }}{{ end -}}
+      {{- $inne = $inne | append (printf "%s %dw" $o.RelPermalink $o.Width) -}}
+      {{- $najw = $o -}}
+    {{- else -}}
+      {{- $najw = $v -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $sizes := $.sizes | default "(min-width: 900px) 42vw, 100vw" -}}
+  {{- $srcImg := cond (eq $format "webp") $webp $inne -}}
+<picture>
+  {{- if and $.telefon_bez_kadru $.kadr (gt $oryg.Width $oryg.Height) }}
+  {{- $tel := slice }}
+  {{- range sort $szer }}{{ if lt . $oryg.Width }}{{ $tel = $tel | append (printf "%s %dw" ($oryg.Resize (printf "%dx webp" .)).RelPermalink .) }}{{ end }}{{ end }}
+  {{- if le $oryg.Width $max }}{{ $tel = $tel | append (printf "%s %dw" ($oryg.Process "webp").RelPermalink $oryg.Width) }}{{ end }}
+  <source media="(max-width: 899.98px)" type="image/webp" srcset="{{ delimit $tel ", " }}" sizes="100vw">
+  {{- end }}
+  {{- if ne $format "webp" }}
+  <source type="image/webp" srcset="{{ delimit $webp ", " }}"{{ if gt (len $webp) 1 }} sizes="{{ $sizes }}"{{ end }}>
+  {{- end }}
+  <img src="{{ $najw.RelPermalink }}"{{ if gt (len $srcImg) 1 }} srcset="{{ delimit $srcImg ", " }}" sizes="{{ $sizes }}"{{ end }} alt="{{ $alt }}"{{ if $.bez_alt }} aria-hidden="true"{{ end }} width="{{ $najw.Width }}" height="{{ $najw.Height }}" {{ safeHTMLAttr $ladowanie }} decoding="async"{{ with $.klasa }} class="{{ . }}"{{ end }}{{ with $.styl }} style="{{ . | safeCSS }}"{{ end }}>
+</picture>
+{{- end -}}
+{{- end -}}

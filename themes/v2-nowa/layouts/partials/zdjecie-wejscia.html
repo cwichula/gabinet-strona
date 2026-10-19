@@ -1,0 +1,15 @@
+{{- /* Zdjecie wejscia do gabinetu: strona dojazdu (gabinet-model.html: ustawienia
+       strona_dojazdu, inaczej pierwsza strona z mapa, potem z kontaktem) ->
+       pierwszy blok "tekst" ze zdjeciem. partialCached.
+       Wynik: dict "strona" (Page), "zdjecie" (dict plik, alt) albo false. */ -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- $wynik := false -}}
+{{- with $m.dojazd -}}
+  {{- $p := . -}}
+  {{- range $p.Params.sekcje -}}
+    {{- if and (not $wynik) (eq .type "tekst") .zdjecie -}}
+      {{- $wynik = dict "strona" $p "zdjecie" .zdjecie -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $wynik -}}

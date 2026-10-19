@@ -1,0 +1,59 @@
+{{- /* Ramka z boku jako karta wizyt (pole "bok" blokow kontakt i tresc_z_bokiem):
+       naglowek, godziny (pasek tygodnia pionowo + tabela dla czytnikow ekranu),
+       pozycje (id pozycji cennika - lista z cenami + informacja z cennika),
+       notka, telefony (przyciski), przycisk {etykieta, strona, styl,
+       kotwica_celu}, adres (bool), notka_dol. Brak pola godziny/telefony = tak,
+       adres = nie. Przyciski: z lista cen - najpierw przycisk do strony
+       (wypelniony), potem pierwszy telefon; bez cen - telefony (pierwszy
+       wypelniony), potem przycisk (obrysowany). Przy przycisku do strony -
+       tylko pierwszy numer (logika v1).
+       Wejscie: dict "bok", "strona" (Page), "gdzie" (opis do bledow). */ -}}
+{{- $b := .bok | default dict -}}
+{{- $g := hugo.Data.gabinet -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- $gdzie := .gdzie | default "Strona" -}}
+{{- $godziny := ne $b.godziny false -}}
+{{- $telefony := ne $b.telefony false -}}
+{{- $pozycje := slice -}}
+{{- range $b.pozycje }}{{ with partial "cennik-pozycja.html" (dict "id" . "gdzie" (printf "%s: ramka z boku" $gdzie)) }}{{ $pozycje = $pozycje | append . }}{{ end }}{{ end -}}
+{{- $przycisk := partial "przycisk.html" (dict "przycisk" $b.przycisk "gdzie" (printf "%s: przycisk w ramce z boku" $gdzie) "domyslny" (cond (gt (len $pozycje) 0) "glowny" "obrysowy") "glowny" "przycisk przycisk--glowny przycisk--pelny" "obrysowy" "przycisk przycisk--obrys przycisk--pelny") | strings.TrimSpace -}}
+{{- $tel := cond $telefony $m.telefony slice -}}
+{{- if $przycisk }}{{ $tel = first 1 $tel }}{{ end -}}
+    <aside class="karta karta--bok" data-wejscie-lista>
+      <h2 class="karta__tytul">{{ $b.naglowek | default (cond $godziny (T "openingHours") (cond (gt (len $pozycje) 0) (T "pricesFromList") (T "contact"))) }}</h2>
+      {{- if $godziny }}
+      {{ partial "tydzien.html" (dict "uklad" "pion") }}
+      {{- end }}
+      {{- with $pozycje }}
+      <ul class="karta__ceny">
+        {{- range . }}
+        <li><span>{{ .nazwa }}</span><span class="karta__kwota">{{ partial "cena.html" . }}</span></li>
+        {{- end }}
+      </ul>
+      {{- with hugo.Data.cennik.informacja }}
+      <p class="karta__notka">{{ partial "tekst-wiersze.html" . }}</p>
+      {{- end }}
+      {{- end }}
+      {{- with $b.notka }}
+      <p class="karta__notka">{{ partial "tekst-wiersze.html" . }}</p>
+      {{- end }}
+      <div class="karta__akcje">
+      {{- if $pozycje }}
+        {{ $przycisk | safeHTML }}
+        {{- range $tel }}
+        {{ partial "telefon-btn.html" (dict "telefon" . "klasa" "przycisk przycisk--obrys przycisk--pelny") }}
+        {{- end }}
+      {{- else }}
+        {{- range $i, $t := $tel }}
+        {{ partial "telefon-btn.html" (dict "telefon" $t "klasa" (cond (eq $i 0) "przycisk przycisk--glowny przycisk--pelny" "przycisk przycisk--obrys przycisk--pelny")) }}
+        {{- end }}
+        {{ $przycisk | safeHTML }}
+      {{- end }}
+      </div>
+      {{- if $b.adres }}{{ with $g.adres }}
+      <p class="karta__notka">{{ partial "adres.html" . }}</p>
+      {{- end }}{{ end }}
+      {{- with $b.notka_dol }}
+      <p class="karta__notka">{{ partial "tekst-wiersze.html" . }}</p>
+      {{- end }}
+    </aside>

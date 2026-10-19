@@ -1,0 +1,102 @@
+{{- /* <head> (przejete z v1-klasyczna): meta, kanoniczny adres, Open Graph,
+       ikony, jeden arkusz i jeden skrypt (z odciskiem w nazwie pliku), motyw
+       ustawiany przed pierwszym malowaniem, dane strukturalne. Zadnych
+       zasobow z obcych serwerow. Wejscie: Page. */ -}}
+{{- $g := hugo.Data.gabinet -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- $u := hugo.Data.ustawienia | default dict -}}
+{{- $s404 := (partialCached "ustawienia-model.html" site "ustawienia").strona_404 -}}
+{{- $nazwa := $m.nazwa_krotka -}}
+{{- $tytul := "" -}}
+{{- /* tytul do wyszukiwarki (pole strony seo_tytul) - wtedy bez dopisku */ -}}
+{{- if .Params.seo_tytul }}{{ $tytul = .Params.seo_tytul }}
+{{- else if .IsHome }}{{ $tytul = printf "%s | %s" .Title $nazwa }}
+{{- else if eq .Kind "404" }}{{ $tytul = printf "%s | %s" ($s404.tytul | default (T "notFoundTitle")) $nazwa }}
+{{- else }}{{ $tytul = printf "%s | %s" .Title $nazwa }}{{ end -}}
+{{- $opis := .Description | default (cond (eq .Kind "404") ($s404.opis | default "") "") | default $u.seo_opis | default "" -}}
+<meta charset="utf-8">
+<script>
+  /* Klasa "js" przed pierwszym malowaniem: tylko z nia (i bez "ogranicz ruch")
+     style chowaja czesci sekcji przed animacja wejscia; bez skryptu wszystko
+     jest widoczne od razu. */
+  (function (h) {
+    h.classList.add("js");
+    /* bezpiecznik: gdy app.js nie ruszy w 4 s (blad, blokada), cala tresc
+       wraca do zwyklego, widocznego stanu */
+    setTimeout(function () { if (!h.classList.contains("js-gotowy")) h.classList.remove("js"); }, 4000);
+  })(document.documentElement);
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>{{ $tytul }}</title>
+<meta name="description" content="{{ $opis }}">
+{{- if ne .Kind "404" }}
+<link rel="canonical" href="{{ .Permalink }}">
+{{- end }}
+{{- /* ustawienia: "ukryj przed wyszukiwarkami" (np. przed uzupelnieniem danych);
+       params.robocza: kopia robocza na GitHub Pages - zawsze ukryta, zeby nie
+       konkurowala w Google ze strona na wlasnej domenie */}}
+{{- if or $u.ukryj_przed_wyszukiwarkami site.Params.robocza }}
+<meta name="robots" content="noindex, nofollow">
+{{- else if eq .Kind "404" }}
+<meta name="robots" content="noindex">
+{{- end }}
+{{- with $g.lekarz }}
+<meta name="author" content="{{ . }}">
+{{- end }}
+{{- $kolory := partial "kolory-motywu.html" . }}
+<meta name="theme-color" content="{{ $kolory.jasny }}" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="{{ $kolory.ciemny }}" media="(prefers-color-scheme: dark)">
+{{- with $g.adres.miasto }}
+<meta name="geo.placename" content="{{ . }}">
+{{- end }}
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:site_name" content="{{ $nazwa }}">
+<meta property="og:title" content="{{ cond (or .IsHome (eq .Kind "404") .Params.seo_tytul) $tytul .Title }}">
+<meta property="og:description" content="{{ $opis }}">
+{{- if ne .Kind "404" }}
+<meta property="og:url" content="{{ .Permalink }}">
+{{- end }}
+{{- with partial "og-zdjecie.html" . }}
+<meta property="og:image" content="{{ .url }}">
+<meta property="og:image:width" content="{{ .width }}">
+<meta property="og:image:height" content="{{ .height }}">
+<meta property="og:image:alt" content="{{ .alt }}">
+{{- end }}
+<meta name="twitter:card" content="summary_large_image">
+
+{{- $ikony := partialCached "ikony-strony.html" site "ikony-strony" }}
+<link rel="icon" href="{{ $ikony.favicon.url }}" type="{{ $ikony.favicon.typ }}">
+<link rel="apple-touch-icon" href="{{ $ikony.apple }}">
+{{- with resources.Get "meta/site.webmanifest" | resources.ExecuteAsTemplate "site.webmanifest" . }}
+<link rel="manifest" href="{{ .RelPermalink }}">
+{{- end }}
+
+{{ partial "fonty.html" . }}
+{{- $css := resources.Get "css/style.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+{{- if (partialCached "ustawienia-model.html" site "ustawienia").naglowek.motyw }}
+<script>
+  /* Ustawia motyw PRZED pierwszym malowaniem - bez tego strona mrugnelaby
+     na bialo u kogos, kto wybral ciemny. Celowo male i synchroniczne,
+     w funkcji, zeby nie zostawiac zmiennej globalnej. */
+  (function () {
+    try {
+      var m = localStorage.getItem("motyw");
+      if (m === "light" || m === "dark") document.documentElement.setAttribute("data-theme", m);
+    } catch (e) {}
+  })();
+</script>
+{{- /* bez przelacznika (ustawienia: naglowek_strony) zapamietany wybor jest
+       pomijany - inaczej nie daloby sie wrocic z ciemnego motywu */}}
+{{- end }}
+{{- $js := resources.Get "js/app.js" | minify | fingerprint }}
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+
+{{- /* Podpowiedz dla przegladarki: przygotuj z wyprzedzeniem strony tego
+       serwisu, na ktore pacjent najczesciej przechodzi. */}}
+{{- $reguly := dict "prerender" (slice (dict "where" (dict "href_matches" (printf "%s*" site.Home.RelPermalink)) "eagerness" "moderate")) }}
+{{ printf "<script type=\"speculationrules\">%s</script>" ($reguly | jsonify) | safeHTML }}
+{{ partial "jsonld.html" . }}

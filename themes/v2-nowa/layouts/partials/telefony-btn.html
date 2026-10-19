@@ -1,0 +1,10 @@
+{{- /* Przyciski z numerami telefonow gabinetu: pierwszy numer wypelniony,
+       kolejne obrysowane. Wejscie: dict "klasa" (dodatkowa klasa grupy). */ -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- with $m.telefony }}
+        <div class="akcje{{ with $.klasa }} {{ . }}{{ end }}">
+          {{- range $i, $t := . }}
+          {{ partial "telefon-btn.html" (dict "telefon" $t "klasa" (printf "przycisk %s" (cond (eq $i 0) "przycisk--glowny" "przycisk--obrys"))) }}
+          {{- end }}
+        </div>
+{{- end -}}

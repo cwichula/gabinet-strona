@@ -1,0 +1,22 @@
+{{- /* Uklad strony glownej i podstron.
+       - Pierwszy blok "hero": na stronie glownej mozaika i tytul na osi,
+         na podstronie pasmo tytulowe (okruszki, h1, wstep) - blocks/hero.html.
+       - Inny pierwszy blok: to samo pasmo tytulowe z tytulem strony (h1)
+         i okruszkami. Opisu SEO nie pokazujemy jako tresci (jak v1).
+       Potem bloki (partial sekcje.html). Jeden h1 na strone. */ -}}
+{{- $sekcje := .Params.sekcje | default slice -}}
+{{- $pierwszyHero := false -}}
+{{- with index $sekcje 0 }}{{ if eq .type "hero" }}{{ $pierwszyHero = true }}{{ end }}{{ end -}}
+{{- if not $pierwszyHero }}
+<header class="pasmo">
+  <div class="wnetrze blok">
+    <div class="pasmo__tytul">
+      {{- if not .IsHome }}
+      {{ partial "okruszki.html" . }}
+      {{- end }}
+      {{ partial "h1.html" (dict "tekst" .Title) }}
+    </div>
+  </div>
+</header>
+{{- end }}
+{{ partial "sekcje.html" . }}

@@ -1,0 +1,14 @@
+{{- $g := hugo.Data.gabinet -}}
+{{- $kolory := partial "kolory-motywu.html" . -}}
+{{- $m := dict
+  "name" ($g.nazwa | default site.Title)
+  "short_name" ($g.nazwa_krotka | default site.Title)
+  "lang" (site.Language.Locale | default "pl")
+  "start_url" site.Home.RelPermalink
+  "scope" site.Home.RelPermalink
+  "display" "standalone"
+  "background_color" $kolory.jasny
+  "theme_color" $kolory.jasny
+  "icons" (partialCached "ikony-strony.html" site "ikony-strony").manifest
+-}}
+{{- $m | jsonify (dict "indent" "  ") -}}

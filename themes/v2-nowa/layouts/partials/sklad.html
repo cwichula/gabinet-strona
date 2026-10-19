@@ -1,0 +1,37 @@
+{{- /* Sklad polski na gotowym HTML-u (naglowek, tresc strony, stopka):
+       - jednoliterowe spojniki i przyimki (a, i, o, u, w, z) dostaja twarda
+         spacje do nastepnego slowa, wiec nie zostaja na koncu wiersza
+         („dewiza i / satysfakcja” -> „dewiza / i satysfakcja”);
+       - grupy cyfr („699 904 989”) sie nie rozdzielaja;
+       - „art. 66 § 1” (skrot, numer i paragraf) stoi w jednym wierszu.
+       Zmienia sie tylko tekst miedzy znacznikami: HTML jest dzielony na
+       kawalki po „<”, a w kazdym kawalku czesc do pierwszego „>” to znacznik
+       (atrybuty, sciezki SVG, adresy) i zostaje bez zmian. Tresc w content/
+       sie nie zmienia - to wylacznie wyglad. W wycinanym HTML-u nie ma
+       <script> ani <style> (sa w <head>).
+       Wejscie: HTML (string albo template.HTML). Wynik: string. */ -}}
+{{- $nbsp := " " -}}
+{{- $wynik := slice -}}
+{{- range $i, $k := split (string .) "<" -}}
+  {{- $tag := "" }}{{ $tekst := $k -}}
+  {{- if $i -}}
+    {{- with findRESubmatch `^([^>]*>)([\s\S]*)$` $k 1 -}}
+      {{- $tag = index . 0 1 }}{{ $tekst = index . 0 2 -}}
+    {{- else -}}
+      {{- $tag = $k }}{{ $tekst = "" -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if and $tekst (findRE `[^\s]` $tekst 1) -}}
+    {{- /* dwa przebiegi: „a i w domu” - kolejne jednoliterowe slowa */ -}}
+    {{- range seq 2 -}}
+      {{- $tekst = replaceRE `(^|[\s(„"'\x{00A0}])([aiouwzAIOUWZ])[ \t\r\n]+` (printf "${1}${2}%s" $nbsp) $tekst -}}
+      {{- $tekst = replaceRE `(\d)[ ](\d)` (printf "${1}%s${2}" $nbsp) $tekst -}}
+    {{- end -}}
+    {{- /* przepisy: „art. 66 § 1” - skrot, numer, paragraf i jego numer w jednym wierszu */ -}}
+    {{- $tekst = replaceRE `\b(art|ust|pkt|lit|nr)\.[ \t\r\n]+(\d)` (printf "${1}.%s${2}" $nbsp) $tekst -}}
+    {{- $tekst = replaceRE `(\d)[ \t\r\n]+§` (printf "${1}%s§" $nbsp) $tekst -}}
+    {{- $tekst = replaceRE `§[ \t\r\n]+(\d)` (printf "§%s${1}" $nbsp) $tekst -}}
+  {{- end -}}
+  {{- $wynik = $wynik | append (printf "%s%s" $tag $tekst) -}}
+{{- end -}}
+{{- return delimit $wynik "<" -}}

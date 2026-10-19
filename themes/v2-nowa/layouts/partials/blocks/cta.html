@@ -1,0 +1,45 @@
+{{- /* Blok "cta": naglowek, tresc, przycisk {etykieta, strona, styl, kotwica_celu},
+       wszystkie_telefony - "wiersze wystawowe" na polu koloru (zamkniecie
+       strony): naglowek od lewego marginesu, tresc od osi, pod spodem wiersze
+       na pelna szerokosc: numer telefonu (caly wiersz to odnosnik tel:),
+       opcjonalnie kolejne numery, godziny przyjec jednym wierszem z danych,
+       przycisk do strony jako wiersz-odnosnik. Pusty naglowek: "Umów wizytę",
+       a w bloku dolaczonym - bez naglowka. E-maila nie ma (jak v1). */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := $.gdzie -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- $t := partialCached "tydzien-model.html" site "tydzien" -}}
+{{- $telefony := cond $b.wszystkie_telefony $m.telefony (first 1 $m.telefony) -}}
+{{- $przycisk := partial "przycisk.html" (dict "przycisk" $b.przycisk "gdzie" (printf "%s: przycisk w bloku cta" $gdzie) "glowny" "cta__odnosnik" "obrysowy" "cta__odnosnik") | strings.TrimSpace -}}
+{{- $naglowek := partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" (T "bookVisit") "gora" $.gora) | strings.TrimSpace -}}
+    {{- if or $naglowek $b.tresc }}
+    <div class="blok cta__gora">
+      {{- with $naglowek }}
+      <div class="pelna" data-wejscie>{{ . | safeHTML }}</div>
+      {{- end }}
+      {{- with $b.tresc }}
+      <div class="os cta__tresc" data-wejscie>{{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "wstep") }}</div>
+      {{- end }}
+    </div>
+    {{- end }}
+    <ul class="cta__wiersze" data-cta data-wejscie-lista>
+      {{- range $i, $tel := $telefony }}
+      <li class="cta__wiersz wylew">
+        <a class="cta__numer" href="{{ printf "tel:%s" $tel.tel | safeURL }}">
+          {{- if gt (len $telefony) 1 }}<span class="cta__etykieta">{{ $tel.etykieta | default (T "phone") }}</span>{{ end -}}
+          <span class="cta__cyfry">{{ $tel.numer }}</span>
+          <span class="cta__akcja">{{ T "call" }}<svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg></span>
+        </a>
+      </li>
+      {{- end }}
+      {{- with $t.grupy }}
+      <li class="cta__wiersz cta__wiersz--godziny wylew">
+        <p class="cta__godziny"><span class="visually-hidden">{{ T "openingHours" }}: </span>
+          {{- range $i, $g := . }}{{ if gt $i 0 }}<span class="cta__sep" aria-hidden="true"> · </span>{{ end }}<span class="cta__grupa"><span class="cta__dni">{{ $g.dni }}</span> <span class="cta__h">{{ $g.godz }}</span></span>{{ end -}}
+        </p>
+      </li>
+      {{- end }}
+      {{- with $przycisk }}
+      <li class="cta__wiersz cta__wiersz--link wylew">{{ . | safeHTML }}</li>
+      {{- end }}
+    </ul>

@@ -61,6 +61,8 @@ env:
   PYTHONUTF8: "1"
   # adres wersji na domene (zmienna HOSTING_ADRES nadpisuje domyslny)
   ADRES_DOMENY: ${{ vars.HOSTING_ADRES || 'https://dobrydentysta.legnica.pl/' }}
+  # szablon podgladu pod <domena>/test/ (pusty = bez podgladu)
+  SZABLON_TEST: v2-nowa
 
 jobs:
   build:
@@ -126,6 +128,9 @@ jobs:
           # wersja na domene: BEZ params.robocza (opis w naglowku pliku)
           if [ -n "$HOSTING_SERWER" ]; then
             buduj "$ADRES_DOMENY" public-hosting
+            # podglad nowego szablonu dla wlascicielki: <domena>/test/, zawsze
+            # noindex (robocza); trafia do public-hosting/test/ w kroku "Paczka"
+            buduj "${ADRES_DOMENY}test/" public-test HUGO_PARAMS_ROBOCZA=true HUGO_THEME="$SZABLON_TEST"
           fi
 
       - name: Kontrola wyniku
@@ -158,13 +163,30 @@ jobs:
       # tam dziala logowanie) i z .htaccess z katalogu hosting/.
       - name: Kontrola wersji na domenę
         if: vars.HOSTING_SERWER != ''
-        run: python tools/kontrola-strony.py public-hosting --baseurl "$ADRES_DOMENY"
+        run: |
+          python tools/kontrola-strony.py public-hosting --baseurl "$ADRES_DOMENY"
+          if [ -n "$SZABLON_TEST" ]; then
+            python tools/kontrola-strony.py public-test --baseurl "${ADRES_DOMENY}test/"
+            grep -qE '<meta name="?robots"? content="?noindex' public-test/index.html \
+              || { echo "::error::Brak noindex w podglądzie /test/."; exit 1; }
+          fi
 
       - name: Paczka wersji na domenę (bez panelu, z .htaccess)
         if: vars.HOSTING_SERWER != ''
         run: |
           rm -rf public-hosting/admin
           cp hosting/.htaccess public-hosting/.htaccess
+          if [ -n "$SZABLON_TEST" ]; then
+            rm -rf public-test/admin public-hosting/test
+            mv public-test public-hosting/test
+            # podglad /test/: wlasna strona 404 (glowny .htaccess wskazuje
+            # /404.html wersji na domenie) i noindex takze dla zdjec i sitemap.xml
+            printf '%s\n' \
+              'ErrorDocument 404 /test/404.html' \
+              '<IfModule mod_headers.c>' \
+              'Header always set X-Robots-Tag "noindex, nofollow"' \
+              '</IfModule>' > public-hosting/test/.htaccess
+          fi
           # zaden adres kopii roboczej nie moze trafic na domene
           if grep -rl --include='*.html' --include='*.xml' --include='*.txt' 'github\.io' public-hosting; then
             echo "::error::Wersja na domenę odwołuje się do github.io (pliki wyżej)."

@@ -1,0 +1,9 @@
+{{- /* Blok "ramka": rodzaj (info | uwaga | ok), tresc (Markdown), ikona (domyslnie
+       wg rodzaju), wypunktowanie (ptaszki). Plaski kafel od osi. */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := $.gdzie -}}
+    <div class="blok ramka-blok">
+      <div class="os" data-wejscie>
+        {{ partial "ramka-html.html" (dict "strona" $.strona "rodzaj" $b.rodzaj "tekst" $b.tresc "ikona" $b.ikona "gdzie" $gdzie "ptaszki" (eq $b.wypunktowanie "ptaszki")) }}
+      </div>
+    </div>

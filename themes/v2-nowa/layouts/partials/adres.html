@@ -1,0 +1,3 @@
+{{- /* Adres w jednej linii: "ul. X 1, 59-220 Legnica" (bez kodu, gdy pusty).
+       Wejscie: dict adres z data/gabinet.yaml (ulica, kod, miasto). */ -}}
+{{- .ulica }}, {{ with .kod }}{{ . }} {{ end }}{{ .miasto -}}

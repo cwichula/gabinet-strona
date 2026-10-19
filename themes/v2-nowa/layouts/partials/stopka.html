@@ -1,0 +1,157 @@
+{{- /* Stopka (atrament) i dolny pasek kontaktowy na telefonie.
+       Cztery kolumny: Gabinet (nazwa, lekarz, adres, parking, dojazd, profile,
+       e-mail tylko gdy jest w danych), Godziny (tabela, dzisiejszy dzien
+       oznacza app.js), Usługi (menu.stopka_uslugi, pusta = strony uslug),
+       Strony (menu.stopka, pusta = pozycje menu bez podmenu) z formami
+       platnosci. Pod nimi linia adresu na cala szerokosc (sam napis; zdjecie
+       wejscia w wysokosci wiersza wygladalo jak uszkodzona ikona - runda 1;
+       odnosnik do strony dojazdu), na dole linia prawna
+       (stopka_dolna, dane rejestrowe - puste pola znikaja, stopka_tekst, ©).
+       W linii © pelna nazwa podmiotu (gabinet.nazwa, jak v1).
+       Logika list jak v1-klasyczna. */ -}}
+{{- $g := hugo.Data.gabinet -}}
+{{- $u := hugo.Data.ustawienia | default dict -}}
+{{- $n := (partialCached "ustawienia-model.html" site "ustawienia").napisy -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- $menu := partialCached "menu-model.html" "pozycje" "pozycje" -}}
+{{- $uslugi := slice -}}
+{{- range $el := hugo.Data.menu.stopka_uslugi -}}
+  {{- with (partial "cel-linku.html" (dict "strona" $el.strona "gdzie" "Menu, usługi w stopce" "scisle" false)).strona -}}
+    {{- if not .Draft -}}
+      {{- $uslugi = $uslugi | append (dict "etykieta" ($el.etykieta | default (partial "inline/etykieta-uslugi.html" (dict "strona" . "menu" $menu))) "href" .RelPermalink "zewnetrzny" false) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if not $uslugi -}}
+  {{- range $p := partial "uslugi-strony.html" (dict) -}}
+    {{- $uslugi = $uslugi | append (dict "etykieta" (partial "inline/etykieta-uslugi.html" (dict "strona" $p "menu" $menu)) "href" $p.RelPermalink "zewnetrzny" false) -}}
+  {{- end -}}
+{{- end -}}
+{{- if not $uslugi }}{{ range $menu }}{{ if and .dzieci (not $uslugi) }}{{ $uslugi = .dzieci }}{{ end }}{{ end }}{{ end -}}
+{{- $strony := partialCached "menu-model.html" "stopka" "stopka" -}}
+{{- if not $strony }}{{ range $menu }}{{ if and .href (not .dzieci) }}{{ $strony = $strony | append . }}{{ end }}{{ end }}{{ end -}}
+{{- $dolna := partialCached "menu-model.html" "stopka_dolna" "stopka_dolna" -}}
+{{- if not $dolna }}{{ with $m.polityka }}{{ $dolna = slice (dict "etykieta" .LinkTitle "href" .RelPermalink "zewnetrzny" false) }}{{ end }}{{ end -}}
+{{- /* linia adresu: "Złotoryjska [zdjecie wejscia] 16/18 m. 10" */ -}}
+{{- $ulica := replaceRE `^(?i)ul\.\s*` "" ($g.adres.ulica | default "") -}}
+{{- $czesc1 := $ulica }}{{ $czesc2 := "" -}}
+{{- with findRESubmatch `^(.*?\D)\s+(\d.*)$` $ulica 1 }}{{ $czesc1 = index . 0 1 }}{{ $czesc2 = index . 0 2 }}{{ end -}}
+<footer class="stopka">
+  <div class="wnetrze">
+    <div class="stopka__kolumny">
+      <div class="stopka__kolumna">
+        <h2 class="stopka__naglowek">{{ $n.stopka_gabinet | default (T "footerPractice") }}</h2>
+        <p><strong>{{ $m.nazwa_krotka }}</strong>{{ with $g.lekarz }}<br>{{ . }}{{ end }}</p>
+        {{- with $g.adres }}
+        <p>{{ .ulica }}<br>{{ .kod }} {{ .miasto }}{{ with .parking }}<br><span class="stopka__ciche">{{ T "parking" }}: {{ . }}</span>{{ end }}</p>
+        {{- end }}
+        {{- if or $m.telefony $g.email }}
+        <p class="stopka__telefony">
+          {{- range $i, $t := $m.telefony }}{{ if $i }}<br>{{ end }}<a href="{{ printf "tel:%s" $t.tel | safeURL }}">{{ $t.numer }}</a>{{ end }}
+          {{- with $g.email }}<br><a href="mailto:{{ . }}">{{ . }}</a>{{ end }}
+        </p>
+        {{- end }}
+        {{- with $m.dojazd }}
+        <p><a class="odnosnik-strzalka" href="{{ .RelPermalink }}">{{ $n.stopka_dojazd | default (T "directionsAndMap") }}<svg class="ico strzalka" aria-hidden="true"><use href="#ico-arrow"></use></svg></a></p>
+        {{- end }}
+        {{- with $m.profile }}
+        <ul class="stopka__profile" aria-label="{{ T "socialProfiles" }}">
+          {{- range . }}
+          <li><a href="{{ .url }}" rel="me noopener" target="_blank">{{ .napis }}<span class="visually-hidden">{{ T "opensInNewTab" }}</span></a></li>
+          {{- end }}
+        </ul>
+        {{- end }}
+        {{ partial "rezerwacja.html" (dict "miejsce" "stopka") }}
+      </div>
+
+      {{- with $m.tydzien }}
+      <div class="stopka__kolumna">
+        <h2 class="stopka__naglowek">{{ $n.stopka_godziny | default (T "openingHours") }}</h2>
+        {{ partial "godziny-tabela.html" (dict "widoczna" true) }}
+      </div>
+      {{- end }}
+
+      {{- with $uslugi }}
+      <div class="stopka__kolumna">
+        <h2 class="stopka__naglowek">{{ $n.stopka_uslugi | default (T "footerServices") }}</h2>
+        <ul class="stopka__lista">
+          {{- range . }}
+          <li>{{ partial "menu-link.html" (dict "pozycja" .) }}</li>
+          {{- end }}
+        </ul>
+      </div>
+      {{- end }}
+
+      <div class="stopka__kolumna">
+        {{- with $strony }}
+        <h2 class="stopka__naglowek">{{ T "footerPages" }}</h2>
+        <ul class="stopka__lista">
+          {{- range . }}
+          <li>{{ partial "menu-link.html" (dict "pozycja" .) }}</li>
+          {{- end }}
+        </ul>
+        {{- end }}
+        {{- with $g.platnosci }}
+        <p class="stopka__platnosci">{{ T "paymentsPrefix" }} {{ delimit . ", " }}.</p>
+        {{- end }}
+      </div>
+    </div>
+
+    {{- with $ulica }}
+    {{- $etykieta := T "addressLine" (dict "address" (partial "adres.html" $g.adres)) }}
+    {{- if $m.dojazd }}
+    <a class="stopka__adres" href="{{ $m.dojazd.RelPermalink }}" aria-label="{{ $etykieta }}">
+    {{- else }}
+    <p class="stopka__adres" aria-label="{{ $etykieta }}">
+    {{- end }}
+      <span class="stopka__adres-ulica">{{ $czesc1 }}</span>
+      {{- with $czesc2 }}
+      <span class="stopka__adres-numer"><span>{{ . }}</span></span>
+      {{- end }}
+    {{ if $m.dojazd }}</a>{{ else }}</p>{{ end }}
+    {{- end }}
+
+    <div class="stopka__prawna">
+      {{- with $dolna }}
+      <ul class="stopka__dolna">
+        {{- range . }}
+        <li>{{ partial "menu-link.html" (dict "pozycja" .) }}</li>
+        {{- end }}
+      </ul>
+      {{- end }}
+      {{- $rej := $g.rejestrowe | default dict }}
+      {{- if or $rej.nip $rej.regon $rej.pwz $rej.rpwdl }}
+      {{- $etykiety := dict "nip" (T "regNip") "regon" (T "regRegon") "pwz" (T "regPwz") "rpwdl" (T "regRpwdl") }}
+      {{- $czesci := slice }}{{ range $k := slice "nip" "regon" "pwz" "rpwdl" }}{{ with index $rej $k }}{{ $czesci = $czesci | append (printf "%s %s" (index $etykiety $k) .) }}{{ end }}{{ end }}
+      <p>{{ T "registrationData" }} {{ delimit $czesci ", " }}</p>
+      {{- end }}
+      {{- with $u.stopka_tekst }}
+      <p>{{ partial "tekst-wiersze.html" . }}</p>
+      {{- end }}
+      <p>&copy; {{ with $g.rok_zalozenia }}{{ if lt (int .) now.Year }}{{ . }}&ndash;{{ end }}{{ end }}<span data-rok>{{ now.Year }}</span> {{ $g.nazwa | default $m.nazwa_krotka }}</p>
+      {{ partial "telefon-btn.html" (dict "klasa" "przycisk przycisk--obrys przycisk--maly stopka__telefon" "napis" (T "call")) }}
+    </div>
+  </div>
+</footer>
+
+{{- /* Na telefonie telefon do rejestracji zostaje pod kciukiem: dolny pasek
+       (chowany przez app.js, gdy na ekranie jest karta rejestracji albo cta). */}}
+{{- with $m.telefon }}
+<nav class="pasek-dolny ton-pole" data-pasek-dolny aria-label="{{ T "quickContact" }}">
+  <a class="pasek-dolny__tel" href="{{ printf "tel:%s" .tel | safeURL }}"><svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg><span>{{ T "callNumber" (dict "number" .numer) }}</span></a>
+  {{- with $m.dojazd }}
+  <a class="pasek-dolny__dojazd" href="{{ .RelPermalink }}"><svg class="ico" aria-hidden="true"><use href="#ico-pin"></use></svg><span>{{ T "directions" }}</span></a>
+  {{- end }}
+  {{ partial "rezerwacja.html" (dict "miejsce" "pasek") }}
+</nav>
+{{- end }}
+
+{{- /* napis uslugi: etykieta z podmenu, gdy strona tam jest (np. "Licówki
+       kompozytowe"), inaczej tytul strony. Wejscie: dict "strona", "menu". */ -}}
+{{- define "partials/inline/etykieta-uslugi.html" -}}
+  {{- $p := .strona -}}
+  {{- $etykieta := $p.LinkTitle -}}
+  {{- $znaleziona := false -}}
+  {{- range .menu }}{{ range .dzieci }}{{ if and .strona (not $znaleziona) ($p.Eq .strona) }}{{ $etykieta = .etykieta }}{{ $znaleziona = true }}{{ end }}{{ end }}{{ end -}}
+  {{- return $etykieta -}}
+{{- end -}}

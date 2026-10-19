@@ -1,0 +1,18 @@
+{{- /* Blok "tresc_z_bokiem": naglowek, wstep, tresc (opcjonalna), bok (karta wizyt:
+       godziny, ceny, telefony, przycisk, adres, notki) - karta w lewej strefie,
+       przyklejona (w DOM po tresci - kolejnosc czytania i Tab jak na telefonie);
+       tresc i bloki dolaczone ("polacz", np. kroki, przycisk) od
+       osi (znacznik dla sekcje.html). Brak "bok" = godziny i telefony. */ -}}
+{{- $b := .blok -}}
+    <div class="blok z-bokiem">
+      <div class="os z-bokiem__tresc">
+        {{ partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "wstep" $b.wstep) }}
+        {{- with $b.tresc }}
+        <div class="proza">{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}</div>
+        {{- end }}
+        {{ partial "znacznik-kolumny.html" . | safeHTML }}
+      </div>
+      <div class="lewa lewa--przyklejona z-bokiem__bok">
+        {{ partial "bok.html" (dict "bok" ($b.bok | default dict) "strona" $.strona "gdzie" $.gdzie) }}
+      </div>
+    </div>

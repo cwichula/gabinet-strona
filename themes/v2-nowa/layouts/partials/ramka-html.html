@@ -1,0 +1,17 @@
+{{- /* Ramka: plaski kafel bez obrysu (info / uwaga / ok) z ikona w linii
+       pierwszego wiersza i ukrytym prefiksem dla czytnikow ekranu.
+       Wejscie: dict "strona", "rodzaj" (info | uwaga | ok), "tekst" (Markdown),
+       "ikona" (klucz ikony; domyslnie wg rodzaju), "gdzie",
+       "ptaszki" (bool - listy w ramce jako ul.ptaszki), "klasa". */ -}}
+{{- $rodzaj := .rodzaj | default "info" -}}
+{{- if not (in (slice "info" "uwaga" "ok") $rodzaj) }}{{ $rodzaj = "info" }}{{ end -}}
+{{- $ikona := .ikona | default (index (dict "info" "info" "uwaga" "uwaga" "ok" "ptaszek") $rodzaj) -}}
+{{- $prefiks := index (dict "info" (T "noteInfo") "uwaga" (T "noteWarn") "ok" (T "noteOk")) $rodzaj -}}
+{{- $html := partial "markdown-ptaszki.html" (dict "strona" .strona "tekst" .tekst "ptaszki" .ptaszki) -}}
+<div class="ramka ramka--{{ $rodzaj }}{{ with .klasa }} {{ . }}{{ end }}">
+  {{ partial "ikona.html" (dict "nazwa" $ikona "gdzie" .gdzie) }}
+  <div class="ramka__tresc">
+    <span class="visually-hidden">{{ $prefiks }} </span>
+    {{ $html | safeHTML }}
+  </div>
+</div>

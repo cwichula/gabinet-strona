@@ -1,0 +1,6 @@
+{{- /* Pole Markdown (markdown.html); "ptaszki" = listy jako ul.ptaszki
+       (wypunktowanie "ptaszki" w blokach tekst, karty, ramka).
+       Wejscie: dict "strona", "tekst", "ptaszki" (bool). */ -}}
+{{- $html := partial "markdown.html" (dict "strona" .strona "tekst" .tekst) | string -}}
+{{- if .ptaszki }}{{ $html = replace $html "<ul>" `<ul class="ptaszki" data-wejscie-lista>` }}{{ end -}}
+{{- $html | safeHTML -}}

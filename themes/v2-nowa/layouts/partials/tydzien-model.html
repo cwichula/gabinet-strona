@@ -1,0 +1,45 @@
+{{- /* Tydzien przyjec do karty wizyt (pasek tygodnia), bloku cta i stopki -
+       z gabinet-model.html (data/gabinet.yaml, godziny). partialCached.
+       Wynik: dict
+         "dni"    lista dict nr (1 = poniedzialek), dzien, skrot ("pon."),
+                  od, do, godz ("9–15": pelne godziny bez ":00"), otwarte (bool);
+         "kafle"  dni do poziomego paska: kolejne dni nieczynne zlaczone w jeden
+                  kafel (dict skrot "pt.–niedz.", godz, otwarte, nr (lista), szer);
+         "grupy"  dni o tych samych godzinach: dict dni ("pon., śr., czw."), godz;
+         "jest"   czy sa jakiekolwiek godziny. */ -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- $dni := slice -}}
+{{- range $m.tydzien -}}
+  {{- $otwarte := and .od .do -}}
+  {{- $godz := "" -}}
+  {{- if $otwarte }}{{ $godz = printf "%s–%s" (replaceRE `:00$` "" (string .od)) (replaceRE `:00$` "" (string .do)) }}{{ end -}}
+  {{- $dni = $dni | append (dict "nr" .nr "dzien" .dzien "skrot" (T (printf "dayShort%d" .nr)) "od" .od "do" .do "godz" $godz "otwarte" $otwarte) -}}
+{{- end -}}
+{{- /* kafle: zlaczone nieczynne */ -}}
+{{- $kafle := slice }}{{ $bufor := slice -}}
+{{- range $dni -}}
+  {{- if .otwarte -}}
+    {{- with $bufor }}{{ $kafle = $kafle | append (partial "inline/kafel-nieczynny.html" .) }}{{ end -}}
+    {{- $bufor = slice -}}
+    {{- $kafle = $kafle | append (dict "skrot" .skrot "godz" .godz "otwarte" true "nr" (slice .nr) "szer" 1) -}}
+  {{- else -}}
+    {{- $bufor = $bufor | append . -}}
+  {{- end -}}
+{{- end -}}
+{{- with $bufor }}{{ $kafle = $kafle | append (partial "inline/kafel-nieczynny.html" .) }}{{ end -}}
+{{- /* grupy wg godzin, w kolejnosci pierwszego wystapienia */ -}}
+{{- $godziny := slice -}}
+{{- range $dni }}{{ if and .otwarte (not (in $godziny .godz)) }}{{ $godziny = $godziny | append .godz }}{{ end }}{{ end -}}
+{{- $grupy := slice -}}
+{{- range $h := $godziny -}}
+  {{- $s := slice }}{{ range $dni }}{{ if eq .godz $h }}{{ $s = $s | append .skrot }}{{ end }}{{ end -}}
+  {{- $grupy = $grupy | append (dict "dni" (delimit $s ", ") "godz" $h) -}}
+{{- end -}}
+{{- return dict "dni" $dni "kafle" $kafle "grupy" $grupy "jest" (gt (len $godziny) 0) -}}
+
+{{- define "partials/inline/kafel-nieczynny.html" -}}
+  {{- $pierwszy := index . 0 }}{{ $ostatni := index . (sub (len .) 1) -}}
+  {{- $nr := slice }}{{ range . }}{{ $nr = $nr | append .nr }}{{ end -}}
+  {{- $skrot := $pierwszy.skrot }}{{ if gt (len .) 1 }}{{ $skrot = printf "%s–%s" $pierwszy.skrot $ostatni.skrot }}{{ end -}}
+  {{- return dict "skrot" $skrot "godz" "" "otwarte" false "nr" $nr "szer" (len .) -}}
+{{- end -}}

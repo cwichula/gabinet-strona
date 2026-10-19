@@ -1,0 +1,17 @@
+{{- /* Blok "rezerwacja": naglowek, tresc; karta rezerwacji online makiety v1
+       (karta wizyt) z danych data/gabinet.yaml (rezerwacja). Pusty naglowek
+       w bloku dolaczonym do sekcji ("polacz") = bez naglowka (karta w kolumnie tekstu). Wylaczona
+       rezerwacja albo brak adresu = blok nic nie wypisuje (sekcja znika). */ -}}
+{{- $b := .blok -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- if $m.rezerwacja }}
+    <div class="blok rezerwacja-blok">
+      <div class="os" data-wejscie>
+    {{- partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" (T "onlineBooking") "gora" $.gora) }}
+    {{- with $b.tresc }}
+    {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "wstep") }}
+    {{- end }}
+{{ partial "rezerwacja.html" (dict "miejsce" "karta") }}
+      </div>
+    </div>
+{{- end -}}

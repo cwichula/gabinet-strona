@@ -1,0 +1,69 @@
+{{- /* Rezerwacja online w szesciu miejscach (logika v1-klasyczna). Warunek "wlaczona"
+       sprawdzany tylko tu (gabinet-model.html) - wylaczona rezerwacja znika
+       ze wszystkich miejsc naraz.
+       Wejscie: dict "miejsce": naglowek | szuflada | pasek | stopka | przycisk | karta.
+       Kazdy odnosnik: target=_blank (pacjent nie traci strony gabinetu),
+       noopener, noreferrer (dostawca nie dowiaduje sie, z ktorej podstrony
+       pacjent przyszedl - adres podstrony sam bywa informacja o zdrowiu). */ -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- with $m.rezerwacja -}}
+{{- $r := . -}}
+{{- $w := cond (ne $r.dostawca "") (T "bookingInProvider" (dict "provider" $r.dostawca)) (T "bookingOnExternalSite") -}}
+{{- $wSerwisie := cond (ne $r.dostawca "") (T "bookingOnProviderSite" (dict "provider" $r.dostawca)) (T "bookingOnExternalSite") -}}
+{{- $nowaKarta := printf `<span class="visually-hidden">%s</span>` (T "opensInNewTab" | htmlEscape) | safeHTML -}}
+{{- $kal := `<svg class="ico" aria-hidden="true"><use href="#ico-calendar"></use></svg>` | safeHTML -}}
+{{- $krotko := cond (ne $r.dostawca "") $r.dostawca (T "onlineBooking") -}}
+{{- if eq $.miejsce "naglowek" -}}
+<a class="przycisk przycisk--obrys naglowek__rezerwacja" href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">
+      {{ $kal }}
+      <span class="visually-hidden">{{ T "onlineBooking" }} {{ $wSerwisie }} </span>{{ $krotko }}{{ $nowaKarta }}
+    </a>
+{{- else if eq $.miejsce "szuflada" -}}
+<a class="przycisk przycisk--obrys przycisk--pelny" href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">
+      {{ $kal }}
+      {{ T "onlineBooking" }} {{ $w }}{{ $nowaKarta }}
+    </a>
+{{- else if eq $.miejsce "pasek" -}}
+<a class="pasek-dolny__rezerwacja" href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">
+    {{ $kal }}
+    <span class="visually-hidden">{{ T "onlineBooking" }} {{ $wSerwisie }} </span>{{ $krotko }}{{ $nowaKarta }}
+  </a>
+{{- else if eq $.miejsce "stopka" -}}
+<p class="stopka__rezerwacja">
+          <a href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">
+            {{ $kal }}
+            {{ T "onlineBooking" }} {{ $wSerwisie }}{{ $nowaKarta }}
+          </a>
+        </p>
+{{- else if eq $.miejsce "karta" -}}
+{{- $tel := $m.telefony -}}
+      <div class="karta karta--rezerwacja">
+        <p class="karta__tytul">
+          {{ $kal }}
+          {{ with $r.dostawca }}<strong>{{ . }}</strong> {{ T "bookingSystemOfProvider" }}{{ else }}{{ T "bookingSystemExternal" }}{{ end }}
+        </p>
+        {{- if not $r.potwierdzona }}
+        <div class="ramka ramka--uwaga">
+          <svg class="ico" aria-hidden="true"><use href="#ico-warn"></use></svg>
+          <div class="ramka__tresc"><p>{{ T "bookingPending" (dict "provider" ($r.dostawca | default (T "bookingPendingExternal"))) }}</p></div>
+        </div>
+        {{- end }}
+        <a class="przycisk przycisk--glowny przycisk--pelny" href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">
+          {{ $kal }}
+          {{ $r.etykieta }} {{ $w }}{{ $nowaKarta }}
+        </a>
+        {{- with $r.nota }}
+        <p class="karta__notka">{{ partial "tekst-wiersze.html" . }}</p>
+        {{- end }}
+        {{- with $tel }}
+        <p class="karta__notka">{{ T "bookingPhoneAlternative" }}</p>
+        <div class="akcje">
+          {{- range first 2 . }}
+          {{ partial "telefon-btn.html" (dict "klasa" "przycisk przycisk--obrys" "telefon" .) }}
+          {{- end }}
+        </div>
+        {{- end }}
+        <p class="karta__druk">{{ T "bookingPrintAddress" (dict "url" $r.url) }}{{ with $m.telefon }} {{ T "bookingPrintPhone" (dict "number" .numer) }}{{ end }}</p>
+      </div>
+{{- end -}}
+{{- end -}}

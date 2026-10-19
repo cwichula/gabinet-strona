@@ -1,0 +1,119 @@
+{{- /* Blok "cennik": naglowek, wstep (podpis tabeli), kategorie (id kategorii),
+       pozycje (id pozycji - zamiast kategorii), wyszukiwarka (pole "Szukaj
+       zabiegu", licznik i spis kategorii - raz na strone), kolumna (naglowek
+       kolumny z nazwami; pusty = "Usługa"). Ceny zawsze z data/cennik.yaml.
+       Prawdziwa <table>: kategoria = <tbody id="grupa-<id>"> z wierszem
+       naglowka grupy; pozycja: nazwa, uwagi, kwota (cena.html).
+       Z wyszukiwarka: lewa strefa przyklejona (podpis, pole, licznik, spis
+       kategorii), tabela od osi. Bez skryptu pole jest ukryte (hidden zdejmuje
+       app.js), tabela pelna. */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := $.gdzie -}}
+{{- $c := hugo.Data.cennik -}}
+{{- $n := (partialCached "ustawienia-model.html" site "ustawienia").napisy -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- $wszystkie := $c.pozycje | default slice -}}
+{{- $grupy := slice -}}
+{{- with $b.pozycje -}}
+  {{- $lista := slice -}}
+  {{- range . }}{{ with partial "cennik-pozycja.html" (dict "id" . "gdzie" (printf "%s: blok cennika" $gdzie)) }}{{ $lista = $lista | append . }}{{ end }}{{ end -}}
+  {{- $grupy = $grupy | append (dict "id" "" "nazwa" "" "pozycje" $lista) -}}
+{{- else -}}
+  {{- $kategorie := $c.kategorie | default slice -}}
+  {{- with $b.kategorie -}}
+    {{- $wybrane := slice -}}
+    {{- range . -}}
+      {{- $id := . -}}
+      {{- with where $kategorie "id" $id }}{{ $wybrane = $wybrane | append (index . 0) }}{{ else -}}
+        {{- errorf "%s: blok cennika wskazuje kategorię %q, której nie ma w data/cennik.yaml. Wybierz kategorię ponownie w panelu /admin/." $gdzie $id -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $kategorie = $wybrane -}}
+  {{- end -}}
+  {{- range $kategorie }}{{ $grupy = $grupy | append (dict "id" .id "nazwa" .nazwa "skrot" (.skrot | default .nazwa) "pozycje" (where $wszystkie "kategoria" .id)) }}{{ end -}}
+{{- end -}}
+{{- $zGrupami := gt (len $grupy) 1 -}}
+{{- $liczba := 0 }}{{ range $grupy }}{{ $liczba = add $liczba (len .pozycje) }}{{ end -}}
+{{- $szukaj := false -}}
+{{- if and $b.wyszukiwarka (not ($.pamiec.Get "cennik-wyszukiwarka")) }}{{ $szukaj = true }}{{ $.pamiec.Set "cennik-wyszukiwarka" true }}{{ end -}}
+{{- $naglowek := partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" (T "priceList") "gora" $.gora) | strings.TrimSpace -}}
+{{- $podpis := "" }}{{ with $b.wstep }}{{ $podpis = partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .) }}{{ else }}{{ if and $grupy (not $zGrupami) (index $grupy 0).nazwa }}{{ $podpis = (index $grupy 0).nazwa }}{{ end }}{{ end -}}
+    <div class="blok cennik-blok{{ if $szukaj }} cennik-blok--szukaj{{ end }}">
+      {{- if $szukaj }}
+      <div class="lewa lewa--przyklejona cennik-narzedzia">
+        {{- with $naglowek }}{{ . | safeHTML }}{{ end }}
+        {{- with $podpis }}
+        <p class="cennik-narzedzia__podpis">{{ . }}</p>
+        {{- end }}
+        <div class="szukaj" data-price-tools hidden>
+          <label class="szukaj__etykieta" for="szukaj-ceny">{{ T "searchPrices" }}</label>
+          <div class="szukaj__pole">
+            <svg class="ico" aria-hidden="true"><use href="#ico-search"></use></svg>
+            <input type="search" id="szukaj-ceny" data-price-search autocomplete="off" placeholder="{{ $n.cennik_podpowiedz | default (T "searchPricesPlaceholder") }}">
+          </div>
+          <p class="szukaj__licznik" data-price-count data-napis-wszystkie="{{ T "priceCountAll" (dict "count" "{liczba}") }}" data-napis-pasujace="{{ T "priceCountMatching" (dict "count" "{liczba}" "total" "{razem}") }}" aria-live="polite">{{ T "priceCountAll" (dict "count" $liczba) }}</p>
+        </div>
+        {{- if $zGrupami }}
+        <nav class="spis-kategorii spis-kategorii--szeroki" aria-label="{{ T "priceGroups" }}">
+          <ul>
+            {{- range $grupy }}
+            <li><a href="#grupa-{{ .id }}">{{ .skrot }}</a></li>
+            {{- end }}
+          </ul>
+        </nav>
+        <nav class="spis-kategorii spis-kategorii--waski" aria-label="{{ T "priceGroups" }}">
+          <button class="rozwijacz" type="button" data-rozwin aria-expanded="true" aria-controls="podmenu-cennik" hidden><span>{{ T "priceCategories" }}</span><svg class="ico" aria-hidden="true"><use href="#ico-chevron"></use></svg></button>
+          <ul id="podmenu-cennik">
+            {{- range $grupy }}
+            <li><a href="#grupa-{{ .id }}">{{ .skrot }}</a></li>
+            {{- end }}
+          </ul>
+        </nav>
+        {{- end }}
+      </div>
+      {{- else }}{{ with $naglowek }}
+      <div class="{{ if $.waska }}os{{ else }}lewa{{ end }}" data-wejscie>{{ . | safeHTML }}</div>
+      {{- end }}{{ end }}
+      <div class="os cennik-tabela-wrap" data-wejscie>
+        <table class="cennik"{{ if $szukaj }} id="cennik-tabela"{{ end }}>
+          {{- if and $podpis (not $szukaj) }}
+          <caption>{{ $podpis }}</caption>
+          {{- else }}
+          <caption class="visually-hidden">{{ T "priceList" }}</caption>
+          {{- end }}
+          <thead>
+            <tr>
+              <th scope="col">{{ $b.kolumna | default (T "service") }}</th>
+              <th scope="col" class="cennik__kwota">{{ T "price" }}</th>
+            </tr>
+          </thead>
+          {{- range $grupy }}
+          {{- $kot := "" }}{{ if $zGrupami }}{{ $kot = printf "grupa-%s" .id }}{{ if $.pamiec.Get $kot }}{{ $kot = "" }}{{ else }}{{ $.pamiec.Set $kot true }}{{ end }}{{ end }}
+          <tbody{{ with $kot }} id="{{ . }}"{{ end }} data-grupa>
+            {{- if $zGrupami }}
+            <tr class="cennik__grupa"><th colspan="2" scope="rowgroup">{{ .nazwa }}</th></tr>
+            {{- end }}
+            {{- range .pozycje }}
+            <tr class="cennik__pozycja"><th scope="row"><span class="cennik__nazwa">{{ .nazwa }}</span>{{ with .uwagi }}<span class="cennik__uwagi">{{ . }}</span>{{ end }}</th><td class="cennik__kwota">{{ partial "cena.html" . }}</td></tr>
+            {{- end }}
+          </tbody>
+          {{- end }}
+        </table>
+        {{- if $szukaj }}
+        <div class="cennik-brak" data-price-empty hidden>
+          <p>{{ T "priceSearchEmpty" }}</p>
+          <div class="akcje">
+            <button class="przycisk przycisk--obrys" type="button" data-price-clear>{{ T "priceSearchClear" }}</button>
+            {{ partial "telefon-btn.html" (dict) }}
+          </div>
+        </div>
+        {{- end }}
+        {{- with $c.informacja }}
+        {{- if $szukaj }}
+        {{ partial "ramka-html.html" (dict "strona" $.strona "rodzaj" "info" "tekst" . "gdzie" $gdzie "klasa" "cennik__informacja") }}
+        {{- else }}
+        <p class="notka">{{ partial "tekst-wiersze.html" . }}</p>
+        {{- end }}
+        {{- end }}
+      </div>
+    </div>

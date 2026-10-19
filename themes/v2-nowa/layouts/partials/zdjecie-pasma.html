@@ -1,0 +1,46 @@
+{{- /* Zdjecie do pasma tytulowego podstrony, gdy pierwszy blok "hero" nie ma
+       wlasnego zdjecia (DESIGN 7.3, wariant ze zdjeciem). Danych to nie zmienia:
+       bierzemy zdjecie gabinetu (plik + alt) z galerii serwisu (bloki "galeria"
+       wszystkich stron), ktorego ta strona nie pokazuje nigdzie w tresci - zeby
+       to samo zdjecie nie stalo dwa razy na jednym ekranie. Wybor staly dla
+       strony (skrot adresu), rozny miedzy stronami.
+       Strona bez zadnego wlasnego zdjecia (np. polityka prywatnosci) zostaje
+       przy pasmie z samym tekstem.
+       Wejscie: Page. Wynik: dict "strona", "zdjecie" albo false. */ -}}
+{{- $s := . -}}
+{{- $wlasne := slice -}}
+{{- range $s.Params.sekcje -}}
+  {{- with .zdjecie }}{{ with .plik }}{{ $wlasne = $wlasne | append . }}{{ end }}{{ end -}}
+  {{- if eq .type "galeria" }}{{ range .elementy }}{{ with .plik }}{{ $wlasne = $wlasne | append . }}{{ end }}{{ end }}{{ end -}}
+{{- end -}}
+{{- $wynik := false -}}
+{{- if $wlasne -}}
+  {{- $kandydaci := slice -}}
+  {{- range partialCached "inline/zdjecia-galerii.html" site "zdjecia-galerii" -}}
+    {{- if not (in $wlasne .zdjecie.plik) }}{{ $kandydaci = $kandydaci | append . }}{{ end -}}
+  {{- end -}}
+  {{- with $kandydaci -}}
+    {{- $wynik = index . (mod (hash.FNV32a $s.RelPermalink) (len .)) -}}
+  {{- end -}}
+{{- end -}}
+{{- return $wynik -}}
+
+{{- /* zdjecia z blokow "galeria" calego serwisu (plik w assets/, z alt),
+       bez powtorzen */ -}}
+{{- define "partials/inline/zdjecia-galerii.html" -}}
+  {{- $lista := slice }}{{ $pliki := slice -}}
+  {{- $strony := slice site.Home }}{{ range partialCached "strony-tresci.html" site "strony" }}{{ $strony = $strony | append . }}{{ end -}}
+  {{- range $p := $strony -}}
+    {{- range $p.Params.sekcje -}}
+      {{- if eq .type "galeria" -}}
+        {{- range .elementy -}}
+          {{- if and .plik (hasPrefix .plik "/") (strings.TrimSpace (.alt | default "")) (not (in $pliki .plik)) -}}
+            {{- $pliki = $pliki | append .plik -}}
+            {{- $lista = $lista | append (dict "strona" $p "zdjecie" (dict "plik" .plik "alt" .alt)) -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- return $lista -}}
+{{- end -}}

@@ -1,0 +1,23 @@
+{{- /* Blok "kroki": naglowek, wstep, elementy [{tytul, tresc}] - "schodki":
+       <ol> z numerem kroku na ekranie (licznik CSS, kolejnosc to informacja dla
+       pacjenta), do 4 krokow kazdy kolejny wciety o jedna kolumne siatki;
+       przy 5 i wiecej krokach (i ponizej 900 px) bez wciec - kolumna od osi.
+       Tytul kroku w stopniu "lead" (nizej niz h2 sekcji). */ -}}
+{{- $b := .blok -}}
+{{- $el := $b.elementy | default slice -}}
+{{- $naglowek := partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "wstep" $b.wstep "gora" $.gora) | strings.TrimSpace -}}
+    <div class="blok kroki-blok">
+      {{- with $naglowek }}
+      <div class="{{ if $.waska }}os{{ else }}lewa{{ end }}" data-wejscie>{{ . | safeHTML }}</div>
+      {{- end }}
+      <ol class="pelna schodki{{ if gt (len $el) 4 }} schodki--rowne{{ end }}">
+        {{- range $i, $k := $el }}
+        <li class="schodek schodek--{{ cond (gt (len $el) 4) 0 $i }}" data-wejscie-krok>
+          <h3 class="schodek__tytul">{{ $k.tytul }}</h3>
+          {{- with $k.tresc }}
+          <div class="proza">{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}</div>
+          {{- end }}
+        </li>
+        {{- end }}
+      </ol>
+    </div>

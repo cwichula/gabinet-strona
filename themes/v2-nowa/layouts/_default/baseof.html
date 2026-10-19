@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.Locale | default "pl" }}" prefix="og: https://ogp.me/ns#"{{ with (partialCached "paleta.html" site "paleta").nazwa }} data-paleta="{{ . }}"{{ end }}>
+<head>
+{{ partial "head.html" . }}
+</head>
+<body{{ if .IsHome }} class="strona-glowna"{{ end }}>
+
+<a class="skip-link" href="#tresc">{{ T "skipToContent" }}</a>
+
+{{ partial "ikony.html" . }}
+
+{{ partial "sklad.html" (partial "naglowek.html" .) | safeHTML }}
+
+<main id="tresc">
+{{- block "main" . }}{{ end }}
+</main>
+
+{{ partial "sklad.html" (partial "stopka.html" .) | safeHTML }}
+
+</body>
+</html>

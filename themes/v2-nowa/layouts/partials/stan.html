@@ -1,0 +1,18 @@
+{{- /* Zdanie stanu "Czy gabinet teraz przyjmuje" (app.js liczy je w strefie
+       Europe/Warsaw co minute). Bez skryptu element jest ukryty (hidden), wiec
+       nigdy nie pokazuje nieaktualnego stanu. Napisy z i18n w atrybutach
+       data-napis-*; {godzina} i {dzien} wstawia skrypt; dni z przyimkiem
+       rozdzielone "|" (1 = poniedzialek).
+       Wejscie: dict "klasa", "live" (bool - aria-live, tylko karta w hero). */ -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- with $m.godziny_dane }}
+{{- $godzina := dict "time" "{godzina}" }}
+{{- $dni := slice }}{{ range slice "onMonday" "onTuesday" "onWednesday" "onThursday" "onFriday" "onSaturday" "onSunday" }}{{ $dni = $dni | append (T .) }}{{ end }}
+<p class="stan{{ with $.klasa }} {{ . }}{{ end }}" data-stan hidden{{ if $.live }} aria-live="polite"{{ end }}
+   data-godziny="{{ . }}"
+   data-napis-otwarte="{{ T "statusOpenUntil" $godzina }}"
+   data-napis-dzis="{{ T "statusOpensToday" $godzina }}"
+   data-napis-otwieramy="{{ T "statusClosedOpens" (dict "day" "{dzien}" "time" "{godzina}") }}"
+   data-napis-jutro="{{ T "dayTomorrow" }}"
+   data-napis-dni="{{ delimit $dni "|" }}"></p>
+{{- end -}}

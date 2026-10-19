@@ -5,3 +5,5 @@ resources/_gen/
 hugo*.log
 __pycache__/
 .idea/
+public-test/
+.taste-skill/

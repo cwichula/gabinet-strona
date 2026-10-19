@@ -1,0 +1,18 @@
+{{- /* Blok "godziny": naglowek, tresc; godziny z data/gabinet.yaml - karta wizyt
+       bez zdania stanu: naglowek w lewej strefie, pasek tygodnia od osi (tabela
+       dla czytnikow ekranu), tresc pod spodem. */ -}}
+{{- $b := .blok -}}
+{{- $naglowek := partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" (T "openingHours") "gora" $.gora) | strings.TrimSpace -}}
+    <div class="blok godziny-blok">
+      {{- with $naglowek }}
+      <div class="lewa" data-wejscie>{{ . | safeHTML }}</div>
+      {{- end }}
+      <div class="os" data-wejscie>
+        <div class="karta karta--godziny">
+          {{ partial "tydzien.html" (dict "uklad" "poziom") }}
+          {{- with $b.tresc }}
+          <div class="karta__notka proza">{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}</div>
+          {{- end }}
+        </div>
+      </div>
+    </div>

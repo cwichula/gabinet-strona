@@ -1,0 +1,149 @@
+{{- /* Bloki z front matter "sekcje" (docs/KONTRAKT-BLOKOW.md) w sekcjach v2:
+         <section class="s s--<ton> ..."><div class="wnetrze">...</div></section>
+       Kazdy blok zaczyna nowa sekcje; blok z "polacz: true" dolacza do sekcji
+       powyzej (div.blok-dalej) - grupowanie jak w v1-klasyczna. Wyjatek: "cta"
+       zawsze stoi we wlasnym pasie (zamkniecie strony). Tlo (wariant), waska
+       i kotwica sekcji - z jej pierwszego bloku.
+       Pola koloru (regula sasiedztwa): wariant "wyrozniony" = pelne pole
+       (--pole); gdy poprzednia sekcja konczy sie polem albo na stronie sa juz
+       trzy pola (poza cta), sekcja dostaje stopien tonu --papier-2. "cta" stoi
+       na polu, a po polu - na --papier-2. Dwa takie same pola sie nie stykaja.
+       Sekcja konczaca sie blokiem faq konczy sie pasmem papieru.
+       Kolumna bloku (tekst ze zdjeciem, tresc_z_bokiem, kontakt z bokiem):
+       bloki dolaczone trafiaja do jego kolumny od osi (znacznik-kolumny.html) -
+       logika v1. Sekcja, ktorej bloki nic nie wypisaly, znika.
+       Nieznany typ: ostrzezenie (w CI = blad). Ta sama kotwica dwa razy albo
+       kotwica zarezerwowana przez szablon (np. "tresc") = blad. */ -}}
+{{- $strona := . -}}
+{{- $plik := "Strona" }}{{ with .File }}{{ $plik = .Path }}{{ end -}}
+{{- $sekcje := .Params.sekcje | default slice -}}
+{{- /* pamiec blokow na czas jednego renderowania strony ("raz na strone":
+       lightbox galerii, wyszukiwarka cennika, kotwice grupa-*). Nie Page.Store -
+       ten nie jest czyszczony przy przebudowie w hugo server po zmianie szablonu. */ -}}
+{{- $pamiec := newScratch -}}
+
+{{- /* numer bloku z pierwszym zdjeciem, jesli jest na gorze strony */ -}}
+{{- $nrZdjecia := -1 -}}
+{{- range $nr, $b := $sekcje -}}
+  {{- if and (lt $nrZdjecia 0) (le $nr 1) (or $b.zdjecie (and (eq $b.type "galeria") $b.elementy)) }}{{ $nrZdjecia = $nr }}{{ end -}}
+{{- end -}}
+{{- /* pasmo tytulowe podstrony ze zdjeciem z galerii (hero bez wlasnego
+       zdjecia, zdjecie-pasma.html) ma juz priorytet - zdjecie z dalszej
+       tresci (zwykle pod pierwszym ekranem) go nie dostaje */ -}}
+{{- with first 1 $sekcje -}}{{- with index . 0 -}}
+  {{- if and (eq .type "hero") (not .zdjecie) (not $strona.IsHome) (partial "zdjecie-pasma.html" $strona) }}{{ $nrZdjecia = -1 }}{{ end -}}
+{{- end -}}{{- end -}}
+
+{{- /* kotwice zarezerwowane (id uzywane przez szablony) - docs/KONTRAKT-BLOKOW.md */ -}}
+{{- $zarezerwowane := slice "tresc" "menu-mobilne" "lightbox" "cennik-tabela" "szukaj-ceny" -}}
+
+{{- /* grupowanie w sekcje */ -}}
+{{- $grupy := slice }}{{ $biezaca := slice }}{{ $kotwice := dict -}}
+{{- range $nr, $b := $sekcje -}}
+  {{- $typ := $b.type | default "" -}}
+  {{- with $b.kotwica -}}
+    {{- if index $kotwice . }}{{ errorf "%s: kotwica %q występuje na stronie więcej niż raz (sekcja nr %d). Zmień ją w panelu /admin/." $plik . (add $nr 1) }}{{ end -}}
+    {{- if or (in $zarezerwowane .) (findRE `^(grupa|podmenu)-|^f[0-9]+-` .) -}}
+      {{- errorf "%s: kotwica %q (sekcja nr %d) jest zajęta przez szablon strony. Wybierz inną nazwę w panelu /admin/." $plik . (add $nr 1) -}}
+    {{- end -}}
+    {{- $kotwice = merge $kotwice (dict . true) -}}
+  {{- end -}}
+  {{- if not (and $typ (templates.Exists (printf "partials/blocks/%s.html" $typ))) -}}
+    {{- warnf "%s: sekcja nr %d ma nieznany typ bloku %q i została pominięta. Dozwolone typy opisuje docs/KONTRAKT-BLOKOW.md." $plik (add $nr 1) $typ -}}
+  {{- else -}}
+    {{- $el := dict "blok" $b "nr" $nr "dolaczony" (and $b.polacz (gt $nr 0)) -}}
+    {{- $poprzedniHero := false }}{{ with $biezaca }}{{ if eq (index . 0).blok.type "hero" }}{{ $poprzedniHero = true }}{{ end }}{{ end -}}
+    {{- if and $b.polacz $biezaca (ne $typ "hero") (ne $typ "cta") (not $poprzedniHero) -}}
+      {{- $biezaca = $biezaca | append $el -}}
+    {{- else -}}
+      {{- with $biezaca }}{{ $grupy = $grupy | append (dict "bloki" .) }}{{ end -}}
+      {{- $biezaca = slice $el -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- with $biezaca }}{{ $grupy = $grupy | append (dict "bloki" .) }}{{ end -}}
+
+{{- /* sekcje */ -}}
+{{- /* faq ma wlasny uklad (pasma), wiec nie jest "waski" */ -}}
+{{- $waskie := slice "formularz" "rezerwacja" -}}
+{{- $znacznik := partial "znacznik-kolumny.html" . -}}
+{{- $doKolumny := slice "tekst" "ramka" "kroki" "lista" "cytat" "przycisk" "rezerwacja" "godziny" -}}
+{{- $otwieraKolumne := slice "tresc_z_bokiem" "kontakt" -}}
+{{- /* ton nad pierwsza sekcja: pasmo tytulowe podstrony (--papier-2) albo baner glownej */ -}}
+{{- $ton := cond $strona.IsHome "papier" "papier2" }}{{ $pola := 0 -}}
+{{- $obrazy := 0 -}}
+{{- range $g := $grupy -}}
+  {{- $grupa := $g.bloki -}}
+  {{- $pierwszy := (index $grupa 0).blok -}}
+  {{- $ostatni := (index $grupa (sub (len $grupa) 1)).blok -}}
+  {{- /* ton sekcji wg reguly sasiedztwa */ -}}
+  {{- $tonSekcji := "papier" -}}
+  {{- $tonFaq := "papier2" -}}
+  {{- if eq $pierwszy.type "hero" -}}
+    {{- $tonSekcji = cond (and $strona.IsHome (eq (index $grupa 0).nr 0)) "papier" "papier2" -}}
+  {{- else if eq $pierwszy.type "cta" -}}
+    {{- $tonSekcji = cond (eq $ton "pole") "papier2" "pole" -}}
+  {{- else if eq $pierwszy.type "faq" -}}
+    {{- if or (eq $pierwszy.wariant "wyrozniony") $strona.IsHome -}}
+      {{- if or (eq $ton "pole") (ge $pola 3) }}{{ $tonFaq = "papier2" }}{{ else }}{{ $tonFaq = "pole" }}{{ $pola = add $pola 1 }}{{ end -}}
+    {{- end -}}
+    {{- if and (eq $tonFaq "papier2") (eq $ton "papier2") }}{{ $tonFaq = "papier" }}{{ end -}}
+  {{- else if eq $pierwszy.wariant "wyrozniony" -}}
+    {{- if or (eq $ton "pole") (ge $pola 3) -}}
+      {{- $tonSekcji = cond (eq $ton "papier2") "papier" "papier2" -}}
+    {{- else -}}
+      {{- $tonSekcji = "pole" }}{{ $pola = add $pola 1 -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $html := "" }}{{ $zwarta := eq $pierwszy.type "pasek_zaufania" -}}
+  {{- range $i, $el := $grupa -}}
+    {{- if eq $el.blok.type "spis" }}{{ $zwarta = true }}{{ end -}}
+    {{- $out := partial (printf "blocks/%s.html" $el.blok.type) (dict "blok" $el.blok "strona" $strona "nr" $el.nr "gora" (and (eq $i 0) (not (and $el.dolaczony (eq $el.blok.type "cta")))) "priorytet" (eq $el.nr $nrZdjecia) "pamiec" $pamiec "gdzie" $plik "ton" $tonSekcji "ton_faq" $tonFaq "waska" (or $pierwszy.waska false) "dolaczony" (gt $i 0)) | string | strings.TrimSpace -}}
+    {{- if $out -}}
+      {{- if not $html }}{{ $html = $out }}{{ else -}}
+        {{- $id := "" }}{{ with $el.blok.kotwica }}{{ $id = printf ` id="%s"` (. | urlize) }}{{ end -}}
+        {{- $dalej := printf "\n<div class=\"blok-dalej blok-dalej--%s\"%s>\n%s\n</div>" $el.blok.type $id $out -}}
+        {{- if strings.Contains $out $znacznik -}}
+          {{- if in $otwieraKolumne $el.blok.type -}}
+            {{- $html = printf "%s%s" (replace $html $znacznik "") $dalej -}}
+          {{- else -}}
+            {{- $html = printf "%s%s" (replace $html $znacznik "") (replace $dalej $znacznik "") -}}
+          {{- end -}}
+        {{- else if and (strings.Contains $html $znacznik) (in $doKolumny $el.blok.type) -}}
+          {{- $html = replace $html $znacznik (printf "%s%s" $dalej $znacznik) -}}
+        {{- else -}}
+          {{- $html = printf "%s%s" (replace $html $znacznik "") $dalej -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $html = replace $html $znacznik "" -}}
+  {{- /* strona z malo zdjeciami: pas zdjec gabinetu przed zamknieciem (cta) */ -}}
+  {{- if and $html (eq $pierwszy.type "cta") (not ($pamiec.Get "pas-zdjec")) -}}
+    {{- $pamiec.Set "pas-zdjec" true -}}
+    {{- with partial "pas-zdjec.html" (dict "strona" $strona "obrazy" $obrazy) }}
+{{ . | safeHTML }}
+    {{- $ton = "papier" }}
+    {{- end -}}
+  {{- end -}}
+  {{- if $html -}}
+    {{- $obrazy = add $obrazy (strings.Count "<picture" $html) }}
+    {{- if eq $pierwszy.type "hero" }}
+{{ $html | safeHTML }}
+    {{- $ton = $tonSekcji }}
+    {{- else }}
+    {{- $klasy := slice "s" (printf "s--%s" $tonSekcji) (printf "s--%s" (replace $pierwszy.type "_" "-")) }}
+    {{- if $zwarta }}{{ $klasy = $klasy | append "s--zwarta" }}{{ end }}
+    {{- if or $pierwszy.waska (in $waskie $pierwszy.type) }}{{ $klasy = $klasy | append "s--waska" }}{{ end }}
+    {{- if eq $pierwszy.type "faq" }}{{ $klasy = $klasy | append "s--od-pasma" }}{{ end }}
+    {{- if eq $ostatni.type "faq" }}{{ $klasy = $klasy | append "s--do-pasma" }}{{ end }}
+
+<section class="{{ delimit $klasy " " }}"{{ with $pierwszy.kotwica }} id="{{ . | urlize }}"{{ end }}>
+  <div class="wnetrze">
+{{ $html | safeHTML }}
+  </div>
+</section>
+    {{- $ton = cond (eq $ostatni.type "faq") "papier" $tonSekcji }}
+    {{- end }}
+  {{- end -}}
+{{- end -}}

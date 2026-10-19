@@ -1,0 +1,70 @@
+{{- /* Strona 404. Napisy z data/ustawienia.yaml (strona_404, panel: Ustawienia),
+       puste pole = napis domyslny z i18n. Telefony i adres z data/gabinet.yaml.
+       Odnosniki: strona glowna + lista strona_404.linki (pusta = pozycje menu);
+       strona ukryta albo usunieta jest pomijana bez bledu - 404 nie moze
+       przerwac budowania (logika v1-klasyczna). Uklad: pasmo tytulowe,
+       "Dokąd dalej" jako wiersze-odnosniki, karta wizyt z telefonem i adresem. */ -}}
+{{ define "main" }}{{ partial "sklad.html" (partial "inline/strona-404.html" .) | safeHTML }}{{ end }}
+
+{{- define "partials/inline/strona-404.html" }}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- $g := hugo.Data.gabinet -}}
+{{- $s := (partialCached "ustawienia-model.html" site "ustawienia").strona_404 -}}
+{{- $linki := partial "powiazane-linki.html" (dict "elementy" $s.linki "gdzie" "Strona 404" "scisle" false) -}}
+{{- $lista := slice (dict "href" site.Home.RelPermalink "tytul" (T "homePage") "opis" ($s.opis_glownej | default "")) -}}
+{{- if $linki }}{{ range $linki }}{{ $lista = $lista | append . }}{{ end -}}
+{{- else -}}
+  {{- range partialCached "menu-model.html" "pozycje" "pozycje" -}}
+    {{- if .href -}}
+      {{- $opis := "" }}{{ with .strona }}{{ with .Params.usluga }}{{ $opis = .skrot | default "" }}{{ end }}{{ end -}}
+      {{- $lista = $lista | append (dict "href" .href "tytul" .etykieta "opis" $opis "zewnetrzny" .zewnetrzny) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+<header class="pasmo">
+  <div class="wnetrze blok">
+    <div class="pasmo__tytul">
+      {{ partial "h1.html" (dict "tekst" ($s.naglowek | default (T "notFoundHeading"))) }}
+      <p class="nadtytul">{{ $s.nadtytul | default (T "notFoundEyebrow") }}</p>
+    </div>
+    <div class="os pasmo__tekst">
+      <p class="wstep">{{ with $s.tresc }}{{ partial "tekst-wiersze.html" . }}{{ else }}{{ T "notFoundText" }}{{ end }}</p>
+      <div class="akcje">
+        <a class="przycisk przycisk--glowny" href="{{ site.Home.RelPermalink }}"><span>{{ $s.przycisk | default (T "notFoundBackHome") }}</span><svg class="ico strzalka" aria-hidden="true"><use href="#ico-arrow"></use></svg></a>
+      </div>
+      {{- with $s.notka }}
+      <p class="notka">{{ partial "tekst-wiersze.html" . }}</p>
+      {{- end }}
+    </div>
+  </div>
+</header>
+
+<section class="s s--papier">
+  <div class="wnetrze">
+    <div class="blok">
+      <div class="lewa">
+        <h2 class="h2 h2--naglowek">{{ $s.linki_naglowek | default (T "notFoundLinksHeading") }}</h2>
+        {{- with $s.linki_wstep }}
+        <p class="wstep">{{ partial "tekst-wiersze.html" . }}</p>
+        {{- end }}
+      </div>
+      {{ partial "powiazane-lista.html" (dict "linki" $lista "klasa" "os") }}
+    </div>
+    {{- with $m.telefony }}
+    <div class="blok blok-dalej">
+      <div class="os">
+        <div class="karta karta--404" data-wejscie-lista>
+          <p class="karta__tytul">{{ T "registrationByPhone" }}</p>
+          <p>{{ with $s.ramka_telefon }}{{ partial "tekst-wiersze.html" . }}{{ else }}{{ T "notFoundCallText" }}{{ end }}</p>
+          {{ partial "telefon-btn.html" (dict "klasa" "przycisk przycisk--glowny przycisk--duzy") }}
+          {{ partial "tydzien.html" (dict "uklad" "poziom") }}
+          {{- with $g.adres }}{{ if .ulica }}
+          <p class="karta__notka">{{ with $s.ramka_adres }}{{ partial "tekst-wiersze.html" . }}{{ else }}{{ T "notFoundAddress" }}{{ end }} {{ partial "adres.html" . }}.</p>
+          {{- end }}{{ end }}
+        </div>
+      </div>
+    </div>
+    {{- end }}
+  </div>
+</section>
+{{ end }}

@@ -1,0 +1,10 @@
+{{- /* Zapytanie do Map Google (jak v1, commit 51cf4ae): nazwa gabinetu + ulica
+       bez "ul." i bez "m. N" + kod i miasto - "m. 10" mylil wyszukiwarke,
+       a z nazwa mapa pokazuje wizytowke gabinetu z opiniami. Jedno zrodlo dla
+       bloku mapa i odnosnika adresu w bloku kontakt.
+       Wejscie: nic (dane z data/gabinet.yaml). Wynik: tekst po urlquery. */ -}}
+{{- $a := hugo.Data.gabinet.adres | default dict -}}
+{{- $ulica := replaceRE `\s+m\.\s*\d+\s*$` "" ($a.ulica | default "") | replaceRE `^(?i)ul\.\s*` "" -}}
+{{- $zapytanie := printf "%s, %s %s" $ulica ($a.kod | default "") ($a.miasto | default "") -}}
+{{- with hugo.Data.gabinet.nazwa_krotka }}{{ $zapytanie = printf "%s, %s" . $zapytanie }}{{ end -}}
+{{- return ($zapytanie | urlquery) -}}

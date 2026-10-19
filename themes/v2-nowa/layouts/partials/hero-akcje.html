@@ -1,0 +1,12 @@
+{{- /* Czesc bloku "hero" (blocks/hero.html): przycisk "Zadzwoń: numer"
+       (gdy pokaz_telefon, wypelniony) i przycisk do strony (domyslnie obrysowy).
+       Wejscie: dict "blok", "strona", "gdzie", "klasa". */ -}}
+{{- $b := .blok -}}
+{{- $tel := "" }}{{ if $b.pokaz_telefon }}{{ $tel = partial "telefon-btn.html" (dict "klasa" "przycisk przycisk--glowny") }}{{ end -}}
+{{- $link := partial "przycisk.html" (dict "przycisk" $b.przycisk "gdzie" (printf "%s: przycisk w bloku hero" .gdzie) "domyslny" "obrysowy") -}}
+{{- if or (strings.TrimSpace $tel) (strings.TrimSpace $link) }}
+      <div class="akcje{{ with .klasa }} {{ . }}{{ end }}">
+        {{ $tel }}
+        {{ $link }}
+      </div>
+{{- end -}}

@@ -1,0 +1,9 @@
+{{- /* Fakty banera (ikona + Markdown w wierszu) jako lista wierszy.
+       Wejscie: dict "fakty" (lista {ikona, tekst}), "strona", "gdzie", "klasa". */ -}}
+{{- with .fakty }}
+<ul class="fakty{{ with $.klasa }} {{ . }}{{ end }}">
+  {{- range . }}
+  <li>{{ partial "ikona.html" (dict "nazwa" (.ikona | default "") "gdzie" $.gdzie) }}<span>{{ partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .tekst) }}</span></li>
+  {{- end }}
+</ul>
+{{- end -}}

@@ -1,0 +1,27 @@
+{{- /* Blok "faq": naglowek, elementy [{pytanie, odpowiedz}] - "pasmo na pytanie".
+       Naglowek we wlasnym pasmie (pole koloru albo --papier-2 wg sekcje.html,
+       "ton_faq"), kazda para w pasmie na pelna szerokosc, na zmiane --papier
+       i --papier-2 (ostatnie zawsze --papier): pytanie w lewej strefie,
+       odpowiedz od osi. Wszystkie odpowiedzi widoczne, bez rozwijania.
+       Pusty naglowek: "Najczestsze pytania", a w bloku dolaczonym - bez
+       naglowka. Pytania trafiaja tez do danych FAQPage (jsonld.html). */ -}}
+{{- $b := .blok -}}
+{{- $elementy := $b.elementy | default slice -}}
+{{- $ile := len $elementy -}}
+{{- with partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" (T "faq") "gora" $.gora) | strings.TrimSpace }}
+    <div class="pasmo-faq pasmo-faq--naglowek wylew ton-{{ $.ton_faq | default "papier2" }}">
+      <div class="blok"><div class="pelna" data-wejscie>{{ . | safeHTML }}</div></div>
+    </div>
+{{- end }}
+    <div class="faq">
+      {{- range $i, $e := $elementy }}
+      <div class="pasmo-faq wylew ton-{{ cond (eq (mod (sub (sub $ile 1) $i) 2) 0) "papier" "papier2" }}">
+        <div class="blok" data-wejscie>
+          <h3 class="lewa faq__pytanie">{{ $e.pytanie }}</h3>
+          <div class="os faq__odpowiedz proza">
+            {{ partial "markdown.html" (dict "strona" $.strona "tekst" $e.odpowiedz) }}
+          </div>
+        </div>
+      </div>
+      {{- end }}
+    </div>

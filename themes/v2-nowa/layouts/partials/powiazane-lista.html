@@ -1,0 +1,9 @@
+{{- /* Wiersze-odnosniki "Zobacz też" (blok powiazane, strona 404): tytul
+       z podkresleniem i strzalka, opis pod spodem; 4+ - dwie kolumny.
+       Wejscie: dict "linki" (lista dict href, tytul, opis, zewnetrzny, strona,
+       zdjecie - miniatura 3:2 z pierwszego zdjecia strony docelowej), "klasa". */ -}}
+<ul class="powiazane{{ if ge (len .linki) 4 }} powiazane--dwie{{ end }}{{ with .klasa }} {{ . }}{{ end }}" data-wejscie-lista>
+  {{- range $link := .linki }}
+  <li><a class="powiazane__link{{ if .zdjecie }} powiazane__link--zdjecie{{ end }}" href="{{ .href }}"{{ if .zewnetrzny }} rel="noopener external"{{ end }}>{{ with .zdjecie }}<span class="powiazane__miniatura">{{ partial "image.html" (dict "strona" $link.strona "zdjecie" . "kadr" "3:2" "sizes" "(min-width: 900px) 180px, 88px" "szerokosci" (slice 360) "bez_alt" true) }}</span>{{ end }}<span class="powiazane__tekst"><span class="powiazane__tytul">{{ .tytul }}<svg class="ico strzalka" aria-hidden="true"><use href="#ico-arrow"></use></svg></span>{{ with .opis }}<span class="powiazane__opis">{{ . }}</span>{{ end }}</span></a></li>
+  {{- end }}
+</ul>

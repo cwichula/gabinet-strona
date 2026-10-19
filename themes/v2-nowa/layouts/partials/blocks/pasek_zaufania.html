@@ -1,0 +1,21 @@
+{{- /* Blok "pasek_zaufania": naglowek (widoczny, w lewej strefie), elementy
+       [{ikona, tytul, tekst}] - "nazwy w kolumnach": od osi siatka 2x2
+       (3 atuty - 3 kolumny), ikona w linii tytulu, bez ramek i tla. */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := $.gdzie -}}
+{{- $el := $b.elementy | default slice -}}
+    <div class="blok atuty">
+      <div class="lewa" data-wejscie>
+        {{ partial "h2.html" (dict "naglowek" ($b.naglowek | default (T "trustHeading")) "stopien" "naglowek") }}
+      </div>
+      <ul class="os atuty__lista atuty__lista--{{ cond (or (eq (len $el) 3) (gt (len $el) 4)) 3 2 }}" data-wejscie-lista>
+        {{- range $el }}
+        <li class="atut">
+          <h3 class="atut__tytul">{{ partial "ikona.html" (dict "nazwa" (.ikona | default "ptaszek") "gdzie" $gdzie) }}<span>{{ .tytul }}</span></h3>
+          {{- with .tekst }}
+          <p class="atut__tekst">{{ . }}</p>
+          {{- end }}
+        </li>
+        {{- end }}
+      </ul>
+    </div>

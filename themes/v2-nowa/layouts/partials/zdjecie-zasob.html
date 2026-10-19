@@ -1,0 +1,24 @@
+{{- /* Plik zdjecia z bloku jako zasob Hugo (do przetwarzania).
+       Wejscie: dict "strona" (Page), "zdjecie" (dict plik, alt), "gdzie" (opis do bledu).
+       Plik szukany najpierw w paczce strony ("gabinet.jpg"), potem w assets/
+       ("/images/x.webp" z CMS -> assets/images/x.webp). Brak pliku albo brak
+       tekstu alternatywnego przerywa budowanie z czytelnym bledem.
+       Wynik: zasob (Resource) albo false. */ -}}
+{{- $z := .zdjecie | default dict -}}
+{{- $plik := $z.plik | default "" -}}
+{{- $alt := $z.alt | default "" | strings.TrimSpace -}}
+{{- $gdzie := .gdzie | default "" -}}
+{{- if not $gdzie }}{{ with .strona.File }}{{ $gdzie = .Path }}{{ else }}{{ $gdzie = "Strona" }}{{ end }}{{ end -}}
+{{- $wynik := false -}}
+{{- if not $plik -}}
+  {{- errorf "%s: zdjęcie bez pliku (pole „plik”)." $gdzie -}}
+{{- else if not $alt -}}
+  {{- errorf "%s: zdjęcie %q nie ma tekstu alternatywnego (pole „alt” jest wymagane)." $gdzie $plik -}}
+{{- else -}}
+  {{- $img := .strona.Resources.Get $plik -}}
+  {{- if not $img }}{{ $img = resources.Get (strings.TrimPrefix "/" $plik) }}{{ end -}}
+  {{- if $img }}{{ $wynik = $img }}{{ else -}}
+    {{- errorf "%s: nie znaleziono zdjęcia %q (ani obok strony, ani w assets/)." $gdzie $plik -}}
+  {{- end -}}
+{{- end -}}
+{{- return $wynik -}}

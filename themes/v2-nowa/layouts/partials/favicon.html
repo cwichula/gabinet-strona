@@ -1,0 +1,10 @@
+{{- /* Adres ikony strony (SVG): static/favicon.svg dla palety bordo, inaczej
+       assets/meta/favicon.svg w kolorze palety (partials/paleta.html).
+       partialCached. Wynik: wzgledny adres (string). */ -}}
+{{- $adres := "favicon.svg" | relURL -}}
+{{- with (partialCached "paleta.html" site "paleta").nazwa -}}
+  {{- with resources.Get "meta/favicon.svg" | resources.ExecuteAsTemplate (printf "favicon-%s.svg" .) site -}}
+    {{- $adres = .RelPermalink -}}
+  {{- end -}}
+{{- end -}}
+{{- return $adres -}}

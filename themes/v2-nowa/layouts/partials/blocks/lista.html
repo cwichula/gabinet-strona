@@ -1,0 +1,26 @@
+{{- /* Blok "lista": naglowek, wstep, styl (ptaszki | minusy | zwykla), elementy
+       (Markdown w wierszu). Naglowek w lewej strefie, lista od osi; do 4
+       krotkich punktow - wiekszy stopien, od 7 punktow - dwie kolumny. */ -}}
+{{- $b := .blok -}}
+{{- $styl := $b.styl | default "ptaszki" -}}
+{{- if not (in (slice "ptaszki" "minusy" "zwykla") $styl) }}{{ $styl = "ptaszki" }}{{ end -}}
+{{- $el := $b.elementy | default slice -}}
+{{- $dlugie := false }}{{ range $el }}{{ if gt (strings.RuneCount .) 60 }}{{ $dlugie = true }}{{ end }}{{ end -}}
+{{- $naglowek := partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "gora" $.gora) | strings.TrimSpace -}}
+{{- $wiszacy := and $naglowek (not $.waska) -}}
+    <div class="blok lista-blok">
+      {{- if $wiszacy }}
+      <div class="lewa" data-wejscie>{{ $naglowek | safeHTML }}</div>
+      {{- end }}
+      <div class="os" data-wejscie>
+        {{- if not $wiszacy }}{{ $naglowek | safeHTML }}{{ end }}
+        {{- with $b.wstep }}
+        <div class="proza">{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}</div>
+        {{- end }}
+        <ul data-wejscie-lista class="lista lista--{{ $styl }}{{ if and (le (len $el) 4) (not $dlugie) }} lista--duza{{ end }}{{ if ge (len $el) 7 }} lista--dwie{{ end }}">
+          {{- range $el }}
+          <li>{{ if eq $styl "minusy" }}<span class="visually-hidden">{{ T "noNote" }}: </span>{{ end }}{{ partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .) }}</li>
+          {{- end }}
+        </ul>
+      </div>
+    </div>

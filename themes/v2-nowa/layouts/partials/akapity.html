@@ -1,0 +1,5 @@
+{{- /* Pole Markdown jako akapit(y) z klasa (np. "wstep"). Kazdy <p> dostaje
+       klase. Wejscie: dict "strona", "tekst", "klasa". */ -}}
+{{- $html := partial "markdown.html" (dict "strona" .strona "tekst" .tekst) | string -}}
+{{- $atr := "" }}{{ with .klasa }}{{ $atr = printf ` class="%s"` . }}{{ end -}}
+{{- replace $html "<p>" (printf "<p%s>" $atr) | safeHTML -}}

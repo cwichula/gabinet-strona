@@ -1,0 +1,142 @@
+{{- /* Blok "tekst": naglowek, nadtytul (zdanie pod naglowkiem), ikona (pomijana),
+       wstep, tresc (Markdown), wypunktowanie (zwykle | ptaszki, takze w ramce),
+       ramka {rodzaj, tresc}, zdjecie, strona_zdjecia (prawa | lewa),
+       przycisk {etykieta, strona, styl, kotwica_celu}, pokaz_telefony.
+       Uklady (siatka 12 kolumn, os = poczatek kolumny 6):
+       - wyrozniony ze zdjeciem: "plansza" 50/50, zdjecie w kadrze 1:1;
+       - pionowe zdjecie po lewej (portret): naglowek w lewej strefie, portret
+         w kadrze 1:1 wplyniety w tekst od osi jak inicjal;
+       - zdjecie po lewej: zdjecie w lewej strefie, tekst od osi;
+         zdjecie po prawej (domyslnie): tekst od lewego marginesu, zdjecie z prawej;
+       - bez zdjecia: tekst od osi; krotki blok z naglowkiem - naglowek wisi
+         w lewej strefie (przy dlugim tekscie przyklejony), ramka w lewej
+         strefie (przyklejona).
+       Bloki dolaczone ("polacz") trafiaja do kolumny tekstu (znacznik). */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := $.gdzie -}}
+{{- $ptaszki := eq $b.wypunktowanie "ptaszki" -}}
+{{- $tresc := "" }}{{ with $b.tresc }}{{ $tresc = partial "markdown-ptaszki.html" (dict "strona" $.strona "tekst" . "ptaszki" $ptaszki) | string }}{{ end -}}
+{{- $ramka := "" -}}
+{{- with $b.ramka }}{{ with .tresc }}{{ $ramka = partial "ramka-html.html" (dict "strona" $.strona "rodzaj" $b.ramka.rodzaj "tekst" . "gdzie" $gdzie "ptaszki" $ptaszki) }}{{ end }}{{ end -}}
+{{- $telefony := "" -}}
+{{- if $b.pokaz_telefony }}{{ $telefony = partial "telefony-btn.html" (dict) }}{{ end -}}
+{{- $znacznik := partial "znacznik-kolumny.html" . -}}
+{{- $zasob := false }}{{ if $b.zdjecie }}{{ $zasob = partial "zdjecie-zasob.html" (dict "strona" $.strona "zdjecie" $b.zdjecie "gdzie" $gdzie) }}{{ end -}}
+{{- $pion := false }}{{ with $zasob }}{{ if and (ne .MediaType.SubType "svg") (gt .Height .Width) }}{{ $pion = true }}{{ end }}{{ end -}}
+{{- $lewa := eq $b.strona_zdjecia "lewa" -}}
+{{- $wyr := eq $b.wariant "wyrozniony" -}}
+{{- if and $zasob $wyr (not $pion) }}
+{{- /* plansza */}}
+{{- $przycisk := partial "przycisk.html" (dict "przycisk" $b.przycisk "gdzie" (printf "%s: przycisk w bloku tekst" $gdzie) "glowny" "przycisk przycisk--komorka" "obrysowy" "przycisk przycisk--komorka") }}
+    <div class="blok plansza{{ if $lewa }} plansza--lewa{{ end }}">
+      {{- with partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "nadtytul" $b.nadtytul "stopien" "naglowek") | strings.TrimSpace }}
+      <div class="plansza__naglowek" data-wejscie>{{ . | safeHTML }}</div>
+      {{- end }}
+      <div class="plansza__media">
+        {{ partial "figura.html" (dict "strona" $.strona "zdjecie" $b.zdjecie "priorytet" $.priorytet "gdzie" $gdzie "kadr" "1:1" "sizes" "(min-width: 900px) 50vw, 100vw") }}
+      </div>
+      <div class="plansza__tekst" data-wejscie>
+        {{- with $b.wstep }}
+        {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "wstep") }}
+        {{- end }}
+        {{- with $tresc }}
+        <div class="proza">{{ . | safeHTML }}</div>
+        {{- end }}
+        {{- with $ramka }}{{ . }}{{ end }}
+        {{- with strings.TrimSpace $telefony }}{{ . | safeHTML }}{{ end }}
+        {{ $znacznik | safeHTML }}
+        {{- with strings.TrimSpace $przycisk }}
+        <p class="plansza__akcja">{{ . | safeHTML }}</p>
+        {{- end }}
+      </div>
+    </div>
+{{- else if and $zasob $pion $lewa }}
+{{- /* portret jako inicjal */}}
+{{- $przycisk := partial "przycisk.html" (dict "przycisk" $b.przycisk "gdzie" (printf "%s: przycisk w bloku tekst" $gdzie)) }}
+    <div class="blok portret">
+      <div class="lewa" data-wejscie>
+        {{ partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "nadtytul" $b.nadtytul) }}
+      </div>
+      <div class="os" data-wejscie>
+        {{ partial "figura.html" (dict "strona" $.strona "zdjecie" $b.zdjecie "priorytet" $.priorytet "gdzie" $gdzie "kadr" "1:1" "kotwica" "Top" "sizes" "240px" "szerokosci" (slice 480) "klasa_figury" "portret__zdjecie" "wejscie" true) }}
+        {{- with $b.wstep }}
+        {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "wstep") }}
+        {{- end }}
+        {{- with $tresc }}
+        <div class="proza proza--inicjal">{{ . | safeHTML }}</div>
+        {{- end }}
+        {{- with $ramka }}{{ . }}{{ end }}
+        {{- with strings.TrimSpace $telefony }}{{ . | safeHTML }}{{ end }}
+        {{- with strings.TrimSpace $przycisk }}
+        <p class="akcje">{{ . | safeHTML }}</p>
+        {{- end }}
+        {{ $znacznik | safeHTML }}
+      </div>
+    </div>
+{{- else if $zasob }}
+{{- $przycisk := partial "przycisk.html" (dict "przycisk" $b.przycisk "gdzie" (printf "%s: przycisk w bloku tekst" $gdzie)) }}
+{{- $dlugiNaglowek := gt (strings.RuneCount ($b.naglowek | default "")) 40 }}
+    <div class="blok ze-zdjeciem ze-zdjeciem--{{ cond $lewa "lewa" "prawa" }}{{ if $dlugiNaglowek }} ze-zdjeciem--naglowek{{ end }}">
+      {{- if $dlugiNaglowek }}
+      <div class="pelna ze-zdjeciem__naglowek" data-wejscie>
+        {{ partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "nadtytul" $b.nadtytul) }}
+      </div>
+      {{- end }}
+      <div class="ze-zdjeciem__media" data-wejscie>
+        {{ partial "figura.html" (dict "strona" $.strona "zdjecie" $b.zdjecie "priorytet" $.priorytet "gdzie" $gdzie "sizes" "(min-width: 900px) 40vw, 100vw") }}
+      </div>
+      <div class="ze-zdjeciem__tekst" data-wejscie>
+        {{- if $dlugiNaglowek }}
+        {{- with $b.wstep }}{{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "wstep") }}{{ end }}
+        {{- else }}
+        {{ partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "nadtytul" $b.nadtytul "wstep" $b.wstep) }}
+        {{- end }}
+        {{- with $tresc }}
+        <div class="proza">{{ . | safeHTML }}</div>
+        {{- end }}
+        {{- with $ramka }}{{ . }}{{ end }}
+        {{- with strings.TrimSpace $telefony }}{{ . | safeHTML }}{{ end }}
+        {{- with strings.TrimSpace $przycisk }}
+        <p class="akcje">{{ . | safeHTML }}</p>
+        {{- end }}
+        {{ $znacznik | safeHTML }}
+      </div>
+    </div>
+{{- else }}
+{{- $przycisk := partial "przycisk.html" (dict "przycisk" $b.przycisk "gdzie" (printf "%s: przycisk w bloku tekst" $gdzie)) }}
+{{- $dlugosc := strings.RuneCount (printf "%s%s" ($b.tresc | default "") ($b.wstep | default "")) }}
+{{- $wiszacy := and $b.naglowek (not $.waska) (not $ramka) }}
+{{- $przyklejony := and $wiszacy (ge $dlugosc 600) }}
+{{- $ramkaZBoku := and $ramka (not $.waska) }}
+{{- /* blok bez naglowka na poczatku sekcji: tekst od lewego marginesu
+       (od osi zostawial pusta lewa strefe) */}}
+{{- $odLewej := and $.gora (not $b.naglowek) (not $ramkaZBoku) (not $.waska) }}
+    <div class="blok tekst{{ if $wiszacy }} tekst--wiszacy{{ end }}{{ if $odLewej }} tekst--od-lewej{{ end }}">
+      {{- if $wiszacy }}
+      <div class="lewa{{ if $przyklejony }} lewa--przyklejona{{ end }}" data-wejscie>
+        {{ partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "nadtytul" $b.nadtytul) }}
+      </div>
+      {{- else if $ramkaZBoku }}
+      <div class="lewa lewa--przyklejona">
+        {{ $ramka }}
+      </div>
+      {{- end }}
+      <div class="os" data-wejscie>
+        {{- if not $wiszacy }}
+        {{ partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "nadtytul" $b.nadtytul "wstep" $b.wstep) }}
+        {{- else }}
+        {{- with $b.wstep }}
+        {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "wstep") }}
+        {{- end }}
+        {{- end }}
+        {{- with $tresc }}
+        <div class="proza">{{ . | safeHTML }}</div>
+        {{- end }}
+        {{- if and $ramka (not $ramkaZBoku) }}{{ $ramka }}{{ end }}
+        {{- with strings.TrimSpace $telefony }}{{ . | safeHTML }}{{ end }}
+        {{- with strings.TrimSpace $przycisk }}
+        <p class="akcje">{{ . | safeHTML }}</p>
+        {{- end }}
+      </div>
+    </div>
+{{- end -}}

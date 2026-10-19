@@ -1,0 +1,177 @@
+{{- /* Pasek informacyjny (ustawienia), gorny pasek (zdanie stanu, telefon, adres,
+       przelacznik motywu - wg naglowek_strony), pasek glowny (znak, menu od osi,
+       przycisk telefonu) i szuflada menu na telefon (z karta rejestracji).
+       Logika menu, podmenu i pozycji jak v1-klasyczna. Wejscie: Page. */ -}}
+{{- $g := hugo.Data.gabinet -}}
+{{- $u := hugo.Data.ustawienia | default dict -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- $menu := partialCached "menu-model.html" "pozycje" "pozycje" -}}
+{{- $biezaca := . -}}
+{{- $um := partialCached "ustawienia-model.html" site "ustawienia" -}}
+{{- $ikony := partialCached "ikony-strony.html" site "ikony-strony" -}}
+{{- $nazwaLogo := $u.logo_nazwa | default $m.nazwa_krotka -}}
+{{- $pokaz := $um.naglowek -}}
+{{- $start := $um.napisy.menu_start | default (T "home") -}}
+{{- $telefonPaska := and $pokaz.telefon $m.telefon -}}
+{{- $adresPaska := and $pokaz.adres $g.adres -}}
+{{- /* jak v1 i podpowiedz w panelu: pusty napis = „Umów wizytę” */ -}}
+{{- $napisTel := $um.napisy.przycisk_naglowka | default (T "bookVisit") -}}
+{{- with $u.pasek_informacyjny }}
+<div class="pasek-info" role="note"><div class="wnetrze"><svg class="ico" aria-hidden="true"><use href="#ico-info"></use></svg><span>{{ . }}</span></div></div>
+{{- end }}
+
+{{- /* na stronie glownej z karta rejestracji w banerze zdanie stanu stoi
+       w karcie - w pasku sie nie powtarza, a ponizej 900 px (bez telefonu
+       i adresu) pasek znika; przelacznik motywu jest wtedy w szufladzie */}}
+{{- $kartaHero := false }}{{ if .IsHome }}{{ with .Params.sekcje }}{{ if eq (index . 0).type "hero" }}{{ $kartaHero = true }}{{ end }}{{ end }}{{ end }}
+{{- if or $pokaz.godziny $telefonPaska $adresPaska $pokaz.motyw }}
+<div class="gorny-pasek{{ if $kartaHero }} gorny-pasek--glowna{{ end }}" role="region" aria-label="{{ T "topBar" }}">
+  <div class="wnetrze gorny-pasek__w">
+    {{- if and $pokaz.godziny (not $kartaHero) }}
+    <div class="gorny-pasek__stan">
+      {{ partial "stan.html" (dict "klasa" "stan--pasek") }}
+      <span class="stan-zapas">{{ $m.dni_przyjec }}</span>
+    </div>
+    {{- end }}
+    <div class="gorny-pasek__prawa">
+      {{- if $telefonPaska }}{{ with $m.telefon }}
+      <a class="gorny-pasek__link gorny-pasek__tel" href="{{ printf "tel:%s" .tel | safeURL }}"><svg class="ico" aria-hidden="true"><use href="#ico-phone"></use></svg>{{ .numer }}</a>
+      {{- end }}{{ end }}
+      {{- if $adresPaska }}{{ with $g.adres }}
+      {{- if $m.dojazd }}
+      <a class="gorny-pasek__link gorny-pasek__adres" href="{{ $m.dojazd.RelPermalink }}"><svg class="ico" aria-hidden="true"><use href="#ico-pin"></use></svg>{{ .ulica }}, {{ .miasto }}</a>
+      {{- else }}
+      <span class="gorny-pasek__link gorny-pasek__adres"><svg class="ico" aria-hidden="true"><use href="#ico-pin"></use></svg>{{ .ulica }}, {{ .miasto }}</span>
+      {{- end }}
+      {{- end }}{{ end }}
+      {{- if $pokaz.motyw }}
+      <button class="przelacznik-motywu" type="button" data-theme-toggle aria-label="{{ T "darkTheme" }}">
+        <svg class="ico ico-ksiezyc" aria-hidden="true"><use href="#ico-moon"></use></svg>
+        <svg class="ico ico-slonce" aria-hidden="true"><use href="#ico-sun"></use></svg>
+      </button>
+      {{- end }}
+    </div>
+  </div>
+</div>
+{{- end }}
+
+<header class="naglowek{{ if $m.rezerwacja }} naglowek--z-rezerwacja{{ end }}" data-naglowek>
+  <div class="wnetrze naglowek__w">
+    <a class="znak" href="{{ site.Home.RelPermalink }}"{{ if $ikony.bez_napisow }} aria-label="{{ $nazwaLogo }}"{{ end }}>
+      {{- with $ikony.logo }}
+      <img class="znak__logo{{ if $ikony.bez_napisow }} znak__logo--duze{{ end }}" src="{{ .url }}" width="{{ .w }}" height="{{ .h }}" alt="{{ if $ikony.bez_napisow }}{{ $nazwaLogo }}{{ end }}">
+      {{- else }}
+      <svg class="znak__ikona" viewBox="0 0 48 48" aria-hidden="true">
+        <rect width="48" height="48" fill="currentColor"/>
+        <path d="M24 13.5c-2.6-2-5.5-3.1-8-2.4-3.7 1-5.8 4.7-5.3 9.2.3 2.7 1.3 4.8 2.1 7.4.8 2.7 1 5.5 1.5 8 .3 1.9 1.3 3.2 2.7 3.2 1.8 0 2.4-1.8 2.9-4l1.1-5.3c.3-1.5 1-2.3 3-2.3s2.7.8 3 2.3l1.1 5.3c.5 2.2 1.1 4 2.9 4 1.4 0 2.4-1.3 2.7-3.2.5-2.5.7-5.3 1.5-8 .8-2.6 1.8-4.7 2.1-7.4.5-4.5-1.6-8.2-5.3-9.2-2.5-.7-5.4.4-8 2.4Z" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/>
+      </svg>
+      {{- end }}
+      {{- if not $ikony.bez_napisow }}
+      <span class="znak__tekst">
+        <span class="znak__nazwa">{{ $nazwaLogo }}</span>
+        {{- with $u.logo_podpis | default (printf "%s · %s" ($g.lekarz | default "") ($g.adres.miasto | default "") | strings.Trim " ·") }}
+        <span class="znak__podpis">{{ . }}</span>
+        {{- end }}
+      </span>
+      {{- end }}
+    </a>
+
+    <nav class="menu" aria-label="{{ T "mainMenu" }}">
+      <ul class="menu__lista">
+        {{- if $pokaz.start }}
+        <li><a href="{{ site.Home.RelPermalink }}"{{ if .IsHome }} aria-current="page"{{ end }}>{{ $start }}</a></li>
+        {{- end }}
+        {{- range $i, $poz := $menu }}
+        {{- $aktywna := and $poz.strona ($biezaca.Eq $poz.strona) }}
+        {{- $wPodmenu := false }}{{ range $poz.dzieci }}{{ if and .strona ($biezaca.Eq .strona) }}{{ $wPodmenu = true }}{{ end }}{{ end }}
+        {{- if $poz.dzieci }}
+        <li class="menu__z-podmenu{{ if $wPodmenu }} menu__z-podmenu--aktywne{{ end }}">
+          {{ if $poz.href }}{{ partial "menu-link.html" (dict "pozycja" $poz "aktywna" $aktywna) }}{{ else }}<span>{{ $poz.etykieta }}</span>{{ end }}
+          <button class="menu__rozwin" type="button" data-submenu-toggle
+                  aria-expanded="false" aria-controls="podmenu-{{ add $i 1 }}"
+                  aria-label="{{ T "expandSubmenu" (dict "label" $poz.etykieta) }}">
+            <svg class="ico" aria-hidden="true"><use href="#ico-chevron"></use></svg>
+          </button>
+          <div class="menu__podmenu{{ if ge (len $poz.dzieci) 6 }} menu__podmenu--dwie{{ end }}" id="podmenu-{{ add $i 1 }}">
+            {{- range $poz.dzieci }}
+            {{ partial "menu-link.html" (dict "pozycja" . "aktywna" (and .strona ($biezaca.Eq .strona))) }}
+            {{- end }}
+          </div>
+        </li>
+        {{- else }}
+        <li>{{ partial "menu-link.html" (dict "pozycja" $poz "aktywna" $aktywna) }}</li>
+        {{- end }}
+        {{- end }}
+      </ul>
+    </nav>
+
+    {{ partial "telefon-btn.html" (dict "klasa" "przycisk przycisk--glowny naglowek__telefon" "napis" $napisTel) }}
+
+    {{ partial "rezerwacja.html" (dict "miejsce" "naglowek") }}
+
+    <button class="naglowek__menu" type="button" data-nav-toggle aria-expanded="false" aria-controls="menu-mobilne">
+      <svg class="ico" aria-hidden="true"><use href="#ico-menu"></use></svg>
+      <span>{{ T "menu" }}</span>
+    </button>
+  </div>
+</header>
+
+<div class="szuflada" id="menu-mobilne" data-open="false">
+  <button class="szuflada__tlo" type="button" data-drawer-close tabindex="-1" aria-hidden="true" aria-label="{{ T "closeMenu" }}"></button>
+  <div class="szuflada__panel" role="dialog" aria-modal="true" aria-label="{{ T "mobileMenu" }}">
+    <div class="szuflada__gora">
+      {{- if $pokaz.motyw }}
+      <button class="przelacznik-motywu szuflada__motyw" type="button" data-theme-toggle>
+        <svg class="ico ico-ksiezyc" aria-hidden="true"><use href="#ico-moon"></use></svg>
+        <svg class="ico ico-slonce" aria-hidden="true"><use href="#ico-sun"></use></svg>
+        <span>{{ T "darkTheme" }}</span>
+      </button>
+      {{- end }}
+      <button class="szuflada__zamknij" type="button" data-drawer-close>
+        <svg class="ico" aria-hidden="true"><use href="#ico-close"></use></svg>
+        <span>{{ T "closeMenu" }}</span>
+      </button>
+    </div>
+    <nav aria-label="{{ T "mobileMenu" }}">
+      <ul class="szuflada__menu">
+        {{- if $pokaz.start }}
+        <li><a href="{{ site.Home.RelPermalink }}"{{ if .IsHome }} aria-current="page"{{ end }}>{{ $start }}</a></li>
+        {{- end }}
+        {{- range $i, $poz := $menu }}
+        {{- if $poz.dzieci }}
+        <li class="szuflada__z-podmenu">
+          <div class="szuflada__wiersz">
+            {{ if $poz.href }}{{ partial "menu-link.html" (dict "pozycja" $poz "aktywna" (and $poz.strona ($biezaca.Eq $poz.strona))) }}{{ else }}<span>{{ $poz.etykieta }}</span>{{ end }}
+            <button class="szuflada__rozwin" type="button" data-submenu-toggle aria-expanded="false" aria-controls="podmenu-m{{ add $i 1 }}" aria-label="{{ T "expandSubmenu" (dict "label" $poz.etykieta) }}">
+              <svg class="ico" aria-hidden="true"><use href="#ico-chevron"></use></svg>
+            </button>
+          </div>
+          <ul class="szuflada__podmenu" id="podmenu-m{{ add $i 1 }}">
+            {{- range $poz.dzieci }}
+            <li>{{ partial "menu-link.html" (dict "pozycja" . "aktywna" (and .strona ($biezaca.Eq .strona))) }}</li>
+            {{- end }}
+          </ul>
+        </li>
+        {{- else if $poz.href }}
+        <li>{{ partial "menu-link.html" (dict "pozycja" $poz "aktywna" (and $poz.strona ($biezaca.Eq $poz.strona))) }}</li>
+        {{- else }}
+        <li><span>{{ $poz.etykieta }}</span></li>
+        {{- end }}
+        {{- end }}
+      </ul>
+      {{- with partialCached "menu-model.html" "dodatkowe" "dodatkowe" }}
+      <ul class="szuflada__dodatkowe">
+        {{- range . }}
+        <li>{{ partial "menu-link.html" (dict "pozycja" . "aktywna" (and .strona ($biezaca.Eq .strona))) }}</li>
+        {{- end }}
+      </ul>
+      {{- end }}
+    </nav>
+    <div class="karta karta--szuflada">
+      {{ partial "stan.html" (dict "klasa" "karta__stan") }}
+      {{ partial "telefon-btn.html" (dict "klasa" "przycisk przycisk--glowny przycisk--pelny przycisk--duzy") }}
+      {{ partial "rezerwacja.html" (dict "miejsce" "szuflada") }}
+      {{ partial "tydzien.html" (dict "uklad" "pion") }}
+    </div>
+  </div>
+</div>

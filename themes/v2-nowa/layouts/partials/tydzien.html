@@ -1,0 +1,24 @@
+{{- /* Pasek tygodnia karty wizyt: 7 dni (poziomo kolejne dni nieczynne
+       zlaczone w jeden kafel; pionowo dzien pod dniem). Dzisiejszy dzien
+       (strefa Europe/Warsaw) zamalowuje i podpisuje slowem "dziś" skrypt
+       (app.js, data-dni). Pasek jest tylko dla oka (aria-hidden); czytniki
+       ekranu dostaja pelna tabele godzin (godziny-tabela.html, ukryta wizualnie).
+       Wejscie: dict "uklad" ("poziom" | "pion"). */ -}}
+{{- $t := partialCached "tydzien-model.html" site "tydzien" -}}
+{{- if $t.jest }}
+{{- $pion := eq .uklad "pion" }}
+<div class="tydzien tydzien--{{ cond $pion "pion" "poziom" }}" data-tydzien>
+  <ol class="tydzien__lista" aria-hidden="true">
+    {{- if $pion }}
+    {{- range $t.dni }}
+    <li class="tydzien__dzien{{ if not .otwarte }} tydzien__dzien--nieczynne{{ end }}" data-dni="{{ .nr }}"><span class="tydzien__skrot">{{ .skrot }}</span><span class="tydzien__godz">{{ .godz | default (T "closed") }}</span><span class="tydzien__dzis">{{ T "today" }}</span></li>
+    {{- end }}
+    {{- else }}
+    {{- range $t.kafle }}
+    <li class="tydzien__dzien{{ if not .otwarte }} tydzien__dzien--nieczynne{{ end }}" data-dni="{{ delimit .nr " " }}" style="--szer:{{ .szer }}"><span class="tydzien__skrot">{{ .skrot }}</span><span class="tydzien__godz">{{ .godz | default (T "closed") }}</span><span class="tydzien__dzis">{{ T "today" }}</span></li>
+    {{- end }}
+    {{- end }}
+  </ol>
+  {{ partial "godziny-tabela.html" . }}
+</div>
+{{- end -}}

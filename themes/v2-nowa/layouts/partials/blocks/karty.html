@@ -1,0 +1,63 @@
+{{- /* Blok "karty": naglowek, wstep, kolumny (2 | 3 | 4), wypunktowanie (ptaszki),
+       elementy [{tytul, tresc, ikona, cena (id pozycji cennika), strona}].
+       Nie siatka jednakowych kart:
+       - same tytuly z cenami (karty cen): "menu cen" - nazwa z lewej, kwota
+         z prawej na wspolnej linii bazowej, naglowek i wstep w lewej strefie;
+       - karty z trescia: lista typograficzna (bez tla, obrysu i cienia),
+         2 kolumny od osi albo 3 na pelna szerokosc; karta ze strona jest
+         w calosci odnosnikiem (tytul podkreslony, napis wejscia z ustawien
+         napisy.karta_szczegoly - pusty = "Zobacz szczegóły" - ze strzalka). */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := $.gdzie -}}
+{{- $kol := int (printf "%v" ($b.kolumny | default 3)) -}}
+{{- if not (in (slice 2 3 4) $kol) }}{{ $kol = 3 }}{{ end -}}
+{{- $wiecej := (partialCached "ustawienia-model.html" site "ustawienia").napisy.karta_szczegoly | default (T "seeDetails") -}}
+{{- $menu := true -}}
+{{- $el := slice -}}
+{{- range $k := $b.elementy -}}
+  {{- $gdzieKarty := printf "%s: karta „%s” (blok karty)" $gdzie $k.tytul -}}
+  {{- $cel := partial "cel-linku.html" (dict "strona" $k.strona "gdzie" $gdzieKarty) -}}
+  {{- $poz := partial "cennik-pozycja.html" (dict "id" $k.cena "gdzie" $gdzieKarty) -}}
+  {{- if or (not $poz) $k.tresc $k.ikona $cel.href }}{{ $menu = false }}{{ end -}}
+  {{- $el = $el | append (dict "k" $k "cel" $cel "poz" $poz "gdzie" $gdzieKarty) -}}
+{{- end -}}
+{{- $naglowek := partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "wstep" $b.wstep "gora" $.gora) | strings.TrimSpace -}}
+{{- if $menu }}
+    <div class="blok karty karty--menu">
+      {{- with $naglowek }}
+      <div class="lewa" data-wejscie>{{ . | safeHTML }}</div>
+      {{- end }}
+      <ul class="os menu-cen{{ if ge (len $el) 8 }} menu-cen--dwie{{ end }}" data-wejscie-lista>
+        {{- range $el }}
+        <li class="menu-cen__pozycja"><span class="menu-cen__nazwa">{{ .k.tytul }}</span><span class="menu-cen__kwota">{{ partial "cena.html" .poz }}</span></li>
+        {{- end }}
+      </ul>
+    </div>
+{{- else }}
+{{- $szeroka := ge $kol 3 }}
+    <div class="blok karty{{ if $szeroka }} karty--szeroka{{ end }}">
+      {{- with $naglowek }}
+      <div class="{{ if $szeroka }}pelna karty__naglowek{{ else }}lewa{{ end }}" data-wejscie>{{ . | safeHTML }}</div>
+      {{- end }}
+      <div class="{{ if $szeroka }}pelna{{ else }}os{{ end }} pozycje pozycje--{{ cond $szeroka (cond (eq $kol 4) 4 3) 2 }}" data-wejscie-lista>
+        {{- range $el }}
+        {{- $k := .k }}
+        <article class="pozycja{{ if .cel.href }} pozycja--link{{ end }}">
+          <h3 class="pozycja__tytul">
+            {{- with $k.ikona }}{{ partial "ikona.html" (dict "nazwa" . "gdzie" $.gdzie) }}{{ end -}}
+            {{- with .cel.href }}<a class="rozciagniety" href="{{ . }}">{{ $k.tytul }}</a>{{ else }}<span>{{ $k.tytul }}</span>{{ end -}}
+          </h3>
+          {{- with $k.tresc }}
+          <div class="proza">{{ partial "markdown-ptaszki.html" (dict "strona" $.strona "tekst" . "ptaszki" (eq $b.wypunktowanie "ptaszki")) }}</div>
+          {{- end }}
+          {{- with .poz }}
+          <p class="pozycja__cena">{{ partial "cena.html" . }}</p>
+          {{- end }}
+          {{- if .cel.href }}
+          <span class="pozycja__wiecej" aria-hidden="true">{{ $wiecej }}<svg class="ico strzalka" aria-hidden="true"><use href="#ico-arrow"></use></svg></span>
+          {{- end }}
+        </article>
+        {{- end }}
+      </div>
+    </div>
+{{- end -}}

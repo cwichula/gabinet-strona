@@ -1,0 +1,16 @@
+{{- /* Zdjecie z podpisem: figure.zdjecie > picture + figcaption (podpis =
+       Markdown w wierszu, np. z odnosnikiem). Proporcje pliku (pionowe /
+       poziome) w klasie, zeby uklad mogl je rozroznic.
+       Wejscie: dict "strona", "zdjecie", "priorytet", "gdzie", "sizes", "kadr",
+       "kotwica", "klasa_figury", "wejscie" (bool - wejscie przy przewijaniu,
+       data-wejscie-krok). */ -}}
+{{- $img := partial "zdjecie-zasob.html" . -}}
+{{- with $img -}}
+{{- $pion := and (ne .MediaType.SubType "svg") (gt .Height .Width) -}}
+<figure class="zdjecie{{ if $pion }} zdjecie--pion{{ end }}{{ with $.klasa_figury }} {{ . }}{{ end }}"{{ if $.wejscie }} data-wejscie-krok{{ end }}>
+  {{ partial "image.html" $ }}
+  {{- with $.zdjecie.podpis }}
+  <figcaption>{{ partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .) }}</figcaption>
+  {{- end }}
+</figure>
+{{- end -}}

@@ -1,0 +1,9 @@
+{{- /* Paleta kolorow z data/ustawienia.yaml (paleta) - partialCached.
+       Bordo (domyslna) albo wartosc spoza listy = nazwa "" (brak atrybutu
+       data-paleta, plik favicon.svg ze static/). Akcent = --akcent-pasma
+       palety w style.css (sekcja 1b) - do ikony strony (assets/meta/favicon.svg).
+       Wynik: dict "nazwa", "akcent". */ -}}
+{{- $akcenty := dict "bordo" "#9b1c31" "morska" "#18585d" "granat" "#2c4f8c" "szalwia" "#305844" -}}
+{{- $p := (hugo.Data.ustawienia | default dict).paleta | default "bordo" -}}
+{{- if not (index $akcenty $p) }}{{ $p = "bordo" }}{{ end -}}
+{{- return dict "nazwa" (cond (eq $p "bordo") "" $p) "akcent" (index $akcenty $p) -}}

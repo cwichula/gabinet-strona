@@ -1,0 +1,22 @@
+{{- /* Tabela godzin przyjec z data/gabinet.yaml (przez gabinet-model.html).
+       W karcie wizyt ukryta wizualnie (pasek tygodnia jest dla oka, tabela dla
+       czytnikow ekranu); w stopce widoczna. data-dzien = numer dnia
+       (1 = poniedzialek) - skrypt oznacza dzisiejszy wiersz.
+       Wejscie: dict "widoczna" (bool). */ -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- with $m.tydzien }}
+      {{- if not $.widoczna }}<div class="visually-hidden">{{ end }}
+      <table class="godziny" data-napis-dzis="{{ T "today" }}">
+        <caption class="visually-hidden">{{ T "openingHoursCaption" }}</caption>
+        <tbody>
+        {{- range . }}
+        {{- if and .od .do }}
+        <tr data-dzien="{{ .nr }}"><th scope="row">{{ .dzien }}</th><td>{{ .od }}&ndash;{{ .do }}</td></tr>
+        {{- else }}
+        <tr data-dzien="{{ .nr }}" class="godziny__nieczynne"><th scope="row">{{ .dzien }}</th><td>{{ $m.nieczynne }}</td></tr>
+        {{- end }}
+        {{- end }}
+        </tbody>
+      </table>
+      {{- if not $.widoczna }}</div>{{ end }}
+{{- end -}}

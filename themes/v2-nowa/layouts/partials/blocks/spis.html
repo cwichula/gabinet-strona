@@ -1,0 +1,31 @@
+{{- /* Blok "spis": naglowek (tylko dla czytnikow ekranu), elementy [{etykieta,
+       kotwica}] - "Na tej stronie": pionowa lista zwyklych odnosnikow od osi
+       (aktywna sekcja oznaczona przez app.js), na telefonie lista rozwijana
+       przyciskiem z aria-expanded (app.js; bez skryptu lista jest widoczna, a
+       przycisk ukryty). Nie <details>: kontrola-strony.py liczy <summary>
+       jako pytania FAQ. Kotwica, ktorej nie ma na stronie, przerywa budowanie. */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := $.gdzie -}}
+{{- $kotwice := slice }}{{ range $.strona.Params.sekcje }}{{ with .kotwica }}{{ $kotwice = $kotwice | append . }}{{ end }}{{ end -}}
+{{- with $b.elementy }}
+{{- range . }}{{ if not (in $kotwice .kotwica) }}{{ errorf "%s: spis treści wskazuje kotwicę %q, której nie ma żaden blok tej strony. Wpisz kotwicę w bloku (pole „Kotwica”) albo popraw spis w panelu /admin/." $gdzie .kotwica }}{{ end }}{{ end }}
+{{- $nazwa := $b.naglowek | default (T "tableOfContents") }}
+    <div class="blok spis-blok">
+      <nav class="os spis spis--szeroki" aria-label="{{ $nazwa }}" data-spis>
+        <p class="spis__tytul" aria-hidden="true">{{ T "onThisPage" }}</p>
+        <ul{{ if ge (len .) 6 }} class="spis--dwie"{{ end }}>
+          {{- range . }}
+          <li><a href="#{{ .kotwica }}">{{ .etykieta }}</a></li>
+          {{- end }}
+        </ul>
+      </nav>
+      <nav class="os spis spis--waski" aria-label="{{ $nazwa }}">
+        <button class="rozwijacz" type="button" data-rozwin aria-expanded="true" aria-controls="podmenu-spis-{{ $.nr }}" hidden><span>{{ T "onThisPage" }}</span><svg class="ico" aria-hidden="true"><use href="#ico-chevron"></use></svg></button>
+        <ul id="podmenu-spis-{{ $.nr }}">
+          {{- range . }}
+          <li><a href="#{{ .kotwica }}">{{ .etykieta }}</a></li>
+          {{- end }}
+        </ul>
+      </nav>
+    </div>
+{{- end -}}

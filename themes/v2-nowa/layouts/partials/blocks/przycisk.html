@@ -1,0 +1,11 @@
+{{- /* Blok "przycisk": etykieta, strona, kotwica_celu (#kotwica na stronie docelowej),
+       styl (glowny - wypelniony, obrysowy). Pojedynczy przycisk od osi albo
+       w kolumnie bloku, do ktorego jest dolaczony. */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := $.gdzie -}}
+{{- $p := dict "etykieta" ($b.etykieta | default "") "strona" ($b.strona | default "") "styl" ($b.styl | default "") "kotwica_celu" ($b.kotwica_celu | default "") -}}
+{{- with strings.TrimSpace (partial "przycisk.html" (dict "przycisk" $p "gdzie" (printf "%s: blok „Przycisk”" $gdzie))) }}
+    <div class="blok przycisk-blok">
+      <p class="os akcje">{{ . | safeHTML }}</p>
+    </div>
+{{- end -}}

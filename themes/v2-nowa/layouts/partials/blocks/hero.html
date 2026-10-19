@@ -1,0 +1,134 @@
+{{- /* Blok "hero": naglowek, nadtytul, ikona (pomijana - nadtytul to zdanie pod
+       naglowkiem), tresc, zdjecie, przycisk, pokaz_telefon, fakty [{ikona, tekst}],
+       plakietka {wyroznienie, tekst}.
+       - pierwszy blok strony glownej: h1 na pelna szerokosc (na pierwszym
+         ekranie, przed karta w kolejnosci czytania), pod nim mozaika bez fug
+         (zdjecie, pole plakietki, kafel faktow, karta rejestracji z zywym
+         stanem), nadtytul i przyciski w lewej strefie, tresc od osi;
+       - pierwszy blok podstrony: pasmo tytulowe (--papier-2): okruszki, h1,
+         nadtytul, cena "od" strony uslugi, wstep, fakty, przyciski; zdjecie
+         (gdy jest) w lewej strefie;
+       - baner w srodku strony: pas --papier-2 z h2.
+       Pusty naglowek -> tytul strony. Podpis zdjecia banera pomijany (opis
+       niesie alt). Pola wspolne: wariant (pomijany - baner ma wlasne tlo),
+       kotwica, polacz (pomijane - baner zawsze osobno). */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := $.gdzie -}}
+{{- $g := hugo.Data.gabinet -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- $naGorze := eq .nr 0 -}}
+{{- $naglowek := $b.naglowek | default $.strona.Title -}}
+{{- $id := "" }}{{ with $b.kotwica }}{{ $id = . | urlize }}{{ end -}}
+{{- $n := (partialCached "ustawienia-model.html" site "ustawienia").napisy -}}
+{{- if and $naGorze $.strona.IsHome }}
+{{- $pl := $b.plakietka | default dict }}
+<section class="hero"{{ with $id }} id="{{ . }}"{{ end }}>
+  <div class="wnetrze">
+    <div class="hero__naglowek">
+      {{ partial "h1.html" (dict "tekst" $naglowek) }}
+    </div>
+    <div class="mozaika{{ if not $pl.wyroznienie }} mozaika--bez-plakietki{{ end }}" data-mozaika>
+      {{- if $b.zdjecie }}
+      <figure class="mozaika__kafel mozaika__zdjecie">
+        {{ partial "image.html" (dict "strona" $.strona "zdjecie" $b.zdjecie "priorytet" true "sizes" "(min-width: 900px) 46vw, 100vw" "gdzie" $gdzie) }}
+      </figure>
+      {{- else }}
+      <div class="mozaika__kafel mozaika__zdjecie mozaika__zdjecie--brak"><p>{{ $m.nazwa_krotka }}</p></div>
+      {{- end }}
+      {{- with $pl.wyroznienie }}
+      <div class="mozaika__kafel mozaika__plakietka"><p>{{ . }}</p></div>
+      {{- end }}
+      <div class="mozaika__kafel mozaika__fakty">
+        {{- with $pl.tekst }}
+        <p class="mozaika__motto">{{ . }}</p>
+        {{- end }}
+        {{- with $b.fakty }}
+        {{ partial "fakty.html" (dict "fakty" . "strona" $.strona "gdzie" $gdzie "klasa" "fakty--kafel") }}
+        {{- else }}{{ with $g.adres }}
+        <p class="mozaika__adres">{{ partial "adres.html" . }}</p>
+        {{- end }}{{ end }}
+        {{- with $g.adres.ulica }}
+        <p class="mozaika__lokal" aria-hidden="true"><svg class="ico" aria-hidden="true"><use href="#ico-pin"></use></svg><span>{{ replaceRE `^(?i)ul\.\s*` "" . }}</span></p>
+        {{- end }}
+      </div>
+      <div class="mozaika__kafel mozaika__karta">
+        {{ partial "karta-rejestracji.html" (dict "live" true) }}
+      </div>
+    </div>
+
+    <div class="blok hero__tytul">
+      <div class="lewa hero__lewa">
+        {{- with $b.nadtytul }}
+        <p class="nadtytul">{{ . }}</p>
+        {{- end }}
+        {{- partial "hero-akcje.html" (dict "blok" $b "strona" $.strona "gdzie" $gdzie "klasa" "akcje--hero") }}
+      </div>
+      <div class="os hero__tresc">
+        {{- with $b.tresc }}
+        <div class="hero__kolumny">{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}</div>
+        {{- end }}
+        {{ partial "fakty.html" (dict "fakty" $b.fakty "strona" $.strona "gdzie" $gdzie "klasa" "fakty--telefon") }}
+      </div>
+    </div>
+  </div>
+</section>
+{{- else if $naGorze }}
+{{- $cena := "" }}
+{{- with $.strona.Params.usluga }}{{ with .cena_od }}{{ with partial "cennik-pozycja.html" (dict "id" . "gdzie" (printf "%s: pole „Strona usługi”" $gdzie)) }}{{ $cena = printf "%s %s" ($n.karta_cena_od | default (T "priceFrom")) (partial "cena.html" (dict "nazwa" .nazwa "cena_od" .cena_od)) }}{{ end }}{{ end }}{{ end }}
+{{- $tytul := printf "%s%s" (partial "okruszki.html" $.strona) (partial "h1.html" (dict "tekst" $naglowek)) }}
+{{- with $b.nadtytul }}{{ $tytul = printf "%s<p class=\"nadtytul\">%s</p>" $tytul (. | htmlEscape) }}{{ end }}
+{{- with $cena }}{{ $tytul = printf "%s<p class=\"pasmo__cena\">%s</p>" $tytul (. | htmlEscape) }}{{ end }}
+{{- /* bez wlasnego zdjecia banera: zdjecie gabinetu z galerii, ktorego strona
+       nie pokazuje (zdjecie-pasma.html) - pierwszy ekran podstrony nie jest
+       samym tekstem */}}
+{{- $zdjPasma := false }}{{ $stronaZdj := $.strona }}
+{{- with $b.zdjecie }}{{ $zdjPasma = merge . (dict "podpis" "") }}{{ else }}{{ with partial "zdjecie-pasma.html" $.strona }}{{ $zdjPasma = .zdjecie }}{{ $stronaZdj = .strona }}{{ end }}{{ end }}
+<header class="pasmo{{ if $zdjPasma }} pasmo--zdjecie{{ end }}"{{ with $id }} id="{{ . }}"{{ end }}>
+  <div class="wnetrze blok">
+    {{- if $zdjPasma }}
+    <div class="lewa pasmo__media">
+      {{ partial "figura.html" (dict "strona" $stronaZdj "zdjecie" $zdjPasma "priorytet" true "sizes" "(min-width: 900px) 42vw, 100vw" "kadr" "4:5" "telefon_bez_kadru" true "gdzie" $gdzie "klasa_figury" "pasmo__zdjecie") }}
+      {{- with $b.plakietka }}{{ if .wyroznienie }}
+      <p class="pasmo__plakietka"><span class="pasmo__plakietka-duze">{{ .wyroznienie }}</span>{{ with .tekst }} <span>{{ . }}</span>{{ end }}</p>
+      {{- end }}{{ end }}
+    </div>
+    <div class="os pasmo__tekst">
+      {{ $tytul | safeHTML }}
+    {{- else }}
+    <div class="pasmo__tytul">
+      {{ $tytul | safeHTML }}
+    </div>
+    <div class="os pasmo__tekst">
+    {{- end }}
+      {{- with $b.tresc }}
+      {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "wstep") }}
+      {{- end }}
+      {{ partial "fakty.html" (dict "fakty" $b.fakty "strona" $.strona "gdzie" $gdzie) }}
+      {{- partial "hero-akcje.html" (dict "blok" $b "strona" $.strona "gdzie" $gdzie) }}
+    </div>
+  </div>
+</header>
+{{- else }}
+<section class="s s--papier2 s--hero"{{ with $id }} id="{{ . }}"{{ end }}>
+  <div class="wnetrze blok">
+    {{- if $b.zdjecie }}
+    <div class="lewa">
+      {{ partial "figura.html" (dict "strona" $.strona "zdjecie" (merge $b.zdjecie (dict "podpis" "")) "priorytet" $.priorytet "kadr" "4:5" "gdzie" $gdzie) }}
+    </div>
+    <div class="os">
+      {{ partial "h2.html" (dict "strona" $.strona "naglowek" $naglowek "nadtytul" $b.nadtytul) }}
+    {{- else }}
+    <div class="lewa">
+      {{ partial "h2.html" (dict "strona" $.strona "naglowek" $naglowek "nadtytul" $b.nadtytul) }}
+    </div>
+    <div class="os">
+    {{- end }}
+      {{- with $b.tresc }}
+      {{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "wstep") }}
+      {{- end }}
+      {{ partial "fakty.html" (dict "fakty" $b.fakty "strona" $.strona "gdzie" $gdzie) }}
+      {{- partial "hero-akcje.html" (dict "blok" $b "strona" $.strona "gdzie" $gdzie) }}
+    </div>
+  </div>
+</section>
+{{- end -}}

@@ -1,0 +1,54 @@
+{{- /* Blok "galeria": naglowek, wstep, elementy [{plik, alt, podpis}].
+       Mozaika bez fug: wiersze rownej wysokosci, szerokosc kafla z proporcji
+       pliku (--r), zdjecia bez przycinania i bez dziur w siatce,
+       kafel = przycisk otwierajacy powiekszenie w natywnym <dialog> (okno raz
+       na strone). Podpis lezy pasem pod zdjeciem, w obrebie kafla. Pierwsze
+       4 zdjecia bez lazy. Pusty naglowek: ukryty h2 "Zdjęcia gabinetu" dla
+       czytnikow ekranu, a w bloku dolaczonym - bez naglowka. */ -}}
+{{- $b := .blok -}}
+{{- $gdzie := $.gdzie -}}
+{{- $naglowek := partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "domyslny" (T "galleryHeading") "ukryty_domyslny" true "wstep" $b.wstep "gora" $.gora) | strings.TrimSpace -}}
+    <div class="blok galeria-blok">
+      {{- with $naglowek }}
+      <div class="os galeria__naglowek{{ if not $b.naglowek }} galeria__naglowek--bez{{ end }}">{{ . | safeHTML }}</div>
+      {{- end }}
+      <div class="pelna galeria" data-wejscie-kafle>
+        {{- range $i, $z := $b.elementy }}
+        {{- with partial "zdjecie-zasob.html" (dict "strona" $.strona "zdjecie" $z "gdzie" (printf "%s: galeria, zdjęcie nr %d" $gdzie (add $i 1))) }}
+        {{- $alt := $z.alt | strings.TrimSpace }}
+        {{- $opis := $alt }}{{ with $z.podpis }}{{ $opis = partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .) | plainify | htmlUnescape | strings.TrimSpace }}{{ end }}
+        {{- $proporcja := 1.5 }}{{ $duze := "" }}
+        {{- if ne .MediaType.SubType "svg" }}
+        {{- $proporcja = div (math.Round (mul (div (float .Width) (float .Height)) 1000)) 1000 }}
+        {{- $d := false }}{{ if gt .Width 1400 }}{{ $d = .Resize "1400x webp" }}{{ else }}{{ $d = .Process "webp" }}{{ end }}{{ $duze = $d.RelPermalink }}
+        {{- else }}{{ $duze = .RelPermalink }}{{ end }}
+        <button type="button" class="kafel" style="--r:{{ $proporcja }}" data-lightbox data-full="{{ $duze }}" data-alt="{{ $opis }}">
+          <span class="visually-hidden">{{ T "enlargePhoto" }}: </span>
+          {{ partial "image.html" (dict "strona" $.strona "zdjecie" $z "priorytet" (and $.priorytet (lt $i 1)) "sizes" "(min-width: 900px) 40vw, (min-width: 600px) 50vw, 100vw" "szerokosci" (slice 480 800 1200) "gdzie" $gdzie) }}
+          {{- with $z.podpis }}
+          <span class="kafel__podpis">{{ partial "markdown-wiersz.html" (dict "strona" $.strona "tekst" .) | plainify }}</span>
+          {{- end }}
+        </button>
+        {{- end }}
+        {{- end }}
+      </div>
+    </div>
+    {{- if not ($.pamiec.Get "lightbox") }}{{ $.pamiec.Set "lightbox" true }}
+  <dialog class="lightbox" id="lightbox" aria-label="{{ T "enlargedPhoto" }}" data-napis-licznik="{{ T "photoCounter" (dict "number" "{nr}" "total" "{razem}") }}">
+    <figure class="lightbox__fig">
+      <img data-lb-img src="data:," alt="" width="800" height="600" decoding="async">
+      <figcaption><span data-lb-cap></span> <span class="lightbox__licznik" data-lb-licznik></span></figcaption>
+    </figure>
+    <div class="lightbox__pasek">
+      <button class="lightbox__przycisk" type="button" data-lb-prev aria-label="{{ T "previousPhoto" }}">
+        <svg class="ico" aria-hidden="true" style="transform:rotate(180deg)"><use href="#ico-arrow"></use></svg>
+      </button>
+      <button class="lightbox__przycisk" type="button" data-lb-next aria-label="{{ T "nextPhoto" }}">
+        <svg class="ico" aria-hidden="true"><use href="#ico-arrow"></use></svg>
+      </button>
+      <button class="lightbox__przycisk" type="button" data-lb-close aria-label="{{ T "closeEnlarged" }}">
+        <svg class="ico" aria-hidden="true"><use href="#ico-close"></use></svg>
+      </button>
+    </div>
+  </dialog>
+    {{- end }}

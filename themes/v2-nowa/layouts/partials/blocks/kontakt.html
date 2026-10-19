@@ -1,0 +1,51 @@
+{{- /* Blok "kontakt": naglowek, tresc, bok (ramka z boku); telefony, e-mail
+       (tylko gdy jest w danych), adres (odnosnik do Map Google w nowej karcie)
+       i parking (albo opis dojazdu) z data/gabinet.yaml jako "adres w wierszach":
+       etykieta i wartosc w kroju naglowkow, wiersze na zmiane w dwoch tonach.
+       Z polem "bok": karta wizyt w lewej strefie (przyklejona), dane od osi
+       (w DOM najpierw dane, potem karta - kolejnosc czytania jak na telefonie),
+       bloki dolaczone ("polacz") w kolumnie z danymi. */ -}}
+{{- $b := .blok -}}
+{{- $g := hugo.Data.gabinet -}}
+{{- $m := partialCached "gabinet-model.html" site "gabinet" -}}
+{{- $a := $g.adres | default dict -}}
+{{- /* to samo zapytanie co blok mapa (nazwa, ulica bez "ul." i "m. N") */ -}}
+{{- $mapy := "" }}{{ with $a.ulica }}{{ $mapy = printf "https://www.google.com/maps/search/?api=1&query=%s" (partial "zapytanie-mapy.html" .) }}{{ end -}}
+    <div class="blok kontakt{{ if $b.bok }} kontakt--bok{{ end }}">
+      <div class="os" data-wejscie>
+        {{ partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "domyslny" (T "contact") "wstep" $b.tresc "gora" $.gora) }}
+        <dl class="adresy" data-wejscie-lista>
+          {{- range $m.telefony }}
+          <div class="adresy__wiersz">
+            <dt>{{ .etykieta | default (T "phone") }}</dt>
+            <dd class="adresy__duze"><a href="{{ printf "tel:%s" .tel | safeURL }}">{{ .numer }}</a></dd>
+          </div>
+          {{- end }}
+          {{- with $g.email }}
+          <div class="adresy__wiersz">
+            <dt>{{ T "email" }}</dt>
+            <dd class="adresy__sredni"><a href="mailto:{{ . }}">{{ . }}</a></dd>
+          </div>
+          {{- end }}
+          {{- with $a.ulica }}
+          <div class="adresy__wiersz">
+            <dt>{{ T "practiceAddress" }}</dt>
+            <dd><a class="adresy__duze" href="{{ $mapy }}" target="_blank" rel="noopener">{{ $a.ulica }},{{ with $a.kod }} <span class="bez-lamania">{{ . }} {{ $a.miasto }}</span>{{ else }} {{ $a.miasto }}{{ end }}<span class="visually-hidden">{{ T "opensInNewTab" }}</span></a>
+              {{- with $a.dojazd }}<span class="adresy__dopisek">{{ partial "tekst-wiersze.html" . }}</span>{{ end }}</dd>
+          </div>
+          {{- end }}
+          {{- with $a.parking }}
+          <div class="adresy__wiersz">
+            <dt>{{ T "parking" }}</dt>
+            <dd class="adresy__sredni">{{ . }}</dd>
+          </div>
+          {{- end }}
+        </dl>
+        {{ partial "znacznik-kolumny.html" . | safeHTML }}
+      </div>
+      {{- with $b.bok }}
+      <div class="lewa lewa--przyklejona kontakt__bok">
+        {{ partial "bok.html" (dict "bok" . "strona" $.strona "gdzie" $.gdzie) }}
+      </div>
+      {{- end }}
+    </div>

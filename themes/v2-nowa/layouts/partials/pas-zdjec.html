@@ -1,0 +1,37 @@
+{{- /* Pas zdjec gabinetu przed zamknieciem strony (cta) na stronach, ktore
+       pokazuja mniej niz 4 zdjecia (np. kontakt, opinie): 2-3 zdjecia z galerii
+       serwisu (plik + alt z blokow "galeria"), ktorych strona jeszcze nie
+       pokazuje - ani w tresci, ani w pasmie tytulowym (zdjecie-pasma.html).
+       Wybor staly dla strony (skrot adresu). Danych to nie zmienia.
+       Strona bez zadnego wlasnego zdjecia (dokument, np. polityka prywatnosci)
+       zostaje bez pasa.
+       Wejscie: dict "strona" (Page), "obrazy" (ile zdjec strona pokazala nad
+       cta - liczy sekcje.html). Wynik: HTML albo "". */ -}}
+{{- $s := .strona -}}
+{{- $wlasne := slice -}}
+{{- range $s.Params.sekcje -}}
+  {{- with .zdjecie }}{{ with .plik }}{{ $wlasne = $wlasne | append . }}{{ end }}{{ end -}}
+  {{- if eq .type "galeria" }}{{ range .elementy }}{{ with .plik }}{{ $wlasne = $wlasne | append . }}{{ end }}{{ end }}{{ end -}}
+{{- end -}}
+{{- $wynik := "" -}}
+{{- if and $wlasne (not $s.IsHome) -}}
+  {{- $pomin := $wlasne -}}
+  {{- with partial "zdjecie-pasma.html" $s }}{{ $pomin = $pomin | append .zdjecie.plik }}{{ end -}}
+  {{- if lt .obrazy 4 -}}
+    {{- $kandydaci := slice -}}
+    {{- range partialCached "inline/zdjecia-galerii.html" site "zdjecia-galerii" -}}
+      {{- if not (in $pomin .zdjecie.plik) }}{{ $kandydaci = $kandydaci | append . }}{{ end -}}
+    {{- end -}}
+    {{- $ile := math.Min 3 (len $kandydaci) | int -}}
+    {{- if ge $ile 2 -}}
+      {{- $start := mod (hash.FNV32a (printf "pas%s" $s.RelPermalink)) (len $kandydaci) -}}
+      {{- $html := "" -}}
+      {{- range $i := seq 0 (sub $ile 1) -}}
+        {{- $k := index $kandydaci (mod (add $start $i) (len $kandydaci)) -}}
+        {{- $html = printf "%s\n      <figure class=\"pas-zdjec__kafel\">%s</figure>" $html (partial "image.html" (dict "strona" $k.strona "zdjecie" $k.zdjecie "kadr" "4:5" "sizes" "(min-width: 900px) 33vw, 50vw" "gdzie" (printf "%s: pas zdjęć gabinetu" $s.RelPermalink))) -}}
+      {{- end -}}
+      {{- $wynik = printf "<section class=\"s s--papier s--pas-zdjec\">\n  <div class=\"wnetrze\">\n    <div class=\"pas-zdjec pas-zdjec--%d\" data-wejscie-kafle>%s\n    </div>\n  </div>\n</section>" $ile $html -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $wynik -}}

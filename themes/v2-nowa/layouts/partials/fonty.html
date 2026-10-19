@@ -1,0 +1,25 @@
+{{- /* Kroje motywu (OFL, pliki w static/fonts/, licencje obok):
+       Young Serif 400 - naglowki, ceny, numer telefonu w cta, linia adresu;
+       Atkinson Hyperlegible Next (zmienny 200-800, z kursywa) - tekst.
+       Osobno latin i latin-ext (unicode-range z pakietow @fontsource 5.3.0),
+       adresy przez relURL, wiec dzialaja tez pod podkatalogiem (/test/).
+       Zapas z local() i size-adjust ogranicza skok ukladu przy font-display: swap.
+       Preload: oba podzbiory (latin i latin-ext) Atkinson normal i Young Serif -
+       kazda polska strona potrzebuje obu (ą, ę, ł, ż...), a bez preloadu
+       latin-ext ruszal dopiero po ok. 1,1-1,5 s przy wolnym laczu (runda 2). */ -}}
+{{- $latin := "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD" -}}
+{{- $ext := "U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF" -}}
+<link rel="preload" href="{{ "fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ "fonts/young-serif-latin-400-normal.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ "fonts/atkinson-hyperlegible-next-latin-ext-wght-normal.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ "fonts/young-serif-latin-ext-400-normal.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"Young Serif";font-style:normal;font-weight:400;font-display:swap;src:url("{{ "fonts/young-serif-latin-ext-400-normal.woff2" | relURL }}") format("woff2");unicode-range:{{ $ext | safeCSS }}}
+@font-face{font-family:"Young Serif";font-style:normal;font-weight:400;font-display:swap;src:url("{{ "fonts/young-serif-latin-400-normal.woff2" | relURL }}") format("woff2");unicode-range:{{ $latin | safeCSS }}}
+@font-face{font-family:"Atkinson Hyperlegible Next";font-style:normal;font-weight:200 800;font-display:swap;src:url("{{ "fonts/atkinson-hyperlegible-next-latin-ext-wght-normal.woff2" | relURL }}") format("woff2");unicode-range:{{ $ext | safeCSS }}}
+@font-face{font-family:"Atkinson Hyperlegible Next";font-style:normal;font-weight:200 800;font-display:swap;src:url("{{ "fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2" | relURL }}") format("woff2");unicode-range:{{ $latin | safeCSS }}}
+@font-face{font-family:"Atkinson Hyperlegible Next";font-style:italic;font-weight:200 800;font-display:swap;src:url("{{ "fonts/atkinson-hyperlegible-next-latin-ext-wght-italic.woff2" | relURL }}") format("woff2");unicode-range:{{ $ext | safeCSS }}}
+@font-face{font-family:"Atkinson Hyperlegible Next";font-style:italic;font-weight:200 800;font-display:swap;src:url("{{ "fonts/atkinson-hyperlegible-next-latin-wght-italic.woff2" | relURL }}") format("woff2");unicode-range:{{ $latin | safeCSS }}}
+@font-face{font-family:"Young Serif zapas";src:local("Georgia");size-adjust:96%}
+@font-face{font-family:"Atkinson zapas";src:local("Segoe UI"),local("Arial");size-adjust:100%}
+</style>

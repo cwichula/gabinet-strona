@@ -1,0 +1,25 @@
+{{- /* Odnosniki do stron z opisem (div.related): blok "powiazane" i lista
+       "Dokąd dalej" na stronie 404.
+       Wejscie: dict "elementy" ([{strona, etykieta, opis}]), "gdzie" (opis
+       miejsca do komunikatu o bledzie), "scisle" (domyslnie tak; false =
+       strona, ktorej nie ma, jest pomijana bez bledu - 404 nie moze przerwac
+       budowania). Pusta etykieta = tytul strony; pusty opis = usluga.skrot
+       wskazanej strony. Strona ukryta (szkic) = pominieta. Stary slug strony
+       (aliases po zmianie nazwy) prowadzi do tej strony (cel-linku.html).
+       Wynik: slice dict "href", "tytul", "opis", "strona" (Page), "zdjecie"
+       (pierwsze niepowtorzone zdjecie strony docelowej albo false - miniatura). */ -}}
+{{- $linki := slice -}}
+{{- $uzyte := slice -}}
+{{- range $el := .elementy -}}
+  {{- $cel := partial "cel-linku.html" (dict "strona" $el.strona "gdzie" $.gdzie "scisle" $.scisle) -}}
+  {{- with $cel.strona }}{{ if not .Draft -}}
+    {{- $u := .Params.usluga | default dict -}}
+    {{- /* miniatura: pierwsze zdjecie strony docelowej, ktorego ta lista jeszcze
+           nie pokazala (sekcje, potem galeria); brak = bez miniatury */ -}}
+    {{- $zdj := false }}{{ range .Params.sekcje }}{{ if and (not $zdj) .zdjecie .zdjecie.plik (not (in $uzyte .zdjecie.plik)) }}{{ $zdj = .zdjecie }}{{ end }}{{ end -}}
+    {{- if not $zdj }}{{ range .Params.sekcje }}{{ if eq .type "galeria" }}{{ range .elementy }}{{ if and (not $zdj) .plik (not (in $uzyte .plik)) }}{{ $zdj = . }}{{ end }}{{ end }}{{ end }}{{ end }}{{ end -}}
+    {{- with $zdj }}{{ $uzyte = $uzyte | append .plik }}{{ end -}}
+    {{- $linki = $linki | append (dict "href" .RelPermalink "tytul" ($el.etykieta | default .LinkTitle) "opis" ($el.opis | default $u.skrot | default "") "strona" . "zdjecie" $zdj) -}}
+  {{- end }}{{ end -}}
+{{- end -}}
+{{- return $linki -}}

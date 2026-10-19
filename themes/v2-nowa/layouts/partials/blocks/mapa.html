@@ -1,0 +1,55 @@
+{{- /* Blok "mapa": naglowek, tresc; adres i dojazd z data/gabinet.yaml (pomijane,
+       gdy strona ma blok "kontakt" - jak v1), tekst zgody z data/ustawienia.yaml
+       (napisy.mapa_zgoda, mapa_przycisk; puste = napis domyslny).
+       Mapa Google: ramka (iframe) powstaje dopiero po kliknieciu "Pokaż mapę"
+       (app.js) - wczesniej Google nie dostaje adresu IP odwiedzajacego. Bramka
+       zgody: plaski kafel ze zdjeciem wejscia i tekstem zgody. Obok zawsze
+       zwykly odnosnik do Map Google w nowej karcie. */ -}}
+{{- $b := .blok -}}
+{{- $a := hugo.Data.gabinet.adres | default dict -}}
+{{- $n := (partialCached "ustawienia-model.html" site "ustawienia").napisy -}}
+{{- $zapytanie := partial "zapytanie-mapy.html" . -}}
+{{- $zKontaktem := false }}{{ range $.strona.Params.sekcje }}{{ if eq .type "kontakt" }}{{ $zKontaktem = true }}{{ end }}{{ end -}}
+{{- $wejscie := partialCached "zdjecie-wejscia.html" site "zdjecie-wejscia" -}}
+{{- /* zdjecie wejscia stoi na tej samej stronie (np. "Jak trafić" na kontakcie)
+       - bramka bez niego, zeby sie nie powtarzalo */ -}}
+{{- with $wejscie }}{{ if .strona.Eq $.strona }}{{ $wejscie = false }}{{ end }}{{ end -}}
+{{- $naglowek := partial "h2.html" (dict "naglowek" $b.naglowek "domyslny" (T "howToGetHere") "gora" $.gora) | strings.TrimSpace -}}
+    <div class="blok mapa-blok">
+      {{- with $naglowek }}
+      <div class="lewa" data-wejscie>{{ . | safeHTML }}</div>
+      {{- end }}
+      <div class="os" data-wejscie>
+        {{- if and $a.ulica (not $zKontaktem) }}
+        <p class="mapa__adres">{{ $a.ulica }}, {{ $a.kod }} {{ $a.miasto }}</p>
+        {{- with $a.dojazd }}
+        <p>{{ partial "tekst-wiersze.html" . }}</p>
+        {{- end }}
+        {{- with $a.parking }}
+        <p>{{ T "parking" }}: {{ . }}</p>
+        {{- end }}
+        {{- end }}
+        {{- with $b.tresc }}
+        <div class="proza">{{ partial "markdown.html" (dict "strona" $.strona "tekst" .) }}</div>
+        {{- end }}
+        <p class="mapa__link"><a class="odnosnik-strzalka" href="https://www.google.com/maps/dir/?api=1&amp;destination={{ $zapytanie | safeURL }}" target="_blank" rel="noopener">{{ T "openInMaps" }}<span class="visually-hidden">{{ T "opensInNewTab" }}</span><svg class="ico strzalka" aria-hidden="true"><use href="#ico-arrow"></use></svg></a></p>
+      </div>
+      <div class="os mapa__bramka-wrap">
+        <div class="mapa__bramka" data-map data-napis-tytul="{{ T "mapTitle" }}"
+             data-map-src="https://www.google.com/maps?q={{ $zapytanie | safeURL }}&output=embed&hl=pl&z=17">
+          <div class="mapa__zgoda{{ if $wejscie }} mapa__zgoda--zdjecie{{ end }}">
+            {{- with $wejscie }}
+            {{ partial "image.html" (dict "strona" .strona "zdjecie" .zdjecie "sizes" "300px" "szerokosci" (slice 300) "klasa" "mapa__wejscie") }}
+            {{- end }}
+            <div class="mapa__zgoda-tekst">
+              {{- /* blok z wlasnym naglowkiem (np. „Mapa dojazdu”) - bez powtorzenia w bramce */}}
+              {{- if not $b.naglowek }}
+              <p class="mapa__zgoda-tytul">{{ T "mapHeading" }}</p>
+              {{- end }}
+              <p>{{ with $n.mapa_zgoda }}{{ partial "tekst-wiersze.html" . }}{{ else }}{{ T "mapConsent" }}{{ end }}</p>
+              <button class="przycisk przycisk--glowny" type="button" data-map-load><svg class="ico" aria-hidden="true"><use href="#ico-map"></use></svg><span>{{ $n.mapa_przycisk | default (T "showGoogleMap") }}</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

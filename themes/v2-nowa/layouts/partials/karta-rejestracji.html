@@ -1,0 +1,11 @@
+{{- /* Karta wizyt "Rejestracja telefoniczna": zdanie stanu (czy gabinet teraz
+       przyjmuje), pasek tygodnia, przycisk telefonu, notka o zajetym telefonie.
+       Ta sama karta w banerze strony glownej i w szufladzie menu.
+       Wejscie: dict "live" (bool - aria-live zdania stanu), "klasa". */ -}}
+<div class="karta karta--rejestracja{{ with .klasa }} {{ . }}{{ end }}"{{ if .live }} data-karta-hero{{ end }}>
+  <p class="karta__tytul">{{ T "registrationByPhone" }}</p>
+  {{ partial "stan.html" (dict "klasa" "karta__stan" "live" .live) }}
+  {{ partial "tydzien.html" (dict "uklad" "poziom") }}
+  {{ partial "telefon-btn.html" (dict "klasa" "przycisk przycisk--glowny przycisk--pelny przycisk--duzy") }}
+  <p class="karta__notka">{{ T "phoneBusyNote" }}</p>
+</div>

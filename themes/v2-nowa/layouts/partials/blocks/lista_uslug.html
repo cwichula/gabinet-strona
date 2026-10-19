@@ -1,0 +1,85 @@
+{{- /* Blok "lista_uslug": naglowek, wstep, tylko_wyroznione, kolumny (2 | 3 | 4).
+       "Tabela z miniaturami": wiersze powstaja same ze stron z polem "usluga"
+       (uslugi-strony.html): miniatura 3:2 (pierwsze zdjecie strony uslugi,
+       ktorego lista jeszcze nie pokazala: zdjecia sekcji, potem galerii; brak
+       = bez miniatury - zadne zdjecie nie stoi w liscie dwa razy; na telefonie
+       ponizej 600 px miniatur nie ma), nazwa (usluga.nazwa albo tytul),
+       usluga.skrot, "od" + cena pozycji usluga.cena_od, napis wejscia
+       (ustawienia: napisy.karta_szczegoly, pusty = "Zobacz szczegóły") ze
+       strzalka. Caly wiersz jest odnosnikiem.
+       kolumny 2+ = od 1200 px dwie kolumny wierszy na pelna szerokosc. */ -}}
+{{- $b := .blok -}}
+{{- $n := (partialCached "ustawienia-model.html" site "ustawienia").napisy -}}
+{{- $kol := int (printf "%v" ($b.kolumny | default 3)) -}}
+{{- $uslugi := partial "uslugi-strony.html" (dict "tylko_wyroznione" $b.tylko_wyroznione) -}}
+{{- $wiecej := $n.karta_szczegoly | default (T "seeDetails") -}}
+{{- $uzyte := slice -}}
+{{- with $uslugi }}
+{{- $naglowek := partial "h2.html" (dict "strona" $.strona "naglowek" $b.naglowek "gora" $.gora) | strings.TrimSpace }}
+    <div class="blok uslugi{{ if ge $kol 2 }} uslugi--dwie{{ end }}">
+      {{- with $naglowek }}
+      <div class="lewa uslugi__naglowek" data-wejscie>{{ . | safeHTML }}</div>
+      {{- end }}
+      {{- with $b.wstep }}
+      <div class="os uslugi__wstep" data-wejscie>{{ partial "akapity.html" (dict "strona" $.strona "tekst" . "klasa" "wstep") }}</div>
+      {{- end }}
+      {{- /* najpierw miniatury wszystkich wierszy (zeby wiedziec, czy lista ma
+             jakiekolwiek zdjecie); wiersz bez wlasnego zdjecia w liscie ze
+             zdjeciami dostaje zdjecie gabinetu z galerii serwisu, ktorego lista
+             jeszcze nie pokazala (miejsce wizyty - zamiast szarego pola),
+             a dopiero gdy takiego nie ma - rysowany znak uslugi (usluga.ikona) */}}
+      {{- $miniatury := slice }}
+      {{- range $p := . }}
+        {{- $zdj := false }}
+        {{- range $p.Params.sekcje }}
+          {{- if and (not $zdj) .zdjecie .zdjecie.plik (not (in $uzyte .zdjecie.plik)) }}{{ $zdj = .zdjecie }}{{ end }}
+        {{- end }}
+        {{- if not $zdj }}{{ range $p.Params.sekcje }}{{ if eq .type "galeria" }}{{ range .elementy }}
+          {{- if and (not $zdj) .plik (not (in $uzyte .plik)) }}{{ $zdj = . }}{{ end }}
+        {{- end }}{{ end }}{{ end }}{{ end }}
+        {{- with $zdj }}{{ $uzyte = $uzyte | append .plik }}{{ end }}
+        {{- $miniatury = $miniatury | append (dict "z" $zdj "s" $p) }}
+      {{- end }}
+      {{- $zeZdjeciami := gt (len $uzyte) 0 }}
+      {{- if $zeZdjeciami }}
+        {{- $uzupelnione := slice }}
+        {{- range $miniatury }}
+          {{- $m := . }}
+          {{- if not $m.z }}
+            {{- range partialCached "inline/zdjecia-galerii.html" site "zdjecia-galerii" }}
+              {{- if and (not $m.z) (not (in $uzyte .zdjecie.plik)) }}{{ $m = dict "z" .zdjecie "s" .strona }}{{ $uzyte = $uzyte | append .zdjecie.plik }}{{ end }}
+            {{- end }}
+          {{- end }}
+          {{- $uzupelnione = $uzupelnione | append $m }}
+        {{- end }}
+        {{- $miniatury = $uzupelnione }}
+      {{- end }}
+      <ul class="{{ if ge $kol 2 }}pelna{{ else }}os{{ end }} uslugi__lista" data-wejscie-lista>
+        {{- range $i, $p := . }}
+        {{- $u := $p.Params.usluga }}
+        {{- $gdzieKarty := printf "%s: pole „Strona usługi”" $p.File.Path }}
+        {{- $poz := partial "cennik-pozycja.html" (dict "id" $u.cena_od "gdzie" $gdzieKarty) }}
+        {{- $zdj := (index $miniatury $i).z }}{{ $zStrony := (index $miniatury $i).s }}
+        <li class="usluga">
+          <a class="usluga__link" href="{{ $p.RelPermalink }}">
+            {{- with $zdj }}
+            <span class="usluga__miniatura">{{ partial "image.html" (dict "strona" $zStrony "zdjecie" . "kadr" "3:2" "sizes" "(min-width: 900px) 180px, 88px" "szerokosci" (slice 360) "bez_alt" true "gdzie" $gdzieKarty) }}</span>
+            {{- else }}{{ if $zeZdjeciami }}
+            <span class="usluga__miniatura usluga__miniatura--znak" aria-hidden="true">{{ partial "ikona.html" (dict "nazwa" ($u.ikona | default "zab") "gdzie" $gdzieKarty) }}</span>
+            {{- end }}{{ end }}
+            <span class="usluga__tekst">
+              <span class="usluga__nazwa">{{ $u.nazwa | default $p.LinkTitle }}</span>
+              {{- with $u.skrot }}
+              <span class="usluga__skrot">{{ . }}</span>
+              {{- end }}
+            </span>
+            {{- with $poz }}
+            <span class="usluga__cena">{{ $n.karta_cena_od | default (T "priceFrom") }} {{ partial "cena.html" (dict "nazwa" .nazwa "cena_od" .cena_od) }}</span>
+            {{- end }}
+            <span class="usluga__wiecej" aria-hidden="true">{{ $wiecej }}<svg class="ico strzalka" aria-hidden="true"><use href="#ico-arrow"></use></svg></span>
+          </a>
+        </li>
+        {{- end }}
+      </ul>
+    </div>
+{{- end -}}

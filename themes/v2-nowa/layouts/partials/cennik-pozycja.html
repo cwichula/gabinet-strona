@@ -1,0 +1,15 @@
+{{- /* Pozycja cennika po identyfikatorze (data/cennik.yaml, lista "pozycje").
+       Wejscie: dict "id" (identyfikator pozycji), "gdzie" (opis miejsca do bledu).
+       Wynik: pozycja (dict nazwa, cena_od, cena_do, uwagi, kategoria) albo false.
+       Identyfikator, ktorego nie ma w cenniku, przerywa budowanie z czytelnym
+       bledem - tak jak menu wskazujace nieistniejaca strone. */ -}}
+{{- $wynik := false -}}
+{{- with .id -}}
+  {{- $id := . -}}
+  {{- with where (hugo.Data.cennik.pozycje | default slice) "id" $id -}}
+    {{- $wynik = index . 0 -}}
+  {{- else -}}
+    {{- errorf "%s wskazuje pozycję cennika %q, której nie ma w data/cennik.yaml. Wybierz pozycję ponownie w panelu /admin/." $.gdzie $id -}}
+  {{- end -}}
+{{- end -}}
+{{- return $wynik -}}
