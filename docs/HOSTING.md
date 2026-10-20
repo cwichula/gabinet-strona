@@ -91,12 +91,14 @@ i powtórzyć test.
 Do uruchomienia strony wystarczy **zmiana rekordów A/AAAA** domeny i `www` na adres OVH.
 Transfer domeny (zmiana rejestratora) to osobna, nieobowiązkowa sprawa.
 
-**Stan (2026-10):** DNS domeny prowadzi **ehost.pl** (`ns1.ehost.pl`, `ns2.ehost.pl`),
-stara strona: A `193.143.77.30`, `www` to alias domeny. Wybrany wariant A — domena zostaje
-w ehost, zmienia się tylko rekord A (domena i `www`). MX wskazuje na samą domenę, więc
-po zmianie A poczta szłaby na OVH — nie przeszkadza, bo skrzynki w domenie nikt nie używa.
-Gdyby poczta była potrzebna: przed zmianą A dodać `mail` A `193.143.77.30` i ustawić MX
-na `mail.dobrydentysta.legnica.pl`.
+**Stan (2026-10-20):** strefę DNS prowadzi **OVH** (`dns103.ovh.net`, `ns103.ovh.net`):
+A `213.32.10.205`, AAAA `2001:41d0:301:5::29` (domena i `www`), MX `mx1/mx2/mx3.mail.ovh.net`,
+SPF `v=spf1 include:mx.ovh.com -all`. Brak DKIM i DMARC — dodać przy zakładaniu skrzynki
+w domenie (OVH: domena → DKIM; TXT `_dmarc`: `v=DMARC1; p=none; rua=mailto:<adres>`).
+Stary hosting ehost (`193.143.77.30`, kopia w `archiwum/stara-strona/`) nadal działa — do
+wypowiedzenia (samej domeny nie wypowiadać; sprawdzić, kto i kiedy ją odnawia).
+
+Opis sprzed przeniesienia (DNS był wtedy w ehost.pl, `ns1.ehost.pl`, `ns2.ehost.pl`):
 
 1. Rejestrator: WHOIS dla `dobrydentysta.legnica.pl` na <https://dns.pl/whois> (domena
    regionalna, rejestr NASK) — kto ją prowadzi i kto ma dostęp do panelu.
