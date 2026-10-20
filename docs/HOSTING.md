@@ -50,12 +50,11 @@ Wartości w panelu OVH (Web Cloud → Hosting):
   albo FileZilla).
 - `.ovhconfig` (wersja PHP, plik OVH) leży w katalogu głównym konta, nie w `www` — wysyłka
   i tak go pomija.
-- **Do czasu certyfikatu strona działa po `http://`:** w `hosting/.htaccess` wymuszenie
-  HTTPS jest zakomentowane, a `www.` prowadzi na `http://`; zmienna
-  `HOSTING_ADRES=http://dobrydentysta.legnica.pl/` (w HTML są pełne adresy — kanoniczny,
-  menu, dane strukturalne — z `https://` prowadziłyby na stronę bez certyfikatu).
-  Po wydaniu certyfikatu: odkomentować blok HTTPS w `.htaccess`, w regule `www.` wpisać
-  `https://`, usunąć zmienną `HOSTING_ADRES` i uruchomić workflow.
+- **HTTPS (od 2026-10):** certyfikat Let's Encrypt z OVH (domena i `www.`) odnawia się sam.
+  `hosting/.htaccess` przekierowuje `http://` i `www.` na `https://dobrydentysta.legnica.pl/`,
+  zmiennej `HOSTING_ADRES` nie ma (adres domyślny w workflow to `https://`). Gdyby certyfikat
+  przestał działać: ustawić `HOSTING_ADRES=http://dobrydentysta.legnica.pl/` i zakomentować
+  blok HTTPS w `.htaccess` (w HTML są pełne adresy — kanoniczny, menu, dane strukturalne).
 - Certyfikat Let's Encrypt (Multisite → SSL) OVH wydaje dopiero, gdy DNS domeny wskazuje na
   OVH. Przy przełączeniu jest więc krótkie okno bez certyfikatu: dzień wcześniej obniżyć TTL
   rekordów A/AAAA (np. 300 s), certyfikat zamówić zaraz po zmianie DNS.
