@@ -40,16 +40,16 @@ RewriteEngine On
 # Stara strona (2011-2026) miala adresy .php. Sa w wynikach Google, w zakladkach
 # pacjentow i w linkach z innych stron - bez 301 ich wartosc przepada,
 # a pacjent trafia na 404. Plikow starej strony na serwerze nie ma i nie trzeba.
-  RewriteRule ^index\.php$                 /                        [R=301,L]
-  RewriteRule ^uslugi\.php$                /uslugi/                 [R=301,L]
-  RewriteRule ^cennik\.php$                /cennik/                 [R=301,L]
-  RewriteRule ^nowosci\.php$               /wyposazenie/            [R=301,L]
-  RewriteRule ^galeria\.php$               /galeria/                [R=301,L]
-  RewriteRule ^kontakt\.php$               /kontakt/                [R=301,L]
-  RewriteRule ^polityka-prywatnosci\.pdf$  /polityka-prywatnosci/   [R=301,L]
-  RewriteRule ^media/cennik[^/]*\.pdf$     /cennik/                 [R=301,L]
-  RewriteRule ^galeria/foto/               /galeria/                [R=301,L]
-  RewriteRule ^media/                      /galeria/                [R=301,L]
+  RewriteRule ^index\.php$                 https://%{HTTP_HOST}/                        [R=301,L]
+  RewriteRule ^uslugi\.php$                https://%{HTTP_HOST}/uslugi/                 [R=301,L]
+  RewriteRule ^cennik\.php$                https://%{HTTP_HOST}/cennik/                 [R=301,L]
+  RewriteRule ^nowosci\.php$               https://%{HTTP_HOST}/wyposazenie/            [R=301,L]
+  RewriteRule ^galeria\.php$               https://%{HTTP_HOST}/galeria/                [R=301,L]
+  RewriteRule ^kontakt\.php$               https://%{HTTP_HOST}/kontakt/                [R=301,L]
+  RewriteRule ^polityka-prywatnosci\.pdf$  https://%{HTTP_HOST}/polityka-prywatnosci/   [R=301,L]
+  RewriteRule ^media/cennik[^/]*\.pdf$     https://%{HTTP_HOST}/cennik/                 [R=301,L]
+  RewriteRule ^galeria/foto/               https://%{HTTP_HOST}/galeria/                [R=301,L]
+  RewriteRule ^media/                      https://%{HTTP_HOST}/galeria/                [R=301,L]
 </IfModule>
 
 # --- 5. Kompresja ---------------------------------------------------------
